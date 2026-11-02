@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import itertools
 import math
 from dataclasses import dataclass
 
@@ -71,19 +70,24 @@ def radius_graph(batch: StructureBatch, cutoff: float, max_images: int = 50000) 
             if image_count > max_images:
                 raise ValueError(f"Cell requires {image_count} periodic images; check cell/cutoff")
             n = end - start
-            for image_tuple in itertools.product(*(range(-b, b + 1) for b in bounds)):
-                image = torch.tensor(image_tuple, dtype=torch.long, device=device)
-                vectors = wrapped[:, None, :] + image.to(cell.dtype) @ cell - wrapped[None, :, :]
+            candidates = torch.cartesian_prod(*(torch.arange(-b, b + 1, device=device)
+                                                for b in bounds))
+            pairs = wrapped[:, None, :] - wrapped[None, :, :]
+            chunk_size = max(1, 1_000_000 // (n * n))
+            diagonal = torch.eye(n, dtype=torch.bool, device=device)
+            for image in candidates.split(chunk_size):
+                shifts = image.to(cell.dtype) @ cell
+                vectors = pairs[None] + shifts[:, None, None, :]
                 distance = torch.linalg.vector_norm(vectors, dim=-1)
-                self_pair = torch.eye(n, dtype=torch.bool, device=device) & bool((image == 0).all())
+                self_pair = diagonal[None] & (image == 0).all(dim=-1)[:, None, None]
                 if bool(((distance < 1e-8) & ~self_pair).any()):
                     raise ValueError("Coincident atoms/images in input geometry")
                 selected = (distance < cutoff) & ~self_pair
-                src, dst = torch.where(selected)
+                image_index, src, dst = torch.where(selected)
                 if len(src):
                     all_src.append(src + start)
                     all_dst.append(dst + start)
-                    all_images.append(image[None] - wrap[src] + wrap[dst])
+                    all_images.append(image[image_index] - wrap[src] + wrap[dst])
                     graph_ids.append(torch.full_like(src, graph_id))
     src = torch.cat(all_src) if all_src else torch.empty(0, dtype=torch.long, device=device)
     dst = torch.cat(all_dst) if all_dst else src.clone()

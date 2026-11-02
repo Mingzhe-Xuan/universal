@@ -64,24 +64,28 @@ def load_structures(path: str | Path, *, dtype=torch.float64) -> list[Structure]
 
 
 VOIGT = [(0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1)]
+VASP_VOIGT = [(0, 0), (1, 1), (2, 2), (0, 1), (1, 2), (0, 2)]
 
 
-def expand_voigt(values: torch.Tensor, kind: str) -> torch.Tensor:
+def expand_voigt(values: torch.Tensor, kind: str, order: str = "standard") -> torch.Tensor:
     """Expand labelled symmetric index pairs; does not constrain model predictions."""
+    if order not in {"standard", "vasp"}:
+        raise ValueError("voigt_order must be standard (xx,yy,zz,yz,xz,xy) or vasp (xx,yy,zz,xy,yz,zx)")
+    pairs = VASP_VOIGT if order == "vasp" else VOIGT
     if kind == "stress" and values.shape == (6,):
         result = values.new_zeros(3, 3)
-        for k, (i, j) in enumerate(VOIGT):
+        for k, (i, j) in enumerate(pairs):
             result[i, j] = result[j, i] = values[k]
         return result
     if kind == "piezoelectric" and values.numel() == 18:
         result = values.new_zeros(3, 3, 3)
-        for k, (i, j) in enumerate(VOIGT):
+        for k, (i, j) in enumerate(pairs):
             result[:, i, j] = result[:, j, i] = values.reshape(3, 6)[:, k]
         return result
     if kind == "elastic" and values.numel() == 36:
         result = values.new_zeros(3, 3, 3, 3)
-        for a, (i, j) in enumerate(VOIGT):
-            for b, (k, l) in enumerate(VOIGT):
+        for a, (i, j) in enumerate(pairs):
+            for b, (k, l) in enumerate(pairs):
                 for p, q in {(i, j), (j, i)}:
                     for r, s in {(k, l), (l, k)}:
                         result[p, q, r, s] = values.reshape(6, 6)[a, b]
@@ -109,7 +113,7 @@ def bind_targets(structures: list[Structure], bindings: dict) -> list[Structure]
             if "threshold" in binding:
                 value = (value > binding["threshold"]).long()
             if binding.get("voigt"):
-                value = expand_voigt(value, output)
+                value = expand_voigt(value, output, binding.get("voigt_order", "standard"))
             targets[output] = value
         result.append(replace(structure, targets=targets,
                               metadata={**structure.metadata, "target_bindings": bindings}))

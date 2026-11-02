@@ -31,3 +31,11 @@ def test_response_catalog_and_voigt():
     assert full[2, 1, 1, 0] == c[3, 5]
     with pytest.raises(ValueError, match="Unknown property"):
         property_spec("unregistered_response")
+def test_vasp_voigt_binding_keeps_xy_and_yz_distinct():
+    from universal_gnn.data.structures import expand_voigt
+
+    source = torch.arange(18, dtype=torch.float64).reshape(3, 6)
+    tensor = expand_voigt(source, "piezoelectric", "vasp")
+    torch.testing.assert_close(tensor[:, 0, 1], source[:, 3])
+    torch.testing.assert_close(tensor[:, 1, 2], source[:, 4])
+    torch.testing.assert_close(tensor[:, 2, 0], source[:, 5])

@@ -97,3 +97,7 @@
 - 2026-11-02 15:47:10 +08:00：元数据诊断/pull成功，任务 pip 已终止，无需杀进程。下一连接先健康/pull，再将任务两环境 .pth 改为实际 blackwell 依赖路径并断言关键版本，显式固定已有Torch/NumPy安装核心e3nn，成功才提交unit Slurm；不修改父环境。
 
 - 2026-11-02 15:49:36 +08:00：核心环境成功并提交Slurm535。下一 scp 仅传 antlr4_python3_runtime4.9.3、python_hostlist2.3.0 两个小型wheel到任务tmp/wheelhouse；已先pull至90989f9，后续工作连接仍先健康/pull，再查535日志并安装NequIP/MACE小型依赖。
+
+- 2026-11-02 15:51:31 +08:00：下一工作连接复用当前代理并先健康/pull到65badd5，查询Slurm535状态/日志。两纯Pythonwheel scp完成后，固定现有Torch/NumPy并安装NequIP0.14/Hydra1.3.2/Lightning2.5，再通过Slurm测试；不在登录节点执行模型。
+
+- 2026-11-02 15:54:43 +08:00：NequIP安装的983kB torchmetrics下载中断，原进程退出1；不重跑网络安装。下一 scp 将现成torchmetrics、pytorch-lightning、matscipy wheel放任务tmp，代码已先pull至65badd5；后续健康/pull后优先离线补齐。
