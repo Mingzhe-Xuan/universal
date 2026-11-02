@@ -125,3 +125,5 @@
 - 2026-11-02 16:42:50 +08:00：MACE独立环境离线安装成功，Slurm594官方模块/力场/响应解析6项通过；Slurm595的MACE11格全部report passed。至此Slurm539/583/595合计66格真实十结构训练+重载推理通过（不含pending数据/派生流程）。下一本持续会话只读汇总报告/Git/Slurm元数据并打包不含checkpoint的证据，之后scp回本地；不以66格通过替代完整目标。
 
 - 2026-11-02 16:46:07 +08:00：证据归档605673字节已生成，66格报告及实际source均为70e5bb0。Slurm控制器已清理64个旧job记录，2个仍保留的为COMPLETED；保留原jobID/日志，不虚构被清理的ExitCode。scp下载被Vlab关闭，下一SFTP reget续传同一归档，完成后校验gzip和报告索引。
+
+- 2026-11-02 17:30:49 +08:00：下一在既有普通会话先强制HTTP1.1/TLS1.2端到端健康，再限时pull886f6f0；成功后提交core/NequIP与MACE两环境完整单元、旧66 checkpoint回放。另scp仅传11.2MB公开DFPT原档输入包（每档已SHA核对）到ignored tmp；实际批量XML解析必须Slurm。

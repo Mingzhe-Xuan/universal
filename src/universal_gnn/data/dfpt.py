@@ -4,6 +4,7 @@ import hashlib
 import io
 from pathlib import Path
 import zipfile
+import xml.etree.ElementTree as ET
 
 import numpy as np
 from ase.io import read
@@ -11,11 +12,18 @@ from ase.stress import voigt_6_to_full_3x3_stress
 
 
 def parse_dfpt_xml(stream, identifier):
-    atoms = read(stream, format="vasp-xml", index=-1)
+    xml = stream.read()
+    atoms = read(io.BytesIO(xml), format="vasp-xml", index=-1)
     values = atoms.calc.results
+    if values.get("dielectric_tensor") is None:
+        # Older VASP puts the electronic tensor in epsilon, outside ASE's dielectric_dft path.
+        candidates = ET.fromstring(xml).findall(".//varray[@name='epsilon']")
+        if len(candidates) == 1:
+            values["dielectric_tensor"] = np.array([[float(x) for x in row.text.split()]
+                                                     for row in candidates[0].findall("v")])
     required = ["free_energy", "forces", "stress", "born_effective_charges", "dielectric_tensor"]
     for key in required:
-        if key not in values or not np.isfinite(np.asarray(values[key])).all():
+        if values.get(key) is None or not np.isfinite(np.asarray(values[key])).all():
             raise ValueError(f"{identifier}: missing/nonfinite DFPT {key}")
     if np.asarray(values["forces"]).shape != (len(atoms), 3):
         raise ValueError("Force/site count mismatch")
