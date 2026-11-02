@@ -119,3 +119,5 @@
 - 2026-11-02 16:31:45 +08:00：Vlab下SFTP方式scp出现部分文件后无响应；legacy scp -O的小gzip数据包成功。大量漂亮JSON应先gzip，624640字节tar压成102730字节。已下载的pip wheel可按官方URL的CacheControl键从http-v2/*.body恢复，必须先核对官方SHA256，再进入任务wheelhouse；仅查找明确列出的包，不扫描/改写其他项目缓存。持续普通工作会话先pull后复用，可减少握手开销。
 
 - 2026-11-02 17:09:09 +08:00：Hugging Face元数据可取，但MatPES range、Tiny HDF5 curl和SDK HTTP回退连续遇到CDN TLS EOF/超时。复查网络经验后停止重试同一路径；改取小型公开provenance下载清单，直接访问其原始Figshare DFPT文件。仍以原文件哈希、记录ID和同一几何标签核对，不因第三方镜像声明跳过核验。
+
+- 2026-11-02T18:11:15.739246+08:00：abTEM离线61.9MiB依赖包经legacy scp和两次SFTP连续中断；关闭普通连接仍失败，排除简单第三连接冲突。专用代理进程仍在；不重启代理。下一步改用PTY持有SFTP并限制速率进行断点传输，以区分工具管道生命周期与链路故障。禁止为诊断直接打印整份SSH配置（包含无关主机信息）；后续仅读取指定Host必要字段。

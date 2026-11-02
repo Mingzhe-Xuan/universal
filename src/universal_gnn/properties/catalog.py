@@ -37,14 +37,30 @@ CATALOG = {
 }
 
 
-def property_spec(name: str, *, channels: int | None = None, unit: str | None = None) -> PropertySpec:
+def property_spec(name: str, *, channels: int | None = None, unit: str | None = None,
+                  definition: dict | None = None) -> PropertySpec:
     from dataclasses import replace
 
-    if name not in CATALOG:
+    if definition is not None:
+        values = {**definition, "name": name}
+        values["shape"] = tuple(values["shape"])
+        spec = PropertySpec(**values)
+        if spec.scope not in {"graph", "node"} or spec.kind not in {"regression", "classification"}:
+            raise ValueError("Unsupported property scope/kind")
+        if not spec.shape or any(not isinstance(n, int) or n < 1 for n in spec.shape):
+            raise ValueError("Property shape must contain positive integer dimensions")
+        if spec.construction not in {"direct", "derivative"}:
+            raise ValueError("Unknown property construction")
+        if spec.construction == "derivative":
+            count = len(spec.response_indices or "") + len(spec.auxiliary_indices or "")
+            if not spec.response_indices or not spec.auxiliary_indices or spec.shape != (3,) * count:
+                raise ValueError("Response shape must match explicit Cartesian derivative indices")
+    elif name not in CATALOG:
         raise ValueError(f"Unknown property {name!r}; register an explicit PropertySpec")
-    spec = CATALOG[name]
+    else:
+        spec = CATALOG[name]
     if channels is not None:
-        if name != "spectrum":
-            raise ValueError("Only spectrum accepts a grid channel override")
+        if name != "spectrum" or channels < 1:
+            raise ValueError("Only spectrum accepts a positive grid channel override")
         spec = replace(spec, shape=(channels,))
     return replace(spec, unit=unit) if unit is not None else spec

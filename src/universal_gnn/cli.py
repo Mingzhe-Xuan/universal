@@ -13,7 +13,7 @@ def main():
     train.add_argument("--output", type=Path, required=True)
     infer = sub.add_parser("infer")
     infer.add_argument("checkpoint", type=Path)
-    infer.add_argument("dataset", type=Path)
+    infer.add_argument("dataset")
     infer.add_argument("--output", type=Path, required=True)
     infer.add_argument("--device", default="cpu")
     infer.add_argument("--limit", type=int)

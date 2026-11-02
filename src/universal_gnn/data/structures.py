@@ -9,8 +9,24 @@ import torch
 from universal_gnn.contracts import Structure
 
 
-def load_structures(path: str | Path, *, dtype=torch.float64) -> list[Structure]:
+def load_structures(path: str | Path, *, dtype=torch.float64, options=None) -> list[Structure]:
     """Read normalized JSON, JARVIS-style atom dictionaries, or labelled ASE files."""
+    if str(path).startswith("plugin:"):
+        from dataclasses import replace
+        from universal_gnn.contracts.plugins import load_plugin
+
+        module = load_plugin(str(path).removeprefix("plugin:"))
+        structures = list(module.build_dataset(**(options or {})))
+        if not structures or not all(isinstance(s, Structure) for s in structures):
+            raise ValueError("Dataset plugin must return a nonempty iterable of Structure")
+        result = []
+        for structure in structures:
+            structure = replace(structure, positions=structure.positions.to(dtype=dtype),
+                                cell=structure.cell.to(dtype=dtype),
+                                metadata={**structure.metadata, "dataset_plugin": str(path)})
+            structure.validate()
+            result.append(structure)
+        return result
     path = Path(path)
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     if path.suffix.lower() not in {".json", ".jsonl"}:

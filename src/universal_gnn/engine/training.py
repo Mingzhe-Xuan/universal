@@ -33,14 +33,15 @@ def build_model(config):
     if task["kind"] == "forcefield":
         return ForceFieldModel(backbone)
     if task["kind"] == "supervised":
-        spec = property_spec(task["property"], channels=task.get("channels"), unit=task.get("unit"))
+        spec = property_spec(task["property"], channels=task.get("channels"), unit=task.get("unit"),
+                             definition=task.get("spec"))
         return SupervisedModel(backbone, spec, route=task.get("route"),
                                adapter_version=task.get("adapter_version", 2))
     raise ValueError(f"Task kind not implemented: {task['kind']}")
 
 
 def dataset(config, limit=10):
-    structures = load_structures(config["dataset"]["path"])
+    structures = load_structures(config["dataset"]["path"], options=config["dataset"].get("options"))
     if "bindings" in config["dataset"]:
         structures = bind_targets(structures, config["dataset"]["bindings"])
     if len(structures) < limit:
@@ -68,7 +69,9 @@ def predict(model, batch, config, *, training=False):
 
 def loss_for(predictions, batch, config, scales=None):
     losses, used_scales = [], {}
-    classification = config["task"].get("property") == "classification"
+    task = config["task"]
+    classification = (task["kind"] == "supervised" and
+                      property_spec(task["property"], definition=task.get("spec")).kind == "classification")
     for name, prediction in predictions.items():
         target = label(batch, name, prediction, classification=classification)
         if classification:
@@ -177,6 +180,9 @@ def run_training(config: dict, output: str | Path) -> dict:
               "interpretation": "execution/overfit check on training structures, not generalization",
               "passed": bool(history and delta > 0 and max(backbone_gradient_norms, default=0) > 0
                              and math.isfinite(final_loss) and final_loss < initial_loss)}
+    from universal_gnn.engine.derived import derived_outputs
+
+    report["derived"] = derived_outputs(again, config["task"])
     (output / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     if not report["passed"]:
         raise RuntimeError(f"Training acceptance failed; inspect {output / 'report.json'}")

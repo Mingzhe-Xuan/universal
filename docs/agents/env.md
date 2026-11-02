@@ -40,3 +40,5 @@
 - 2026-11-02 16:28:31 +08:00：从pip HTTP缓存按官方URL和SHA恢复NequIP/Hydra/OmegaConf/Lightning等5个wheel，离线安装成功：nequip0.14.0、e3nn0.5.8、matscipy1.1.1、hydra-core1.3.2、omegaconf2.3.0、lightning2.5.6、pytorch-lightning2.6.6、torchmetrics1.9.0、lightning-utilities0.15.3。提交Slurm538检查真实NequIP后端。
 
 - 2026-11-02 16:34:37 +08:00：MACE wheel包已完整传入6471680字节。独立MACE环境离线安装前，从本任务core环境仅复制已安装的opt_einsum3.4.0/opt_einsum_fx0.1.4及其dist-info（轻量第三方依赖，目标限定MACE site-packages）；不引用整个core路径，避免把NequIP/e3nn0.5带入MACE环境，不改core或blackwell。其余依赖仅使用缓存wheel。
+
+- 2026-11-02 18:04:44 +0800：在已有 /home/xmz/.venvs/universal 中补充 abTEM 1.0.8、numba 0.61.2、llvmlite 0.44.0、dask/distributed 2024.12.1、zarr 2.18.3 及缺失依赖；本地下载 Linux cp310 wheel，服务器仅离线安装到该任务环境，保留已有共享科学包。MACE 仅通过独立 workflow 依赖路径共享新增模拟库，不暴露 core e3nn。
