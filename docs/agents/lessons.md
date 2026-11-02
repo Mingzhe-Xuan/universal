@@ -149,3 +149,5 @@
 - 2026-11-03T00:50:06+08:00：第二次校验前缀后单独SSH资源续传仍被Vlab关闭，说明第三连接不是充分解释；复查18:26已成功的本地loopback HTTP+SOCKS Range方案，改复用健康proxy承载HTTP下载，并保留partial/完整hash门禁。不再重复大文件SSHstdin协议。恢复offset非MiB对齐时，进度应按阈值递增，不能用sent%8MiB==0判断，否则会漏报。
 
 - 2026-11-03T01:12:09+08:00: Original model parity includes input keys and batching convention, not only architecture/state keys. ALIGNN Graph.atom_dgl_multigraph can return DGL for pure_torch when DGL is installed; use its corresponding original batch API. NequIP singleton ASE inference is unbatched; adding a batch field changes its force-output execution path. Diagnose exact inputs first and preserve strict output tolerances rather than relaxing force checks.
+
+- 2026-11-03T01:26:27+08:00: NequIP force parity failed three consecutive validations746/749/752 (first was container selection). Reviewed prior lessons; singleton batching fix alone does not resolve numeric force disagreement:752 verifies all original calculator input keys/tensors exactly. Do not claim batching is the proven cause. Next isolate original-model repeatability, JIT warmup and equal state before editing adapters or considering any precision change.

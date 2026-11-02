@@ -277,3 +277,19 @@
 - 2026-11-03T01:04:26+08:00：代理31852被Vlab关闭且本地进程消失；19984续传curl18退出，NequIP749已提交，ALIGNN/Equiformer尚未提交。诊断连接确认1080未监听，旧代理不可用；启动唯一新代理31720。下一工作连接先端到端健康检查、仓库pull，再续传末尾约16MB并验证完整hash，最后读取749和提交另外两个验收。
 
 - 2026-11-03T01:07:29+08:00: resource archive completed and all 8 member hashes verified; Slurm750 ALIGNN/751 Equiformer submitted, 749 status query purged from Slurm (not a failure inference). Next SSH: health, git pull, inspect only known jobs749/750/751 logs and validation/failure JSON; no duplicate submissions. Proxy31720 remains dedicated.
+
+- 2026-11-03T01:13:09+08:00: next work SSH health/pull7257012, install only Torch2.7/cu128 torch-sparse wheel in universal-official (env plan recorded), then Slurm rerun official NequIP/ALIGNN/Equiformer and complete core/MACE regression. Model execution remains on compute partition; source updates only git pull.
+
+- 2026-11-03T01:15:56+08:00: dependency-install SSH53454 has no new output while pip logs are redirected. Next lightweight work connection health/pull then tail only task pip log and inspect current-user pip process state; do not execute model computation or restart healthy proxy.
+
+- 2026-11-03T01:17:20+08:00: health check76505 failed GitHub connect timeout before pull, so no task logs/business commands executed. Dedicated proxy31720 process still exists; do not restart blindly. Next diagnostic-only SSH (pre-pull exception): loopback1080 listening, current-user sshd processes, end-to-end loopback resource HEAD and GitHub HEAD. Compare local public GitHub access. No experiments or job submission before pull gate.
+
+- 2026-11-03T01:18:17+08:00: local proxy31720 exited (ServerAlive timeout), local GitHub HEAD200. Diagnostic53970 shows stale1080 and current-user sshd2791693 started01:05:05, matching this task proxy4 start01:05, while working sessions2793171/2793869 are newer. Next diagnostic-only SSH checks exact PID/start/listen ownership; only if matched, terminate2791693 then verify1080 released. No broad ssh kill, no experiment reads before pull.
+
+- 2026-11-03T01:18:56+08:00: stale task sshd2791693 precisely released,1080 free; unique new proxy5 started. Next work SSH: end-to-end GitHub health/pull, then pip log/Slurm status only, to avoid duplicate installs/submissions while original53454 remains live.
+
+- 2026-11-03T01:20:18+08:00: proxy5 health200 and pull passed. Previous53454 pip ended incomplete-download; it submitted no jobs. Next work SSH health/pull, submit independent NequIP/ALIGNN/core/MACE checks FIRST, then bounded curl of matching torch_sparse wheel into task cache, local-wheel-only pip install and Equiformer submission after success. No repeated pip network retries.
+
+- 2026-11-03T01:22:27+08:00: Slurm752 NequIP/753 ALIGNN/754core/755MACE submitted. Direct matching-wheel download on Guqq2 failed TLS while local same URL succeeded SHA2b081081279c1ee456ba14c73a445bf11438afefcdd5867f5f1820f1ae3fbd06. Proxy5 then exited with Vlab connection reset. Stop blind fresh-TLS retries: inspect local SSH routing/processes and next diagnostic-only SSH1080/current-user sshd (no business before pull); local public GitHub was200. If1080 free, start one fresh holder then one gated finite resource transfer; avoid pip network entirely.
+
+- 2026-11-03T01:23:42+08:00: proxy5 is gone and diagnostic61981 proves1080 free; actual SSH route is ProxyJump vlab, keepalive30. No unknown SSH process killed. Started unique proxy6 plus loopback-only wheel HTTP; old resource45916 stopped. Next single finite SSH: health/pull, inspect752/753/754/755, download exactly local official wheel over loopback SOCKS with SHA gate, offline pip install, then submit only Equiformer. No direct PyG TLS retry.

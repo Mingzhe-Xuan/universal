@@ -527,3 +527,5 @@
 - 2026-11-03T00:47:21+08:00：官方真实验收累计MACE743/CGCNN744/MEGNet745三类通过，最新两环境各62项回归。定位并修复NequIP0.14加载器返回容器的接口差异，不重建或修改其GraphModel；输入进一步复用官方from_ase。MatGL状态数组批处理去除低效构造警告，数值转换不变。下一同步重跑NequIP，其余两大模型资源正在校验续传；canonical官方默认和最终文档仍待实施。
 
 - 2026-11-03T01:12:09+08:00: Canonical model names now route to original official providers and registered SHA-checked published weights; legacy variants are explicit and old checkpoints retain original numerics. Examples select all records and mini-batch32/float32; documented CLI retains flags with the official environment as Slurm default. Official-NequIP singleton preprocessing and ALIGNN reference batching corrected; six-model actual acceptance remains incomplete (3 passed, 3 follow-up).
+
+- 2026-11-03T01:26:27+08:00: Official ALIGNN753 now passed full actual acceptance (4/6 complete). Canonical/default migration has complete71-test core and MACE regression evidence. Remaining NequIP strict force parity and Equiformer binary dependency; no claim of six-model completion.

@@ -345,3 +345,26 @@ legacy float64 interpretation. JSONL inference is an output stream: one `metadat
 `prediction` or `generation` record per structure, then `completed` with structure_count. A node
 prediction includes that structure's atoms only; a graph prediction preserves its leading batch
 axis of length one. Units and task definition remain in the metadata config.
+
+## Official model configuration and checkpoint artifacts
+
+The canonical names alignn/cgcnn/megnet/mace/nequip/equiformer default to
+`backbone.implementation: official`. Their graph preprocessing and architecture come from the
+published artifact. `width`, `layers`, `cutoff` and `radial` are variant-only controls and are
+rejected for original official models. A top-level custom graph is also rejected for these models.
+Use an explicit `implementation: legacy` for old variants; old checkpoints lacking an official
+artifact are restored as legacy even though the default for new construction has changed.
+
+`backbone.checkpoint` initializes a provider from its original published serialization; CGCNN
+also requires its original `atom_init`. Without an explicit path, the checksum-verified profile
+in backbones/official/profiles.py is used. Weights must be prepared before submitting training.
+Changing `--model` clears another official model's checkpoint and architecture-specific options.
+The new task head is randomly initialized; the original pretrained trunk is fine-tuned by default.
+
+Checkpoint format2 can include `official_backbone` with version1, provider, source, files (original
+artifact bytes), sha256 (per-file), and implementation signature. The original artifact rebuilds
+the architecture; the main state_dict then restores fine-tuned parameters/buffers and the new
+head strictly. Original weight paths need not exist on reload, but compatible official packages
+and source code remain required. These published pickle-based artifacts must be trusted; the
+custom plugin protocol's state_dict-only behavior does not make upstream pickle formats safe.
+Source/backend signature mismatches are errors, even when tensor dimensions happen to agree.
