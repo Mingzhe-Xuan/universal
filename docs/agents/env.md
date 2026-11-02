@@ -50,3 +50,5 @@
 - 2026-11-02T18:37:15.642364+08:00：计划将core与workflow-deps两个任务前缀的abTEM从1.0.8降为官方1.0.6（Python>=3.9,<3.12、NumPy<2）；wheel SHA256 94bd000a9aa68410201a6130689ebd70ec8a31a39ed0b192d6d4203e598f5905。通过pip --python管理无pip的workflow-deps，避免--target升级遗留旧dist-info；不改共享环境。
 
 - 2026-11-02T18:39:56.601886+08:00：实际两前缀均先准确卸载abTEM1.0.8再安装1.0.6成功，无旧dist-info残留；MACE继续e3nn0.4.4，core/NequIP继续0.5.8。
+
+- 2026-11-02T20:43:36.089200+08:00：新CLI使用PyYAML>=6；服务器元数据确认已有PyYAML6.0.3（共享只读依赖），无需环境安装/修改，两个任务venv保持原版本。

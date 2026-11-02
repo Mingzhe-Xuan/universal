@@ -67,3 +67,10 @@ sbatch scripts/ugnn.slurm --mode train --model alignn \
 推理同样提交 `scripts/ugnn.slurm`，将后面的参数替换成上面的 `--mode infer` 命令。
 该脚本默认核心环境；MACE 使用 `--export=ALL,UGNN_PYTHON=/home/xmz/.venvs/universal-mace/bin/python`。
 所有实际训练、推理均在Slurm计算节点执行。
+
+## 实际验证
+
+源码 `3270e9e` 在Slurm731完成上述十结构ALIGNN带隙训练、续训和推理，恢复15→30轮与连续30轮
+参数逐项完全一致；Slurm734另外验证 `scripts/ugnn.slurm` 透传推理结果一致。
+两环境Slurm732/733各39项检查通过。本地证据位于
+`results/cli-usage-731/evidence.json`，包括实际报告和日志；生成物不进入Git。
