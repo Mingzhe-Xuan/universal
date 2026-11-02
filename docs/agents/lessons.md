@@ -139,3 +139,7 @@
 - 2026-11-02T22:48:24+08:00：需要后续write_stdin的SSH工作会话必须以exec_command tty=true启动；普通pipes返回session ID也不代表stdin可写。连续遇到引号/CR/stdin问题后，应改为PTY持有的单一工作连接并复查实际handle，不重复短命pipes连接。
 
 - 2026-11-02T22:50:00+08:00：tr接持续stdin时默认块缓冲，短命令不会及时交给bash。已停止该无任务输出的工作会话；本任务改回已验证的有限stdin脚本，并在最后加注释行吸收PowerShell附加CR，不再探索持久shell。科学作业实际只确认741提交，未把echo输入当执行证据。
+
+- 2026-11-03T00:08:57+08:00：CGCNN原仓库没有Python安装元数据，pip git URL能clone但不可安装；可用固定commit的未修改源码目录+.pth，不应为安装便利改写其层。服务器Git大包TLS失败时，改固定官方archive→逐文件校验的小型源码资源包，经任务资源目录传输，避免重新下载权重/日志和修改tracked源码。新增源码下载脚本必须兼容服务器Python3.10，不能使用3.11新增hashlib.file_digest。
+
+- 2026-11-03T00:20:19+08:00：Path.write_text在Windows默认会把LF转为CRLF；read_bytes直接发bash会使set-e/health/cd全部解析失败，不能只防PowerShell管道末尾CR。SSH发送前规范CRLF为LF并断言无CR，优先对实际发送bytes做bash-n；归档payload独立解码后核hash，不改其内容。本次仅产生一个空的home/models/official-install+CR缓存叶目录，精确空目录清理，不递归删除或覆盖未知路径。

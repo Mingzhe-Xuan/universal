@@ -2,6 +2,10 @@
 
 
 def make_official(name, **options):
+    if name == "alignn":
+        from .alignn import OfficialALIGNN
+
+        return OfficialALIGNN(**options)
     if name == "mace":
         from .mace import OfficialMACE
 
@@ -18,4 +22,8 @@ def make_official(name, **options):
         from .nequip import OfficialNequIP
 
         return OfficialNequIP(**options)
+    if name == "equiformer":
+        from .equiformer import OfficialEquiformer
+
+        return OfficialEquiformer(**options)
     raise ValueError(f"Official provider {name!r} is not implemented yet; no architecture-variant fallback")

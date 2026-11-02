@@ -59,3 +59,9 @@ unsupported reference branches fail explicitly. It checks original descriptors/p
 first/second input derivatives, decreased ten-structure training loss, changes to original backbone
 parameters and self-contained reload with deliberately absent external artifact paths. It does not
 replace held-out evaluation or declare providers verified before their actual validation JSON exists.
+
+`fetch_official_sources.py` downloads fixed CGCNN/Equiformer/OCP archives into ignored models/,
+verifies and packages their original Python package files/licenses into a small offline tar.gz,
+and rechecks every member against its source hash. It supports Python3.10. Source bytes are not
+patched; unsupported symbolic links inside selected packages fail. Resource download/packing is
+separate from the Slurm-only model validation and training scripts.

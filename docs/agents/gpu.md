@@ -237,3 +237,29 @@
 - 2026-11-02T23:17:12+08:00：官方新环境创建及Torch/NumPy/e3nn路径断言已通过，但pip初次安装exit1且输出已保存。下一工作连接health/pull后仅读取initial-pip.log诊断，不盲目重复安装，不修改父环境。
 
 - 2026-11-02T23:20:28+08:00：官方包装首版b086295提交待同步。下一工作连接health/pull后，在任务models/official/mace下载已核官方小模型并核对SHA（轻量下载/单文件校验）；随后仅通过Slurm在已有MACE环境运行真实加载、十结构带隙微调。新环境依赖解析问题独立处理，不用登录节点执行模型。
+
+- 2026-11-02T23:28:41+08:00：7c142d2已push。下一连接health/pull到该源码，下载并校验官方MACE-MP0 small SHA2ddb079c...，只用sbatch提交validate_official.py MACE十结构带隙微调/官方Calculator对照/二阶导数/自包含重载；原始结构和标签沿用已验证bandgap-10数据，禁止登录节点模型计算。
+
+- 2026-11-02T23:32:20+08:00：下一普通连接health/pull后，只在已建universal-official按约束安装MatGL1.0.0及依赖，复用DGL1.1.3；这是有PyPI声明依据的版本调整，非重复失败命令。日志写models/official-install/matgl100-pip.log，不运行模型。
+
+- 2026-11-02T23:33:04+08:00：MACE首次服务器下载180秒到期，保留31013042/32581838字节，未到sbatch。下一工作连接health/pull后对同一明确任务文件curl --continue-at -续传剩余约1.5MB，核SHA后提交首条MACE官方验收；不重下、不重启健康代理16920。
+
+- 2026-11-02T23:37:55+08:00：MACE续传完成并核SHA，已提交Slurm743。MatGL1.0.0+pytorch-lightning2.6.6已在独立official环境安装成功。下一工作连接health/pull后只读取743状态/日志及官方环境依赖metadata，核查额外模型所需包；不在登录节点导入/前向运行模型。
+
+- 2026-11-02T23:43:52+08:00：下一工作连接health/pull后，只在universal-official安装缺失的官方纯Python包及PyG匹配wheel，日志到models/official-install。CGCNN原仓库作为依赖资源获取且不编辑；禁止源码编译扩展，若无兼容wheel则停止并改用Slurm编译计划。
+
+- 2026-11-02T23:47:34+08:00：official-python-pip阶段exit1，PyG安装尚未执行；下一工作连接health/pull后只读取该错误日志，保留已安装MatGL与旧环境不动，按实际原因选择后续依赖获取方式。
+
+- 2026-11-02T23:54:13+08:00：下一连接health/pull后，在models/official-src下载未修改的CGCNN原仓库并核commit，在official新venv写vendor .pth；单独安装ALIGNN/timm及匹配PyG wheels，修复已查明的无setup安装方式问题，不编辑任何原仓库文件，不编译扩展或运行模型。
+
+- 2026-11-03T00:08:57+08:00：CGCNN git clone因TLS中断退出，尚未安装其他包；不重复Git传输，改本地固定官方archive生成逐文件校验资源包后传输到models/official-src。下一连接health/pull后仅独立安装ALIGNN/timm/PyG兼容wheel，避免被源码获取方式阻塞。
+
+- 2026-11-03T00:10:51+08:00：上一连接health显示1080 connection refused，在pull前退出，依赖安装未执行。本地代理16920已不存在，stderr明确Vlab 202.38.75.226 reset/Broken pipe。下一仅网络恢复诊断连接用ss确认1080已释放，不读结果/不提交作业；确认后才重建唯一隐藏代理，不结束未知会话。
+
+- 2026-11-03T00:13:25+08:00：已用ss确认1080无监听，16920本地进程也不存在。下一启动一个新的隐藏专用代理；后续工作连接先端到端health/pull，再仅进行官方依赖安装、源码资源包传输和已提交源码的Slurm验证，使用完精确清理。
+
+- 2026-11-03T00:15:25+08:00：新唯一代理PID31852已启动。下一Python argv/二进制stdin工作连接先health/pull，传131330字节原始源码资源包到models/official-install，核全包/85文件hash并仅创建缺失或相同资源文件；写新official .pth，独立安装ALIGNN/timm/PyG wheel。框架tracked源码不写服务器，源包不含修改/权重/日志。
+
+- 2026-11-03T00:20:19+08:00：资源stdin脚本因本地write_text的全CRLF失败，health/cd/gitpull均未成功，源码包未落盘/解包、依赖未安装；仅mkdir留下已知空缓存叶目录。下一连接发送前规范LF并检查shell语法，先health/pull，再精确清理该空叶、完成已校验的资源包传输及官方依赖安装。代理31852不重启。
+
+- 2026-11-03T00:23:51+08:00：规范LF的源码包传输成功，85原文件hash全部通过，误建空缓存叶已精确清理；official环境安装ALIGNN2026.10.11/timm0.6.13/torch-scatter2.1.2+pt27cu128/torch-cluster1.6.3+pt27cu128成功。下一二进制资源连接先health/pull，再传6.25MB CGCNN/MEGNet/NequIP权重包，仅写models/official并核全包/每文件SHA；不运行模型。

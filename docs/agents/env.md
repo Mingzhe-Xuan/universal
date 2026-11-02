@@ -63,3 +63,13 @@
 - 依赖下载/纯Python包安装可在登录节点，二进制只装兼容wheel；任何编译及模型加载后的计算/微调/推理均Slurm。安装过程保存pip日志和实际distribution版本/路径，禁止pip替换只读父环境。
 
 - 2026-11-02T23:19:49+08:00：universal-official已创建，真实只读路径断言通过Torch2.7.1+cu128、NumPy1.26.4、e3nn0.4.4；原blackwell已有DGL1.1.3+cu121。初次pip因MatGL1.1.3声明dgl>=2而解析失败，没有执行包替换。计划调整为核对较早官方MatGL版本的依赖和模型schema兼容性，保留官方源实现，不用no-deps强行掩盖此冲突。NequIP下载包元数据为nequip0.15.0/e3nn0.5.6/Torch2.7.0，包含eager和compile模型；拟用官方0.15.0的eager加载器，避免编译依赖。
+
+- 2026-11-02T23:32:20+08:00：PyPI官方依赖元数据确认MatGL1.0.0仅要求dgl（无>=2限制），将新环境MatGL计划从1.1.3调整为1.0.0，保留现有DGL1.1.3+cu121；模型schema1和原生MEGNet实现/权重兼容性仍须实际验证。新环境中任何替换均仅发生在新venv，原MACE/core/blackwell不变。
+
+- 2026-11-02T23:43:52+08:00：MatGL1.0.0实际安装成功，且从官方tag获取的MEGNet源码SHA256与v1.1.3完全一致（083b1eede73795b7cf20b18de4fb4f6ea02dcfda52fcb249855fd1d28722b639）。已有父环境Pymatgen2025.6.14、PyG2.7.0、jarvis-tools2026.6.12、pydantic-settings2.15.0；缺CGCNN、ALIGNN、timm、torch-scatter、torch-cluster。下一仅新official前缀安装CGCNN原repo、ALIGNN2026.10.11、timm0.6.13及匹配Torch2.7/cu128的PyG二进制wheel。
+- GitHub/git/trees API此前返回的是tree SHA，不能冒充commit SHA；CGCNN f42ab233...等均为原始内容tree引用。安装日志将保留实际Git commit，原文件内容hash及模型源URL继续保留，架构真实性以原包加载/严格state/独立参考实测证明。
+
+- 2026-11-02T23:54:13+08:00：CGCNN原仓库确实没有setup.py/pyproject.toml，pip安装在任何包修改前停止；pip日志与commits API均确认实际HEAD=f42ab233c4ee0c416879d6bc2d22a264418413ad。改将原始仓库作为只读vendor放models/official-src/cgcnn，新增official环境.pth引用，不改其源码。前述tree/commit性质提醒不替代本次commit明确核对。
+- EquiformerV1原始OC20权重已从作者Dropbox目录下载并提取best_checkpoint.pt（36958765字节，SHA45a991aac88702003156a5fc3e45ee80f63ca5be4af6c385f033448cd43ce7e2）；配置内原模型graph_attention_transformer，原OCP提交b5a197f。已核对原生输入与完整可微距离/球谐路径，改采用V1，不修改V2的detach。Equiformer源码固定64cb7866f48b9aa156e74a9d6a2ef2663b367437，OCP固定b5a197fc3c79a9a5a787aabaa02979be53d296b7。
+
+- 2026-11-03T00:27:08+08:00：official环境实际依赖安装成功：ALIGNN2026.10.11、timm0.6.13、torch-scatter2.1.2+pt27cu128、torch-cluster1.6.3+pt27cu128；MatGL1.0.0、DGL1.1.3+cu121及科学包保持原有只读来源。85文件原始源码资源包已核SHA/逐文件hash并写vendor .pth，CGCNN/Equiformer/OCP源码未修改。NequIP先在原core0.14.0/e3nn0.5.8环境实测官方可移植package，若兼容无需新增环境。

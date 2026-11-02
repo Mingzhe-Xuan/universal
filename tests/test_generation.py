@@ -1,10 +1,29 @@
 import torch
+from dataclasses import replace
 
 from universal_gnn.backbones.factory import make_backbone
 from universal_gnn.tasks.generation import (CONTEXT_DIM, PeriodicDenoiser, corrupt, decode_cell,
-                                          encode_cell, fractional_coordinates, periodic_score)
+                                          encode_cell, fractional_coordinates, periodic_score, DirectionReadout)
 
 from test_backbones import tiny_batch
+
+
+def test_scalar_only_official_feature_format_uses_differentiable_geometric_vector_readout():
+    torch.manual_seed(12)
+    batch = tiny_batch()
+    batch.positions.requires_grad_(True)
+    backbone = make_backbone("cgcnn", width=8, layers=1, cutoff=2.).double()
+    features = replace(backbone.encode(batch), kind="equivariant")
+    readout = DirectionReadout(features.irreps, "equivariant", 2.).double()
+    assert not readout.native_polar
+    vectors = readout(features)
+    rotation = torch.tensor([[0., -1., 0.], [1., 0., 0.], [0., 0., 1.]], dtype=torch.float64)
+    rotated = batch.with_geometry(batch.positions @ rotation.T, batch.cell @ rotation.T)
+    rotated_features = replace(backbone.encode(rotated), kind="equivariant")
+    torch.testing.assert_close(readout(rotated_features), vectors @ rotation.T, rtol=1e-8, atol=1e-9)
+    gradient = torch.autograd.grad(vectors.square().sum(), batch.positions, create_graph=True)[0]
+    second = torch.autograd.grad(gradient.square().sum(), batch.positions)[0]
+    assert torch.isfinite(second).all() and gradient.norm() > 0
 
 
 def test_log_cholesky_preserves_metric_volume_and_has_finite_derivative():

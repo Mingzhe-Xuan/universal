@@ -1,6 +1,9 @@
 """Shared artifact provenance and output-only conditioning; original modules stay intact."""
 
 import hashlib
+from contextlib import contextmanager
+import inspect
+import re
 from pathlib import Path
 
 import torch
@@ -9,8 +12,20 @@ from torch import nn
 from universal_gnn.contracts import NativeFeatures
 
 
+@contextmanager
+def default_dtype(dtype):
+    previous = torch.get_default_dtype()
+    torch.set_default_dtype(dtype)
+    try:
+        yield
+    finally:
+        torch.set_default_dtype(previous)
+
+
 def artifact_files(provider, files, *, artifact=None, source=None):
     if artifact is not None:
+        if artifact.get("version") != 1:
+            raise ValueError("Unsupported official artifact version")
         if artifact["provider"] != provider:
             raise ValueError("Embedded official artifact has the wrong provider")
         for name, content in artifact["files"].items():
@@ -67,9 +82,22 @@ class OfficialBackbone(nn.Module):
         self.irreps = str(irreps) + (f" + {context_dim}x0e" if context_dim else "")
         self.kind, self.cutoff, self.context_dim = kind, float(cutoff), context_dim
         self.official_artifact, self.backend_version = artifact, version
+        native_module = re.sub(r"^<torch_package_\d+>\.", "", type(model).__module__)
         self.load_report = {"strict": True, "parameter_coverage": 1., "buffer_coverage": 1.,
                             "sha256": artifact["sha256"], "source": artifact.get("source"),
-                            "native_class": type(model).__module__ + "." + type(model).__name__}
+                            "native_class": native_module + "." + type(model).__name__,
+                            "parameter_count": sum(parameter.numel() for parameter in model.parameters())}
+        try:
+            path = Path(inspect.getsourcefile(type(model)))
+            if path.is_file():
+                self.load_report["native_source_sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
+        except (TypeError, OSError):
+            pass
+        implementation = {"native_class": self.load_report["native_class"], "backend_version": version,
+                          "native_source_sha256": self.load_report.get("native_source_sha256")}
+        if "implementation" in artifact and artifact["implementation"] != implementation:
+            raise ValueError("Official model source/version differs from the checkpoint implementation")
+        artifact["implementation"] = implementation
 
     def output(self, nodes, batch, context=None):
         if self.context_dim:

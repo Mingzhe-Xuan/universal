@@ -4,7 +4,7 @@ import hashlib
 import pytest
 import torch
 
-from universal_gnn.backbones.official.base import ReferenceValue, artifact_files, capture_features
+from universal_gnn.backbones.official.base import OfficialBackbone, ReferenceValue, artifact_files, capture_features
 
 
 def test_original_preprocessing_value_and_higher_order_gradient():
@@ -54,3 +54,14 @@ def test_official_source_artifacts_survive_source_deletion_and_detect_corruption
         artifact_files("other", {}, artifact=artifact)
     with pytest.raises(ValueError, match="requires source artifact"):
         artifact_files("unit-provider", {"model": None})
+    bad = copy.deepcopy(artifact)
+    bad["version"] = 99
+    with pytest.raises(ValueError, match="artifact version"):
+        artifact_files("unit-provider", {}, artifact=bad)
+
+
+def test_official_checkpoint_rejects_different_original_source_version():
+    artifact = {"version": 1, "provider": "unit", "files": {}, "sha256": {}}
+    OfficialBackbone(torch.nn.Linear(2, 3), "3x0e", "invariant", 2., artifact, version="original-v1")
+    with pytest.raises(ValueError, match="source/version"):
+        OfficialBackbone(torch.nn.Linear(2, 3), "3x0e", "invariant", 2., artifact, version="different-v2")

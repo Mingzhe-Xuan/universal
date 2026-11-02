@@ -91,16 +91,17 @@ class DirectionReadout(nn.Module):
     def __init__(self, irreps, kind, cutoff):
         super().__init__()
         self.irreps, self.kind, self.cutoff = irreps, kind, cutoff
+        self.native_polar = False
         if kind == "equivariant":
             o3 = load_o3()
-            if not any(irrep.l == 1 and irrep.p == -1 for _, irrep in o3.Irreps(irreps)):
-                raise ValueError("Generation needs native polar-vector channels")
+            self.native_polar = any(irrep.l == 1 and irrep.p == -1 for _, irrep in o3.Irreps(irreps))
+        if self.native_polar:
             self.projection = o3.Linear(irreps, "1o")
         else:
             self.weights = mlp(2 * invariant_width(irreps) + 16, 1)
 
     def forward(self, features: NativeFeatures):
-        if self.kind == "equivariant":
+        if self.native_polar:
             return self.projection(features.nodes)
         graph = radius_graph(features.geometry, self.cutoff)
         nodes = scalar_features(features.nodes, self.irreps)

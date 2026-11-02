@@ -18,7 +18,9 @@ from universal_gnn.engine.training import build_model, dataset, load_checkpoint,
 
 def independent_reference(backbone, structures, config):
     if config["backbone"]["name"] != "mace":
-        raise NotImplementedError("Independent reference validation for this provider is still being implemented")
+        from universal_gnn.backbones.official.reference import compare_reference
+
+        return compare_reference(backbone, structures, config)
     from ase import Atoms
     from mace.calculators import MACECalculator
 
