@@ -7,7 +7,7 @@ import tempfile
 import numpy as np
 import torch
 
-from .base import OfficialBackbone, ReferenceValue, artifact_files
+from .base import OfficialBackbone, ReferenceValue, artifact_files, capture_features
 
 
 class OfficialCGCNN(OfficialBackbone):
@@ -98,5 +98,5 @@ class OfficialCGCNN(OfficialBackbone):
         return prediction, captured[0]
 
     def encode(self, batch, context=None):
-        _, nodes = self.native_forward(batch)
+        nodes = capture_features(lambda: self.model(*self.native_input(batch)), self.model.convs[-1], lambda value: value)
         return self.output(nodes, batch, context)

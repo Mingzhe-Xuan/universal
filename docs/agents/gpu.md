@@ -235,3 +235,5 @@
 - 2026-11-02T23:12:07+08:00：下一工作连接health/pull后按env.md计划创建独立universal-official（venv --without-pip），只写其.pth及本任务models/official-install缓存；只读复用已核路径，先检查distribution实际版本，再用约束安装二进制依赖。日志保存在models/official-install，不更改既有venv或tracked源码，不执行模型计算。
 
 - 2026-11-02T23:17:12+08:00：官方新环境创建及Torch/NumPy/e3nn路径断言已通过，但pip初次安装exit1且输出已保存。下一工作连接health/pull后仅读取initial-pip.log诊断，不盲目重复安装，不修改父环境。
+
+- 2026-11-02T23:20:28+08:00：官方包装首版b086295提交待同步。下一工作连接health/pull后，在任务models/official/mace下载已核官方小模型并核对SHA（轻量下载/单文件校验）；随后仅通过Slurm在已有MACE环境运行真实加载、十结构带隙微调。新环境依赖解析问题独立处理，不用登录节点执行模型。

@@ -52,3 +52,10 @@ experimental ionization energies, plus matching local KNN edge records, in canon
 No new DFT or synthetic target is used. `validate_extensions.slurm` trains the custom KNN+GCN
 directory example, resumes, predicts, and compares with uninterrupted training and imported graphs.
 Use `sbatch scripts/validate_extensions.slurm` on Guqq2; reports/checkpoints remain ignored.
+
+`validate_official.py` is an implementation-stage Slurm acceptance harness. It requires a published
+checkpoint, ten labelled real structures and an independent native reference for the provider;
+unsupported reference branches fail explicitly. It checks original descriptors/predictions, finite
+first/second input derivatives, decreased ten-structure training loss, changes to original backbone
+parameters and self-contained reload with deliberately absent external artifact paths. It does not
+replace held-out evaluation or declare providers verified before their actual validation JSON exists.

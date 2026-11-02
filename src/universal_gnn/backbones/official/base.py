@@ -36,6 +36,29 @@ class ReferenceValue(torch.autograd.Function):
         return None, gradient
 
 
+class _ReadoutReached(Exception):
+    def __init__(self, features):
+        self.features = features
+
+
+def capture_features(forward, module, extract, *, before=False):
+    """Stop the original forward at its readout boundary, leaving every trunk operation intact."""
+    def pre_hook(current, inputs):
+        raise _ReadoutReached(extract(inputs))
+
+    def post_hook(current, inputs, output):
+        raise _ReadoutReached(extract(output))
+
+    handle = module.register_forward_pre_hook(pre_hook) if before else module.register_forward_hook(post_hook)
+    try:
+        forward()
+    except _ReadoutReached as reached:
+        return reached.features
+    finally:
+        handle.remove()
+    raise RuntimeError("Original model did not reach the configured readout boundary")
+
+
 class OfficialBackbone(nn.Module):
     def __init__(self, model, irreps, kind, cutoff, artifact, *, context_dim=0, version=None):
         super().__init__()

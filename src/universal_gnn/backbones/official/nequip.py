@@ -6,7 +6,7 @@ import tempfile
 
 import torch
 
-from .base import OfficialBackbone, artifact_files
+from .base import OfficialBackbone, artifact_files, capture_features
 
 
 class OfficialNequIP(OfficialBackbone):
@@ -61,5 +61,6 @@ class OfficialNequIP(OfficialBackbone):
         return prediction, captured[0]
 
     def encode(self, batch, context=None):
-        _, nodes = self.native_forward(batch)
+        nodes = capture_features(lambda: self.model(self.native_input(batch)), self.model.get_submodule(self.feature_path),
+                                 lambda inputs: inputs[0]["node_features"], before=True)
         return self.output(nodes, batch, context)

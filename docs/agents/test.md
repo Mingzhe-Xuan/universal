@@ -716,3 +716,5 @@
 - 实际结果：PowerShell轻量算术核对5个D*(256+1)值均一致；官方nn.Linear默认bias与论文表4的0.55M/4.04M已核对。记录git diff --check通过（仅换行提示）；无模型实例化或新增实验。
 
 - 2026-11-02T23:19:49+08:00：官方基础和格式数据单元13 passed；compileall与diff格式检查通过。MACE/CGCNN/MatGL-MEGNet/NequIP包装已写首版，第四个直接调用ModelFromPackage eager并从原始per_atom_energy_readout前取特征；真实加载/数值对照/微调尚未执行，不以此提交宣称模型支持验收。
+
+- 2026-11-02T23:27:18+08:00：读出边界截获增加解析单元，官方基础3 passed、compileall通过。NequIP旧力场头的内部autograd可能释放特征计算图，故特征路径在原读出前停止，原主干模块/运算保持不变；原完整forward单独保留用于数值对照。新增Slurm验收脚本首先实现MACE独立Calculator特征/能量对照，其余provider独立参考分支明确拒绝而不是假装通过。

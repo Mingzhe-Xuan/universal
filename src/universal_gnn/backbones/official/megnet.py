@@ -7,7 +7,7 @@ import tempfile
 
 import torch
 
-from .base import OfficialBackbone, ReferenceValue, artifact_files
+from .base import OfficialBackbone, ReferenceValue, artifact_files, capture_features
 
 
 class OfficialMEGNet(OfficialBackbone):
@@ -67,5 +67,10 @@ class OfficialMEGNet(OfficialBackbone):
         return prediction, torch.cat((nodes, state[batch.batch]), dim=-1)
 
     def encode(self, batch, context=None):
-        _, nodes = self.native_forward(batch)
+        def forward():
+            graph, state = self.native_input(batch)
+            return self.model(graph, state_attr=state)
+
+        nodes, state = capture_features(forward, self.model.model.blocks[-1], lambda value: (value[1], value[2]))
+        nodes = torch.cat((nodes, state[batch.batch]), dim=-1)
         return self.output(nodes, batch, context)

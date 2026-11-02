@@ -4,7 +4,7 @@ import hashlib
 import pytest
 import torch
 
-from universal_gnn.backbones.official.base import ReferenceValue, artifact_files
+from universal_gnn.backbones.official.base import ReferenceValue, artifact_files, capture_features
 
 
 def test_original_preprocessing_value_and_higher_order_gradient():
@@ -17,6 +17,26 @@ def test_original_preprocessing_value_and_higher_order_gradient():
     second = torch.autograd.grad(first.sum(), position)[0]
     torch.testing.assert_close(first, -2 * position * live)
     torch.testing.assert_close(second, (4 * position.square() - 2) * live)
+
+
+def test_feature_capture_skips_old_head_preserves_gradient_and_removes_hooks():
+    class OldHead(torch.nn.Module):
+        def forward(self, values):
+            raise AssertionError("Old prediction/force head must not execute during feature extraction")
+
+    original = torch.nn.Sequential(torch.nn.Linear(2, 3), torch.nn.Tanh(), OldHead()).double()
+    positions = torch.tensor([[.2, .7]], dtype=torch.float64, requires_grad=True)
+    expected = original[1](original[0](positions))
+    for before, target in [(True, original[2]), (False, original[1])]:
+        extract = (lambda inputs: inputs[0]) if before else (lambda value: value)
+        features = capture_features(lambda: original(positions), target, extract, before=before)
+        torch.testing.assert_close(features, expected, rtol=0, atol=0)
+        gradient = torch.autograd.grad(features.sum(), positions, create_graph=True)[0]
+        second = torch.autograd.grad(gradient.sum(), positions)[0]
+        assert torch.isfinite(second).all() and second.norm() > 0
+        assert not target._forward_hooks and not target._forward_pre_hooks
+    with pytest.raises(AssertionError, match="Old prediction"):
+        original(positions)
 
 
 def test_official_source_artifacts_survive_source_deletion_and_detect_corruption(tmp_path):

@@ -34,7 +34,7 @@ ugnn --mode train \
 ```
 
 目标为 `optb88vdw_bandgap`（eV），绑定已写入 `configs/bandgap.yaml`。该示例使用已有十结构数据，
-训练器仍是小数据全批训练；本接口调整未增加正式数据划分、mini-batch 或基准精度功能。
+训练器支持 mini-batch，省略 structures 时使用全部数据；此十结构示例不代表正式数据划分或基准精度。
 
 训练完成后推理：
 
