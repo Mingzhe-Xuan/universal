@@ -531,3 +531,5 @@
 - 2026-11-03T01:26:27+08:00: Official ALIGNN753 now passed full actual acceptance (4/6 complete). Canonical/default migration has complete71-test core and MACE regression evidence. Remaining NequIP strict force parity and Equiformer binary dependency; no claim of six-model completion.
 
 - 2026-11-03T01:53:53+08:00: Finished all6 official live validations, same real10 structures, original trunk parameter changes and loss decreases.71-unit regression passed in core/MACE/new Equiformer environments. Actual documented official ALIGNN CLI chain760 passed. Archived55 bounded JSON/text/source-manifest files locally and independently audited; model/data/generated artifacts stay ignored. Final docs describe exact version/format and historical legacy-matrix boundaries.
+
+- 2026-11-03T01:58:37+08:00: Completed final server sync7724686 and same-connection proxy cleanup, confirmed1080 release. All authorized runtime/original-model fine-tuning work and evidence complete under the previously stated scope; final local documentation records actual cleanup only. No dataset/weights/results added to Git.
