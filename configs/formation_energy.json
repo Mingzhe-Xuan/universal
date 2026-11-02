@@ -1,0 +1,27 @@
+{
+  "seed": 123,
+  "structures": 10,
+  "device": "cpu",
+  "epochs": 30,
+  "learning_rate": 0.001,
+  "backbone": {
+    "name": "cgcnn",
+    "width": 16,
+    "layers": 2,
+    "cutoff": 4.0
+  },
+  "dataset": {
+    "path": "data/acceptance/formation_energy-10.json",
+    "sha256": "ac8dc53e75a7bb203ddd80bc8f5b517249052508c88fc3b99fcc8a54ae9d1255",
+    "bindings": {
+      "formation_energy": {
+        "key": "formation_energy_peratom",
+        "unit": "eV/atom"
+      }
+    }
+  },
+  "task": {
+    "kind": "supervised",
+    "property": "formation_energy"
+  }
+}

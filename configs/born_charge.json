@@ -1,0 +1,27 @@
+{
+  "seed": 123,
+  "structures": 10,
+  "device": "cpu",
+  "epochs": 30,
+  "learning_rate": 0.001,
+  "backbone": {
+    "name": "cgcnn",
+    "width": 16,
+    "layers": 2,
+    "cutoff": 4.0
+  },
+  "dataset": {
+    "path": "data/acceptance/born_charge-10.json",
+    "bindings": {
+      "born_charge": {
+        "key": "born_effective_charges",
+        "unit": "e"
+      }
+    }
+  },
+  "task": {
+    "kind": "supervised",
+    "property": "born_charge",
+    "route": "common_equivariant"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "seed": 123,
+  "structures": 10,
+  "device": "cpu",
+  "epochs": 30,
+  "learning_rate": 0.001,
+  "backbone": {
+    "name": "cgcnn",
+    "width": 16,
+    "layers": 2,
+    "cutoff": 4.0
+  },
+  "dataset": {
+    "path": "data/acceptance/forcefield-10.json",
+    "bindings": {
+      "total_energy": {
+        "key": "free_energy",
+        "unit": "eV"
+      },
+      "forces": {
+        "key": "forces",
+        "unit": "eV/angstrom"
+      },
+      "stress": {
+        "key": "stress_ase",
+        "factor": 160.21766208,
+        "unit": "GPa"
+      }
+    }
+  },
+  "task": {
+    "kind": "forcefield"
+  }
+}

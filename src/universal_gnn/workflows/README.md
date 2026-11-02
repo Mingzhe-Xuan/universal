@@ -24,7 +24,8 @@ It assumes zero missing spectral weight; interval endpoints are unreliable.
 The short preset uses correlated MLFF-MD snapshots, finite clusters in a common orthogonal
 vacuum box, adaptive potential grid and a small scan. It preserves Cartesian geometry;
 it is not a converged thermal ensemble or a periodic bulk/slab microscope benchmark.
-Install `.[simulation]` in a compatible environment; MACE and NequIP require separate e3nn versions.
+Install `.[simulation]` with Python 3.10/3.11 and NumPy < 2 (abTEM 1.0.6);
+MACE and NequIP require separate e3nn versions.
 
 Run `python scripts/run_workflows.py --model cgcnn` against three task checkpoints from
 `runs/dfpt-tasks`. On Guqq2 submit `sbatch --array=0-5 scripts/workflows.slurm`.

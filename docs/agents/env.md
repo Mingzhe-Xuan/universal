@@ -42,3 +42,9 @@
 - 2026-11-02 16:34:37 +08:00：MACE wheel包已完整传入6471680字节。独立MACE环境离线安装前，从本任务core环境仅复制已安装的opt_einsum3.4.0/opt_einsum_fx0.1.4及其dist-info（轻量第三方依赖，目标限定MACE site-packages）；不引用整个core路径，避免把NequIP/e3nn0.5带入MACE环境，不改core或blackwell。其余依赖仅使用缓存wheel。
 
 - 2026-11-02 18:04:44 +0800：在已有 /home/xmz/.venvs/universal 中补充 abTEM 1.0.8、numba 0.61.2、llvmlite 0.44.0、dask/distributed 2024.12.1、zarr 2.18.3 及缺失依赖；本地下载 Linux cp310 wheel，服务器仅离线安装到该任务环境，保留已有共享科学包。MACE 仅通过独立 workflow 依赖路径共享新增模拟库，不暴露 core e3nn。
+
+- 2026-11-02T18:23:28.430419+08:00：为避免MACE读取core的e3nn，计划另建 /home/xmz/.venvs/universal-workflow-deps（python venv --without-pip）；用core pip将25份已哈希验证任务wheel以--no-deps安装到该新venv site-packages，并为MACE添加仅指向此目录的.pth。该目录不含Torch/e3nn/NequIP，不替换MACE及共享科学包。
+
+- 2026-11-02T18:30:31.461088+08:00：实际资源包SHA256 9ce398318398498a36e9ebbd7a358c374fe2ea1454f7c3fd6d3f037794ab5942通过；core新增24包、universal-workflow-deps25包离线安装成功，MACE.pth仅指向后者。abtem1.0.8,numba0.61.2,llvmlite0.44.0,dask/distributed2024.12.1,zarr2.18.3,numcodecs0.13.1,pyfftw0.15.0；原科学包未修改。
+
+- 2026-11-02T18:37:15.642364+08:00：计划将core与workflow-deps两个任务前缀的abTEM从1.0.8降为官方1.0.6（Python>=3.9,<3.12、NumPy<2）；wheel SHA256 94bd000a9aa68410201a6130689ebd70ec8a31a39ed0b192d6d4203e598f5905。通过pip --python管理无pip的workflow-deps，避免--target升级遗留旧dist-info；不改共享环境。

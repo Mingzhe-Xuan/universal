@@ -11,5 +11,7 @@ cd /home/xmz/universal
 export OMP_NUM_THREADS="$SLURM_CPUS_PER_TASK"
 export MKL_NUM_THREADS="$SLURM_CPUS_PER_TASK"
 export NUMBA_NUM_THREADS="$SLURM_CPUS_PER_TASK"
+export OPENBLAS_NUM_THREADS="$SLURM_CPUS_PER_TASK"
+export DASK_NUM_WORKERS="$SLURM_CPUS_PER_TASK"
 models=(cgcnn megnet alignn equiformer nequip mace)
 /home/xmz/.venvs/universal/bin/python scripts/run_workflows.py --model "${models[$SLURM_ARRAY_TASK_ID]}"

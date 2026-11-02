@@ -1,0 +1,22 @@
+{
+  "seed": 123,
+  "structures": 10,
+  "device": "cpu",
+  "epochs": 30,
+  "learning_rate": 0.001,
+  "backbone": {
+    "name": "cgcnn",
+    "width": 16,
+    "layers": 2,
+    "cutoff": 4.0
+  },
+  "dataset": {
+    "path": "data/acceptance/raman-10.json"
+  },
+  "task": {
+    "kind": "supervised",
+    "property": "spectrum",
+    "channels": 200,
+    "unit": "peak_normalized_relative_Raman"
+  }
+}
