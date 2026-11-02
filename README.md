@@ -25,3 +25,6 @@ MACE and NequIP require separate environments because of their e3nn constraints.
 `.[dev,mace]` in the MACE environment and `.[dev,nequip]` in the NequIP environment. The four native
 Torch/e3nn architecture variants use the core environment. See each backbone's README for its
 implementation boundary and the environment record for the versions actually tested.
+
+Custom GNN/graph extensions and config/dataset/checkpoint formats share one
+[versioned standard](docs/standards.md); [KNN + GCN](examples/custom_knn_gcn/README.md) is the executable example.

@@ -27,3 +27,7 @@ The flag CLI also accepts YAML: `bandgap.yaml` is a runnable ALIGNN/OptB88vdW ga
 `formation_energy.yaml` is the template for docs/plan/usage.md; supply `--model` and `--dataset`.
 CLI fields override file settings. `--resume` inherits omitted settings from the checkpoint;
 set a larger total `--epochs` when continuing a complete run. See docs/plan/usage.md for paths/logs.
+
+`custom_knn_gcn.yaml` follows schema_version 1 and selects independent graph/GNN directory factories.
+It uses ten real ASE G2-1 molecules prepared with `scripts/prepare_molecular_data.py` on Slurm.
+See docs/standards.md for the single config/dataset/checkpoint/interface specification.

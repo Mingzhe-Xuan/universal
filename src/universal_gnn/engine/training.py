@@ -19,8 +19,13 @@ from universal_gnn.tasks import ForceFieldModel, SupervisedModel
 
 
 def build_model(config):
+    from universal_gnn.contracts.schema import validate_config
+
+    validate_config(config)
     backbone_config = dict(config["backbone"])
     name = backbone_config.pop("name")
+    if "graph" in config:
+        backbone_config["graph_config"] = config["graph"]
     task = config["task"]
     if task["kind"] == "generation":
         from universal_gnn.tasks.generation import CONTEXT_DIM, PeriodicDenoiser
@@ -107,8 +112,11 @@ def execution_record(model):
             "slurm": {key: os.environ.get(key) for key in
                       ["SLURM_JOB_ID", "SLURM_ARRAY_JOB_ID", "SLURM_ARRAY_TASK_ID", "SLURMD_NODENAME"]},
             "backbone_class": type(model.backbone).__name__,
+            "gnn_class": type(model.backbone.gnn).__name__ if hasattr(model.backbone, "gnn") else None,
             "native_irreps": model.backbone.irreps,
             "backend_version": getattr(model.backbone, "backend_version", None),
+            "graph_builder": type(model.backbone.graph_builder).__name__ if hasattr(model.backbone, "graph_builder") else None,
+            "extensions": getattr(model.backbone, "extension_provenance", {}),
             "geometry_basis_version": getattr(getattr(model, "adapter", None), "basis_version", None)}
 
 
@@ -133,6 +141,9 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     device = config.get("device", "cpu")
     model = build_model(config).to(device=device, dtype=torch.float64)
     if saved is not None:
+        from universal_gnn.engine.runtime import verify_extensions
+
+        verify_extensions(saved, model)
         model.load_state_dict(saved["state_dict"], strict=True)
     execution = execution_record(model)
     structures = dataset(config, config.get("structures", 10))
@@ -228,10 +239,11 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
 
 
 def load_checkpoint(path: str | Path, *, device="cpu"):
-    from universal_gnn.engine.runtime import checkpoint_config
+    from universal_gnn.engine.runtime import checkpoint_config, verify_extensions
 
     saved = torch.load(path, map_location=device, weights_only=True)
     config = checkpoint_config(saved)
     model = build_model(config).to(device=device, dtype=torch.float64)
+    verify_extensions(saved, model)
     model.load_state_dict(saved["state_dict"], strict=True)
     return model.eval()

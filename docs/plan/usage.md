@@ -74,3 +74,10 @@ sbatch scripts/ugnn.slurm --mode train --model alignn \
 参数逐项完全一致；Slurm734另外验证 `scripts/ugnn.slurm` 透传推理结果一致。
 两环境Slurm732/733各39项检查通过。本地证据位于
 `results/cli-usage-731/evidence.json`，包括实际报告和日志；生成物不进入Git。
+
+## 自定义 GNN 与分子图
+
+统一接口及 ckpt/dataset/config 格式集中在 [standards.md](../standards.md)。
+选择 `--model plugin:examples/custom_knn_gcn` 与 `configs/custom_knn_gcn.yaml` 即可使用最小示例。
+图配方在顶层 `graph`；也可用 `--graph knn/radius/stored/plugin:...` 选择构图器。
+使用自定义图的前提是标准包装 GNN；原生六主干的外部图覆盖会明确拒绝。

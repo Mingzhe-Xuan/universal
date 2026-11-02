@@ -58,6 +58,9 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
     noisy, time, targets = corrupt(clean, generator=generator)
     model = build_model(config).to(device=device, dtype=torch.float64)
     if saved is not None:
+        from universal_gnn.engine.runtime import verify_extensions
+
+        verify_extensions(saved, model)
         model.load_state_dict(saved["state_dict"], strict=True)
     execution = execution_record(model)
     starting = {name: value.detach().clone() for name, value in model.named_parameters()}

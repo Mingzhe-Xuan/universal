@@ -46,3 +46,9 @@ It refuses missing/failed entries; controller retention is never used to invent 
 submission directory; create `runs/` before submitting. Set `UGNN_PYTHON` for a different task venv.
 `validate_cli.slurm` checks the documented flags on ten real ALIGNN bandgap structures: 15 epochs,
 resume to 30, inference, and parameter equality with an uninterrupted 30-epoch run.
+
+`prepare_molecular_data.py` exports ten original ASE G2-1 molecular geometries and published
+experimental ionization energies, plus matching local KNN edge records, in canonical dataset v1.
+No new DFT or synthetic target is used. `validate_extensions.slurm` trains the custom KNN+GCN
+directory example, resumes, predicts, and compares with uninterrupted training and imported graphs.
+Use `sbatch scripts/validate_extensions.slurm` on Guqq2; reports/checkpoints remain ignored.

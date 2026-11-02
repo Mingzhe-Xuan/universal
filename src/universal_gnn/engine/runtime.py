@@ -13,10 +13,17 @@ import torch
 
 
 def checkpoint_config(saved):
+    from universal_gnn.contracts.schema import CONTRACT_VERSIONS, validate_config, validate_version
+
     version = saved.get("format_version", 1)
     if version not in {1, 2}:
         raise ValueError(f"Unsupported checkpoint format {version}")
     config = deepcopy(saved["config"])
+    validate_config(config)
+    for kind, value in saved.get("contract_versions", {}).items():
+        if kind not in CONTRACT_VERSIONS:
+            raise ValueError(f"Unknown checkpoint contract {kind!r}")
+        validate_version(value, kind)
     if version == 1:
         config["task"].setdefault("adapter_version", 1)
     return config
@@ -25,6 +32,8 @@ def checkpoint_config(saved):
 def check_model_config(expected, actual):
     if expected["backbone"] != actual["backbone"]:
         raise ValueError("Model settings do not match the checkpoint backbone")
+    if expected.get("graph") != actual.get("graph"):
+        raise ValueError("Graph settings do not match the checkpoint")
     fields = ("kind", "property", "route", "channels", "unit", "spec")
     for key in fields:
         if expected["task"].get(key) != actual["task"].get(key):
@@ -34,10 +43,28 @@ def check_model_config(expected, actual):
 
 
 def data_fingerprint(structures):
+    from universal_gnn.data.formats import graph_dict
+
     records = [{"id": s.identifier, "numbers": s.numbers.tolist(), "positions": s.positions.tolist(),
                 "cell": s.cell.tolist(), "pbc": s.pbc.tolist(), "targets": s.targets} for s in structures]
+    for record, structure in zip(records, structures):
+        if structure.graph is not None:
+            record["graph"] = graph_dict(structure.graph)
     encoded = json.dumps(records, sort_keys=True, default=lambda value: value.tolist()).encode()
     return hashlib.sha256(encoded).hexdigest()
+
+
+def verify_extensions(saved, model):
+    expected = saved.get("extensions")
+    if expected is None:
+        return
+    actual = getattr(model.backbone, "extension_provenance", {})
+    if set(expected) != set(actual):
+        raise ValueError("Checkpoint extensions do not match the current model/graph plugins")
+    for role in expected:
+        for key in ["source_sha256", "factory"]:
+            if expected[role][key] != actual[role][key]:
+                raise ValueError(f"Checkpoint {role} plugin code changed ({key})")
 
 
 def restore_optimizer(saved, optimizer, config, fingerprint):
@@ -67,12 +94,16 @@ def restore_optimizer(saved, optimizer, config, fingerprint):
 
 
 def save_training_checkpoint(path, model, optimizer, config, versions, state, *, scales=None):
+    from universal_gnn.contracts.schema import CONTRACT_VERSIONS
+
     devices = {parameter.device.index for parameter in model.parameters() if parameter.is_cuda}
     state = {**state, "version": 1, "optimizer_state_dict": optimizer.state_dict(),
              "torch_rng_state": torch.get_rng_state(),
              "cuda_rng_states": {device: torch.cuda.get_rng_state(device) for device in devices} or None}
     payload = {"format_version": 2, "config": config, "state_dict": model.state_dict(),
                "versions": versions, "training_state": state}
+    payload["contract_versions"] = dict(CONTRACT_VERSIONS)
+    payload["extensions"] = getattr(getattr(model, "backbone", None), "extension_provenance", {})
     if scales is not None:
         payload["scales"] = scales
     path = Path(path)

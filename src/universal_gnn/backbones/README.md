@@ -20,3 +20,12 @@ Sources: [MACE](https://github.com/ACEsuit/mace), [NequIP](https://github.com/mi
 [Equiformer dot-product variant](https://github.com/atomicarchitects/equiformer/blob/master/nets/dp_attention_transformer.py),
 [CGCNN](https://github.com/txie-93/cgcnn), [MEGNet](https://github.com/materialyzeai/megnet),
 [ALIGNN](https://github.com/atomgptlab/alignn).
+
+## User GNNs and independent graphs
+
+`StandardBackbone(BaseGNN, BaseGraphBuilder)` converts GNNOutput to NativeFeatures and validates
+shape, precision/device and mappings before the existing readouts. `gcn` is a minimal distance-weighted
+GCN; `plugin:/directory` may expose `build_gnn(**options)` with the same protocol. A top-level graph
+configuration is supported for these wrapped models. Native backbones continue building their own
+required graphs; unsupported overrides fail explicitly. Legacy build_backbone plugins remain readable.
+See [the single standard](../../../docs/standards.md) and examples/custom_knn_gcn.

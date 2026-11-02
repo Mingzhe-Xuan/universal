@@ -24,3 +24,11 @@ and tensor provenance. This explicit preprocessing is not asserted identical to 
 `prepare_optical_data.py` uses the same published material XML for structure and TBmBJ
 trace-average epsilon2, interpolated on 0.05 to 10 eV without extrapolation or sign clipping.
 Run numerical data preparation through Slurm on Guqq2.
+
+## Graph and dataset standard
+
+`formats.save_structures` writes versioned canonical JSON; the reader supports it and legacy inputs.
+Molecule JSON may omit cell only with explicit nonperiodic flags. GraphRecord supports imported local
+indices/shifts and optional node/edge features. `graphs.py` independently selects KNN, radius, stored
+or a BaseGraphBuilder directory plugin; stored graphs are offset without changing atom order.
+The authoritative input/output and file specification is [docs/standards.md](../../../docs/standards.md).

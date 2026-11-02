@@ -5,6 +5,7 @@ from typing import Any
 
 import torch
 from torch import Tensor
+from .graphs import GraphRecord
 
 
 @dataclass
@@ -16,6 +17,7 @@ class Structure:
     identifier: str
     targets: dict[str, Any] = field(default_factory=dict)
     metadata: dict[str, Any] = field(default_factory=dict)
+    graph: GraphRecord | None = None
 
     def validate(self) -> None:
         n = len(self.numbers)
@@ -31,6 +33,8 @@ class Structure:
             raise ValueError("Singular cell; use a nonsingular bounding cell for molecules")
         if self.positions.device != self.cell.device:
             raise ValueError("Positions and cells must be on the same device")
+        if self.graph is not None:
+            self.graph.validate(n, self.pbc)
 
 
 @dataclass
@@ -44,6 +48,7 @@ class StructureBatch:
     identifiers: tuple[str, ...]
     targets: tuple[dict[str, Any], ...]
     metadata: tuple[dict[str, Any], ...]
+    graphs: tuple[GraphRecord | None, ...] = ()
 
     @classmethod
     def from_structures(cls, structures: list[Structure]) -> StructureBatch:
@@ -66,6 +71,7 @@ class StructureBatch:
             tuple(s.identifier for s in structures),
             tuple(s.targets for s in structures),
             tuple(s.metadata for s in structures),
+            tuple(s.graph for s in structures),
         )
 
     @property
@@ -90,6 +96,7 @@ class StructureBatch:
             pbc=self.pbc.to(device),
             batch=self.batch.to(device),
             ptr=self.ptr.to(device),
+            graphs=tuple(graph.to(device=device, dtype=dtype) if graph is not None else None for graph in self.graphs),
         )
 
 
@@ -109,9 +116,22 @@ class NativeFeatures:
 
         o3 = load_o3()
 
-        if self.nodes.shape != (len(self.geometry.numbers), o3.Irreps(self.irreps).dim):
+        if not isinstance(self.nodes, Tensor) or self.nodes.shape != (len(self.geometry.numbers), o3.Irreps(self.irreps).dim):
             raise ValueError("Node dimensions do not match irreps and atom mapping")
         if self.kind not in {"invariant", "equivariant"}:
             raise ValueError("Unknown native feature kind")
         if self.kind == "invariant" and any(ir.l or ir.p != 1 for _, ir in o3.Irreps(self.irreps)):
             raise ValueError("Invariant node features must be even scalars")
+        if not torch.equal(self.batch, self.geometry.batch) or not torch.equal(self.ptr, self.geometry.ptr):
+            raise ValueError("Node output must preserve the input atom/batch mapping")
+        if self.nodes.device != self.geometry.positions.device or self.nodes.dtype != self.geometry.positions.dtype:
+            raise ValueError("Node output must share geometry dtype/device")
+        if not bool(torch.isfinite(self.nodes).all()):
+            raise ValueError("Nonfinite node output")
+        if self.graph_features is not None and (not isinstance(self.graph_features, Tensor)
+                                                or self.graph_features.ndim != 2
+                                                or self.graph_features.shape[0] != self.geometry.num_graphs
+                                                or self.graph_features.device != self.nodes.device
+                                                or self.graph_features.dtype != self.nodes.dtype
+                                                or not bool(torch.isfinite(self.graph_features).all())):
+            raise ValueError("Optional graph features must be finite [B,F] with node dtype/device")

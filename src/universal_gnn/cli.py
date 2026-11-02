@@ -39,6 +39,7 @@ def _flag_parser():
     parser = argparse.ArgumentParser(description="Universal GNN tasks: select model, data and task")
     parser.add_argument("--mode", choices=["train", "infer"], required=True)
     parser.add_argument("--model", help="Built-in backbone name or plugin:/directory")
+    parser.add_argument("--graph", help="knn, radius, stored, or plugin:/directory for standard wrapped models")
     parser.add_argument("--dataset", help="Structure file or plugin:/directory")
     parser.add_argument("--resume", type=Path, help="Training continuation / inference checkpoint")
     parser.add_argument("--task", help="Property name, forcefield, or generation")
@@ -74,6 +75,7 @@ def _prepare(arguments):
     base = checkpoint_config(saved) if saved is not None else None
     config = resolve_config(load_config(arguments.config) if arguments.config else {}, base=base,
                             model=arguments.model, dataset=arguments.dataset, task=arguments.task,
+                            graph=arguments.graph,
                             device=arguments.device, epochs=arguments.epochs, training=train)
     if base is not None:
         check_model_config(base, config)

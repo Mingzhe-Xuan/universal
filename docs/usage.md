@@ -60,3 +60,9 @@ API 与设置见 [workflows](../src/universal_gnn/workflows/README.md)。
 短 FIRE/MD 不承诺收敛或长期稳定，STEM 使用有限簇与短 MD 快照，KK 使用有限频窗。
 生成固定原子数和组成，检查采样执行与几何数值有效性，不据此评价生成质量。
 完整论文精度及 CHIPS-FF/WBM/AtomBench 全套基准尚未运行。
+
+## 扩展及文件标准
+
+自定义 GNN、独立构图器、导入分子图和三类文件格式统一见 [standards.md](standards.md)。
+可执行例子为 examples/custom_knn_gcn，配置为 configs/custom_knn_gcn.yaml；
+包含基类、统一包装、输入输出约束和真实分子测试流程。

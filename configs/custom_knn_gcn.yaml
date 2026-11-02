@@ -1,0 +1,28 @@
+schema_version: 1
+seed: 123
+structures: 10
+device: cpu
+epochs: 30
+learning_rate: 0.001
+checkpoint_every: 1
+
+backbone:
+  name: plugin:examples/custom_knn_gcn
+  width: 16
+  layers: 2
+  cutoff: 4.0
+
+graph:
+  name: plugin:examples/custom_knn_gcn
+  k: 2
+
+dataset:
+  path: data/acceptance/molecules-g2-10.json
+
+task:
+  kind: supervised
+  property: ionization_energy
+  spec:
+    scope: graph
+    shape: [1]
+    unit: eV

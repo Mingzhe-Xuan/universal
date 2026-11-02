@@ -31,3 +31,12 @@ same selected labelled structures/bindings and seed; model/task mismatch fails b
 The CLI defaults to atomic per-epoch snapshots, while the legacy API keeps final-only saving unless
 `checkpoint_every` is set. Fixed-corruption generation rebuilds the same corruption from the saved
 seed; this preserves the existing small-data objective, not fresh-noise diffusion training.
+
+## Extension/version reconstruction
+
+Checkpoint containers remain format 2. New snapshots also store four `contract_versions` and
+extension source fingerprints; model/graph code mismatches fail before loading weights. Resume
+fingerprints include imported topology and graph attributes, while data without graphs retain their
+old fingerprint convention. Graph configuration is part of model compatibility. Dataset/config files
+without explicit versions remain legacy-compatible; unsupported explicit versions fail closed.
+The normative specification is [docs/standards.md](../../../docs/standards.md).
