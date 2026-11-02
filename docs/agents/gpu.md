@@ -171,3 +171,5 @@
 - 2026-11-02T18:48:42.960206+08:00：已确认726五模型各10结构通过，collect_evidence实际96训练格+6工作流全部通过。下一连接先health/pull，再只读取results/final-evidence.tar.gz二进制到本地results/server-20261102-final；本地核SHA e7dd9d52cf4b599b85fc5aee4a6503c14daa61d405bb4ee5dd42ac0bae97eb30，归档不含checkpoint。
 
 - 2026-11-02T18:53:45.467005+08:00：已核对并关闭自有HTTP PID8684/53080，8765/8766监听释放。下一最后工作连接先health/pull文档提交，再保持短时检查1080；本地收到READY后仅终止已确认的专用代理PID36204，并由该已过门禁连接确认远端1080释放。
+
+- 2026-11-02T18:55:48.356791+08:00：最后连接19504完成health/pull至71de59f后，确认本地专用代理PID36204身份并关闭；远端返回TASK_PROXY_1080_RELEASED且正常退出。自有HTTP PID8684/53080和8765/8766已释放，不再保持任务网络服务。
