@@ -24,3 +24,15 @@
 - 任务 venv 已引导 pip 25.3/PySocks 1.7.1，Torch 远程下载两次因代理断开失败，未安装成功。
 - 本地下载目标 cp310/Linux wheel；核心/NequIP 环境固定 torch 2.6.0+cpu、e3nn 0.5.8、NequIP 0.14.0（要求 e3nn>=0.5.6,<0.6）。MACE 0.3.16 需 e3nn==0.4.4，另建 /home/xmz/.venvs/universal-mace，不混装。
 - 本地 wheelhouse 与服务器缓存只放 ignored 目录，采用 scp 资源传输；实际安装版本在完成后回填。
+
+- 2026-11-02 15:24:53 +08:00：纯 Python antlr4-python3-runtime 4.9.3 在本地构建通用 wheel；下载 python-hostlist wheel，禁止仅因 binary-only 将 Hydra 静默回退到 0.11。NequIP 环境另固定 Hydra1.3.2/OmegaConf2.3.0。隐藏独立代理健康持续，改后台可续传 curl 官方 Torch wheel，避免 scp 低速长连接。
+
+## 2026-11-02 15:36:57 +08:00：已有 Torch 只读复用方案
+
+- /home/xmz/generate_md/.venv-mattergen 已有 Python3.10.12、Torch2.7.1+cu128、NumPy1.26.4、ASE3.27.0、pytest9.1.1。只读引用该环境 site-packages，不修改原环境。
+- /home/xmz/.venvs/universal 与 universal-mace 各自在自己 site-packages 放入指向该依赖目录的 .pth；新装 e3nn/NequIP/MACE 写入子环境，避免 Torch 大包下载。两子环境分别固定 e3nn0.5.8 与0.4.4。
+- 这是当前实际安装方案，替代尚未完成的 CPU Torch2.6 下载；训练先用 CPU Slurm，Torch CUDA 库来自已有安装。安装后记录版本，实际模型检查在 Slurm。
+
+- 2026-11-02 15:47:10 +08:00：实际 distribution.locate_file 查明：mattergen 自身通过 .pth 引用 .venv-smoacs-blackwell；子环境仅添加 mattergen 的路径不会递归处理其 .pth。正确只读依赖目录为 /home/xmz/generate_md/.venv-smoacs-blackwell/lib/python3.10/site-packages。修正后必须先用 metadata 断言 torch2.7.1+cu128/numpy1.26.4 可见，再安装 e3nn；显式固定已有Torch/NumPy以防意外重新下载。
+
+- 2026-11-02 15:49:36 +08:00：核心独立环境安装成功：Torch2.7.1+cu128/NumPy1.26.4/ASE3.27.0来自只读 blackwell 依赖；本任务安装 e3nn0.5.8、opt_einsum3.4.0、opt_einsum_fx0.1.4，editable universal-gnn-tasks0.1.0。提交Slurm535执行已同步的13项测试。未修改父环境。

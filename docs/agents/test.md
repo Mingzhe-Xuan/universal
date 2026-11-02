@@ -514,3 +514,22 @@
 - pytest tests/test_geometry.py tests/test_data.py tests/test_backbones.py：9 passed；覆盖周期自镜像、多镜像、非正交坐标/应变梯度、数据绑定及 CGCNN/MEGNet/ALIGNN 条件梯度。
 - pytest tests/test_readouts.py：4 passed；二/三/四阶 Jacobian 的节点/参数反传、eval 一致，以及等变二阶响应的两轴旋转变换。仅解析单元检查，不代表真实数据训练/推理通过。
 - Linux Torch CPU wheel SHA256=35a9e78b7e4096968b54c1a198687b981569c50ae93e661aa430f9fd208da102，与下载源记录一致。
+
+## 2026-11-02 15:22:11 +08:00：U2 官方等变骨干及 E/F/S 测试计划
+
+- 分别在 MACE 与 NequIP 环境运行指定真实后端，缺少包应失败；检查节点 irreps、旋转与反演、条件和坐标梯度、二阶参数梯度，不使用不变后端替代。
+- E/F/S 使用解析结构检查能量对坐标及共同应变的有限差分、符号/单位、力与应力损失的 backbone 参数梯度；不声称真实数据验收。
+- 先在本地执行小型 Equiformer/力场单元，官方后端和完整测试在 Slurm 执行。
+
+## 2026-11-02 15:30:53 +08:00：U4 固定组成生成测试计划
+
+- 检查周期 wrapped-normal score 与 log 概率有限差分一致，覆盖周期边界及小噪声。
+- 晶格采用 Gram 的 Cholesky 因子规范化，正对角取 log、下三角剪切取无量纲比值；检查往返保持 Gram、体积和全局旋转等价，避免 log-SPD 的重复特征值导数问题。
+- 检查条件节点输入、坐标/晶格两头损失向 backbone 反传、周期与固定组成采样契约；真实 10 结构训练及 checkpoint 重载在 Slurm 验收。
+
+- 2026-11-02 15:32:00 +08:00：U2/EFS 本地解析实际结果：Equiformer 与有限差分测试 2 passed；MACE 官方模块指定运行 1 passed（约67秒），旋转/反演、坐标/条件和二阶参数梯度均通过。尚无服务器训练验收。
+
+## 2026-11-02 15:48:44 +0800：U2/U4 与命令检查实际结果
+
+- 默认完整 pytest：18 passed（几何/数据/三类不变骨干/Equiformer/二至四阶响应/力应力有限差分/生成数学与采样契约）。另指定 MACE 官方模块测试 1 passed。无训练执行或泛化结论。
+- compileall src/tests 通过；显式 PYTHONPATH=src 的 CLI --help 显示 train/infer；git diff --check 的 README 尾空行已修正后通过。

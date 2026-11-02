@@ -111,3 +111,7 @@
 - Windows SSH 传多行包含引号的远程 Python 代码会失真；固定脚本用 UTF-8/base64 经 stdin 解码到 bash 执行，不插入任何密钥内容。
 
 - 2026-11-02 15:18:20 +0800：MACE 0.3.16 固定 e3nn 0.4.4，而 NequIP 0.14 需要 >=0.5.6，使用独立 venv。旧 e3nn 常量文件包含 builtin slice，Torch>=2.6 默认安全加载拒绝；仅在导入可信 e3nn 常量期间 scoped safe_globals([slice])，模型 checkpoint 继续 weights_only=True，不全局放宽反序列化。
+
+- 2026-11-02 15:23:23 +08:00：连续两次远端 pip 下载和一次 scp 大包传输均被 Vlab 连接断开。已复查代理经验：本地公开 HTTPS 正常，源码短时 pull 成功，但不能据此假定大文件 SSH 长连接稳定。后续资源传输改用 SFTP reput 续传，先核对远端部分文件大小并最终按 manifest 校验；不得重启仍健康的独立代理，不重复从零传同一大文件。
+
+- 2026-11-02 15:47:10 +08:00：只读复用环境应以 distribution.locate_file 取得真实包目录；将父 venv site-packages 加入 .pth 不会递归处理父目录中的 .pth。先断言关键分发版本/实际路径，再运行有约束的 pip，避免缺依赖识别导致大型Torch/CUDA重新解析。

@@ -1,0 +1,10 @@
+{
+  "seed": 123,
+  "structures": 10,
+  "device": "cpu",
+  "epochs": 20,
+  "learning_rate": 0.001,
+  "backbone": {"name": "cgcnn", "width": 16, "layers": 2, "cutoff": 4.0},
+  "dataset": {"path": "data/generation-10.json"},
+  "task": {"kind": "generation", "sampling": {"steps": 12, "inner_steps": 2, "seed": 456}}
+}

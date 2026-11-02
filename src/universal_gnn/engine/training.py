@@ -4,7 +4,9 @@ import hashlib
 import importlib.metadata
 import json
 import math
+import os
 from pathlib import Path
+import subprocess
 
 import torch
 
@@ -18,8 +20,15 @@ from universal_gnn.tasks import ForceFieldModel, SupervisedModel
 def build_model(config):
     backbone_config = dict(config["backbone"])
     name = backbone_config.pop("name")
-    backbone = make_backbone(name, **backbone_config)
     task = config["task"]
+    if task["kind"] == "generation":
+        from universal_gnn.tasks.generation import CONTEXT_DIM, PeriodicDenoiser
+
+        if backbone_config.get("context_dim", CONTEXT_DIM) != CONTEXT_DIM:
+            raise ValueError(f"Generation requires context_dim={CONTEXT_DIM}")
+        backbone_config["context_dim"] = CONTEXT_DIM
+        return PeriodicDenoiser(make_backbone(name, **backbone_config))
+    backbone = make_backbone(name, **backbone_config)
     if task["kind"] == "forcefield":
         return ForceFieldModel(backbone)
     if task["kind"] == "supervised":
@@ -86,7 +95,22 @@ def version_record():
     return record
 
 
+def execution_record(model):
+    result = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True,
+                            cwd=Path(__file__).resolve().parents[3], check=False)
+    return {"git_commit": result.stdout.strip() if result.returncode == 0 else None,
+            "slurm": {key: os.environ.get(key) for key in
+                      ["SLURM_JOB_ID", "SLURM_ARRAY_JOB_ID", "SLURM_ARRAY_TASK_ID", "SLURMD_NODENAME"]},
+            "backbone_class": type(model.backbone).__name__,
+            "native_irreps": model.backbone.irreps,
+            "backend_version": getattr(model.backbone, "backend_version", None)}
+
+
 def run_training(config: dict, output: str | Path) -> dict:
+    if config["task"]["kind"] == "generation":
+        from universal_gnn.engine.generation import run_generation_training
+
+        return run_generation_training(config, output)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(config.get("seed", 123))
@@ -140,7 +164,8 @@ def run_training(config: dict, output: str | Path) -> dict:
                           "cell": structure.cell.tolist()}, sort_keys=True).encode()
         records.append({"id": structure.identifier, "geometry_sha256": hashlib.sha256(raw).hexdigest(),
                         "provenance": structure.metadata, "role": "train_and_reloaded_inference"})
-    report = {"config": config, "versions": version_record(), "structures": records,
+    report = {"config": config, "versions": version_record(), "execution": execution_record(model),
+              "structures": records,
               "initial_loss": initial_loss, "final_loss": final_loss, "history": history,
               "gradient_norms": gradient_norms, "backbone_gradient_norms": backbone_gradient_norms,
               "parameter_delta_norm": delta, "checkpoint_reload": True,
