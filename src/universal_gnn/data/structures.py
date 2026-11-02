@@ -56,7 +56,6 @@ def load_structures(path: str | Path, *, dtype=torch.float64, options=None) -> l
     records = ([json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
                if path.suffix == ".jsonl" else json.loads(path.read_text(encoding="utf-8")))
     from universal_gnn.contracts.schema import validate_version
-    from universal_gnn.data.formats import graph_record, validate_record
 
     version, dataset_metadata = None, {}
     if isinstance(records, dict):
@@ -72,48 +71,56 @@ def load_structures(path: str | Path, *, dtype=torch.float64, options=None) -> l
     if not isinstance(records, list):
         raise ValueError("Dataset must contain an explicit list of structures")
     result = []
-    from ase.data import atomic_numbers
 
     for i, record in enumerate(records):
-        if not isinstance(record, dict):
-            raise ValueError("Each dataset structure must be a mapping")
-        record_version = record.get("schema_version", version)
-        if record_version is not None or "schema_version" in record:
-            validate_version(record_version, "dataset")
-            validate_record(record)
-        atom = record.get("atoms", record)
-        numbers = atom.get("numbers")
-        if numbers is None:
-            numbers = [atomic_numbers[element] for element in atom["elements"]]
-        positions = torch.tensor(atom.get("positions", atom.get("coords")), dtype=dtype)
-        cell_values = atom.get("cell", atom.get("lattice_mat"))
-        pbc = torch.tensor(atom.get("pbc", [True, True, True]), dtype=torch.bool)
-        metadata = {**record.get("metadata", {}), "source": str(path), "sha256": digest, "source_index": i}
-        if dataset_metadata:
-            metadata["dataset_metadata"] = dataset_metadata
-        if cell_values is None:
-            if bool(pbc.any()):
-                raise ValueError("Periodic structures require an explicit cell")
-            cell = torch.diag(positions.amax(0) - positions.amin(0) + 12.)
-            metadata["cell_convention"] = "nonperiodic bounding cell; positions unchanged"
-        else:
-            cell = torch.tensor(cell_values, dtype=dtype)
-        cartesian = atom.get("cartesian", "positions" in atom)
-        if not cartesian:
-            positions = positions @ cell
-        targets = (record.get("targets", {}) if record_version is not None else
-                   record.get("targets", {k: v for k, v in record.items() if k != "atoms"}))
-        identifier = str(record.get("id", record.get("jid", i)))
-        structure = Structure(torch.tensor(numbers, dtype=torch.long), positions, cell, pbc,
-                              identifier, targets, metadata,
-                              graph_record(record["graph"], dtype=dtype) if record.get("graph") is not None else None)
-        structure.validate()
+        structure = structure_from_record(record, i, path, digest, dtype, version, dataset_metadata)
         result.append(structure)
     if version is not None or any("schema_version" in record for record in records):
         identifiers = [structure.identifier for structure in result]
         if not result or len(set(identifiers)) != len(identifiers):
             raise ValueError("Standard datasets require nonempty structures and unique ids")
     return result
+
+
+def structure_from_record(record, i, path, digest, dtype, version=None, dataset_metadata=None):
+    from ase.data import atomic_numbers
+    from universal_gnn.contracts.schema import validate_version
+    from universal_gnn.data.formats import graph_record, validate_record
+
+    if not isinstance(record, dict):
+        raise ValueError("Each dataset structure must be a mapping")
+    record_version = record.get("schema_version", version)
+    if record_version is not None or "schema_version" in record:
+        validate_version(record_version, "dataset")
+        validate_record(record)
+    atom = record.get("atoms", record)
+    numbers = atom.get("numbers")
+    if numbers is None:
+        numbers = [atomic_numbers[element] for element in atom["elements"]]
+    positions = torch.tensor(atom.get("positions", atom.get("coords")), dtype=dtype)
+    cell_values = atom.get("cell", atom.get("lattice_mat"))
+    pbc = torch.tensor(atom.get("pbc", [True, True, True]), dtype=torch.bool)
+    metadata = {**record.get("metadata", {}), "source": str(path), "sha256": digest, "source_index": i}
+    if dataset_metadata:
+        metadata["dataset_metadata"] = dataset_metadata
+    if cell_values is None:
+        if bool(pbc.any()):
+            raise ValueError("Periodic structures require an explicit cell")
+        cell = torch.diag(positions.amax(0) - positions.amin(0) + 12.)
+        metadata["cell_convention"] = "nonperiodic bounding cell; positions unchanged"
+    else:
+        cell = torch.tensor(cell_values, dtype=dtype)
+    cartesian = atom.get("cartesian", "positions" in atom)
+    if not cartesian:
+        positions = positions @ cell
+    targets = (record.get("targets", {}) if record_version is not None else
+               record.get("targets", {k: v for k, v in record.items() if k != "atoms"}))
+    identifier = str(record.get("id", record.get("jid", i)))
+    structure = Structure(torch.tensor(numbers, dtype=torch.long), positions, cell, pbc,
+                          identifier, targets, metadata,
+                          graph_record(record["graph"], dtype=dtype) if record.get("graph") is not None else None)
+    structure.validate()
+    return structure
 
 
 VOIGT = [(0, 0), (1, 1), (2, 2), (1, 2), (0, 2), (0, 1)]

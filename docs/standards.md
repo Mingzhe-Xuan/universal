@@ -327,3 +327,20 @@ ugnn --mode infer --resume checkpoints/custom-gcn.pt \
 两个标准数据文件位于 `data/acceptance/molecules-g2-10.json` 和
 `data/acceptance/molecules-g2-10-graphs.json`；checkpoint在服务器 `runs/custom-extensions-738`。
 数据、权重和日志均不进入Git。结果仅证明执行/兼容，不是十样本的泛化精度结论。
+
+## Runtime data selection, batching and precision
+
+Top-level config: `structures` is a positive integer or null/`all` (default all), `batch_size`
+positive integer (default 32), `max_atoms` optional positive integer, `shuffle` boolean (default true
+for training), `dtype` one of float32 (new training default) or float64. `dataset.selection` is
+first or random; `dataset.selection_seed` controls an explicit subset independently of epoch
+shuffling. Each standard JSONL line is one complete dataset-v1 structure record; the envelope
+form remains JSON only. Large inputs should use JSONL indexed reading.
+
+Checkpoint format 2 training_state v1 may additionally contain `batching`, recording batch size,
+atom budget, shuffle, dtype and subset policy. Complete continuation checks these settings in
+addition to data fingerprint, seed and model/task compatibility. Checkpoints lacking dtype retain
+legacy float64 interpretation. JSONL inference is an output stream: one `metadata` record, one
+`prediction` or `generation` record per structure, then `completed` with structure_count. A node
+prediction includes that structure's atoms only; a graph prediction preserves its leading batch
+axis of length one. Units and task definition remain in the metadata config.

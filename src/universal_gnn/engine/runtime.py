@@ -45,13 +45,19 @@ def check_model_config(expected, actual):
 def data_fingerprint(structures):
     from universal_gnn.data.formats import graph_dict
 
-    records = [{"id": s.identifier, "numbers": s.numbers.tolist(), "positions": s.positions.tolist(),
-                "cell": s.cell.tolist(), "pbc": s.pbc.tolist(), "targets": s.targets} for s in structures]
-    for record, structure in zip(records, structures):
+    digest = hashlib.sha256()
+    digest.update(b"[")
+    for index, structure in enumerate(structures):
+        record = {"id": structure.identifier, "numbers": structure.numbers.tolist(),
+                  "positions": structure.positions.tolist(), "cell": structure.cell.tolist(),
+                  "pbc": structure.pbc.tolist(), "targets": structure.targets}
         if structure.graph is not None:
             record["graph"] = graph_dict(structure.graph)
-    encoded = json.dumps(records, sort_keys=True, default=lambda value: value.tolist()).encode()
-    return hashlib.sha256(encoded).hexdigest()
+        if index:
+            digest.update(b", ")
+        digest.update(json.dumps(record, sort_keys=True, default=lambda value: value.tolist()).encode())
+    digest.update(b"]")
+    return digest.hexdigest()
 
 
 def verify_extensions(saved, model):
@@ -78,6 +84,11 @@ def restore_optimizer(saved, optimizer, config, fingerprint):
         raise ValueError("Resume requires the same selected structures, target bindings and labels")
     if saved["config"].get("seed", 123) != config.get("seed", 123):
         raise ValueError("Resume requires the same training seed")
+    if "batching" in state:
+        from universal_gnn.engine.batching import continuation_settings
+
+        if state["batching"] != continuation_settings(config):
+            raise ValueError("Resume requires the same batching, precision and sampling settings")
     optimizer.load_state_dict(state["optimizer_state_dict"])
     for group in optimizer.param_groups:
         group["lr"] = config.get("learning_rate", 1e-3)
@@ -97,7 +108,9 @@ def save_training_checkpoint(path, model, optimizer, config, versions, state, *,
     from universal_gnn.contracts.schema import CONTRACT_VERSIONS
 
     devices = {parameter.device.index for parameter in model.parameters() if parameter.is_cuda}
-    state = {**state, "version": 1, "optimizer_state_dict": optimizer.state_dict(),
+    from universal_gnn.engine.batching import continuation_settings
+
+    state = {**state, "batching": continuation_settings(config), "version": 1, "optimizer_state_dict": optimizer.state_dict(),
              "torch_rng_state": torch.get_rng_state(),
              "cuda_rng_states": {device: torch.cuda.get_rng_state(device) for device in devices} or None}
     payload = {"format_version": 2, "config": config, "state_dict": model.state_dict(),

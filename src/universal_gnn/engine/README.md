@@ -40,3 +40,38 @@ fingerprints include imported topology and graph attributes, while data without 
 old fingerprint convention. Graph configuration is part of model compatibility. Dataset/config files
 without explicit versions remain legacy-compatible; unsupported explicit versions fail closed.
 The normative specification is [docs/standards.md](../../../docs/standards.md).
+
+## Dataset size, batches and precision
+
+Training uses all records by default. `structures: 10` is an explicit execution-test subset;
+`structures: null` or `all` means all records. Subsets use `dataset.selection: first` (default)
+or `random` with `dataset.selection_seed` (otherwise the training seed). Reports and epoch events
+state the selected count; reports also state the available count and complete data fingerprint.
+Only the first `report_structure_limit` records (default 1000) are embedded in a report, explicitly
+marked when truncated. Predictions are embedded by default up to 1000 records; set
+`report_predictions` explicitly or run inference for the complete output. Report truncation does
+not limit training, evaluation or checkpoint reload verification.
+
+`batching.py` owns `batch_size` (default 32), optional `max_atoms`, `shuffle` (default true for
+training) and per-epoch deterministic ordering. Every selected record is visited each epoch,
+including the final partial batch. A structure exceeding max_atoms fails explicitly.
+`metrics.py` computes label scales over the complete selected dataset and accumulates regression
+errors by finite label elements (classification by samples), independently of batch boundaries.
+Epoch loss describes minibatch predictions before their respective updates. Initial/final metrics
+use complete dataset evaluation. Ordinary training does not require monotonic loss decrease;
+real-data fine-tuning acceptance additionally checks decrease and backbone updates externally.
+
+New training defaults to `dtype: float32`; `float64` remains available for derivative accuracy.
+Checkpoint reload/inference uses its saved dtype. Legacy checkpoints lacking dtype retain float64.
+Full resume requires the same batch size, atom budget, shuffle, dtype and selected labelled data;
+ordering is derived from seed and completed epoch, while Torch stochastic state and Adam are saved.
+Derivative inference keeps autograd enabled. Fixed-corruption generation uses per-structure seeds
+(`generation_corruption: per_structure_v1`) and minibatches; old fixed-batch generation checkpoints
+remain inferable but require an explicit weights-only warm start to change that training objective.
+
+JSONL datasets use byte offsets and a streaming hash (`data/indexed.py`); records become tensors
+only when requested. JSON envelopes and ASE/plugin inputs currently retain their existing eager
+loader, so convert large datasets to standard JSONL for bounded tensor memory. JSONL inference
+(`--results predictions.jsonl`) writes metadata, per-structure prediction/generation records and a
+completion record incrementally to an atomic output file. Ordinary JSON output retains CPU results
+for compatibility but still evaluates geometry/model graphs one minibatch at a time.

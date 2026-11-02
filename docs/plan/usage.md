@@ -81,3 +81,15 @@ sbatch scripts/ugnn.slurm --mode train --model alignn \
 选择 `--model plugin:examples/custom_knn_gcn` 与 `configs/custom_knn_gcn.yaml` 即可使用最小示例。
 图配方在顶层 `graph`；也可用 `--graph knn/radius/stored/plugin:...` 选择构图器。
 使用自定义图的前提是标准包装 GNN；原生六主干的外部图覆盖会明确拒绝。
+
+## Data size and runtime settings
+
+Training now selects the full dataset when `structures` is omitted. An explicit smoke configuration
+can use `structures: 10`, `dataset.selection: random`, and `dataset.selection_seed: 123`.
+Set `batch_size: 32` (default), optional `max_atoms: 1024`, and `dtype: float32` (default for new
+training) or `float64`. Use standard JSONL for indexed input and a `.jsonl` results path for streamed
+inference. Both documented CLI forms keep their existing flags. The report states selected and
+available counts; a capped report listing does not cap training. Full resume requires identical
+batching and precision settings. Official-model support is under implementation and is not yet
+claimed by this runtime change; existing architecture variants remain incompatible with external
+weights until their official provider is selected.

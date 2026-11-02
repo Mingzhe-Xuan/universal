@@ -88,7 +88,7 @@ def test_custom_gnn_graph_checkpoint_and_code_fingerprint(tmp_path):
     shutil.copytree(source, plugin, ignore=shutil.ignore_patterns("__pycache__"))
     data = tmp_path / "molecules.json"
     save_structures(data, molecules())
-    config = {"schema_version": 1, "structures": 2, "epochs": 3, "seed": 123,
+    config = {"schema_version": 1, "structures": 2, "epochs": 3, "seed": 123, "dtype": "float64",
               "backbone": {"name": "plugin:" + str(plugin), "width": 8, "layers": 1},
               "graph": {"name": "plugin:" + str(plugin), "k": 2},
               "dataset": {"path": str(data)}, "task": {"kind": "supervised", "property": "bandgap"}}

@@ -75,8 +75,14 @@ def resolve_config(file_config, *, base=None, model=None, dataset=None, task=Non
     if training:
         config.setdefault("epochs", 30)
         config.setdefault("checkpoint_every", 1)
-        for key, minimum in [("epochs", 1), ("structures", 1), ("checkpoint_every", 0)]:
-            value = config.get(key, 10 if key == "structures" else 0)
+        for key, minimum in [("epochs", 1), ("checkpoint_every", 0)]:
+            value = config.get(key, 0)
             if not isinstance(value, int) or isinstance(value, bool) or value < minimum:
                 raise ValueError(f"{key} must be an integer >= {minimum}")
+        limit = config.get("structures")
+        if limit not in (None, "all") and (not isinstance(limit, int) or isinstance(limit, bool) or limit < 1):
+            raise ValueError("structures must be a positive integer, null or all")
+    from universal_gnn.engine.batching import validate_batching
+
+    validate_batching(config)
     return config

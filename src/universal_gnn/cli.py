@@ -25,14 +25,14 @@ def _legacy_main(argv):
 
         config = load_config(arguments.config)
         report = run_training(config, arguments.output)
-        print(json.dumps({"passed": report["passed"], "structures": len(report["structures"]),
+        print(json.dumps({"passed": report["passed"], "structures": report.get("selected_structures", len(report["structures"])),
                           "initial_loss": report["initial_loss"], "final_loss": report["final_loss"]}))
     elif arguments.command == "infer":
         from universal_gnn.engine.inference import run_inference
 
         result = run_inference(arguments.checkpoint, arguments.dataset, arguments.output,
                                device=arguments.device, limit=arguments.limit)
-        print(json.dumps({"structures": len(result["structures"]), "output": str(arguments.output)}))
+        print(json.dumps({"structures": result["structure_count"], "output": str(arguments.output)}))
 
 
 def _flag_parser():
@@ -122,7 +122,7 @@ def main(argv=None):
 
             report = run_training(config, directory, resume=arguments.resume, checkpoint_path=arguments.save,
                                   event_callback=log)
-            summary = {"passed": report["passed"], "structures": len(report["structures"]),
+            summary = {"passed": report["passed"], "structures": report.get("selected_structures", len(report["structures"])),
                        "completed_epochs": report["completed_epochs"], "checkpoint": str(arguments.save),
                        "logging": str(directory)}
         else:
@@ -131,7 +131,7 @@ def main(argv=None):
             result = run_inference(arguments.resume, config["dataset"]["path"], arguments.results,
                                    device=config.get("device", "cpu"), limit=arguments.limit,
                                    config_override=config)
-            summary = {"structures": len(result["structures"]), "results": str(arguments.results),
+            summary = {"structures": result["structure_count"], "results": str(arguments.results),
                        "logging": str(directory)}
         log("completed", **summary)
         print(json.dumps(summary))

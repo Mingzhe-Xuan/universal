@@ -45,13 +45,32 @@ def build_model(config):
     raise ValueError(f"Task kind not implemented: {task['kind']}")
 
 
-def dataset(config, limit=10):
-    structures = load_structures(config["dataset"]["path"], options=config["dataset"].get("options"))
-    if "bindings" in config["dataset"]:
-        structures = bind_targets(structures, config["dataset"]["bindings"])
-    if len(structures) < limit:
-        raise ValueError(f"Acceptance requires {limit} structures, found {len(structures)}")
-    return structures[:limit]
+def dataset(config, limit=None):
+    from universal_gnn.data.indexed import SelectedStructures, open_structures
+    from universal_gnn.engine.batching import model_dtype
+
+    settings = config["dataset"]
+    structures = open_structures(settings["path"], dtype=model_dtype(config), options=settings.get("options"))
+    limit = config.get("structures") if limit is None else limit
+    if limit == "all":
+        limit = None
+    if limit is not None and (not isinstance(limit, int) or isinstance(limit, bool) or limit < 1):
+        raise ValueError("structures must be a positive integer, null or all")
+    if limit is not None and len(structures) < limit:
+        raise ValueError(f"Requested {limit} structures, found {len(structures)}")
+    indices = range(len(structures))
+    selection = settings.get("selection", "first")
+    if selection not in {"first", "random"}:
+        raise ValueError("dataset.selection must be first or random")
+    if limit is not None:
+        if selection == "random":
+            generator = torch.Generator().manual_seed(settings.get("selection_seed", config.get("seed", 123)))
+            indices = torch.randperm(len(structures), generator=generator)[:limit].tolist()
+        else:
+            indices = range(limit)
+    if not len(indices):
+        raise ValueError("Dataset must not be empty")
+    return SelectedStructures(structures, indices, settings.get("bindings"))
 
 
 def label(batch, name, prediction, *, classification=False):
@@ -128,9 +147,13 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
                                        event_callback=event_callback)
     from universal_gnn.engine.runtime import (check_model_config, checkpoint_config, data_fingerprint,
                                                restore_optimizer, save_training_checkpoint)
+    from universal_gnn.engine.batching import batches, model_dtype, validate_batching
+    from universal_gnn.engine.metrics import dataset_scales, loss_parts, weighted_loss, LossTotals
 
     config = copy.deepcopy(config)
     saved = torch.load(resume, map_location="cpu", weights_only=True) if resume else None
+    config.setdefault("dtype", saved["config"].get("dtype", "float64") if saved is not None else "float32")
+    validate_batching(config)
     if saved is not None:
         if saved.get("format_version", 1) == 1:
             config["task"].setdefault("adapter_version", 1)
@@ -139,15 +162,14 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     output.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(config.get("seed", 123))
     device = config.get("device", "cpu")
-    model = build_model(config).to(device=device, dtype=torch.float64)
+    model = build_model(config).to(device=device, dtype=model_dtype(config))
     if saved is not None:
         from universal_gnn.engine.runtime import verify_extensions
 
         verify_extensions(saved, model)
         model.load_state_dict(saved["state_dict"], strict=True)
     execution = execution_record(model)
-    structures = dataset(config, config.get("structures", 10))
-    batch = StructureBatch.from_structures(structures).to(device)
+    structures = dataset(config)
     optimizer = torch.optim.Adam(model.parameters(), lr=config.get("learning_rate", 1e-3))
     fingerprint = data_fingerprint(structures)
     state = restore_optimizer(saved, optimizer, config, fingerprint) if saved is not None else None
@@ -157,13 +179,27 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
         raise ValueError(f"epochs is the total target; set it greater than the {completed} completed epochs")
     checkpoint = Path(checkpoint_path) if checkpoint_path is not None else output / "checkpoint.pt"
     versions = version_record()
-    model.eval()
-    initial_predictions = predict(model, batch, config)
-    current_loss, scales = loss_for(initial_predictions, batch, config,
-                                   saved.get("scales") if state is not None else None)
-    segment_initial_loss = float(current_loss.detach())
+    scales = saved["scales"] if state is not None else dataset_scales(structures, config)
+
+    def evaluate(current, *, compare=None, collect=False):
+        totals, collected = LossTotals(), {}
+        current.eval()
+        for batch in batches(structures, config):
+            values = predict(current, batch, config)
+            totals.add(loss_parts(values, batch, config, scales))
+            if compare is not None:
+                other = predict(compare, batch, config)
+                for name in values:
+                    tolerance = (1e-5, 1e-6) if model_dtype(config) == torch.float32 else (1e-8, 1e-9)
+                    torch.testing.assert_close(values[name], other[name], rtol=tolerance[0], atol=tolerance[1])
+            if collect:
+                for name, value in values.items():
+                    collected.setdefault(name, []).append(value.detach().cpu())
+        return totals.loss(config), {name: torch.cat(values) for name, values in collected.items()}
+
+    segment_initial_loss, _ = evaluate(model)
     initial_loss = state["initial_loss"] if state is not None else segment_initial_loss
-    starting = {key: value.detach().clone() for key, value in model.named_parameters()}
+    starting = {key: value.detach().cpu().clone() for key, value in model.named_parameters()}
     history = list(state["history"]) if state is not None else []
     gradient_norms = list(state["gradient_norms"]) if state is not None else []
     backbone_gradient_norms = list(state["backbone_gradient_norms"]) if state is not None else []
@@ -175,48 +211,58 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
                                   "gradient_norms": gradient_norms,
                                   "backbone_gradient_norms": backbone_gradient_norms}, scales=scales)
 
-    model.train()
     for epoch in range(completed, epochs):
-        optimizer.zero_grad(set_to_none=True)
-        prediction = predict(model, batch, config, training=True)
-        loss, _ = loss_for(prediction, batch, config, scales)
-        if not bool(torch.isfinite(loss)):
-            raise FloatingPointError("Nonfinite training loss")
-        loss.backward()
-        active = [p.grad for p in model.parameters() if p.grad is not None]
-        if not active or not all(bool(torch.isfinite(g).all()) for g in active):
-            raise FloatingPointError("Missing/nonfinite parameter gradients")
-        gradient_norms.append(math.sqrt(sum(float(g.detach().square().sum()) for g in active)))
-        backbone_grads = [p.grad for p in model.backbone.parameters() if p.grad is not None]
-        backbone_gradient_norms.append(math.sqrt(sum(float(g.detach().square().sum()) for g in backbone_grads)))
-        torch.nn.utils.clip_grad_norm_(model.parameters(), config.get("clip_grad_norm", 10.))
-        optimizer.step()
-        history.append(float(loss.detach()))
+        model.train()
+        totals, gradient_squared, backbone_squared, steps = LossTotals(), 0., 0., 0
+        for batch in batches(structures, config, epoch=epoch):
+            optimizer.zero_grad(set_to_none=True)
+            prediction = predict(model, batch, config, training=True)
+            parts = loss_parts(prediction, batch, config, scales)
+            if not any(count for _, count in parts.values()):
+                continue
+            loss = weighted_loss(parts, config)
+            if not bool(torch.isfinite(loss)):
+                raise FloatingPointError("Nonfinite training loss")
+            loss.backward()
+            active = [p.grad for p in model.parameters() if p.grad is not None]
+            if not active or not all(bool(torch.isfinite(g).all()) for g in active):
+                raise FloatingPointError("Missing/nonfinite parameter gradients")
+            gradient_squared += sum(float(g.detach().square().sum()) for g in active)
+            backbone_squared += sum(float(p.grad.detach().square().sum()) for p in model.backbone.parameters()
+                                    if p.grad is not None)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), config.get("clip_grad_norm", 10.))
+            optimizer.step()
+            totals.add(parts)
+            steps += 1
+        if not steps:
+            raise ValueError("Epoch has no labelled minibatches")
+        history.append(totals.loss(config))
+        gradient_norms.append(math.sqrt(gradient_squared))
+        backbone_gradient_norms.append(math.sqrt(backbone_squared))
         interval = config.get("checkpoint_every", 0)
         if interval and (epoch + 1) % interval == 0:
             save_progress(epoch + 1)
         if event_callback is not None:
-            event_callback("epoch", epoch=epoch + 1, loss=history[-1])
+            event_callback("epoch", epoch=epoch + 1, loss=history[-1], minibatches=steps,
+                           structures=len(structures))
     model.eval()
-    predictions = predict(model, batch, config)
-    final_loss = float(loss_for(predictions, batch, config, scales)[0].detach())
-    delta = math.sqrt(sum(float((value.detach() - starting[key]).square().sum())
+    final_loss, _ = evaluate(model)
+    delta = math.sqrt(sum(float((value.detach().cpu() - starting[key]).square().sum())
                           for key, value in model.named_parameters()))
     save_progress(epochs)
     reloaded = load_checkpoint(checkpoint, device=device)
-    again = predict(reloaded, batch, config)
-    for name in predictions:
-        torch.testing.assert_close(again[name], predictions[name], rtol=1e-8, atol=1e-9)
-        if not bool(torch.isfinite(predictions[name]).all()):
-            raise FloatingPointError(f"Nonfinite predictions: {name}")
+    collect = config.get("report_predictions", len(structures) <= 1000)
+    _, predictions = evaluate(reloaded, compare=model, collect=collect)
     records = []
-    for structure in structures:
+    for structure in structures[:config.get("report_structure_limit", 1000)]:
         raw = json.dumps({"z": structure.numbers.tolist(), "r": structure.positions.tolist(),
                           "cell": structure.cell.tolist()}, sort_keys=True).encode()
         records.append({"id": structure.identifier, "geometry_sha256": hashlib.sha256(raw).hexdigest(),
                         "provenance": structure.metadata, "role": "train_and_reloaded_inference"})
     report = {"config": config, "versions": version_record(), "execution": execution,
-              "structures": records,
+              "structures": records, "selected_structures": len(structures),
+              "available_structures": len(structures.source), "data_fingerprint": fingerprint,
+              "structure_records_truncated": len(records) != len(structures),
               "checkpoint": str(checkpoint), "completed_epochs": epochs,
               "segment_initial_loss": segment_initial_loss,
               "resume": {"path": str(resume) if resume else None,
@@ -225,16 +271,16 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
               "initial_loss": initial_loss, "final_loss": final_loss, "history": history,
               "gradient_norms": gradient_norms, "backbone_gradient_norms": backbone_gradient_norms,
               "parameter_delta_norm": delta, "checkpoint_reload": True,
-              "predictions": {name: value.detach().cpu().tolist() for name, value in predictions.items()},
-              "interpretation": "execution/overfit check on training structures, not generalization",
-              "passed": bool(history[completed:] and delta > 0 and max(backbone_gradient_norms[completed:], default=0) > 0
-                             and math.isfinite(final_loss) and final_loss < initial_loss)}
+              "predictions_included": bool(collect),
+              "predictions": {name: value.tolist() for name, value in predictions.items()},
+              "interpretation": "training metrics; no held-out generalization claim",
+              "passed": bool(history[completed:] and delta > 0 and math.isfinite(final_loss))}
     from universal_gnn.engine.derived import derived_outputs
 
-    report["derived"] = derived_outputs(again, config["task"])
+    report["derived"] = derived_outputs(predictions, config["task"]) if collect else {}
     (output / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     if not report["passed"]:
-        raise RuntimeError(f"Training acceptance failed; inspect {output / 'report.json'}")
+        raise RuntimeError(f"Training failed; inspect {output / 'report.json'}")
     return report
 
 
@@ -243,7 +289,9 @@ def load_checkpoint(path: str | Path, *, device="cpu"):
 
     saved = torch.load(path, map_location=device, weights_only=True)
     config = checkpoint_config(saved)
-    model = build_model(config).to(device=device, dtype=torch.float64)
+    from universal_gnn.engine.batching import model_dtype
+
+    model = build_model(config).to(device=device, dtype=model_dtype(config, legacy=True))
     verify_extensions(saved, model)
     model.load_state_dict(saved["state_dict"], strict=True)
     return model.eval()

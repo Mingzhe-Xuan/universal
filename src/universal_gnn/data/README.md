@@ -32,3 +32,11 @@ Molecule JSON may omit cell only with explicit nonperiodic flags. GraphRecord su
 indices/shifts and optional node/edge features. `graphs.py` independently selects KNN, radius, stored
 or a BaseGraphBuilder directory plugin; stored graphs are offset without changing atom order.
 The authoritative input/output and file specification is [docs/standards.md](../../../docs/standards.md).
+
+## Indexed large inputs
+
+`indexed.open_structures` selects `JSONLStructures` for JSONL files. It scans bytes for offsets,
+source hash and standard-record ID uniqueness, then parses individual records using the same
+validator as JSON. `SelectedStructures` lazily applies subsets and target bindings. JSON/ASE and
+legacy iterable dataset plugins currently use their existing eager path. See engine/README.md
+for full-data defaults, deterministic selection and batch memory limits.
