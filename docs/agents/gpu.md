@@ -101,3 +101,15 @@
 - 2026-11-02 15:51:31 +08:00：下一工作连接复用当前代理并先健康/pull到65badd5，查询Slurm535状态/日志。两纯Pythonwheel scp完成后，固定现有Torch/NumPy并安装NequIP0.14/Hydra1.3.2/Lightning2.5，再通过Slurm测试；不在登录节点执行模型。
 
 - 2026-11-02 15:54:43 +08:00：NequIP安装的983kB torchmetrics下载中断，原进程退出1；不重跑网络安装。下一 scp 将现成torchmetrics、pytorch-lightning、matscipy wheel放任务tmp，代码已先pull至65badd5；后续健康/pull后优先离线补齐。
+
+- 2026-11-02 16:07:41 +08:00：下一诊断仅核对1080释放，已知PID30568退出且日志Connection reset；不执行任务操作。恢复专用代理后先pull新提交，再离线优先补齐NequIP依赖并提交真实后端Slurm。
+
+- 2026-11-02 16:09:22 +08:00：1080已确认释放。下一专用代理仅做短时管理，工作连接健康检查后先pull70e5bb0，并读MACE所需包元数据。随后scp两个小缓存包（十结构数据624640字节、NequIP缺包1361920字节）；再工作连接先pull、校验解包并离线安装/Slurm集成，避免在线安装长链路中断。
+
+- 2026-11-02 16:11:24 +08:00：专用代理PID36204健康，已先pull至70e5bb0。MACE缺h5py等依赖，已有pandas/orjson/PySocks。下一scp仅传已校验的acceptance-data.tar和nequip-missing-wheels.tar到任务tmp，不传源码；后续工作连接先pull再解包离线安装与Slurm。
+
+- 2026-11-02 16:14:39 +08:00：下一普通工作连接使用持续bash会话，首次仍先代理健康与pull；会话内后续仅检查/安装任务缓存并提交Slurm，以减少反复SSH握手。scp正在传两个小缓存包，不并发重传；专用PID36204仍存活，不重启。
+
+- 2026-11-02 16:16:41 +08:00：小包scp最终因目标主机无响应超时，普通持续会话的GitHub TLS健康亦超时，尚未越过本连接pull门禁。继续只做当前代理监听/端到端TLS1.2与PyPI健康、本地专用进程TCP路径检查；不安装、不提交新作业、不重启仍存活的代理。
+
+- 2026-11-02 16:17:44 +08:00：同一持续会话中GitHub强制HTTP1.1/TLS1.2健康返回200，PyPI默认TLS仍超时；本地PyPI正常，转发进程有到公网443的Established连接。现在允许本会话先用HTTP1.1/TLS1.2 git pull，再只核对已传缓存文件完整性。未把监听存活等同网络健康，不重启当前代理。

@@ -14,3 +14,7 @@ equivariant encoders use native polar-vector channels. Coordinate scores transfo
 The shared annealed Langevin sampler preserves species/counts and wraps fractional positions.
 Cell bounds are explicit numerical sampling constraints, not symmetry constraints. Generated
 samples discard template physical labels. This implementation is not yet trained or accepted.
+
+For higher geometric derivatives, pass a batch whose positions require gradients and set
+create_graph=True. ForceFieldModel retains that external graph; evaluation defaults avoid
+retaining the force Hessian unless explicitly requested.

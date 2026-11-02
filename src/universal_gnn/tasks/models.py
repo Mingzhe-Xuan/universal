@@ -44,7 +44,8 @@ class ForceFieldModel(nn.Module):
     def forward(self, batch, *, create_graph=None):
         create_graph = self.training if create_graph is None else create_graph
         with torch.enable_grad():
-            positions = batch.positions.detach().clone().requires_grad_(True)
+            positions = (batch.positions if batch.positions.requires_grad else
+                         batch.positions.detach().clone().requires_grad_(True))
             strain = batch.cell.new_zeros(batch.cell.shape, requires_grad=True)
             live = strain_batch(batch.with_geometry(positions, batch.cell), strain)
             energy = self.energy_model(live)

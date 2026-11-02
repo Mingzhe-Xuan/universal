@@ -32,3 +32,14 @@ def test_force_stress_finite_difference_and_parameter_chain():
     active = [gradient for gradient in gradients if gradient is not None]
     assert active and all(torch.isfinite(gradient).all() for gradient in active)
     assert sum(float(gradient.norm()) for gradient in active) > 0
+
+
+def test_force_hessian_keeps_external_position_graph():
+    torch.manual_seed(11)
+    model = ForceFieldModel(make_backbone("cgcnn", width=8, layers=1, cutoff=2.)).double()
+    batch = tiny_batch()
+    batch.positions.requires_grad_()
+    forces = model.eval()(batch, create_graph=True)["forces"]
+    hessian_row = torch.autograd.grad(forces[0, 0], batch.positions)[0]
+    assert torch.isfinite(hessian_row).all() and hessian_row.norm() > 0
+    torch.testing.assert_close(forces.sum(0), torch.zeros(3, dtype=forces.dtype), atol=1e-10, rtol=0)
