@@ -1,12 +1,14 @@
 # 当前状态
 
-自定义GNN/分子图标准实现与验收完成，收尾中。统一规范docs/standards.md包含接口、图、config/dataset v1及checkpoint v2。提供StandardBackbone、BaseGNN/图构建器和独立KNN+GCN例子，兼容旧输入/插件/权重。
+自定义GNN/分子图和统一格式标准已完成。标准文件docs/standards.md统一规定GraphRecord/GraphBatch、BaseGraphBuilder/BaseGNN/GNNOutput、StandardBackbone，以及config/dataset/graph v1和checkpoint v2；独立KNN+GCN例子可复制使用。
 
-最终源码a07ab00：Slurm738十个真实G2分子训练/完整续训/推理、动态KNN与导入图参数/预测一致，739/740两环境各52项通过。证据results/custom-extensions-738/evidence.json及两份标准分子数据已取回。本轮无新增DFT，不声称泛化性能或重跑全部历史矩阵。
+最终源码a07ab00：Slurm738真实10分子训练、完整恢复和推理通过，动态KNN与导入图、恢复与连续训练参数/预测一致；739/740两环境各52项检查通过。证据和标准分子数据均在本地，结果不是泛化性能或全部历史矩阵重跑。
+
+服务器已同步fef1567（全部源码及规范实测记录），之后本地提交仅记清理。自有代理41896已精确关闭，已过同步门禁连接确认远端1080释放并正常退出。
 
 # 当前计划
 
-同步最终规范/实测记录，核对关闭唯一专用代理41896，并由已过门禁连接确认远端1080释放。
+无待执行项。统一标准见docs/standards.md，最小实现见examples/custom_knn_gcn，配置见configs/custom_knn_gcn.yaml。
 
 # 变更记录
 
@@ -170,3 +172,5 @@
 - 2026-11-02T21:39:30.996536+08:00：完成协议、示例、规范和本地51项检查，进入Slurm真实分子/兼容验收阶段。
 
 - 2026-11-02T21:55:28.845677+08:00：最终738-740验证和本地证据/数据校验完成，进入文档同步与代理清理。
+
+- 2026-11-02T21:59:08.636010+08:00：完成最终同步fef1567、代理41896关停及EXTENSIONS_PROXY_1080_RELEASED确认；本轮实现、标准和实测交付全部完成。
