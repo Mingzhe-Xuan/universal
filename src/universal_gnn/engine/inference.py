@@ -8,9 +8,14 @@ from universal_gnn.data.structures import load_structures
 from universal_gnn.engine.training import load_checkpoint, predict
 
 
-def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None):
+def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None, config_override=None):
     saved = torch.load(checkpoint, map_location=device, weights_only=True)
     config = saved["config"]
+    if config_override is not None:
+        from universal_gnn.engine.runtime import check_model_config, checkpoint_config
+
+        check_model_config(checkpoint_config(saved), config_override)
+        config = config_override
     model = load_checkpoint(checkpoint, device=device)
     structures = load_structures(dataset_path, options=config["dataset"].get("options"))
     if limit is not None:

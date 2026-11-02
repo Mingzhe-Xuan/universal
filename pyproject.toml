@@ -7,7 +7,7 @@ name = "universal-gnn-tasks"
 version = "0.1.0"
 description = "Output-driven atomistic GNN tasks with invariant and equivariant backbones"
 requires-python = ">=3.10"
-dependencies = ["torch>=2.2", "numpy>=1.24", "e3nn>=0.4.4,<0.6", "ase>=3.22"]
+dependencies = ["torch>=2.2", "numpy>=1.24", "e3nn>=0.4.4,<0.6", "ase>=3.22", "PyYAML>=6"]
 
 [project.optional-dependencies]
 mace = ["mace-torch==0.3.16"]

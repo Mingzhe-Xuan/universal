@@ -127,3 +127,5 @@
 - 2026-11-02T18:35:43.907268+08:00：abTEM1.0.8虽允许pip在Py310安装，实际直接from typing import Self导致6工作流同因失败；不反复重跑或全局monkeypatch typing。回查官方PyPI后改选支持>=3.9,<3.12的1.0.6，并先检查wheel源码/API与依赖再Slurm复核。
 
 - 2026-11-02T18:52:18.363550+08:00：CRD原始raman_tensors并非每条都有3N槽，不能将短列表按频率顺序强行对齐或补None推测；筛选同时验证3N频率、3N槽与实际张量，保留被剔除原ID。Raman本轮严格十条从同一已核MD5原档取得，源索引和预处理明确记录。
+
+- 2026-11-02T20:39:40.893380+08:00：CLI只改变调用协议，不应靠复制matrix配置冒充参数支持。续训需恢复Adam/epoch/RNG并核数据指纹，旧文件缺优化器只能明示暖启动；CPU checkpoint不得因为机器有GPU而调用get_rng_state_all初始化未分配设备。配置与运行状态的长期接口见engine/README。

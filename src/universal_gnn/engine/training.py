@@ -112,30 +112,60 @@ def execution_record(model):
             "geometry_basis_version": getattr(getattr(model, "adapter", None), "basis_version", None)}
 
 
-def run_training(config: dict, output: str | Path) -> dict:
+def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_path=None, event_callback=None) -> dict:
     if config["task"]["kind"] == "generation":
         from universal_gnn.engine.generation import run_generation_training
 
-        return run_generation_training(config, output)
+        return run_generation_training(config, output, resume=resume, checkpoint_path=checkpoint_path,
+                                       event_callback=event_callback)
+    from universal_gnn.engine.runtime import (check_model_config, checkpoint_config, data_fingerprint,
+                                               restore_optimizer, save_training_checkpoint)
+
+    config = copy.deepcopy(config)
+    saved = torch.load(resume, map_location="cpu", weights_only=True) if resume else None
+    if saved is not None:
+        if saved.get("format_version", 1) == 1:
+            config["task"].setdefault("adapter_version", 1)
+        check_model_config(checkpoint_config(saved), config)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(config.get("seed", 123))
     device = config.get("device", "cpu")
     model = build_model(config).to(device=device, dtype=torch.float64)
+    if saved is not None:
+        model.load_state_dict(saved["state_dict"], strict=True)
     execution = execution_record(model)
     structures = dataset(config, config.get("structures", 10))
     batch = StructureBatch.from_structures(structures).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config.get("learning_rate", 1e-3))
+    fingerprint = data_fingerprint(structures)
+    state = restore_optimizer(saved, optimizer, config, fingerprint) if saved is not None else None
+    completed = state["completed_epochs"] if state is not None else 0
+    epochs = config.get("epochs", 10)
+    if epochs <= completed:
+        raise ValueError(f"epochs is the total target; set it greater than the {completed} completed epochs")
+    checkpoint = Path(checkpoint_path) if checkpoint_path is not None else output / "checkpoint.pt"
+    versions = version_record()
     model.eval()
     initial_predictions = predict(model, batch, config)
-    initial_loss, scales = loss_for(initial_predictions, batch, config)
-    initial_loss = float(initial_loss.detach())
+    current_loss, scales = loss_for(initial_predictions, batch, config,
+                                   saved.get("scales") if state is not None else None)
+    segment_initial_loss = float(current_loss.detach())
+    initial_loss = state["initial_loss"] if state is not None else segment_initial_loss
     starting = {key: value.detach().clone() for key, value in model.named_parameters()}
-    history = []
-    gradient_norms = []
-    backbone_gradient_norms = []
+    history = list(state["history"]) if state is not None else []
+    gradient_norms = list(state["gradient_norms"]) if state is not None else []
+    backbone_gradient_norms = list(state["backbone_gradient_norms"]) if state is not None else []
+
+    def save_progress(epoch):
+        save_training_checkpoint(checkpoint, model, optimizer, config, versions,
+                                 {"completed_epochs": epoch, "data_fingerprint": fingerprint,
+                                  "initial_loss": initial_loss, "history": history,
+                                  "gradient_norms": gradient_norms,
+                                  "backbone_gradient_norms": backbone_gradient_norms}, scales=scales)
+
     model.train()
-    for _ in range(config.get("epochs", 10)):
+    for epoch in range(completed, epochs):
         optimizer.zero_grad(set_to_none=True)
         prediction = predict(model, batch, config, training=True)
         loss, _ = loss_for(prediction, batch, config, scales)
@@ -151,14 +181,17 @@ def run_training(config: dict, output: str | Path) -> dict:
         torch.nn.utils.clip_grad_norm_(model.parameters(), config.get("clip_grad_norm", 10.))
         optimizer.step()
         history.append(float(loss.detach()))
+        interval = config.get("checkpoint_every", 0)
+        if interval and (epoch + 1) % interval == 0:
+            save_progress(epoch + 1)
+        if event_callback is not None:
+            event_callback("epoch", epoch=epoch + 1, loss=history[-1])
     model.eval()
     predictions = predict(model, batch, config)
     final_loss = float(loss_for(predictions, batch, config, scales)[0].detach())
     delta = math.sqrt(sum(float((value.detach() - starting[key]).square().sum())
                           for key, value in model.named_parameters()))
-    checkpoint = output / "checkpoint.pt"
-    torch.save({"format_version": 2, "config": config, "state_dict": model.state_dict(), "versions": version_record(),
-                "scales": scales}, checkpoint)
+    save_progress(epochs)
     reloaded = load_checkpoint(checkpoint, device=device)
     again = predict(reloaded, batch, config)
     for name in predictions:
@@ -173,12 +206,17 @@ def run_training(config: dict, output: str | Path) -> dict:
                         "provenance": structure.metadata, "role": "train_and_reloaded_inference"})
     report = {"config": config, "versions": version_record(), "execution": execution,
               "structures": records,
+              "checkpoint": str(checkpoint), "completed_epochs": epochs,
+              "segment_initial_loss": segment_initial_loss,
+              "resume": {"path": str(resume) if resume else None,
+                         "kind": "full" if state is not None else "weights_only" if saved is not None else "none",
+                         "completed_epochs_before": completed},
               "initial_loss": initial_loss, "final_loss": final_loss, "history": history,
               "gradient_norms": gradient_norms, "backbone_gradient_norms": backbone_gradient_norms,
               "parameter_delta_norm": delta, "checkpoint_reload": True,
               "predictions": {name: value.detach().cpu().tolist() for name, value in predictions.items()},
               "interpretation": "execution/overfit check on training structures, not generalization",
-              "passed": bool(history and delta > 0 and max(backbone_gradient_norms, default=0) > 0
+              "passed": bool(history[completed:] and delta > 0 and max(backbone_gradient_norms[completed:], default=0) > 0
                              and math.isfinite(final_loss) and final_loss < initial_loss)}
     from universal_gnn.engine.derived import derived_outputs
 
@@ -190,13 +228,10 @@ def run_training(config: dict, output: str | Path) -> dict:
 
 
 def load_checkpoint(path: str | Path, *, device="cpu"):
+    from universal_gnn.engine.runtime import checkpoint_config
+
     saved = torch.load(path, map_location=device, weights_only=True)
-    format_version = saved.get("format_version", 1)
-    if format_version not in {1, 2}:
-        raise ValueError(f"Unsupported checkpoint format {format_version}")
-    config = copy.deepcopy(saved["config"])
-    if format_version == 1:
-        config["task"].setdefault("adapter_version", 1)
+    config = checkpoint_config(saved)
     model = build_model(config).to(device=device, dtype=torch.float64)
     model.load_state_dict(saved["state_dict"], strict=True)
     return model.eval()

@@ -22,3 +22,8 @@ for every built-in model from a prepared manifest; `--models cgcnn,mace` selects
 For a new property, set `task.spec` with explicit scope/shape/unit/kind/construction.
 For a dataset directory, use `dataset.path=plugin:/path` and implement `build_dataset` in
 that directory's `plugin.py`. See the data and properties module READMEs for contracts.
+
+The flag CLI also accepts YAML: `bandgap.yaml` is a runnable ALIGNN/OptB88vdW gap example.
+`formation_energy.yaml` is the template for docs/plan/usage.md; supply `--model` and `--dataset`.
+CLI fields override file settings. `--resume` inherits omitted settings from the checkpoint;
+set a larger total `--epochs` when continuing a complete run. See docs/plan/usage.md for paths/logs.

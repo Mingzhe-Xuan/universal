@@ -41,3 +41,8 @@ IR/Raman/neutron broadening and real abTEM multislice STEM from MD snapshots.
 `collect_evidence.py --matrices ... --workflows runs/workflows` checks actual saved reports,
 unique IDs, optimization/checkpoint evidence, and finite nonconstant STEM image arrays.
 It refuses missing/failed entries; controller retention is never used to invent historical job states.
+
+`ugnn.slurm` forwards all user CLI arguments unchanged to `python -m universal_gnn.cli` in the
+submission directory; create `runs/` before submitting. Set `UGNN_PYTHON` for a different task venv.
+`validate_cli.slurm` checks the documented flags on ten real ALIGNN bandgap structures: 15 epochs,
+resume to 30, inference, and parameter equality with an uninterrupted 30-epoch run.

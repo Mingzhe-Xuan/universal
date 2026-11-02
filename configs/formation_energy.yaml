@@ -1,0 +1,21 @@
+seed: 123
+structures: 10
+device: cpu
+epochs: 30
+learning_rate: 0.001
+checkpoint_every: 1
+
+backbone:
+  width: 16
+  layers: 2
+  cutoff: 4.0
+
+dataset:
+  bindings:
+    formation_energy:
+      key: formation_energy_peratom
+      unit: eV/atom
+
+task:
+  kind: supervised
+  property: formation_energy

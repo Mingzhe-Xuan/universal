@@ -32,27 +32,57 @@ def generated_record(batch):
             "minimum_distance_below_2_angstrom": minimum}
 
 
-def run_generation_training(config, output):
+def run_generation_training(config, output, *, resume=None, checkpoint_path=None, event_callback=None):
+    import copy
+
+    from universal_gnn.engine.runtime import (check_model_config, checkpoint_config, data_fingerprint,
+                                               restore_optimizer, save_training_checkpoint)
     from universal_gnn.engine.training import (build_model, dataset, execution_record,
                                                load_checkpoint, version_record)
 
+    config = copy.deepcopy(config)
+    saved = torch.load(resume, map_location="cpu", weights_only=True) if resume else None
+    if saved is not None:
+        if saved.get("format_version", 1) == 1:
+            config["task"].setdefault("adapter_version", 1)
+        check_model_config(checkpoint_config(saved), config)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     seed = config.get("seed", 123)
     torch.manual_seed(seed)
     device = config.get("device", "cpu")
-    clean = StructureBatch.from_structures(dataset(config, config.get("structures", 10))).to(device)
+    structures = dataset(config, config.get("structures", 10))
+    fingerprint = data_fingerprint(structures)
+    clean = StructureBatch.from_structures(structures).to(device)
     generator = torch.Generator(device=device).manual_seed(seed + 1)
     noisy, time, targets = corrupt(clean, generator=generator)
     model = build_model(config).to(device=device, dtype=torch.float64)
+    if saved is not None:
+        model.load_state_dict(saved["state_dict"], strict=True)
     execution = execution_record(model)
     starting = {name: value.detach().clone() for name, value in model.named_parameters()}
     optimizer = torch.optim.Adam(model.parameters(), lr=config.get("learning_rate", 1e-3))
+    state = restore_optimizer(saved, optimizer, config, fingerprint) if saved is not None else None
+    completed = state["completed_epochs"] if state is not None else 0
+    epochs = config.get("epochs", 10)
+    if epochs <= completed:
+        raise ValueError(f"epochs is the total target; set it greater than the {completed} completed epochs")
+    checkpoint = Path(checkpoint_path) if checkpoint_path is not None else output / "checkpoint.pt"
+    versions = version_record()
     with torch.no_grad():
-        initial = float(score_loss(model.eval()(noisy, time), targets))
-    history, gradient_norms = [], []
+        segment_initial = float(score_loss(model.eval()(noisy, time), targets))
+    initial = state["initial_loss"] if state is not None else segment_initial
+    history = list(state["history"]) if state is not None else []
+    gradient_norms = list(state["backbone_gradient_norms"]) if state is not None else []
+
+    def save_progress(epoch):
+        save_training_checkpoint(checkpoint, model, optimizer, config, versions,
+                                 {"completed_epochs": epoch, "data_fingerprint": fingerprint,
+                                  "initial_loss": initial, "history": history,
+                                  "backbone_gradient_norms": gradient_norms})
+
     model.train()
-    for _ in range(config.get("epochs", 10)):
+    for epoch in range(completed, epochs):
         optimizer.zero_grad(set_to_none=True)
         loss = score_loss(model(noisy, time), targets)
         if not bool(torch.isfinite(loss)):
@@ -66,15 +96,18 @@ def run_generation_training(config, output):
         torch.nn.utils.clip_grad_norm_(model.parameters(), config.get("clip_grad_norm", 10.))
         optimizer.step()
         history.append(float(loss.detach()))
+        interval = config.get("checkpoint_every", 0)
+        if interval and (epoch + 1) % interval == 0:
+            save_progress(epoch + 1)
+        if event_callback is not None:
+            event_callback("epoch", epoch=epoch + 1, loss=history[-1])
     model.eval()
     with torch.no_grad():
         prediction = model(noisy, time)
         final = float(score_loss(prediction, targets))
     delta = math.sqrt(sum(float((p.detach() - starting[name]).square().sum())
                           for name, p in model.named_parameters()))
-    checkpoint = output / "checkpoint.pt"
-    torch.save({"format_version": 2, "config": config, "state_dict": model.state_dict(),
-                "versions": version_record()}, checkpoint)
+    save_progress(epochs)
     reloaded = load_checkpoint(checkpoint, device=device)
     with torch.no_grad():
         again = reloaded(noisy, time)
@@ -89,6 +122,10 @@ def run_generation_training(config, output):
                  ((fractional >= -1e-10) & (fractional < 1 + 1e-10)).all())
     report = {"config": config, "versions": version_record(), "execution": execution,
               "initial_loss": initial,
+              "checkpoint": str(checkpoint), "completed_epochs": epochs, "segment_initial_loss": segment_initial,
+              "resume": {"path": str(resume) if resume else None,
+                         "kind": "full" if state is not None else "weights_only" if saved is not None else "none",
+                         "completed_epochs_before": completed},
               "final_loss": final, "history": history, "backbone_gradient_norms": gradient_norms,
               "parameter_delta_norm": delta, "checkpoint_reload": True,
               "structures": [{"id": identifier, "provenance": metadata,
@@ -99,8 +136,8 @@ def run_generation_training(config, output):
               "predictions": {key: value.cpu().tolist() for key, value in again.items()},
               "generation": generated_record(generated),
               "interpretation": "fixed-corruption overfit and sampling execution; no quality/generalization claim",
-              "passed": bool(history and final < initial and delta > 0 and valid and
-                             max(gradient_norms, default=0) > 0)}
+              "passed": bool(history[completed:] and final < initial and delta > 0 and valid and
+                             max(gradient_norms[completed:], default=0) > 0)}
     (output / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     if not report["passed"]:
         raise RuntimeError(f"Generation execution acceptance failed: {output / 'report.json'}")

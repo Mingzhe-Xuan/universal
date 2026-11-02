@@ -4,6 +4,13 @@
 CGCNN、MEGNet；MACE/NequIP 接入官方主干，其余为明确记录的原生架构变体，不能直接加载原包权重。
 MACE 与 NequIP 分环境运行；具体版本和服务器路径见 [环境记录](agents/env.md)。
 
+## 文档约定的命令行
+
+主入口为 `ugnn --mode train/infer --model ... --dataset ... --task ... --config ...`。
+完整参数、YAML配置、续训和ALIGNN带隙示例见 [CLI使用约定](plan/usage.md)。
+`--logging` 指日志目录，`--save` 指训练checkpoint文件，`--results` 指推理JSON文件。
+旧子命令入口继续保留，下面的示例也可使用。
+
 ## 训练与重载推理
 
 `configs/` 提供形成能、E/F/S、Born 张量、Raman 和固定组成生成示例。
