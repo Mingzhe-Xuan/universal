@@ -24,6 +24,19 @@
 职责：dataset 提供原子、几何、标签和可选原始图；graph builder 提供拓扑与可选特征；GNN 只提供
 读出前的节点表示；统一 adapter/readout 根据性质规格生成预测。原子顺序和样本映射在整个链中保持。
 
+```mermaid
+flowchart LR
+    D[StructureBatch] --> B
+    subgraph Wrapper[StandardBackbone]
+        B[BaseGraphBuilder] --> GB[GraphBatch]
+        GB --> G[BaseGNN]
+        G --> O[GNNOutput]
+        O --> N[NativeFeatures]
+    end
+    N --> R[adapter / readout]
+    R --> P[任务输出]
+```
+
 ## 2. 几何输入：Structure / StructureBatch
 
 `universal_gnn.contracts.Structure` 表示一个结构，`StructureBatch.from_structures` 负责拼批。
@@ -298,3 +311,19 @@ ugnn --mode infer --resume checkpoints/custom-gcn.pt \
 周期力场、应变和晶体生成须使用支持周期镜像的 radius / graph 插件；分子KNN不会被隐式当成周期图。
 响应读出仍按既有求导规则，不能仅凭本接口就宣称任意用户算子支持高阶反向或严格等变。
 小数据执行验证不代表泛化精度、化学合理性或完整论文复现。
+
+## 9. 已取得的执行证据
+
+最终实现源码 `a07ab00`，Slurm738用十个原始G2分子验证：
+
+- 目录导入 `MolecularKNN` 和 `MolecularGCN`，经 StandardBackbone 接入统一性质读出；
+- 训练15轮、完整恢复至30轮，与连续30轮参数逐项完全一致；
+- JSON导入预计算局部图，独立训练与动态KNN参数/预测完全一致；
+- 重载checkpoint后对十个分子推理，协议版本和源码指纹正确。
+
+两环境Slurm739/740各52项检查通过。初轮735/736/737证据保留，不冒充最终源码。
+本地 [实际报告与日志](../results/custom-extensions-738/evidence.json) 共217277 bytes，SHA256：
+`b8cc046cf498e9e992bf7a4e295ccded33c54bd82c91f2aa6ce7be1b417d81ea`。
+两个标准数据文件位于 `data/acceptance/molecules-g2-10.json` 和
+`data/acceptance/molecules-g2-10-graphs.json`；checkpoint在服务器 `runs/custom-extensions-738`。
+数据、权重和日志均不进入Git。结果仅证明执行/兼容，不是十样本的泛化精度结论。
