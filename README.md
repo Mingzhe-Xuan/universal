@@ -6,7 +6,7 @@ Initial backbones: MACE, NequIP, Equiformer, ALIGNN, CGCNN and MEGNet.
 The implemented toolkit and its ten-structure execution checks cover six backbones. See
 [usage](docs/usage.md), [implementation scope](docs/plan/implementation.md),
 [architecture](docs/plan/gnn_task_toolkit.md), and [current state](docs/agents/state.md).
-All 96 real ten-structure training/reloaded-inference cases and six ten-structure simulation
+The historical architecture-variant matrix of 96 real ten-structure training/reloaded-inference cases and six ten-structure simulation
 workflows passed on Slurm; [the evidence record](docs/agents/acceptance.md) records versions, data
 and limits. This is execution validation, not reproduction of paper benchmark accuracy.
 
@@ -21,10 +21,11 @@ weights and generated reports outside Git. The acceptance protocol uses 10 real 
 model/task, checks optimization, checkpoint reload and prediction, and measures execution correctness,
 not generalization accuracy.
 
-MACE and NequIP require separate environments because of their e3nn constraints. Install
-`.[dev,mace]` in the MACE environment and `.[dev,nequip]` in the NequIP environment. The four native
-Torch/e3nn architecture variants use the core environment. See each backbone's README for its
-implementation boundary and the environment record for the versions actually tested.
+Canonical model names now select original official implementations and registered published weights.
+Prepare their cache and dependencies before training; see [official providers](src/universal_gnn/backbones/official/README.md).
+MACE and NequIP need separate e3nn environments. The old architecture variants require explicit
+`implementation: legacy`; historical variant-matrix results do not certify official checkpoints.
+See the environment record for the packages and versions actually tested.
 
 Custom GNN/graph extensions and config/dataset/checkpoint formats share one
 [versioned standard](docs/standards.md); [KNN + GCN](examples/custom_knn_gcn/README.md) is the executable example.

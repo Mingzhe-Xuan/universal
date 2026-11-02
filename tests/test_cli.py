@@ -16,17 +16,17 @@ def inputs(tmp_path):
                                  "cell": [[4., 0., 0.], [0., 4., 0.], [0., 0., 4.]],
                                  "pbc": [True] * 3, "targets": {"bandgap": 1.2}}]))
     config = {"seed": 123, "structures": 1, "epochs": 4, "checkpoint_every": 1,
-              "backbone": {"name": "cgcnn", "width": 8, "layers": 1, "cutoff": 2.},
+              "backbone": {"name": "cgcnn", "implementation": "legacy", "width": 8, "layers": 1, "cutoff": 2.},
               "dataset": {"path": str(data)}, "task": {"kind": "supervised", "property": "bandgap"}}
     return data, config
 
 
 def test_configuration_safe_yaml_and_cli_precedence(tmp_path):
     path = tmp_path / "config.yaml"
-    path.write_text('backbone: {name: mace, width: 8}\ndataset: {path: old, sha256: stale}\n'
+    path.write_text('backbone: {name: mace, implementation: legacy, width: 8}\ndataset: {path: old, sha256: stale}\n'
                     'task: {kind: supervised, property: formation_energy, unit: eV/atom}\nepochs: 2\n')
     resolved = resolve_config(load_config(path), model="alignn", dataset="new", task="bandgap", training=True)
-    assert resolved["backbone"] == {"name": "alignn", "width": 8}
+    assert resolved["backbone"] == {"name": "alignn", "implementation": "legacy", "width": 8}
     assert resolved["dataset"] == {"path": "new"}
     assert resolved["task"] == {"kind": "supervised", "property": "bandgap"}
     assert resolved["checkpoint_every"] == 1

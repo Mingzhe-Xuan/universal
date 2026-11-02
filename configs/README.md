@@ -3,8 +3,13 @@
 Run on the cluster through Slurm, using `ugnn train configs/generation.json --output runs/gen`.
 The example requires ten real periodic structures at `data/acceptance/generation-10.json`; obtain and record
 their public source before running. No example labels or synthetic structures are substituted.
-Choose `mace`, `nequip`, `equiformer`, `alignn`, `cgcnn`, or `megnet`. Use the separate MACE
-environment for MACE; model architecture and dependency versions are recorded in output reports.
+Choose `mace`, `nequip`, `equiformer`, `alignn`, `cgcnn`, or `megnet`. Canonical names use original
+official models and published weights, with randomly initialized task heads; prepare the profile
+cache and the matching dependencies first. The default Slurm CLI environment is universal-official;
+NequIP uses universal. See the official provider README for resource formats and tested boundaries.
+Examples select all available records with structures:null, mini-batch32 and float32; the supplied
+acceptance files happen to contain ten structures. Explicit structures:10 is only for intentional
+smoke runs. Model architecture and dependency versions are recorded in output reports.
 
 Generation is fixed-composition denoising; the source structures need no property labels.
 The runner overfits one fixed corruption for execution acceptance and samples fresh geometry.
@@ -17,7 +22,8 @@ Available examples: `formation_energy.json`, `forcefield.json`, `born_charge.jso
 The real execution cohorts live on the server under `data/acceptance`; raw-source hashes,
 IDs and preprocessing are recorded in each cohort and its manifest. Downloaded data is ignored
 by Git. `scripts/run_matrix.py prepare --tasks TASKS --output runs/NAME` generates configurations
-for every built-in model from a prepared manifest; `--models cgcnn,mace` selects a subset.
+for each old architecture variant with explicit implementation:legacy from a prepared manifest;
+`--models cgcnn,mace` selects a subset. This historical matrix is separate from validate_official.py.
 
 For a new property, set `task.spec` with explicit scope/shape/unit/kind/construction.
 For a dataset directory, use `dataset.path=plugin:/path` and implement `build_dataset` in

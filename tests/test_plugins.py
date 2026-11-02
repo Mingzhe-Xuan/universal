@@ -22,7 +22,7 @@ def build_dataset(label=1):
     structures = load_structures("plugin:" + str(tmp_path), options={"label": 2})
     assert structures[0].targets["my_label"] == 2
     assert structures[0].positions.dtype == torch.float64
-    config = {"backbone": {"name": "cgcnn", "width": 8, "layers": 1},
+    config = {"backbone": {"name": "cgcnn", "implementation": "legacy", "width": 8, "layers": 1},
               "task": {"kind": "supervised", "property": "my_label",
                        "spec": {"scope": "graph", "shape": [3], "unit": "class", "kind": "classification"}}}
     model = build_model(config).double()

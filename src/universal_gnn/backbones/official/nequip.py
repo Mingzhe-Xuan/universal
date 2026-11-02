@@ -53,7 +53,8 @@ class OfficialNequIP(OfficialBackbone):
                 data["pos"] = ReferenceValue.apply(data["pos"], batch.positions[start:end].to("cpu"))
                 data["cell"] = ReferenceValue.apply(data["cell"], batch.cell[i].to("cpu").reshape_as(data["cell"]))
                 values.append(neighbors(mapper(data)))
-        return AtomicDataDict.to_(AtomicDataDict.batched_from_list(values), device=batch.positions.device)
+        data = values[0] if len(values) == 1 else AtomicDataDict.batched_from_list(values)
+        return AtomicDataDict.to_(data, device=batch.positions.device)
 
     def native_forward(self, batch):
         captured = []

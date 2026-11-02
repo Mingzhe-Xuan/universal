@@ -1,14 +1,14 @@
 seed: 123
-structures: 10
+structures: null
+batch_size: 32
+dtype: float32
 device: cpu
 epochs: 30
 learning_rate: 0.001
 checkpoint_every: 1
 
 backbone:
-  width: 16
-  layers: 2
-  cutoff: 4.0
+  implementation: official
 
 dataset:
   bindings:

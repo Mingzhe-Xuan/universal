@@ -13,7 +13,7 @@ from test_backbones import tiny_batch
 def test_equivariant_native_features_condition_and_second_derivatives(name):
     o3 = load_o3()
     torch.manual_seed(12)
-    model = make_backbone(name, width=8, layers=2, cutoff=2., context_dim=2).double()
+    model = make_backbone(name, implementation="legacy", width=8, layers=2, cutoff=2., context_dim=2).double()
     batch = tiny_batch()
     batch.positions.requires_grad_()
     context = torch.tensor([[.3, -.2]], dtype=torch.float64, requires_grad=True)

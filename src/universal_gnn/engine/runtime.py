@@ -19,6 +19,10 @@ def checkpoint_config(saved):
     if version not in {1, 2}:
         raise ValueError(f"Unsupported checkpoint format {version}")
     config = deepcopy(saved["config"])
+    from universal_gnn.backbones.official.profiles import PROFILES
+
+    if config.get("backbone", {}).get("name") in PROFILES:
+        config["backbone"].setdefault("implementation", "official" if saved.get("official_backbone") else "legacy")
     validate_config(config)
     for kind, value in saved.get("contract_versions", {}).items():
         if kind not in CONTRACT_VERSIONS:
@@ -30,7 +34,15 @@ def checkpoint_config(saved):
 
 
 def check_model_config(expected, actual):
-    if expected["backbone"] != actual["backbone"]:
+    from universal_gnn.backbones.official.profiles import PROFILES
+
+    def normalized(settings):
+        value = dict(settings)
+        if value.get("name") in PROFILES:
+            value.setdefault("implementation", "official")
+        return value
+
+    if normalized(expected["backbone"]) != normalized(actual["backbone"]):
         raise ValueError("Model settings do not match the checkpoint backbone")
     if expected.get("graph") != actual.get("graph"):
         raise ValueError("Graph settings do not match the checkpoint")

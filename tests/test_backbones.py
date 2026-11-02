@@ -15,7 +15,7 @@ def tiny_batch():
 @pytest.mark.parametrize("name", ["cgcnn", "megnet", "alignn"])
 def test_invariant_nodes_condition_and_input_gradient(name):
     torch.manual_seed(1)
-    model = make_backbone(name, width=8, layers=1, cutoff=2., context_dim=2).double()
+    model = make_backbone(name, implementation="legacy", width=8, layers=1, cutoff=2., context_dim=2).double()
     batch = tiny_batch()
     batch.positions.requires_grad_()
     context = torch.tensor([[.3, -.2]], dtype=torch.float64, requires_grad=True)

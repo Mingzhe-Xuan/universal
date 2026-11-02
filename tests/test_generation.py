@@ -12,7 +12,7 @@ def test_scalar_only_official_feature_format_uses_differentiable_geometric_vecto
     torch.manual_seed(12)
     batch = tiny_batch()
     batch.positions.requires_grad_(True)
-    backbone = make_backbone("cgcnn", width=8, layers=1, cutoff=2.).double()
+    backbone = make_backbone("cgcnn", implementation="legacy", width=8, layers=1, cutoff=2.).double()
     features = replace(backbone.encode(batch), kind="equivariant")
     readout = DirectionReadout(features.irreps, "equivariant", 2.).double()
     assert not readout.native_polar
@@ -52,7 +52,7 @@ def test_periodic_scaled_score_matches_log_density_derivative_at_boundary():
 
 def test_denoising_heads_reach_backbone_and_sample_preserves_composition():
     torch.manual_seed(3)
-    model = PeriodicDenoiser(make_backbone("cgcnn", width=8, layers=1, cutoff=2.,
+    model = PeriodicDenoiser(make_backbone("cgcnn", implementation="legacy", width=8, layers=1, cutoff=2.,
                                           context_dim=CONTEXT_DIM)).double()
     batch = tiny_batch()
     noisy, time, targets = corrupt(batch, generator=torch.Generator().manual_seed(8))

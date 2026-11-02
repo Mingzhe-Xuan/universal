@@ -10,7 +10,7 @@ from test_backbones import tiny_batch
 def test_geometry_basis_version_survives_checkpoint_loading(tmp_path, format_version):
     config = {"backbone": {"name": "cgcnn", "width": 8, "layers": 1, "cutoff": 2.},
               "task": {"kind": "supervised", "property": "dielectric", "route": "common_equivariant"}}
-    explicit = {**config, "task": {**config["task"], "adapter_version": format_version}}
+    explicit = {**config, "backbone": {**config["backbone"], "implementation": "legacy"}, "task": {**config["task"], "adapter_version": format_version}}
     model = build_model(explicit).double().eval()
     batch = tiny_batch()
     before = model(batch)

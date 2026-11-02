@@ -145,3 +145,7 @@
 - 2026-11-03T00:20:19+08:00：Path.write_text在Windows默认会把LF转为CRLF；read_bytes直接发bash会使set-e/health/cd全部解析失败，不能只防PowerShell管道末尾CR。SSH发送前规范CRLF为LF并断言无CR，优先对实际发送bytes做bash-n；归档payload独立解码后核hash，不改其内容。本次仅产生一个空的home/models/official-install+CR缓存叶目录，精确空目录清理，不递归删除或覆盖未知路径。
 
 - 2026-11-03T00:43:04+08:00：99MB资源传输与第三条SSH控制连接重叠时reset，proxy仍健康，不能据此重启代理。后续大传输期间只保留代理+该传输，不并发新工作SSH；对同一任务partial先核长度和本地前缀SHA再append，末尾全包与逐文件SHA通过才解包，禁止盲目从头传或使用不完整文件。因果尚未单独隔离，作为操作约束避免链路竞争。
+
+- 2026-11-03T00:50:06+08:00：第二次校验前缀后单独SSH资源续传仍被Vlab关闭，说明第三连接不是充分解释；复查18:26已成功的本地loopback HTTP+SOCKS Range方案，改复用健康proxy承载HTTP下载，并保留partial/完整hash门禁。不再重复大文件SSHstdin协议。恢复offset非MiB对齐时，进度应按阈值递增，不能用sent%8MiB==0判断，否则会漏报。
+
+- 2026-11-03T01:12:09+08:00: Original model parity includes input keys and batching convention, not only architecture/state keys. ALIGNN Graph.atom_dgl_multigraph can return DGL for pure_torch when DGL is installed; use its corresponding original batch API. NequIP singleton ASE inference is unbatched; adding a batch field changes its force-output execution path. Diagnose exact inputs first and preserve strict output tolerances rather than relaxing force checks.

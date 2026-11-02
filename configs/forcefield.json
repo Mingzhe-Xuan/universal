@@ -1,14 +1,12 @@
 {
   "seed": 123,
-  "structures": 10,
+  "structures": null,
   "device": "cpu",
   "epochs": 30,
   "learning_rate": 0.001,
   "backbone": {
     "name": "cgcnn",
-    "width": 16,
-    "layers": 2,
-    "cutoff": 4.0
+    "implementation": "official"
   },
   "dataset": {
     "path": "data/acceptance/forcefield-10.json",
@@ -30,5 +28,7 @@
   },
   "task": {
     "kind": "forcefield"
-  }
+  },
+  "batch_size": 32,
+  "dtype": "float32"
 }

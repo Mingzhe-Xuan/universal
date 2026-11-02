@@ -1,14 +1,12 @@
 {
   "seed": 123,
-  "structures": 10,
+  "structures": null,
   "device": "cpu",
   "epochs": 20,
   "learning_rate": 0.001,
   "backbone": {
     "name": "cgcnn",
-    "width": 16,
-    "layers": 2,
-    "cutoff": 4.0
+    "implementation": "official"
   },
   "dataset": {
     "path": "data/acceptance/generation-10.json"
@@ -20,5 +18,7 @@
       "inner_steps": 2,
       "seed": 456
     }
-  }
+  },
+  "batch_size": 32,
+  "dtype": "float32"
 }

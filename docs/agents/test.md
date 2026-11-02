@@ -734,3 +734,11 @@
 - 2026-11-03T00:13:11+08:00：源码资源包重跑通过：3个固定官方commit、85个原始文件，bundle131330字节，SHA03d01b5c27b0f2adaaa801f64cf01b46061f645b9b8b395797298cca56a96df8；打包后逐成员与上游archive内容hash一致，未加入权重/日志/符号链接。仅包目录外的上游训练文件链接被排除，原始包源码未修改。Python3.10兼容hash实现已改为分块SHA256，需复核最终脚本静态检查。
 
 - 2026-11-03T00:47:21+08:00：cf2e993 Slurm744 CGCNN独立CIFData/原forward对照+10真实结构微调/重载passed（loss1.4448969364→1.0030168835）；745 MatGL-MEGNet原predict_structure对照+微调/重载passed（1.0224616975→0.8826507658）。747core/748MACE完整回归各62 passed。746 NequIP真实发布包能反序列化，但旧官方API返回ModuleDict，metadata读取失败；新增保留原对象的容器选择/歧义拒绝回归，并改用官方from_ase精确输入协议。修正后基础5 passed/compileall通过，NequIP实际重跑待同步，不能记作已通过。
+
+## 2026-11-03T00:58:14+08:00：官方默认选择及旧checkpoint迁移单元测试计划
+
+- canonical六模型默认原始官方实现，缓存profile/来源/hash明确；缺资源明确报错，不回退到变体。显式implementation:legacy保留旧变体，原数值/梯度测试继续以显式legacy执行，不删或放宽断言。
+- 旧checkpoint无official artifact时恢复legacy，并保留float64/适配器版本/训练配置兼容；新的官方自包含checkpoint重载不依赖cache。CLI切换官方模型时清掉旧模型专属checkpoint/构图尺寸，不把旧权重套到新模型。
+- 示例配置删除隐藏10条限制，显式structures:null、batch_size/dtype；真实10结构验收脚本保留明确10条。验证YAML/JSON解析、CLI优先级、缓存SHA错误拒绝、不同checkpoint版本的实际旧数值重载和精确resume。所有实际训练/推理回归走Slurm，提交前先做对应解析/路由单元及静态检查。
+
+- 2026-11-03T01:12:09+08:00: Migration routing/parser/analytic units: 14 passed; compileall src/scripts/tests and git diff --check passed. Published cache SHA constants cross-checked against the local download manifest. Full numerical legacy-resume/training regression planned on Slurm after sync. Official749 failed strict force parity (2.68e-5, tolerance unchanged); singleton inputs now preserve the original unbatched API and reference asserts every input tensor exactly. Official750 failed because Graph returns DGL while the reference used TorchGraph batching; reference now uses original dgl.batch. Official751 missing torch_sparse, binary-wheel installation planned in the isolated environment. These actual acceptance failures are not recorded as passed.

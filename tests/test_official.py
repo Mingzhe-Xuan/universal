@@ -78,3 +78,48 @@ def test_nequip_package_container_selects_original_model_without_reconstruction(
     assert select_packaged_model(models, "second") == (second, "second")
     with pytest.raises(ValueError, match="no model"):
         select_packaged_model(models, "absent")
+
+
+@pytest.mark.parametrize("name", ["alignn", "cgcnn", "megnet", "mace", "nequip", "equiformer"])
+def test_canonical_model_uses_official_profile_without_variant_fallback(tmp_path, monkeypatch, name):
+    from universal_gnn.backbones import official
+    from universal_gnn.backbones.factory import make_backbone
+    from universal_gnn.backbones.official.profiles import PROFILES
+
+    monkeypatch.setenv("UGNN_MODEL_CACHE", str(tmp_path))
+    profile = {"checkpoint": "original.bin", "source": "unit-test",
+               "files": {"original.bin": hashlib.sha256(b"original").hexdigest()}}
+    if name == "cgcnn":
+        profile["atom_init"] = "original.bin"
+    monkeypatch.setitem(PROFILES, name, profile)
+    with pytest.raises(ValueError, match="weights are missing"):
+        make_backbone(name)
+    (tmp_path / "original.bin").write_bytes(b"wrong")
+    with pytest.raises(ValueError, match="checksum mismatch"):
+        make_backbone(name)
+    (tmp_path / "original.bin").write_bytes(b"original")
+    monkeypatch.setattr(official, "make_official", lambda selected, **options: (selected, options))
+    selected, options = make_backbone(name)
+    assert selected == name and options["source"] == "unit-test"
+    assert options["checkpoint"] == str(tmp_path / "original.bin")
+    with pytest.raises(ValueError, match="checkpoint architecture"):
+        make_backbone(name, width=8)
+    (tmp_path / "original.bin").unlink()
+    assert make_backbone(name, _artifact={"unit": True}) == (name, {"_artifact": {"unit": True}})
+
+
+def test_model_switch_clears_other_official_checkpoint_and_old_configs_remain_legacy():
+    from universal_gnn.engine.configuration import resolve_config
+    from universal_gnn.engine.runtime import checkpoint_config, check_model_config
+
+    original = {"backbone": {"name": "cgcnn", "checkpoint": "old", "atom_init": "old-table"},
+                "dataset": {"path": "data.json"}, "task": {"kind": "supervised", "property": "bandgap"}}
+    resolved = resolve_config(original, model="alignn")
+    assert resolved["backbone"] == {"name": "alignn", "implementation": "official"}
+    old = checkpoint_config({"format_version": 2, "config": original})
+    assert old["backbone"]["implementation"] == "legacy"
+    current = checkpoint_config({"format_version": 2, "config": original, "official_backbone": {"version": 1}})
+    assert current["backbone"]["implementation"] == "official"
+    check_model_config(current, original)
+    with pytest.raises(ValueError, match="checkpoint backbone"):
+        check_model_config(old, original)

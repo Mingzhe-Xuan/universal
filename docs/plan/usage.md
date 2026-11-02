@@ -19,7 +19,14 @@ ugnn --mode infer --model mace --dataset data_path --resume ckpt_path --task for
   例如已完成15轮，设30则再训练15轮。所选结构/标签/绑定、训练seed和模型/任务必须兼容。
 - 旧 checkpoint 没有优化器状态时，明确提示并记录 `weights_only` 暖启动，从第0轮开始新的优化；不伪装完整恢复。
 - 推理的模型/任务/架构参数须与 checkpoint 一致，冲突时报错。可替换推理数据和设备，`--limit` 限制结构数。
-- 使用 MACE 时激活其独立环境；核心/NequIP 与 MACE 的 e3nn 版本不同。旧子命令入口继续兼容。
+- 六个标准模型名默认加载官方主干和登记的发布权重。权重须先放入 `models/official`，或设置
+  `UGNN_MODEL_CACHE` 指向相同布局的缓存；也可在 `backbone.checkpoint` 显式指定兼容官方文件。
+  官方模型宽度、层数、cutoff等由原checkpoint决定，不能通过旧 `width/layers/cutoff/radial` 覆盖。
+  精确资源列表与来源见 [profiles.py](../../src/universal_gnn/backbones/official/profiles.py)。
+- 官方原模型完整严格加载后，在读出边界截取节点特征，新增任务头随机初始化；默认同时微调主干。
+  `--resume` 指本框架checkpoint的恢复；官方初始化文件放 `backbone.checkpoint`，两者用途不同。
+- 显式 `implementation: legacy` 可运行旧变体。历史checkpoint无官方artifact时自动按legacy恢复。
+  NequIP与其他官方模型使用不同e3nn环境，具体见 [环境记录](../agents/env.md)。旧子命令继续兼容。
 
 ## ALIGNN 训练带隙
 
@@ -65,12 +72,15 @@ sbatch scripts/ugnn.slurm --mode train --model alignn \
 ```
 
 推理同样提交 `scripts/ugnn.slurm`，将后面的参数替换成上面的 `--mode infer` 命令。
-该脚本默认核心环境；MACE 使用 `--export=ALL,UGNN_PYTHON=/home/xmz/.venvs/universal-mace/bin/python`。
+该脚本默认 `/home/xmz/.venvs/universal-official/bin/python`；NequIP 使用
+`sbatch --export=ALL,UGNN_PYTHON=/home/xmz/.venvs/universal/bin/python scripts/ugnn.slurm ...`。
+显式legacy MACE使用 `/home/xmz/.venvs/universal-mace/bin/python`；其他自定义环境同样用UGNN_PYTHON覆盖。
 所有实际训练、推理均在Slurm计算节点执行。
 
 ## 实际验证
 
-源码 `3270e9e` 在Slurm731完成上述十结构ALIGNN带隙训练、续训和推理，恢复15→30轮与连续30轮
+以下是旧变体的历史CLI证据，不代表新官方默认路径的验收：源码 `3270e9e` 在Slurm731完成十结构
+ALIGNN带隙训练、续训和推理，恢复15→30轮与连续30轮
 参数逐项完全一致；Slurm734另外验证 `scripts/ugnn.slurm` 透传推理结果一致。
 两环境Slurm732/733各39项检查通过。本地证据位于
 `results/cli-usage-731/evidence.json`，包括实际报告和日志；生成物不进入Git。
@@ -90,6 +100,7 @@ Set `batch_size: 32` (default), optional `max_atoms: 1024`, and `dtype: float32`
 training) or `float64`. Use standard JSONL for indexed input and a `.jsonl` results path for streamed
 inference. Both documented CLI forms keep their existing flags. The report states selected and
 available counts; a capped report listing does not cap training. Full resume requires identical
-batching and precision settings. Official-model support is under implementation and is not yet
-claimed by this runtime change; existing architecture variants remain incompatible with external
-weights until their official provider is selected.
+batching and precision settings. The six canonical names now select official providers; missing
+weights/dependencies fail explicitly. The original variants require implementation: legacy and
+cannot load the official weights. Official checkpoint acceptance is recorded separately from the
+historical multi-task variant matrix.

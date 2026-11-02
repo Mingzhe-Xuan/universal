@@ -27,7 +27,7 @@ def prepare(args):
             identifier = f"{name}--{task_name}"
             config = {"seed": 123, "structures": 10, "device": "cpu", "epochs": args.epochs,
                       "learning_rate": args.learning_rate,
-                      "backbone": {"name": name, "width": args.width, "layers": 2, "cutoff": 4.},
+                      "backbone": {"name": name, "implementation": "legacy", "width": args.width, "layers": 2, "cutoff": 4.},
                       "dataset": source["dataset"], "task": source["task"]}
             cases.append({"id": identifier, "config": config,
                           "output": str(args.output / identifier)})

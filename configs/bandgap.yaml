@@ -1,15 +1,15 @@
 seed: 123
-structures: 10
+structures: null
+batch_size: 32
+dtype: float32
 device: cpu
 epochs: 30
 learning_rate: 0.001
 checkpoint_every: 1
 
 backbone:
+  implementation: official
   name: alignn
-  width: 16
-  layers: 2
-  cutoff: 4.0
 
 dataset:
   path: data/acceptance/bandgap-10.json

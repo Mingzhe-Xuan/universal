@@ -71,6 +71,9 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
     config.setdefault("generation_corruption", "per_structure_v1")
     validate_batching(config)
     if saved is not None:
+        expected = checkpoint_config(saved)
+        if expected["backbone"].get("implementation") == "legacy":
+            config["backbone"].setdefault("implementation", "legacy")
         if saved.get("format_version", 1) == 1:
             config["task"].setdefault("adapter_version", 1)
         check_model_config(checkpoint_config(saved), config)

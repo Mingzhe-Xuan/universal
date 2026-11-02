@@ -96,7 +96,7 @@ def alignn_reference(backbone, structures, config):
     from ase.data import chemical_symbols
     from jarvis.core.atoms import Atoms
     from alignn.graphs import Graph
-    from alignn.torch_graph_builder import batch_torch_graph_pairs
+    import dgl
 
     original = copy.deepcopy(backbone.model).eval()
     settings = backbone.configuration
@@ -110,7 +110,8 @@ def alignn_reference(backbone, structures, config):
                      use_canonize=settings.get("use_canonize", True),
                      use_lattice_prop=settings.get("use_lattice_prop", False),
                      dtype=config["dtype"], three_body_cutoff=settings.get("three_body_cutoff", 3.5)))
-    graph, line_graph = batch_torch_graph_pairs(pairs)
+    graph = dgl.batch([pair[0] for pair in pairs])
+    line_graph = dgl.batch([pair[1] for pair in pairs])
     batch = StructureBatch.from_structures(list(structures))
     captured = []
     handle = original.get_submodule(backbone.feature_path).register_forward_hook(
@@ -135,6 +136,10 @@ def nequip_reference(backbone, structures, config):
     errors, energy_errors, force_errors = [], [], []
     for structure in structures:
         captured = []
+        reference_inputs = []
+        input_handle = original.register_forward_pre_hook(
+            lambda module, inputs: reference_inputs.append({key: value.detach().clone()
+                for key, value in inputs[0].items()}))
         handle = original.get_submodule(backbone.feature_path).register_forward_pre_hook(
             lambda module, inputs: captured.append(inputs[0]["node_features"].detach()))
         atoms = ase_atoms(structure)
@@ -145,7 +150,13 @@ def nequip_reference(backbone, structures, config):
                 reference_forces = atoms.get_forces()
         finally:
             handle.remove()
+            input_handle.remove()
         batch = StructureBatch.from_structures([structure])
+        native_inputs = backbone.native_input(batch)
+        assert set(native_inputs) == set(reference_inputs[0]), "Official NequIP input keys differ"
+        for key, expected in reference_inputs[0].items():
+            torch.testing.assert_close(native_inputs[key].detach().cpu(), expected.cpu(), rtol=0, atol=0,
+                                       msg=lambda text: f"Official NequIP input {key}: {text}")
         native_prediction, native_nodes = backbone.native_forward(batch)
         errors.append(assert_same(native_nodes, captured[0]))
         energy_errors.append(assert_same(native_prediction["total_energy"].reshape(-1),

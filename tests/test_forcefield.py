@@ -9,7 +9,7 @@ from test_backbones import tiny_batch
 
 def test_force_stress_finite_difference_and_parameter_chain():
     torch.manual_seed(4)
-    model = ForceFieldModel(make_backbone("cgcnn", width=8, layers=1, cutoff=2.)).double()
+    model = ForceFieldModel(make_backbone("cgcnn", implementation="legacy", width=8, layers=1, cutoff=2.)).double()
     batch = tiny_batch()
     predictions = model(batch)
     assert predictions["forces"].shape == (2, 3)
@@ -36,7 +36,7 @@ def test_force_stress_finite_difference_and_parameter_chain():
 
 def test_force_hessian_keeps_external_position_graph():
     torch.manual_seed(11)
-    model = ForceFieldModel(make_backbone("cgcnn", width=8, layers=1, cutoff=2.)).double()
+    model = ForceFieldModel(make_backbone("cgcnn", implementation="legacy", width=8, layers=1, cutoff=2.)).double()
     batch = tiny_batch()
     batch.positions.requires_grad_()
     forces = model.eval()(batch, create_graph=True)["forces"]

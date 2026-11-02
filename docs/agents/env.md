@@ -73,3 +73,5 @@
 - EquiformerV1原始OC20权重已从作者Dropbox目录下载并提取best_checkpoint.pt（36958765字节，SHA45a991aac88702003156a5fc3e45ee80f63ca5be4af6c385f033448cd43ce7e2）；配置内原模型graph_attention_transformer，原OCP提交b5a197f。已核对原生输入与完整可微距离/球谐路径，改采用V1，不修改V2的detach。Equiformer源码固定64cb7866f48b9aa156e74a9d6a2ef2663b367437，OCP固定b5a197fc3c79a9a5a787aabaa02979be53d296b7。
 
 - 2026-11-03T00:27:08+08:00：official环境实际依赖安装成功：ALIGNN2026.10.11、timm0.6.13、torch-scatter2.1.2+pt27cu128、torch-cluster1.6.3+pt27cu128；MatGL1.0.0、DGL1.1.3+cu121及科学包保持原有只读来源。85文件原始源码资源包已核SHA/逐文件hash并写vendor .pth，CGCNN/Equiformer/OCP源码未修改。NequIP先在原core0.14.0/e3nn0.5.8环境实测官方可移植package，若兼容无需新增环境。
+
+- 2026-11-03T01:12:09+08:00: Before next installation: universal-official already exists; install only matching torch-sparse binary wheel for Torch2.7/cu128 with pip --python into this task venv. Do not compile on login or change parent site-packages. Keep pip output under models/official-install; actual import/model execution goes through Slurm.

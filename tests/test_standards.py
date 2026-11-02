@@ -84,7 +84,7 @@ def test_unknown_dataset_and_config_versions_fail_closed(tmp_path, version):
 def test_graph_configuration_not_silently_ignored():
     config = {"backbone": {"name": "alignn"}, "graph": {"name": "knn"},
               "task": {"kind": "supervised", "property": "bandgap"}}
-    with pytest.raises(ValueError, match="builds its own graph"):
+    with pytest.raises(ValueError, match="original graph preprocessing"):
         build_model(config)
     result = resolve_config({"backbone": {"name": "gcn"}, "graph": {"name": "knn", "k": 2},
                              "dataset": {"path": "data.json"}, "task": {"kind": "supervised", "property": "bandgap"}},

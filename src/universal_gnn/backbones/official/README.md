@@ -1,7 +1,7 @@
 # Official pretrained backbones
 
-This module is under implementation; implemented wrappers are not declared verified until the
-published checkpoint and ten-real-structure Slurm fine-tuning evidence have been recorded.
+This module is the default route for the six canonical model names. Providers are not declared
+verified until published-checkpoint and ten-real-structure Slurm evidence has been recorded.
 
 Providers load the original architecture and all its parameters and buffers, and call the original
 forward. No normalization, element encoding, interaction block, cutoff envelope or graph rule is
@@ -23,10 +23,31 @@ derivatives separately.
 
 ## Provider boundaries and references
 
-The six provider implementations now exist. Only MACE has completed the first published-checkpoint
-and real-data acceptance run at this stage (Slurm743); the other providers remain awaiting their
-recorded live validation. Native architecture variants are still the temporary legacy default during
-migration; selecting `implementation: official` never falls back to them.
+MACE743, CGCNN744 and MEGNet745 have passed original-checkpoint/reference/ten-real-structure
+fine-tuning and self-contained reload. NequIP749, ALIGNN750 and Equiformer751 exposed remaining
+reference/input or dependency issues and have not passed yet. Their follow-up evidence must be
+recorded separately. `implementation: legacy` explicitly selects old variants; official never
+falls back to them.
+
+## Configuration and cache
+
+`backbone: {name: alignn}` uses the published profile registered in `profiles.py`. Each profile
+declares source, exact relative files and SHA256. The default cache is repository `models/official`
+for an editable checkout, otherwise `~/.cache/universal_gnn/official`; `UGNN_MODEL_CACHE` overrides
+it. Model construction never downloads inside training jobs. Explicit `checkpoint` accepts the
+provider's original format; CGCNN also needs its matching `atom_init`. Backend packages/pinned
+vendor source must be installed separately as recorded in docs/agents/env.md.
+
+The official object is loaded strictly, including its original head and buffers, before extracting
+features at the head boundary. New task heads use random initialization. Full fine-tuning is the
+default; model widths/layers/cutoff are determined by the original artifact and cannot be overridden
+with old variant knobs. Conditioning is only an output adapter. Missing irreps are handled by the
+existing task readouts rather than changing the original trunk.
+
+An UGNN checkpoint embeds official source-artifact bytes, per-file checksums and implementation
+signatures in `official_backbone` version1. Reload needs the compatible official Python packages,
+but does not need the old external weight paths/cache. The separately saved state_dict is the
+fine-tuned model plus the new heads; the embedded artifact reconstructs the original architecture.
 
 - MACE: original model object and AtomicData, concatenated product-block node features.
 - CGCNN: original `cgcnn.model`, element table, neighbor rules and GaussianDistance values; features

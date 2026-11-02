@@ -271,3 +271,9 @@
 - 2026-11-03T00:34:34+08:00：已pull cf2e993并实际提交744CGCNN、745MEGNet、746NequIP官方10结构验收，747core与748MACE完整单元。下一工作连接health/pull后读取这些确定job的squeue/scontrol和stdout/stderr/failure；大资源二进制50333正在传，不重复提交任何已存在任务。
 
 - 2026-11-03T00:43:04+08:00：大资源传输50333发生SSH reset并终止，未达到完整SHA/解包；原模型文件未覆盖。代理31852仍存活且stderr无断开。下一单独资源连接先health/pull，读取已有partial的size/SHA，与本地同一archive前缀严格匹配后只续传余量；此连接期间不再另开Guqq2工作连接，避免与批量传输竞争。若前缀不匹配则拒绝追加，不重启健康代理。
+
+- 2026-11-03T00:53:25+08:00：复查已有大包经验，启动本地仅loopback资源HTTP PID45916/端口56275，只服务已核99MB归档并支持Range；代理31852继续复用。下一唯一工作连接health/pull c346d33后提交NequIP修正复验；再对该本地HTTP做端到端HEAD，按已有partial续传、核全包/8文件SHA，只有全部通过才提交ALIGNN/Equiformer Slurm。下载期间不另开工作SSH，不改公开代理监听，不运行登录节点模型。
+
+- 2026-11-03T01:04:26+08:00：代理31852被Vlab关闭且本地进程消失；19984续传curl18退出，NequIP749已提交，ALIGNN/Equiformer尚未提交。诊断连接确认1080未监听，旧代理不可用；启动唯一新代理31720。下一工作连接先端到端健康检查、仓库pull，再续传末尾约16MB并验证完整hash，最后读取749和提交另外两个验收。
+
+- 2026-11-03T01:07:29+08:00: resource archive completed and all 8 member hashes verified; Slurm750 ALIGNN/751 Equiformer submitted, 749 status query purged from Slurm (not a failure inference). Next SSH: health, git pull, inspect only known jobs749/750/751 logs and validation/failure JSON; no duplicate submissions. Proxy31720 remains dedicated.

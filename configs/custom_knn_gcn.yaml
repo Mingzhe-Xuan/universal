@@ -1,6 +1,8 @@
 schema_version: 1
 seed: 123
-structures: 10
+structures: null
+batch_size: 32
+dtype: float32
 device: cpu
 epochs: 30
 learning_rate: 0.001

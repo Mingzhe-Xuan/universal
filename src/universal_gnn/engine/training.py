@@ -159,6 +159,9 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     config.setdefault("dtype", saved["config"].get("dtype", "float64") if saved is not None else "float32")
     validate_batching(config)
     if saved is not None:
+        expected = checkpoint_config(saved)
+        if expected["backbone"].get("implementation") == "legacy":
+            config["backbone"].setdefault("implementation", "legacy")
         if saved.get("format_version", 1) == 1:
             config["task"].setdefault("adapter_version", 1)
         check_model_config(checkpoint_config(saved), config)

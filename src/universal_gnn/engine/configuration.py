@@ -42,6 +42,12 @@ def resolve_config(file_config, *, base=None, model=None, dataset=None, task=Non
                    graph=None, device=None, epochs=None, training=False):
     config = merge_config(base or {}, file_config)
     if model is not None:
+        previous = config.get("backbone", {})
+        from universal_gnn.backbones.official.profiles import PROFILES
+
+        if (previous.get("name") != model and previous.get("implementation", "official") == "official"
+                and model in PROFILES):
+            config["backbone"] = {"name": model, "implementation": "official"}
         config.setdefault("backbone", {})["name"] = model
     if graph is not None:
         if config.get("graph", {}).get("name") != graph:

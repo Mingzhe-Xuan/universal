@@ -1,7 +1,17 @@
 # Backbones
 
-All encoders return unpooled `NativeFeatures`. Scalar context is projected into the initial node
-embedding, before message passing, for diffusion/conditional tasks. Geometry is computed live.
+All encoders return unpooled `NativeFeatures`. The six canonical names select the original
+[official providers](official/README.md) by default. Published weights must be prepared in the
+profile cache or specified explicitly; missing weights/dependencies fail without a fallback.
+Original preprocessing, normalization and model modules stay intact; only the feature boundary
+and new task readouts are adapted. Official context is appended after the original backbone.
+
+## Explicit legacy variants
+
+The following implementations require `implementation: legacy`. Old UGNN checkpoints without
+an official artifact retain these implementations automatically. Their historical execution
+matrix is separate from official-checkpoint validation. Legacy scalar context is projected into
+the initial embedding before message passing; geometry is computed live.
 
 `CGCNNEncoder`, `MEGNetEncoder`, and `ALIGNNEncoder` implement their respective gated graph,
 node/edge/global graph-network, and alternating crystal/line-graph architectures in native Torch.

@@ -4,13 +4,16 @@ from .invariant import ALIGNNEncoder, CGCNNEncoder, MEGNetEncoder
 
 
 def make_backbone(name: str, *, graph_config=None, **kwargs):
-    implementation = kwargs.pop("implementation", "legacy")
+    from .official.profiles import PROFILES
+
+    implementation = kwargs.pop("implementation", "official" if name in PROFILES else "legacy")
     if implementation == "official":
         from .official import make_official
+        from .official.profiles import official_options
 
         if graph_config is not None:
             raise ValueError("Official models retain their original graph preprocessing")
-        return make_official(name, **kwargs)
+        return make_official(name, **official_options(name, kwargs))
     if implementation != "legacy":
         raise ValueError("backbone.implementation must be official or legacy")
     if name == "gcn" or name.startswith("plugin:"):

@@ -40,11 +40,12 @@ flowchart LR
 ## 2. 几何输入：Structure / StructureBatch
 
 `universal_gnn.contracts.Structure` 表示一个结构，`StructureBatch.from_structures` 负责拼批。
-运行时默认浮点使用 float64；设备和精度通过 `batch.to(device, dtype)` 一致迁移。
+新训练默认 float32；独立数据读取接口仍默认 float64，旧checkpoint未记录dtype时保留float64解释。
+设备和精度通过 `batch.to(device, dtype)` 一致迁移。
 
 | 字段 | Shape / 类型 | 含义 |
 | --- | --- | --- |
-| `numbers` | int64 `[N]` | 正原子序数；内置元素嵌入覆盖 1–118 |
+| `numbers` | int64 `[N]` | 正原子序数；实际允许元素由所选模型的原始元素表决定 |
 | `positions` | float `[N,3]` | 笛卡尔坐标，angstrom |
 | `cell` | float `[3,3]`；拼批为 `[B,3,3]` | 非奇异，晶格矢量按行存储，`r = f @ cell` |
 | `pbc` | bool `[3]`；拼批为 `[B,3]` | 各晶格轴周期性 |

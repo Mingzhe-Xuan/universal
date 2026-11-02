@@ -1,8 +1,10 @@
 # 使用说明
 
-框架通过 JSON 配置选择 backbone、数据和任务。支持 MACE、NequIP、Equiformer、ALIGNN、
-CGCNN、MEGNet；MACE/NequIP 接入官方主干，其余为明确记录的原生架构变体，不能直接加载原包权重。
-MACE 与 NequIP 分环境运行；具体版本和服务器路径见 [环境记录](agents/env.md)。
+框架通过 YAML/JSON 配置选择 backbone、数据和任务。六个标准名称 MACE、NequIP、Equiformer、
+ALIGNN、CGCNN、MEGNet 默认选择官方实现与已登记的发布权重，读出前的原模型与预处理保持原样。
+下载权重和依赖需预先准备；缺失时报错。旧架构变体必须显式指定 `backbone.implementation: legacy`。
+具体包、源码、权重配置及已验收范围见 [官方接入](../src/universal_gnn/backbones/official/README.md)
+与 [环境记录](agents/env.md)。NequIP 使用独立于其余官方模型的环境。
 
 ## 文档约定的命令行
 
@@ -24,12 +26,13 @@ ugnn infer runs/my_energy/checkpoint.pt data/acceptance/formation_energy-10.json
 Guqq2 上上述训练、推理均须放入 Slurm，例如：
 
 ```bash
-sbatch --partition=compute --cpus-per-task=2 --mem=12G --time=00:30:00 --wrap='/home/xmz/.venvs/universal/bin/ugnn train configs/formation_energy.json --output runs/my_energy'
+sbatch scripts/ugnn.slurm train configs/formation_energy.json --output runs/my_energy
 ```
 
 真实十结构数据在服务器 `/home/xmz/universal/data/acceptance`，完整矩阵清单为 `manifest.json`。
 标签源 URL、文件哈希、原记录索引、单位和转换随数据保存；数据、权重和运行报告均不进入 Git。
-所有任务都可通过修改配置切换六个 backbone，模型不会自动拥有其他单独训练任务的能力。
+任务读出可通过修改配置切换 backbone；数据的元素、周期性和模型可微能力必须满足原官方模型的约束。
+模型不会自动拥有其他单独训练任务的能力。历史96项矩阵使用旧架构变体，不能作为官方权重验收证据。
 默认按任务分别训练；联合多任务训练不是本轮实现范围。
 
 ## 自定义模型、数据与性质
