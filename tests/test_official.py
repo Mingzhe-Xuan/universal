@@ -4,7 +4,8 @@ import hashlib
 import pytest
 import torch
 
-from universal_gnn.backbones.official.base import OfficialBackbone, ReferenceValue, artifact_files, capture_features
+from universal_gnn.backbones.official.base import (OfficialBackbone, ReferenceValue, artifact_files,
+                                                  capture_features, select_packaged_model)
 
 
 def test_original_preprocessing_value_and_higher_order_gradient():
@@ -65,3 +66,15 @@ def test_official_checkpoint_rejects_different_original_source_version():
     OfficialBackbone(torch.nn.Linear(2, 3), "3x0e", "invariant", 2., artifact, version="original-v1")
     with pytest.raises(ValueError, match="source/version"):
         OfficialBackbone(torch.nn.Linear(2, 3), "3x0e", "invariant", 2., artifact, version="different-v2")
+
+
+def test_nequip_package_container_selects_original_model_without_reconstruction():
+    first, second = torch.nn.Linear(2, 3), torch.nn.Linear(2, 3)
+    assert select_packaged_model(first) == (first, None)
+    assert select_packaged_model(torch.nn.ModuleDict({"sole_model": first})) == (first, "sole_model")
+    models = torch.nn.ModuleDict({"first": first, "second": second})
+    with pytest.raises(ValueError, match="multiple models"):
+        select_packaged_model(models)
+    assert select_packaged_model(models, "second") == (second, "second")
+    with pytest.raises(ValueError, match="no model"):
+        select_packaged_model(models, "absent")

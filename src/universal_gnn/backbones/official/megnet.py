@@ -52,7 +52,8 @@ class OfficialMEGNet(OfficialBackbone):
             graph.edata["pbc_offshift"] = ReferenceValue.apply(reference_shifts.to(batch.cell), live_shifts)
             graphs.append(graph)
             states.append(state)
-        return dgl.batch(graphs), batch.positions.new_tensor(states)
+        return dgl.batch(graphs), torch.stack([torch.as_tensor(state, device=batch.positions.device,
+                                                               dtype=batch.positions.dtype) for state in states])
 
     def native_forward(self, batch):
         captured = []

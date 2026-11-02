@@ -143,3 +143,5 @@
 - 2026-11-03T00:08:57+08:00：CGCNN原仓库没有Python安装元数据，pip git URL能clone但不可安装；可用固定commit的未修改源码目录+.pth，不应为安装便利改写其层。服务器Git大包TLS失败时，改固定官方archive→逐文件校验的小型源码资源包，经任务资源目录传输，避免重新下载权重/日志和修改tracked源码。新增源码下载脚本必须兼容服务器Python3.10，不能使用3.11新增hashlib.file_digest。
 
 - 2026-11-03T00:20:19+08:00：Path.write_text在Windows默认会把LF转为CRLF；read_bytes直接发bash会使set-e/health/cd全部解析失败，不能只防PowerShell管道末尾CR。SSH发送前规范CRLF为LF并断言无CR，优先对实际发送bytes做bash-n；归档payload独立解码后核hash，不改其内容。本次仅产生一个空的home/models/official-install+CR缓存叶目录，精确空目录清理，不递归删除或覆盖未知路径。
+
+- 2026-11-03T00:43:04+08:00：99MB资源传输与第三条SSH控制连接重叠时reset，proxy仍健康，不能据此重启代理。后续大传输期间只保留代理+该传输，不并发新工作SSH；对同一任务partial先核长度和本地前缀SHA再append，末尾全包与逐文件SHA通过才解包，禁止盲目从头传或使用不完整文件。因果尚未单独隔离，作为操作约束避免链路竞争。

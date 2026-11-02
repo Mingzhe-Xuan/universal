@@ -74,6 +74,20 @@ def capture_features(forward, module, extract, *, before=False):
     raise RuntimeError("Original model did not reach the configured readout boundary")
 
 
+def select_packaged_model(loaded, model_key=None):
+    if isinstance(loaded, nn.ModuleDict):
+        if model_key is None:
+            if len(loaded) != 1:
+                raise ValueError("Official package contains multiple models; specify model_key")
+            model_key = next(iter(loaded))
+        if model_key not in loaded:
+            raise ValueError(f"Official package has no model {model_key!r}")
+        return loaded[model_key], model_key
+    if model_key is not None:
+        raise ValueError("model_key was supplied for a package containing a single direct model")
+    return loaded, None
+
+
 class OfficialBackbone(nn.Module):
     def __init__(self, model, irreps, kind, cutoff, artifact, *, context_dim=0, version=None):
         super().__init__()

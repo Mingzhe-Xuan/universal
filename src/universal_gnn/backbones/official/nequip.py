@@ -6,11 +6,11 @@ import tempfile
 
 import torch
 
-from .base import OfficialBackbone, artifact_files, capture_features
+from .base import OfficialBackbone, ReferenceValue, artifact_files, capture_features, default_dtype, select_packaged_model
 
 
 class OfficialNequIP(OfficialBackbone):
-    def __init__(self, checkpoint=None, *, feature_module="per_atom_energy_readout",
+    def __init__(self, checkpoint=None, *, feature_module="per_atom_energy_readout", model_key=None,
                  context_dim=0, source=None, _artifact=None):
         from nequip.model import ModelFromPackage
 
@@ -18,7 +18,7 @@ class OfficialNequIP(OfficialBackbone):
         temporary = tempfile.TemporaryDirectory(prefix="ugnn-nequip-")
         path = Path(temporary.name) / "model.nequip.zip"
         path.write_bytes(artifact["files"]["package"])
-        model = ModelFromPackage(str(path), compile_mode="eager")
+        model, selected = select_packaged_model(ModelFromPackage(str(path), compile_mode="eager"), model_key)
         targets = [(name, module) for name, module in model.named_modules()
                    if name == feature_module or name.endswith("." + feature_module)]
         if len(targets) != 1:
@@ -33,20 +33,26 @@ class OfficialNequIP(OfficialBackbone):
                          artifact, context_dim=context_dim, version=version("nequip"))
         self.feature_path, self._temporary = feature_path, temporary
         self.type_names = list(model.type_names)
+        self.load_report["selected_model"] = selected
 
     def native_input(self, batch):
-        from nequip.data import AtomicDataDict
+        from ase import Atoms
+        from nequip.data import AtomicDataDict, from_ase
         from nequip.data.transforms import ChemicalSpeciesToAtomTypeMapper, NeighborListTransform
 
         mapper = ChemicalSpeciesToAtomTypeMapper(chemical_symbols=self.type_names)
         neighbors = NeighborListTransform(r_max=self.cutoff)
         values = []
-        for i in range(batch.num_graphs):
-            start, end = int(batch.ptr[i]), int(batch.ptr[i + 1])
-            data = {"pos": batch.positions[start:end].to("cpu"), "cell": batch.cell[i:i + 1].to("cpu"),
-                    "pbc": batch.pbc[i:i + 1].to("cpu"), "atomic_numbers": batch.numbers[start:end].to("cpu")}
-            data = neighbors(mapper(data))
-            values.append(data)
+        with default_dtype(batch.positions.dtype):
+            for i in range(batch.num_graphs):
+                start, end = int(batch.ptr[i]), int(batch.ptr[i + 1])
+                atoms = Atoms(numbers=batch.numbers[start:end].cpu().numpy(),
+                              positions=batch.positions[start:end].detach().cpu().numpy(),
+                              cell=batch.cell[i].detach().cpu().numpy(), pbc=batch.pbc[i].cpu().numpy())
+                data = from_ase(atoms)
+                data["pos"] = ReferenceValue.apply(data["pos"], batch.positions[start:end].to("cpu"))
+                data["cell"] = ReferenceValue.apply(data["cell"], batch.cell[i].to("cpu").reshape_as(data["cell"]))
+                values.append(neighbors(mapper(data)))
         return AtomicDataDict.to_(AtomicDataDict.batched_from_list(values), device=batch.positions.device)
 
     def native_forward(self, batch):

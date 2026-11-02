@@ -53,3 +53,10 @@ geometry-weighted vector readout for generation; the backbone is not widened to 
 Original source/version signatures are recorded inside the embedded artifact and checked on reload.
 Pinned code can be obtained with `scripts/fetch_official_sources.py`; it bundles only unmodified
 upstream packages/licenses with per-file hashes, never weights/logs or symlinks.
+
+Progress update: original-checkpoint acceptance has also passed for CGCNN744 and MEGNet745.
+NequIP0.14 returns a ModuleDict from its original package loader; the adapter selects the sole
+original model, or requires an explicit model_key for an ambiguous package. No model is rebuilt.
+Its geometry now starts from the same official from_ase protocol as the reference calculator.
+The MatGL loader's model-version warning remains visible; the tested MatGL1.0.0 MEGNet source is
+byte-identical to v1.1.3, and actual original-API prediction/feature and strict-state checks passed.

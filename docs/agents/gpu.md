@@ -263,3 +263,11 @@
 - 2026-11-03T00:20:19+08:00：资源stdin脚本因本地write_text的全CRLF失败，health/cd/gitpull均未成功，源码包未落盘/解包、依赖未安装；仅mkdir留下已知空缓存叶目录。下一连接发送前规范LF并检查shell语法，先health/pull，再精确清理该空叶、完成已校验的资源包传输及官方依赖安装。代理31852不重启。
 
 - 2026-11-03T00:23:51+08:00：规范LF的源码包传输成功，85原文件hash全部通过，误建空缓存叶已精确清理；official环境安装ALIGNN2026.10.11/timm0.6.13/torch-scatter2.1.2+pt27cu128/torch-cluster1.6.3+pt27cu128成功。下一二进制资源连接先health/pull，再传6.25MB CGCNN/MEGNet/NequIP权重包，仅写models/official并核全包/每文件SHA；不运行模型。
+
+- 2026-11-03T00:29:09+08:00：CGCNN/MEGNet/NequIP小权重包6文件已完整传输并SHA校验。cf2e993已push；下一普通工作连接health/pull到该源码后，仅用sbatch提交CGCNN/MEGNet官方环境、NequIP core环境各10真实结构独立对照+微调+重载验收，并提交core/MACE两环境全套回归。大权重包下一独立资源连接传输，不在登录节点模型计算。
+
+- 2026-11-03T00:30:46+08:00：下一独立二进制资源连接先health/pull，再传99446228字节其余模型资源包（SHA b5c034313de504c0bfeff9a9a03d858d11f3f22072ce1c193149025df8795c34）到任务models，逐文件校验；既有CGCNN/MEGNet/NequIP文件仅比hash跳过，新增ALIGNN59MB zip与Equiformer36.9MB best checkpoint。包不含TensorBoard日志，不覆盖任何不同hash文件，模型计算不在此连接运行。
+
+- 2026-11-03T00:34:34+08:00：已pull cf2e993并实际提交744CGCNN、745MEGNet、746NequIP官方10结构验收，747core与748MACE完整单元。下一工作连接health/pull后读取这些确定job的squeue/scontrol和stdout/stderr/failure；大资源二进制50333正在传，不重复提交任何已存在任务。
+
+- 2026-11-03T00:43:04+08:00：大资源传输50333发生SSH reset并终止，未达到完整SHA/解包；原模型文件未覆盖。代理31852仍存活且stderr无断开。下一单独资源连接先health/pull，读取已有partial的size/SHA，与本地同一archive前缀严格匹配后只续传余量；此连接期间不再另开Guqq2工作连接，避免与批量传输竞争。若前缀不匹配则拒绝追加，不重启健康代理。

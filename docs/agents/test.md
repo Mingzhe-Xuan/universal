@@ -732,3 +732,5 @@
 - 2026-11-03T00:10:51+08:00：新官方基础+生成输出适配5 passed（另3项未选）；源码bundle第一次因Equiformer非包目录oc20/trainer中的上游符号链接拒绝。证据确认所需nets包内无链接，先过滤未选择目录再执行链接拒绝，仍保持payload完全无symlink；重跑打包验证后才提交。
 
 - 2026-11-03T00:13:11+08:00：源码资源包重跑通过：3个固定官方commit、85个原始文件，bundle131330字节，SHA03d01b5c27b0f2adaaa801f64cf01b46061f645b9b8b395797298cca56a96df8；打包后逐成员与上游archive内容hash一致，未加入权重/日志/符号链接。仅包目录外的上游训练文件链接被排除，原始包源码未修改。Python3.10兼容hash实现已改为分块SHA256，需复核最终脚本静态检查。
+
+- 2026-11-03T00:47:21+08:00：cf2e993 Slurm744 CGCNN独立CIFData/原forward对照+10真实结构微调/重载passed（loss1.4448969364→1.0030168835）；745 MatGL-MEGNet原predict_structure对照+微调/重载passed（1.0224616975→0.8826507658）。747core/748MACE完整回归各62 passed。746 NequIP真实发布包能反序列化，但旧官方API返回ModuleDict，metadata读取失败；新增保留原对象的容器选择/歧义拒绝回归，并改用官方from_ase精确输入协议。修正后基础5 passed/compileall通过，NequIP实际重跑待同步，不能记作已通过。
