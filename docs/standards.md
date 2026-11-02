@@ -76,6 +76,9 @@ GraphRecord(edge_index, cell_shifts=None, node_features=None, edge_features=None
 vectors = positions[src] + cell_shifts @ cell[edge_batch] - positions[dst]
 ```
 
+已有图对象可显式转换，例如 `GraphRecord(edge_index=data.edge_index, node_features=data.x,
+edge_features=getattr(data, "edge_attr", None))`；JSON使用本规范字段名，拼错的图属性不会被静默忽略。
+
 `vectors` 每次从活的 positions/cell 计算，保留 autograd；图中不缓存脱离计算图的距离代替它。
 图构建器允许离散选择拓扑，GNN 的几何特征须在该拓扑上连续计算。KNN换邻、等距截断等边界
 不能承诺全局可微；测试力/二阶导应避开拓扑变化点。这与把坐标 detach 后计算消息不同。
@@ -232,6 +235,9 @@ CLI > 配置文件 > resume配置 > 默认值。`--graph` 覆盖图名称，换�
   ]
 }
 ```
+
+显式v1记录只使用上述标准字段，几何不能再混用 atoms/coords/cartesian 等旧别名；缺少 targets
+表示空标签字典，而不是把几何字段当作标签。额外说明放 metadata，旧格式仍通过无版本兼容入口读取。
 
 每条记录 id 必须为非空字符串且在文件内唯一；numbers 为整数、positions 为有限 N×3，pbc 三个bool。
 训练 targets 存 task 指定名称或 bindings 指向的数值，允许节点/谱/张量的嵌套数值数组；标准格式

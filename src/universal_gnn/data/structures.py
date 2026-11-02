@@ -101,7 +101,8 @@ def load_structures(path: str | Path, *, dtype=torch.float64, options=None) -> l
         cartesian = atom.get("cartesian", "positions" in atom)
         if not cartesian:
             positions = positions @ cell
-        targets = record.get("targets", {k: v for k, v in record.items() if k != "atoms"})
+        targets = (record.get("targets", {}) if record_version is not None else
+                   record.get("targets", {k: v for k, v in record.items() if k != "atoms"}))
         identifier = str(record.get("id", record.get("jid", i)))
         structure = Structure(torch.tensor(numbers, dtype=torch.long), positions, cell, pbc,
                               identifier, targets, metadata,

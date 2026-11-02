@@ -12,6 +12,10 @@ from universal_gnn.contracts.schema import validate_version
 def graph_record(values, *, dtype=torch.float64):
     if not isinstance(values, dict) or "edge_index" not in values:
         raise ValueError("graph must contain edge_index")
+    unknown = set(values) - {"schema_version", "edge_index", "cell_shifts", "node_features",
+                             "edge_features", "edge_features_width"}
+    if unknown:
+        raise ValueError(f"Unknown graph fields {sorted(unknown)}; use node_features/edge_features for attributes")
     tensors = {}
     for name in ["edge_index", "cell_shifts"]:
         value = values.get(name)
@@ -50,13 +54,17 @@ def graph_dict(graph):
 
 
 def validate_record(record):
+    unknown = set(record) - {"schema_version", "id", "numbers", "positions", "cell", "pbc",
+                             "targets", "metadata", "graph"}
+    if unknown:
+        raise ValueError(f"Unknown standard record fields {sorted(unknown)}; legacy geometry aliases require an unversioned dataset")
     if not isinstance(record.get("id"), str) or not record["id"]:
         raise ValueError("Standard dataset records require a nonempty string id")
     if "numbers" not in record or "positions" not in record:
         raise ValueError("Standard records require numbers and Cartesian positions")
     if torch.as_tensor(record["numbers"]).dtype not in {torch.int32, torch.int64}:
         raise ValueError("Atomic numbers must be integers")
-    position = torch.as_tensor(record["positions"])
+    position = torch.as_tensor(record["positions"], dtype=torch.float64)
     if len(record["numbers"]) == 0 or position.shape != (len(record["numbers"]), 3) or not bool(torch.isfinite(position).all()):
         raise ValueError("Standard positions must be finite [N,3] for nonempty atoms")
     pbc = record.get("pbc")
@@ -66,7 +74,7 @@ def validate_record(record):
         raise ValueError("targets and metadata must be mappings")
     for name, value in record.get("targets", {}).items():
         try:
-            tensor = torch.as_tensor(value)
+            tensor = torch.as_tensor(value, dtype=torch.float64)
             valid = tensor.numel() > 0 and bool(torch.isfinite(tensor).all())
         except (TypeError, ValueError, RuntimeError):
             valid = False

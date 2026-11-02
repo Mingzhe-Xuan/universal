@@ -48,6 +48,28 @@ def test_empty_imported_graph_roundtrip_preserves_feature_width(tmp_path):
     assert restored.edge_features.shape == (0, 4)
 
 
+def test_standard_fields_do_not_silently_apply_legacy_aliases(tmp_path):
+    path = tmp_path / "standard.json"
+    save_structures(path, molecules())
+    payload = json.loads(path.read_text())
+    del payload["structures"][0]["targets"]
+    path.write_text(json.dumps(payload))
+    assert load_structures(path)[0].targets == {}
+    payload["structures"][0]["cartesian"] = False
+    path.write_text(json.dumps(payload))
+    with pytest.raises(ValueError, match="legacy geometry aliases"):
+        load_structures(path)
+    del payload["structures"][0]["cartesian"]
+    payload["structures"][0]["graph"] = {"edge_index": [[0], [1]], "edge_attr": [[1.]]}
+    path.write_text(json.dumps(payload))
+    with pytest.raises(ValueError, match="Unknown graph fields"):
+        load_structures(path)
+    path.write_text(json.dumps([{"id":"legacy", "atoms":{"elements":["H"],"coords":[[.1,.2,.3]],
+                      "cartesian":False,"lattice_mat":[[2.,0.,0.],[0.,2.,0.],[0.,0.,2.]]}}]))
+    torch.testing.assert_close(load_structures(path)[0].positions,
+                               torch.tensor([[.2,.4,.6]], dtype=torch.float64))
+
+
 @pytest.mark.parametrize("version", [2, None, True])
 def test_unknown_dataset_and_config_versions_fail_closed(tmp_path, version):
     path = tmp_path / "data.json"
