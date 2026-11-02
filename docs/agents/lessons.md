@@ -115,3 +115,5 @@
 - 2026-11-02 15:23:23 +08:00：连续两次远端 pip 下载和一次 scp 大包传输均被 Vlab 连接断开。已复查代理经验：本地公开 HTTPS 正常，源码短时 pull 成功，但不能据此假定大文件 SSH 长连接稳定。后续资源传输改用 SFTP reput 续传，先核对远端部分文件大小并最终按 manifest 校验；不得重启仍健康的独立代理，不重复从零传同一大文件。
 
 - 2026-11-02 15:47:10 +08:00：只读复用环境应以 distribution.locate_file 取得真实包目录；将父 venv site-packages 加入 .pth 不会递归处理父目录中的 .pth。先断言关键分发版本/实际路径，再运行有约束的 pip，避免缺依赖识别导致大型Torch/CUDA重新解析。
+
+- 2026-11-02 16:31:45 +08:00：Vlab下SFTP方式scp出现部分文件后无响应；legacy scp -O的小gzip数据包成功。大量漂亮JSON应先gzip，624640字节tar压成102730字节。已下载的pip wheel可按官方URL的CacheControl键从http-v2/*.body恢复，必须先核对官方SHA256，再进入任务wheelhouse；仅查找明确列出的包，不扫描/改写其他项目缓存。持续普通工作会话先pull后复用，可减少握手开销。

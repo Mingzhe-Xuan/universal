@@ -36,3 +36,7 @@
 - 2026-11-02 15:47:10 +08:00：实际 distribution.locate_file 查明：mattergen 自身通过 .pth 引用 .venv-smoacs-blackwell；子环境仅添加 mattergen 的路径不会递归处理其 .pth。正确只读依赖目录为 /home/xmz/generate_md/.venv-smoacs-blackwell/lib/python3.10/site-packages。修正后必须先用 metadata 断言 torch2.7.1+cu128/numpy1.26.4 可见，再安装 e3nn；显式固定已有Torch/NumPy以防意外重新下载。
 
 - 2026-11-02 15:49:36 +08:00：核心独立环境安装成功：Torch2.7.1+cu128/NumPy1.26.4/ASE3.27.0来自只读 blackwell 依赖；本任务安装 e3nn0.5.8、opt_einsum3.4.0、opt_einsum_fx0.1.4，editable universal-gnn-tasks0.1.0。提交Slurm535执行已同步的13项测试。未修改父环境。
+
+- 2026-11-02 16:28:31 +08:00：从pip HTTP缓存按官方URL和SHA恢复NequIP/Hydra/OmegaConf/Lightning等5个wheel，离线安装成功：nequip0.14.0、e3nn0.5.8、matscipy1.1.1、hydra-core1.3.2、omegaconf2.3.0、lightning2.5.6、pytorch-lightning2.6.6、torchmetrics1.9.0、lightning-utilities0.15.3。提交Slurm538检查真实NequIP后端。
+
+- 2026-11-02 16:34:37 +08:00：MACE wheel包已完整传入6471680字节。独立MACE环境离线安装前，从本任务core环境仅复制已安装的opt_einsum3.4.0/opt_einsum_fx0.1.4及其dist-info（轻量第三方依赖，目标限定MACE site-packages）；不引用整个core路径，避免把NequIP/e3nn0.5带入MACE环境，不改core或blackwell。其余依赖仅使用缓存wheel。

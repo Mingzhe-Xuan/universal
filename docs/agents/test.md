@@ -558,3 +558,10 @@
 - 当调用者传入requires_grad坐标时保留该输入计算图；create_graph=True下力对原输入的Jacobian应有限且非零，满足声子/响应用途。无梯度输入仍可正常推理。原能量力应力有限差分和参数反传测试继续通过。
 
 - 2026-11-02 16:18:31 +08:00：力场补充2项测试通过：既有力/应力有限差分和参数链保留，新增force对外部requires_grad坐标的非零有限Jacobian与总力为零检查通过。compileall及diff检查通过。
+
+## 2026-11-02 16:55:57 +0800：六模型首轮真实训练/推理实际结果
+
+- Slurm539四模型44格、583 NequIP11格、595 MACE11格：66/66逐格report passed；每格10真实结构、30epoch、参数/梯度/loss和checkpoint重载检查通过，生成含随机初态采样。源码70e5bb0，不把当前HEAD当作运行版本。
+- Slurm538官方NequIP/Equiformer等20项解析检查通过；594 MACE/力场/响应6项通过。已有535 13项通过。
+- SFTP reget续传后本地gzip归档解包/路径边界/66格索引校验通过。控制器只保留2个COMPLETED，64个旧记录已清理；逐格原jobID和日志保留，不虚构状态。
+- 真实EFS/Born/Raman及派生流程仍pending，不把小集合执行验收当泛化或完整目标通过。

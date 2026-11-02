@@ -113,3 +113,15 @@
 - 2026-11-02 16:16:41 +08:00：小包scp最终因目标主机无响应超时，普通持续会话的GitHub TLS健康亦超时，尚未越过本连接pull门禁。继续只做当前代理监听/端到端TLS1.2与PyPI健康、本地专用进程TCP路径检查；不安装、不提交新作业、不重启仍存活的代理。
 
 - 2026-11-02 16:17:44 +08:00：同一持续会话中GitHub强制HTTP1.1/TLS1.2健康返回200，PyPI默认TLS仍超时；本地PyPI正常，转发进程有到公网443的Established连接。现在允许本会话先用HTTP1.1/TLS1.2 git pull，再只核对已传缓存文件完整性。未把监听存活等同网络健康，不重启当前代理。
+
+- 2026-11-02 16:21:08 +08:00：持续工作会话已先pull成功（70e5bb0）；确认scp仅留下524288字节部分tar，第二包未到。改传102730字节gzip小数据包与约2KB官方wheel URL/SHA清单，使用legacy SCP协议避免SFTP流水线停滞；NequIP已成功下载的小包将从服务器pip HTTP缓存按官方URL键与SHA恢复，不再重复传1.3MB包。
+
+- 2026-11-02 16:25:25 +08:00：legacy SCP小包传输成功，持续工作会话内解包真实数据并提交Slurm536数组0-1：CGCNN formation_energy和generation各10结构20epoch。实际源码70e5bb0，未将尚未同步的dc8356d当作运行版本。下一仍在本连接恢复NequIP官方URL/SHA对应pip缓存，随后离线安装与Slurm后端检查。
+
+- 2026-11-02 16:28:31 +08:00：Slurm536两格真实CGCNN形成能/生成均COMPLETED、ExitCode0:0，重载推理报告passed，单格4秒；另提交Slurm538 NequIP+Equiformer解析测试。下一本持续连接准备四模型44格矩阵并Slurm提交；另legacy SCP仅传6.47MB MACE缺包到任务缓存，不改源码。
+
+- 2026-11-02 16:34:37 +08:00：Slurm539四模型44格全部report passed；NequIP Slurm538解析20项通过，Slurm583的11格也全部report passed。MACE wheel tar完整，下一本连接先核对SHA并解包到任务wheelhouse-mace，离线安装独立环境后通过Slurm进行官方模块测试；不在登录节点实例化模型。
+
+- 2026-11-02 16:42:50 +08:00：MACE独立环境离线安装成功，Slurm594官方模块/力场/响应解析6项通过；Slurm595的MACE11格全部report passed。至此Slurm539/583/595合计66格真实十结构训练+重载推理通过（不含pending数据/派生流程）。下一本持续会话只读汇总报告/Git/Slurm元数据并打包不含checkpoint的证据，之后scp回本地；不以66格通过替代完整目标。
+
+- 2026-11-02 16:46:07 +08:00：证据归档605673字节已生成，66格报告及实际source均为70e5bb0。Slurm控制器已清理64个旧job记录，2个仍保留的为COMPLETED；保留原jobID/日志，不虚构被清理的ExitCode。scp下载被Vlab关闭，下一SFTP reget续传同一归档，完成后校验gzip和报告索引。
