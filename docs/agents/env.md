@@ -48,3 +48,5 @@
 - 2026-11-02T18:30:31.461088+08:00：实际资源包SHA256 9ce398318398498a36e9ebbd7a358c374fe2ea1454f7c3fd6d3f037794ab5942通过；core新增24包、universal-workflow-deps25包离线安装成功，MACE.pth仅指向后者。abtem1.0.8,numba0.61.2,llvmlite0.44.0,dask/distributed2024.12.1,zarr2.18.3,numcodecs0.13.1,pyfftw0.15.0；原科学包未修改。
 
 - 2026-11-02T18:37:15.642364+08:00：计划将core与workflow-deps两个任务前缀的abTEM从1.0.8降为官方1.0.6（Python>=3.9,<3.12、NumPy<2）；wheel SHA256 94bd000a9aa68410201a6130689ebd70ec8a31a39ed0b192d6d4203e598f5905。通过pip --python管理无pip的workflow-deps，避免--target升级遗留旧dist-info；不改共享环境。
+
+- 2026-11-02T18:39:56.601886+08:00：实际两前缀均先准确卸载abTEM1.0.8再安装1.0.6成功，无旧dist-info残留；MACE继续e3nn0.4.4，core/NequIP继续0.5.8。

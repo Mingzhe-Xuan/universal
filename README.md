@@ -3,11 +3,12 @@
 Output-driven material prediction, response derivatives, force fields and crystal generation.
 Initial backbones: MACE, NequIP, Equiformer, ALIGNN, CGCNN and MEGNet.
 
-Implementation and acceptance are in progress. A planned adapter or passing unit test is not a
-completed model/task acceptance. See [implementation scope](docs/plan/implementation.md),
+The implemented toolkit and its ten-structure execution checks cover six backbones. See
+[usage](docs/usage.md), [implementation scope](docs/plan/implementation.md),
 [architecture](docs/plan/gnn_task_toolkit.md), and [current state](docs/agents/state.md).
-The first 66 real ten-structure training/reloaded-inference cases passed on Slurm;
-[the evidence record](docs/agents/acceptance.md) lists the completed subset and remaining work.
+All 96 real ten-structure training/reloaded-inference cases and six ten-structure simulation
+workflows passed on Slurm; [the evidence record](docs/agents/acceptance.md) records versions, data
+and limits. This is execution validation, not reproduction of paper benchmark accuracy.
 
 ```bash
 python -m venv .venv

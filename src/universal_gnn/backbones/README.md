@@ -13,8 +13,8 @@ embedding/convolution stack before its scalar-only final block. Version/layout m
 `EquiformerEncoder` implements the dot-product-attention architecture variant with spherical
 tensor-product key/values, invariant attention, equivariant feedforward, a single head and smooth
 cutoffs. It is a documented Torch/e3nn reimplementation, not the original OCP checkpoint format.
-None of the equivariant backends are substituted with an invariant encoder. Runtime acceptance is
-pending until the corresponding Slurm report passes.
+None of the equivariant backends are substituted with an invariant encoder. All six passed the recorded ten-structure training/inference matrix; this is execution
+acceptance and does not imply original-package checkpoint compatibility or benchmark accuracy.
 
 Sources: [MACE](https://github.com/ACEsuit/mace), [NequIP](https://github.com/mir-group/nequip),
 [Equiformer dot-product variant](https://github.com/atomicarchitects/equiformer/blob/master/nets/dp_attention_transformer.py),

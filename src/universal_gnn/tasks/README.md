@@ -13,7 +13,8 @@ and six Gaussian cell scores. Invariant encoders use geometry-weighted direction
 equivariant encoders use native polar-vector channels. Coordinate scores transform as covectors.
 The shared annealed Langevin sampler preserves species/counts and wraps fractional positions.
 Cell bounds are explicit numerical sampling constraints, not symmetry constraints. Generated
-samples discard template physical labels. This implementation is not yet trained or accepted.
+samples discard template physical labels. Six built-in backbones passed ten-real-structure denoising training, checkpoint replay and sampling;
+this verifies execution, not generative quality. See docs/agents/acceptance.md for evidence.
 
 For higher geometric derivatives, pass a batch whose positions require gradients and set
 create_graph=True. ForceFieldModel retains that external graph; evaluation defaults avoid

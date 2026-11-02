@@ -11,9 +11,11 @@ for larger processing. It stores original URLs/SHA256/record indexes, refuses du
 and missing labels, and explicitly lists data that remain pending.
 
 Prepare configurations with `python scripts/run_matrix.py prepare --output runs/acceptance`.
-This writes 66 cases for six models and the eleven currently curated tasks. Submit only after
+The base manifest writes 66 cases for six models and eleven tasks; append the DFPT, Raman and
+optical cohorts below for the complete 96-case execution matrix. Submit only after
 the required environments and dataset files are present:
-`sbatch --array=0-65%8 scripts/matrix.slurm`.
+`sbatch --array=0-65%8 scripts/matrix.slurm` for the base manifest, or `--array=0-95%6`
+for the fully prepared manifest. For another output directory set `UGNN_MATRIX` explicitly.
 Use `python scripts/run_matrix.py summarize --matrix runs/acceptance/matrix.json` to collect
 reports; missing data and failed cases remain visible. MACE automatically selects its isolated
 environment. No job treats unexecuted cases as passed. Each report includes its Git/Slurm provenance.
@@ -26,3 +28,16 @@ are reconstructed from checkpoint format, rather than silently using a new adapt
 ZIPs and their SHA manifest. Run batch XML parsing on Slurm. Energy supervision uses VASP's
 electronic free energy, and stress is explicitly converted from ASE units; original Born components
 are retained. Missing/invalid archives produce recorded failures, not fabricated labels.
+
+`prepare_raman_data.py` derives 200-bin peak-normalized curves from CRD original tensors and
+signed frequencies. Require exactly 3N frequency and tensor slots; reject incomplete mode mapping.
+`prepare_optical_data.py` resamples published NIST TBmBJ trace-average epsilon2 and records a
+finite-window principal-value KK postprocess. Both scripts append ten real structures to the manifest.
+Numerical preprocessing and model execution on Guqq2 belong in Slurm.
+
+`workflows.slurm` calls `run_workflows.py` for six backbones using matched forcefield/Born/dielectric
+checkpoints. Each model runs ten structures through fixed-cell FIRE, short MD, Gamma modes,
+IR/Raman/neutron broadening and real abTEM multislice STEM from MD snapshots.
+`collect_evidence.py --matrices ... --workflows runs/workflows` checks actual saved reports,
+unique IDs, optimization/checkpoint evidence, and finite nonconstant STEM image arrays.
+It refuses missing/failed entries; controller retention is never used to invent historical job states.
