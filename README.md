@@ -23,6 +23,9 @@ not generalization accuracy.
 
 Canonical model names now select original official implementations and registered published weights.
 Prepare their cache and dependencies before training; see [official providers](src/universal_gnn/backbones/official/README.md).
+All six passed original-checkpoint/native-reference/ten-real-structure fine-tuning and self-contained
+reload; [the official acceptance record](docs/agents/official-pretrained.md) separates these results
+from the historical architecture-variant matrix.
 MACE and NequIP need separate e3nn environments. The old architecture variants require explicit
 `implementation: legacy`; historical variant-matrix results do not certify official checkpoints.
 See the environment record for the packages and versions actually tested.

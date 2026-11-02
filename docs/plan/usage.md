@@ -26,7 +26,8 @@ ugnn --mode infer --model mace --dataset data_path --resume ckpt_path --task for
 - 官方原模型完整严格加载后，在读出边界截取节点特征，新增任务头随机初始化；默认同时微调主干。
   `--resume` 指本框架checkpoint的恢复；官方初始化文件放 `backbone.checkpoint`，两者用途不同。
 - 显式 `implementation: legacy` 可运行旧变体。历史checkpoint无官方artifact时自动按legacy恢复。
-  NequIP与其他官方模型使用不同e3nn环境，具体见 [环境记录](../agents/env.md)。旧子命令继续兼容。
+  NequIP与其他官方模型使用不同e3nn环境；Equiformer另隔离旧版PyG，具体见
+  [环境记录](../agents/env.md)。旧子命令继续兼容。
 
 ## ALIGNN 训练带隙
 
@@ -74,6 +75,7 @@ sbatch scripts/ugnn.slurm --mode train --model alignn \
 推理同样提交 `scripts/ugnn.slurm`，将后面的参数替换成上面的 `--mode infer` 命令。
 该脚本默认 `/home/xmz/.venvs/universal-official/bin/python`；NequIP 使用
 `sbatch --export=ALL,UGNN_PYTHON=/home/xmz/.venvs/universal/bin/python scripts/ugnn.slurm ...`。
+Equiformer 使用 `UGNN_PYTHON=/home/xmz/.venvs/universal-equiformer/bin/python`。
 显式legacy MACE使用 `/home/xmz/.venvs/universal-mace/bin/python`；其他自定义环境同样用UGNN_PYTHON覆盖。
 所有实际训练、推理均在Slurm计算节点执行。
 
@@ -84,6 +86,10 @@ ALIGNN带隙训练、续训和推理，恢复15→30轮与连续30轮
 参数逐项完全一致；Slurm734另外验证 `scripts/ugnn.slurm` 透传推理结果一致。
 两环境Slurm732/733各39项检查通过。本地证据位于
 `results/cli-usage-731/evidence.json`，包括实际报告和日志；生成物不进入Git。
+
+官方默认路径已另在Slurm760实测：相同文档参数从登记的官方ALIGNN权重缓存初始化，训练2轮、
+完整续训到3轮、重载推理十条通过。六个官方主干各自的十结构微调与原生对照见
+[官方权重验收](../agents/official-pretrained.md)；历史变体证据不冒充该验收。
 
 ## 自定义 GNN 与分子图
 

@@ -4,7 +4,7 @@
 ALIGNN、CGCNN、MEGNet 默认选择官方实现与已登记的发布权重，读出前的原模型与预处理保持原样。
 下载权重和依赖需预先准备；缺失时报错。旧架构变体必须显式指定 `backbone.implementation: legacy`。
 具体包、源码、权重配置及已验收范围见 [官方接入](../src/universal_gnn/backbones/official/README.md)
-与 [环境记录](agents/env.md)。NequIP 使用独立于其余官方模型的环境。
+与 [环境记录](agents/env.md)。NequIP隔离e3nn版本，Equiformer另隔离旧版PyG。
 
 ## 文档约定的命令行
 

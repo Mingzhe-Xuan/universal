@@ -23,11 +23,13 @@ derivatives separately.
 
 ## Provider boundaries and references
 
-MACE743, CGCNN744 and MEGNet745 have passed original-checkpoint/reference/ten-real-structure
-fine-tuning and self-contained reload. NequIP749, ALIGNN750 and Equiformer751 exposed remaining
-reference/input or dependency issues and have not passed yet. Their follow-up evidence must be
-recorded separately. `implementation: legacy` explicitly selects old variants; official never
-falls back to them.
+All six have passed original-checkpoint/reference/ten-real-structure fine-tuning and self-contained
+reload: MACE743, CGCNN744, MEGNet745, ALIGNN753, NequIP758 and Equiformer759. The original
+NequIP calculator itself shows float32 force roundoff across CPU threads;758 uses one thread and
+has exactly zero feature/energy/force differences, with unchanged strict tolerances. Equiformer
+uses a separate environment with original PyG2.0.4 for the original OCP imports. Earlier failed
+runs remain recorded rather than relabelled as passed. `implementation: legacy` explicitly
+selects old variants; official never falls back to them.
 
 ## Configuration and cache
 
@@ -68,16 +70,24 @@ constructor/forward. CGCNN adapts only CIFData's file-reading call to supply the
 real Pymatgen structures, avoiding CIF rounding; the original preprocessing and model code execute
 unchanged. Reference results and ten-real-structure fine-tuning are separate acceptance checks.
 
-Feature extraction stops at the original readout boundary so an old force head cannot consume
-and free the graph needed by new readouts. A scalar-only final representation uses the existing
+Feature extraction stops at the original readout boundary where no upstream feature output exists.
+MACE instead uses its original node_feats output with force/virial/stress derivatives disabled;
+old force heads cannot consume and free the graph needed by new readouts. A scalar-only final representation uses the existing
 geometry-weighted vector readout for generation; the backbone is not widened to add missing irreps.
 Original source/version signatures are recorded inside the embedded artifact and checked on reload.
 Pinned code can be obtained with `scripts/fetch_official_sources.py`; it bundles only unmodified
 upstream packages/licenses with per-file hashes, never weights/logs or symlinks.
 
-Progress update: original-checkpoint acceptance has also passed for CGCNN744 and MEGNet745.
 NequIP0.14 returns a ModuleDict from its original package loader; the adapter selects the sole
 original model, or requires an explicit model_key for an ambiguous package. No model is rebuilt.
 Its geometry now starts from the same official from_ase protocol as the reference calculator.
 The MatGL loader's model-version warning remains visible; the tested MatGL1.0.0 MEGNet source is
 byte-identical to v1.1.3, and actual original-API prediction/feature and strict-state checks passed.
+
+## Tested environments
+
+On Guqq2, universal-official supports MACE/CGCNN/MEGNet/ALIGNN; universal uses NequIP0.14/e3nn0.5.8
+to load the package's original0.15 source snapshot; universal-equiformer isolates PyG2.0.4 while
+reusing the original Torch2.7/e3nn0.4.4/scatter/cluster/sparse binaries read-only. See
+[environment records](../../../../docs/agents/env.md) for exact paths. These are selected published
+formats/versions, not a promise that arbitrary third-party checkpoints are interchangeable.

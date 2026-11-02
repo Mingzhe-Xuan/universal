@@ -1,10 +1,10 @@
 # 当前状态
 
-执行用户目标1/2/3/5：全量默认、mini-batch/精度/JSONL已实现并通过两环境回归；官方主干保持原始实现，仅最后特征/读出适配。官方六provider已写齐，MACE743、CGCNN744、MEGNet745已完成真实发布权重的独立原生对照、10真实结构微调与重载。最新747/748两环境各62 passed。
+已完成明确范围的实现与实际验收：默认全量、训练/推理mini-batch、可配置精度及JSONL索引/流式输出；六标准模型名默认官方原模型与已登记发布权重，旧变体显式legacy且旧checkpoint兼容。Slurm754/755两环境各71项完整回归，新Equiformer环境也71项。MACE743、CGCNN744、MEGNet745、ALIGNN753、NequIP758、Equiformer759均完成原生对照、10真实结构微调与自包含重载（6/6）。
 
-NequIP容器修正已同步，749已提交待读取结果。大资源19984的HTTP续传在末尾约16MB处因Vlab链路关闭而退出；原代理31852已消失且1080未监听，恢复唯一代理31720后再健康检查/pull/续传。ALIGNN/Equiformer尚未实际提交。第三项原文异步待用户补充，当前先覆盖已明确运行/官方模型问题。
+NequIP756确认官方计算器自身的双线程float32力重复性误差，758改用单线程后特征/能量/力差异均为0，原容差不变。Equiformer在独立PyG2.0.4环境中保留原始上游源码，特征/预测差异均为0。所有模型主干实际更新、loss下降、一/二阶导数有限；旧失败保留。Slurm760实际文档CLI由默认官方ALIGNN缓存训练2轮、完整续训至3轮、推理10条通过。编号3原文未提供，本轮按起始已声明的精度/大数据运行时范围处理；没有把未给出的其他问题记为已验收。
 
-源码服务器c346d33，当前正在迁移六canonical模型的默认选择为official，旧变体仅显式legacy保留，并补齐配置/测试/历史checkpoint兼容。官方依赖新环境已就绪，85原始vendor源文件已逐一核hash。所有科学计算仅Slurm，代码仅本地提交/push→服务器pull。docs/paper为用户未跟踪目录，保持不动。
+本地证据归档33372字节/55文件，完整hash与85个原始源码hash、六模型相同数据指纹、CLI配置/轮数/条数均独立审计通过。详见official-pretrained.md。进入最终文档同步和网络资源清理：唯一代理8本地PID43152，两本地HTTP资源服务已停止；完成后需确认1080释放。所有计算仅Slurm，源码仅本地提交/push→服务器pull；docs/paper保持不动。
 
 # 当前计划
 
@@ -213,3 +213,5 @@ NequIP容器修正已同步，749已提交待读取结果。大资源19984的HTT
 - 2026-11-03T00:27:08+08:00：推进到其余五官方模型活体验证：六provider/原生对照代码首版完成，MACE743已核10真实ID/完整validation（feature误差2.384e-7、energy误差0、主干delta0.53348）。源码资源包和官方依赖已安装，CGCNN/MEGNet/NequIP小权重包正在通过已门禁二进制连接传输。下一提交当前代码并分别Slurm验证；大权重资源随后传输，最终canonical默认/文档/全回归仍待完成。
 
 - 2026-11-03T00:47:21+08:00：官方验收达到3/6，进入NequIP容器兼容复验及两大权重模型阶段；源包装架构未改动，接口修正5单元通过。下一提交此修正，资源传输终止/完成后再进行控制连接并Slurm复验，目标保持active。
+
+- 2026-11-03T01:53:53+08:00: Stage complete:6/6 original-checkpoint/native-reference/10-real-structure fine-tuning/reload; CLI760 default cache/all records/train2/resume3/infer10 independently audited. Enter final docs sync and proxy cleanup; no model code work remains.

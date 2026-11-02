@@ -6,7 +6,8 @@ their public source before running. No example labels or synthetic structures ar
 Choose `mace`, `nequip`, `equiformer`, `alignn`, `cgcnn`, or `megnet`. Canonical names use original
 official models and published weights, with randomly initialized task heads; prepare the profile
 cache and the matching dependencies first. The default Slurm CLI environment is universal-official;
-NequIP uses universal. See the official provider README for resource formats and tested boundaries.
+NequIP uses universal and Equiformer uses universal-equiformer via UGNN_PYTHON. See the official
+provider README for resource formats and tested boundaries.
 Examples select all available records with structures:null, mini-batch32 and float32; the supplied
 acceptance files happen to contain ten structures. Explicit structures:10 is only for intentional
 smoke runs. Model architecture and dependency versions are recorded in output reports.

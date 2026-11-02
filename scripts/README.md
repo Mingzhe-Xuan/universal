@@ -65,3 +65,10 @@ verifies and packages their original Python package files/licenses into a small 
 and rechecks every member against its source hash. It supports Python3.10. Source bytes are not
 patched; unsupported symbolic links inside selected packages fail. Resource download/packing is
 separate from the Slurm-only model validation and training scripts.
+
+`diagnose_nequip_parity.py` is a bounded Slurm-only numerical diagnostic using the published NequIP
+profile and ten real bandgap structures. It first verifies original/cloned model states exactly,
+then records independent calculator and adapter force repeatability with JIT optimization on/off.
+The JSON report is diagnostic evidence, not a relaxed acceptance test or a training benchmark.
+The historical run_matrix uses explicit legacy variants; validate_official is the separate original
+checkpoint/reference/ten-structure acceptance path.
