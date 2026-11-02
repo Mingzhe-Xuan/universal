@@ -432,3 +432,15 @@
 - tmp/alignn2-audit/atombench/.git
 - tmp/alignn2-audit/alignn-csp-matrix/.git
 - tmp/alignn2-audit/alignn/.git
+
+## 提权与服务器仓库同步条件确认
+
+- 已验证受控提权后的 SSH 和现有 SOCKS GitHub 端到端访问。
+- 确认 /home/xmz/universal 已 clone，先 git pull 后核对 origin/HEAD/工作树，和本地初始提交一致。
+- 仅记录连接与同步检查；完整实现目标仍暂停，本轮未继续实现或提交 Slurm。
+
+## 2026-11-02 15:18:20 +0800：公共模块、模型入口和求导响应实现
+
+- 添加结构/批次、完整可微 PBC 图、JSON/extxyz 标签绑定、性质目录、统一特征适配、三类不变架构及等变模型入口、二至四阶求导响应、E/F/S 与训练重载记录框架。
+- 13 项解析单元检查通过；官方 MACE/NequIP、Equiformer 与真实 10 结构矩阵尚待 Slurm 验收。记录架构变体，禁止将未验收项标为通过。
+- 修正根 data ignore 误伤源码子目录；添加换行规范。服务器网络下载改为本地 Linux wheel+scp，模型依赖分环境。

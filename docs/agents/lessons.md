@@ -103,3 +103,11 @@
 ## 2026-11-02 14:23:24 +08:00：本地执行工具初始化故障
 
 - 普通 exec 多次在进程创建前返回 helper_unknown_error: setup refresh had errors，Node 文件接口亦出现相同沙箱初始化故障；这不是项目命令自身失败。停止重复普通调用，通过受控权限执行用户已授权的同一操作，并保持精确绝对路径及删除前后验证。
+
+## 实现环境安装：ensurepip 与 SSH 代理
+
+- Guqq2 系统 Python 无 ensurepip；使用任务 venv --without-pip 和官方 pip/PySocks wheel 引导，不改系统包。
+- 现有健康代理可能由其他会话持有并在安装期间断开；pip 的 Connection refused 表示必须重新诊断监听/持有者，不能盲目重跑安装或假定新工作 SSH 接管转发。确认端口释放后新建本任务专用持有会话，限制 pip 自动重试。
+- Windows SSH 传多行包含引号的远程 Python 代码会失真；固定脚本用 UTF-8/base64 经 stdin 解码到 bash 执行，不插入任何密钥内容。
+
+- 2026-11-02 15:18:20 +0800：MACE 0.3.16 固定 e3nn 0.4.4，而 NequIP 0.14 需要 >=0.5.6，使用独立 venv。旧 e3nn 常量文件包含 builtin slice，Torch>=2.6 默认安全加载拒绝；仅在导入可信 e3nn 常量期间 scoped safe_globals([slice])，模型 checkpoint 继续 weights_only=True，不全局放宽反序列化。
