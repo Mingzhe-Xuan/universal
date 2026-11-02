@@ -117,3 +117,5 @@
 - 2026-11-02 15:47:10 +08:00：只读复用环境应以 distribution.locate_file 取得真实包目录；将父 venv site-packages 加入 .pth 不会递归处理父目录中的 .pth。先断言关键分发版本/实际路径，再运行有约束的 pip，避免缺依赖识别导致大型Torch/CUDA重新解析。
 
 - 2026-11-02 16:31:45 +08:00：Vlab下SFTP方式scp出现部分文件后无响应；legacy scp -O的小gzip数据包成功。大量漂亮JSON应先gzip，624640字节tar压成102730字节。已下载的pip wheel可按官方URL的CacheControl键从http-v2/*.body恢复，必须先核对官方SHA256，再进入任务wheelhouse；仅查找明确列出的包，不扫描/改写其他项目缓存。持续普通工作会话先pull后复用，可减少握手开销。
+
+- 2026-11-02 17:09:09 +08:00：Hugging Face元数据可取，但MatPES range、Tiny HDF5 curl和SDK HTTP回退连续遇到CDN TLS EOF/超时。复查网络经验后停止重试同一路径；改取小型公开provenance下载清单，直接访问其原始Figshare DFPT文件。仍以原文件哈希、记录ID和同一几何标签核对，不因第三方镜像声明跳过核验。

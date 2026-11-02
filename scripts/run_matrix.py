@@ -66,6 +66,42 @@ def run(args):
                       "initial_loss": report["initial_loss"], "final_loss": report["final_loss"]}))
 
 
+def verify(args):
+    """Replay saved predictions, including legacy tensor bases, without retraining."""
+    matrix = json.loads(args.matrix.read_text(encoding="utf-8"))
+    if not 0 <= args.index < len(matrix["cases"]):
+        raise ValueError("Matrix index out of range")
+    case = matrix["cases"][args.index]
+    if case["config"]["backbone"]["name"] == "mace":
+        wanted = Path(os.environ.get("UGNN_MACE_PYTHON", "/home/xmz/.venvs/universal-mace/bin/python"))
+        if Path(sys.executable).absolute() != wanted.absolute():
+            os.execv(str(wanted), [str(wanted), *sys.argv])
+    import torch
+    from universal_gnn.contracts import StructureBatch
+    from universal_gnn.engine.training import dataset, execution_record, load_checkpoint, predict
+
+    config = case["config"]
+    output = Path(case["output"])
+    original = json.loads((output / "report.json").read_text())
+    batch = StructureBatch.from_structures(dataset(config, 10))
+    model = load_checkpoint(output / "checkpoint.pt")
+    if config["task"]["kind"] == "generation":
+        from universal_gnn.tasks.generation import corrupt
+
+        noisy, time, _ = corrupt(batch, generator=torch.Generator().manual_seed(config.get("seed", 123) + 1))
+        with torch.no_grad():
+            predictions = model(noisy, time)
+    else:
+        predictions = predict(model, batch, config)
+    for name, value in predictions.items():
+        expected = torch.tensor(original["predictions"][name], dtype=value.dtype)
+        torch.testing.assert_close(value, expected, rtol=1e-8, atol=1e-9)
+    result = {"case": case["id"], "passed": True, "execution": execution_record(model),
+              "original_execution": original.get("execution"), "checkpoint_reload": True}
+    (output / "checkpoint_verify.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+    print(json.dumps({"case": case["id"], "saved_prediction_match": True}))
+
+
 def summarize(args):
     matrix = json.loads(args.matrix.read_text(encoding="utf-8"))
     records = []
@@ -103,10 +139,13 @@ def main():
     single = sub.add_parser("run")
     single.add_argument("--matrix", type=Path, required=True)
     single.add_argument("--index", type=int, required=True)
+    replay = sub.add_parser("verify")
+    replay.add_argument("--matrix", type=Path, required=True)
+    replay.add_argument("--index", type=int, required=True)
     summary = sub.add_parser("summarize")
     summary.add_argument("--matrix", type=Path, required=True)
     args = parser.parse_args()
-    {"prepare": prepare, "run": run, "summarize": summarize}[args.command](args)
+    {"prepare": prepare, "run": run, "verify": verify, "summarize": summarize}[args.command](args)
 
 
 if __name__ == "__main__":

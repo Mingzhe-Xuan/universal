@@ -10,4 +10,4 @@ set -euo pipefail
 cd /home/xmz/universal
 export OMP_NUM_THREADS="$SLURM_CPUS_PER_TASK"
 export MKL_NUM_THREADS="$SLURM_CPUS_PER_TASK"
-/home/xmz/.venvs/universal/bin/python -m pytest -q tests
+"${UGNN_PYTHON:-/home/xmz/.venvs/universal/bin/python}" -m pytest -q tests

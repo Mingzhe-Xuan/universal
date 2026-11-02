@@ -19,6 +19,8 @@ def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None)
         structures = structures[:limit]
     batch = StructureBatch.from_structures(structures).to(device=device, dtype=torch.float64)
     result = {"checkpoint": str(checkpoint), "config": config,
+              "checkpoint_format_version": saved.get("format_version", 1),
+              "geometry_basis_version": getattr(getattr(model, "adapter", None), "basis_version", None),
               "structures": [{"id": structure.identifier, "provenance": structure.metadata}
                              for structure in structures]}
     if config["task"]["kind"] == "generation":

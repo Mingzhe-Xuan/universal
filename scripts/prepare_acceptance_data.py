@@ -107,7 +107,8 @@ class Cohorts:
             normalized.append({"id": f"{identifier}:source-{index}", "atoms": record["atoms"],
                                "targets": {key: value for key, value in record.items()
                                            if key not in {"atoms", "metadata"}},
-                               "metadata": {"upstream_id": identifier, "upstream_index": index,
+                               "metadata": {**record.get("metadata", {}),
+                                            "upstream_id": identifier, "upstream_index": index,
                                             "upstream": source}})
         path = self.output / f"{name}-10.json"
         path.write_text(json.dumps(normalized, indent=2,

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import copy
 import importlib.metadata
 import json
 import math
@@ -33,7 +34,8 @@ def build_model(config):
         return ForceFieldModel(backbone)
     if task["kind"] == "supervised":
         spec = property_spec(task["property"], channels=task.get("channels"), unit=task.get("unit"))
-        return SupervisedModel(backbone, spec, route=task.get("route"))
+        return SupervisedModel(backbone, spec, route=task.get("route"),
+                               adapter_version=task.get("adapter_version", 2))
     raise ValueError(f"Task kind not implemented: {task['kind']}")
 
 
@@ -103,7 +105,8 @@ def execution_record(model):
                       ["SLURM_JOB_ID", "SLURM_ARRAY_JOB_ID", "SLURM_ARRAY_TASK_ID", "SLURMD_NODENAME"]},
             "backbone_class": type(model.backbone).__name__,
             "native_irreps": model.backbone.irreps,
-            "backend_version": getattr(model.backbone, "backend_version", None)}
+            "backend_version": getattr(model.backbone, "backend_version", None),
+            "geometry_basis_version": getattr(getattr(model, "adapter", None), "basis_version", None)}
 
 
 def run_training(config: dict, output: str | Path) -> dict:
@@ -116,6 +119,7 @@ def run_training(config: dict, output: str | Path) -> dict:
     torch.manual_seed(config.get("seed", 123))
     device = config.get("device", "cpu")
     model = build_model(config).to(device=device, dtype=torch.float64)
+    execution = execution_record(model)
     structures = dataset(config, config.get("structures", 10))
     batch = StructureBatch.from_structures(structures).to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=config.get("learning_rate", 1e-3))
@@ -150,7 +154,7 @@ def run_training(config: dict, output: str | Path) -> dict:
     delta = math.sqrt(sum(float((value.detach() - starting[key]).square().sum())
                           for key, value in model.named_parameters()))
     checkpoint = output / "checkpoint.pt"
-    torch.save({"config": config, "state_dict": model.state_dict(), "versions": version_record(),
+    torch.save({"format_version": 2, "config": config, "state_dict": model.state_dict(), "versions": version_record(),
                 "scales": scales}, checkpoint)
     reloaded = load_checkpoint(checkpoint, device=device)
     again = predict(reloaded, batch, config)
@@ -164,7 +168,7 @@ def run_training(config: dict, output: str | Path) -> dict:
                           "cell": structure.cell.tolist()}, sort_keys=True).encode()
         records.append({"id": structure.identifier, "geometry_sha256": hashlib.sha256(raw).hexdigest(),
                         "provenance": structure.metadata, "role": "train_and_reloaded_inference"})
-    report = {"config": config, "versions": version_record(), "execution": execution_record(model),
+    report = {"config": config, "versions": version_record(), "execution": execution,
               "structures": records,
               "initial_loss": initial_loss, "final_loss": final_loss, "history": history,
               "gradient_norms": gradient_norms, "backbone_gradient_norms": backbone_gradient_norms,
@@ -181,6 +185,12 @@ def run_training(config: dict, output: str | Path) -> dict:
 
 def load_checkpoint(path: str | Path, *, device="cpu"):
     saved = torch.load(path, map_location=device, weights_only=True)
-    model = build_model(saved["config"]).to(device=device, dtype=torch.float64)
+    format_version = saved.get("format_version", 1)
+    if format_version not in {1, 2}:
+        raise ValueError(f"Unsupported checkpoint format {format_version}")
+    config = copy.deepcopy(saved["config"])
+    if format_version == 1:
+        config["task"].setdefault("adapter_version", 1)
+    model = build_model(config).to(device=device, dtype=torch.float64)
     model.load_state_dict(saved["state_dict"], strict=True)
     return model.eval()

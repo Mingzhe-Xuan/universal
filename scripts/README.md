@@ -17,3 +17,12 @@ the required environments and dataset files are present:
 Use `python scripts/run_matrix.py summarize --matrix runs/acceptance/matrix.json` to collect
 reports; missing data and failed cases remain visible. MACE automatically selects its isolated
 environment. No job treats unexecuted cases as passed. Each report includes its Git/Slurm provenance.
+
+`run_matrix.py verify` replays a saved checkpoint against its original JSON predictions. Submit it
+through `verify.slurm`, with the existing matrix path and matching array range. Old tensor bases
+are reconstructed from checkpoint format, rather than silently using a new adapter default.
+
+`prepare_dfpt_data.py` appends matched E/F/S, Born, and dielectric cohorts from published raw DFPT
+ZIPs and their SHA manifest. Run batch XML parsing on Slurm. Energy supervision uses VASP's
+electronic free energy, and stress is explicitly converted from ASE units; original Born components
+are retained. Missing/invalid archives produce recorded failures, not fabricated labels.

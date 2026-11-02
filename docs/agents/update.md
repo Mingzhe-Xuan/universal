@@ -466,3 +466,9 @@
 - 六骨干各11任务的十结构训练、参数/梯度、loss下降和checkpoint重载推理通过；生成另采样。新增acceptance记录明确架构变体、运行commit70e5bb0、数据来源、依赖和未完成范围。
 - 证据已从服务器续传回本地ignored results/server-20261102，原JSON与日志可审阅。旧Slurm状态已清理的64项如实标注。
 - 继续EFS/Born/Raman数据与派生流程，不完成或暂停总目标。
+
+## 2026-11-02 17:28:17 +0800：非极性张量基底v2与匹配DFPT入口
+
+- 新增四极矩相关耦合，避免极向量矩为零时丢失允许轴向/奇宇称分量；新训练默认v2，旧无格式标记checkpoint明确重建v1。执行metadata改为训练开始时记录。
+- 26项默认单元通过，另DFPT解析1项通过；新增Slurm checkpoint回放入口。原66格仍对应70e5bb0/v1，尚未作为新版训练证据。
+- 下载并校验14份JARVIS原始DFPT小归档；新增同几何free_energy/forces/ASE stress/Born/介电解析与Slurm整理脚本，不补零、不做ASR或空间群投影。

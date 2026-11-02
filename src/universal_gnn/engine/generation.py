@@ -45,6 +45,7 @@ def run_generation_training(config, output):
     generator = torch.Generator(device=device).manual_seed(seed + 1)
     noisy, time, targets = corrupt(clean, generator=generator)
     model = build_model(config).to(device=device, dtype=torch.float64)
+    execution = execution_record(model)
     starting = {name: value.detach().clone() for name, value in model.named_parameters()}
     optimizer = torch.optim.Adam(model.parameters(), lr=config.get("learning_rate", 1e-3))
     with torch.no_grad():
@@ -72,7 +73,8 @@ def run_generation_training(config, output):
     delta = math.sqrt(sum(float((p.detach() - starting[name]).square().sum())
                           for name, p in model.named_parameters()))
     checkpoint = output / "checkpoint.pt"
-    torch.save({"config": config, "state_dict": model.state_dict(), "versions": version_record()}, checkpoint)
+    torch.save({"format_version": 2, "config": config, "state_dict": model.state_dict(),
+                "versions": version_record()}, checkpoint)
     reloaded = load_checkpoint(checkpoint, device=device)
     with torch.no_grad():
         again = reloaded(noisy, time)
@@ -85,7 +87,7 @@ def run_generation_training(config, output):
     valid = bool(torch.isfinite(generated.positions).all() and
                  (torch.linalg.det(generated.cell) > 0).all() and
                  ((fractional >= -1e-10) & (fractional < 1 + 1e-10)).all())
-    report = {"config": config, "versions": version_record(), "execution": execution_record(model),
+    report = {"config": config, "versions": version_record(), "execution": execution,
               "initial_loss": initial,
               "final_loss": final, "history": history, "backbone_gradient_norms": gradient_norms,
               "parameter_delta_norm": delta, "checkpoint_reload": True,

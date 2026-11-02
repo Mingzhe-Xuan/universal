@@ -11,13 +11,14 @@ from universal_gnn.readouts import PropertyReadout, ResponseReadout
 
 class SupervisedModel(nn.Module):
     def __init__(self, backbone: nn.Module, spec, *, route: str | None = None,
-                 adapter_width: int = 32):
+                 adapter_width: int = 32, adapter_version: int = 2):
         super().__init__()
         self.backbone, self.spec = backbone, spec
         self.route = route or ("common_equivariant" if backbone.kind == "equivariant"
                                and spec.construction == "derivative" else "invariant_alignn")
         if self.route == "common_equivariant":
-            self.adapter = EquivariantAdapter(backbone.irreps, cutoff=backbone.cutoff)
+            self.adapter = EquivariantAdapter(backbone.irreps, cutoff=backbone.cutoff,
+                                              basis_version=adapter_version)
         elif self.route == "invariant_alignn":
             self.adapter = ScalarAdapter(backbone.irreps, adapter_width)
         else:
