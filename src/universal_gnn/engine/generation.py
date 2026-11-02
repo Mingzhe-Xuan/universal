@@ -82,7 +82,8 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
     device = config.get("device", "cpu")
     structures = dataset(config)
     fingerprint = data_fingerprint(structures)
-    model = build_model(config).to(device=device, dtype=model_dtype(config))
+    model = build_model(config, official_artifact=saved.get("official_backbone") if saved else None).to(
+        device=device, dtype=model_dtype(config))
     if saved is not None:
         from universal_gnn.engine.runtime import verify_extensions
 

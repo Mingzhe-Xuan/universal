@@ -18,12 +18,14 @@ from universal_gnn.properties import property_spec
 from universal_gnn.tasks import ForceFieldModel, SupervisedModel
 
 
-def build_model(config):
+def build_model(config, *, official_artifact=None):
     from universal_gnn.contracts.schema import validate_config
 
     validate_config(config)
     backbone_config = dict(config["backbone"])
     name = backbone_config.pop("name")
+    if official_artifact is not None:
+        backbone_config["_artifact"] = official_artifact
     if "graph" in config:
         backbone_config["graph_config"] = config["graph"]
     task = config["task"]
@@ -114,7 +116,8 @@ def loss_for(predictions, batch, config, scales=None):
 
 
 def version_record():
-    names = ["torch", "e3nn", "mace-torch", "nequip", "numpy", "ase"]
+    names = ["torch", "e3nn", "mace-torch", "nequip", "numpy", "ase", "alignn", "cgcnn",
+             "matgl", "dgl", "jarvis-tools", "pymatgen", "torch-geometric", "torch-scatter", "torch-cluster"]
     record = {}
     for name in names:
         try:
@@ -134,6 +137,7 @@ def execution_record(model):
             "gnn_class": type(model.backbone.gnn).__name__ if hasattr(model.backbone, "gnn") else None,
             "native_irreps": model.backbone.irreps,
             "backend_version": getattr(model.backbone, "backend_version", None),
+            "official": getattr(model.backbone, "load_report", None),
             "graph_builder": type(model.backbone.graph_builder).__name__ if hasattr(model.backbone, "graph_builder") else None,
             "extensions": getattr(model.backbone, "extension_provenance", {}),
             "geometry_basis_version": getattr(getattr(model, "adapter", None), "basis_version", None)}
@@ -162,7 +166,8 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     output.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(config.get("seed", 123))
     device = config.get("device", "cpu")
-    model = build_model(config).to(device=device, dtype=model_dtype(config))
+    model = build_model(config, official_artifact=saved.get("official_backbone") if saved else None).to(
+        device=device, dtype=model_dtype(config))
     if saved is not None:
         from universal_gnn.engine.runtime import verify_extensions
 
@@ -291,7 +296,8 @@ def load_checkpoint(path: str | Path, *, device="cpu"):
     config = checkpoint_config(saved)
     from universal_gnn.engine.batching import model_dtype
 
-    model = build_model(config).to(device=device, dtype=model_dtype(config, legacy=True))
+    model = build_model(config, official_artifact=saved.get("official_backbone")).to(
+        device=device, dtype=model_dtype(config, legacy=True))
     verify_extensions(saved, model)
     model.load_state_dict(saved["state_dict"], strict=True)
     return model.eval()

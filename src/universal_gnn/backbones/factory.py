@@ -4,6 +4,15 @@ from .invariant import ALIGNNEncoder, CGCNNEncoder, MEGNetEncoder
 
 
 def make_backbone(name: str, *, graph_config=None, **kwargs):
+    implementation = kwargs.pop("implementation", "legacy")
+    if implementation == "official":
+        from .official import make_official
+
+        if graph_config is not None:
+            raise ValueError("Official models retain their original graph preprocessing")
+        return make_official(name, **kwargs)
+    if implementation != "legacy":
+        raise ValueError("backbone.implementation must be official or legacy")
     if name == "gcn" or name.startswith("plugin:"):
         from universal_gnn.backbones.standard import StandardBackbone
         from universal_gnn.contracts import BaseGNN

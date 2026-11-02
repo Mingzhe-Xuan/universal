@@ -54,3 +54,12 @@
 - 2026-11-02T20:43:36.089200+08:00：新CLI使用PyYAML>=6；服务器元数据确认已有PyYAML6.0.3（共享只读依赖），无需环境安装/修改，两个任务venv保持原版本。
 
 - 2026-11-02T21:39:30.996536+08:00：自定义KNN+GCN仅依赖现有Torch/ASE，无新增第三方图库或安装；服务器metadata确认ASE3.27.0和PyYAML6.0.3。G2原数据随ASE提供，在Slurm中提取标签/图，来源版本/SHA记录在数据集。
+
+## 2026-11-02T23:05:12+08:00：官方模型依赖隔离计划（安装前）
+
+- 新建任务专用 /home/xmz/.venvs/universal-official，以python3 -m venv --without-pip建立；只读复用blackwell实际site-packages、universal-mace和workflow-deps的已有科学包，避免改动其他项目/既有验收环境。显式确认Torch2.7.1、NumPy1.26.4和e3nn0.4.4的实际路径后安装。
+- ALIGNN/CGCNN/MatGL-MEGNet/MACE在该新环境中固定官方包版本；MatGL计划v1.1.3、DGL1.1.3（避免DGL2.x GraphBolt对Torch二进制版本的绑定），CGCNN固定上游commit f42ab233c4ee0c416879d6bc2d22a264418413ad，MACE沿用0.3.16。ALIGNN精确版本按实际发布权重配置确定后回填。
+- NequIP-OAM-S0.2为官方可训练package，另计划任务venv universal-official-nequip，复用core的e3nn0.5.8及科学包；需核对其package版本和ModelFromPackage兼容性后固定NequIP版本。Equiformer依赖与发布checkpoint仍在核查。
+- 依赖下载/纯Python包安装可在登录节点，二进制只装兼容wheel；任何编译及模型加载后的计算/微调/推理均Slurm。安装过程保存pip日志和实际distribution版本/路径，禁止pip替换只读父环境。
+
+- 2026-11-02T23:19:49+08:00：universal-official已创建，真实只读路径断言通过Torch2.7.1+cu128、NumPy1.26.4、e3nn0.4.4；原blackwell已有DGL1.1.3+cu121。初次pip因MatGL1.1.3声明dgl>=2而解析失败，没有执行包替换。计划调整为核对较早官方MatGL版本的依赖和模型schema兼容性，保留官方源实现，不用no-deps强行掩盖此冲突。NequIP下载包元数据为nequip0.15.0/e3nn0.5.6/Torch2.7.0，包含eager和compile模型；拟用官方0.15.0的eager加载器，避免编译依赖。

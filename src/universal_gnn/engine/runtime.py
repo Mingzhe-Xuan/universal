@@ -117,6 +117,9 @@ def save_training_checkpoint(path, model, optimizer, config, versions, state, *,
                "versions": versions, "training_state": state}
     payload["contract_versions"] = dict(CONTRACT_VERSIONS)
     payload["extensions"] = getattr(getattr(model, "backbone", None), "extension_provenance", {})
+    artifact = getattr(getattr(model, "backbone", None), "official_artifact", None)
+    if artifact is not None:
+        payload["official_backbone"] = artifact
     if scales is not None:
         payload["scales"] = scales
     path = Path(path)
