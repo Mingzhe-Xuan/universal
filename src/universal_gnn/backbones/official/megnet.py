@@ -27,6 +27,7 @@ class OfficialMEGNet(OfficialBackbone):
         super().__init__(model, f"{2 * width}x0e", "invariant", model.model.cutoff, artifact,
                          context_dim=context_dim, version=version("matgl"))
         self.unused_parameter_prefixes = ("model.model.output_proj",)
+        self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
 
     def native_input(self, batch):
         import dgl

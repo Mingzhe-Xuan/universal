@@ -97,3 +97,9 @@ including failed stages. No original backbone layer/graph is changed and no DFT 
 `--fd-sweep` holds the model/probe fixed and records step convergence without training;
 `--fd-step` changes only the numerical differentiation step, never rtol/atol. This diagnoses
 truncation versus derivative failures before a candidate can be accepted.
+
+`validate_forcefield_release.py --assessment runs/PASSED_CASE --output runs/RELEASE_CASE`
+requires Slurm and a fully passed frozen/full assessment. It uses ordinary production constructors
+without the candidate factory, resumes each saved mode by one epoch and performs fully frozen
+force/stress inference. CGCNN additionally replays the real old771 bandgap checkpoint to verify
+that newly verified derivative capability metadata preserves previous predictions.

@@ -39,6 +39,7 @@ class OfficialCGCNN(OfficialBackbone):
                          context_dim=context_dim, version="txie-93/cgcnn")
         self.unused_parameter_prefixes = ("model.conv_to_fc", "model.fcs", "model.fc_out")
         self.forcefield_requires_eval_training = True
+        self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
         self.forcefield_training_mode_reason = "mixes structures in train-mode BatchNorm"
         self.settings = settings
         self.gaussian = GaussianDistance(dmin=settings["dmin"], dmax=settings["radius"], step=settings["step"])

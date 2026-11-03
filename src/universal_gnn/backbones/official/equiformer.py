@@ -28,6 +28,7 @@ class OfficialEquiformer(OfficialBackbone):
                          context_dim=context_dim, version="atomicarchitects/equiformer-v1-oc20")
         self.configuration = configuration
         self.original_otf_graph = bool(model.otf_graph)
+        self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
         self.forcefield_requires_eval_training = True
         self.forcefield_training_mode_reason = "uses stochastic training layers that change batch force evaluations"
         # Use the original model's precomputed-topology path; live distances remain

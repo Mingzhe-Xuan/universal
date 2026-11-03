@@ -365,3 +365,7 @@
 - 2026-11-03T13:36:37+08:00: Next read-only work SSH health/pull d8db5a6 then refresh781 final result and bounded archive775/780-784;local new mode/compatibility code not yet pushed so running source provenance unchanged. Own50456 remainshealthy. After781 ends,commit/push tested policy correction,rerun onlyCGCNN eval-while-trainable andALIGNN converged h.0002 plusfinal regressions.
 
 - 2026-11-03T13:41:38+08:00: Next work SSH health/pull FIRST after local policy commit;781 complete before source sync. SubmitCGCNN/Equiformer explicit-eval-param actual chains andALIGNN h.0002 actualchain;three environment full regressions(core/MACE/equiformer) for policy/checkpoint boundary. Reuse healthy50456;no new dependencies/native-source edits,all computationSlurm.
+
+- 2026-11-03T13:46:13+08:00: df94bc8 pulled;785CGCNN eval-param,786Equiformer eval-param,787ALIGNN h.0002,788core789MACE790equiformer full regressions submitted. Next health/pull current first then bounded result refresh;no capability/source sync until numerical jobs complete. Reuse healthy50456,all data/resources remain task-scoped.
+
+- 2026-11-03T13:49:03+08:00: Next normal connection after capability/release-script commit:health/repo/pull FIRST,submit five production release jobs using existing passed assessments (megnet/nequip775,cgcnn785,equiformer786,alignn787),oneCPU24GB,two-stage batches ifneeded. No provisional factory overrides in these jobs. Reuse50456 healthy;all numerical workSlurm,old artifacts/results preserved.
