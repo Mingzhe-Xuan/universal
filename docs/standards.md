@@ -505,6 +505,31 @@ NativeTaskContract v1 规定 property、scope、shape、kind、unit、reduction�
 共享参数导致边界不明确时报错。完整续训不得切换 head_mode；显式主干 warm-start
 跨模式只迁移 body，保留目标头，重建优化器。旧 reset 签名与历史 checkpoint 保持兼容。
 
+## 固定数据分区与独立评测
+
+可选的 `dataset.split_manifest` 指向split manifest v1；同时显式设置 `dataset.partition`
+为 `train`、`validation` 或 `test`。目前要求标准索引JSONL来源。Manifest包含完整来源文件
+SHA256、源顺序ID/组、三分区索引与实际计数；必须无重复ID、无跨区组泄漏、完整且仅覆盖一次。
+同一比较中的骨干、初始化和训练seed复用同一manifest；分区seed独立于训练seed。
+`structures` 的显式子集与 `dataset.selection` 在所选分区内生效，不改变其他分区。
+
+监督/力场训练要求 `partition: train`，统计量只从实际训练记录拟合；每epoch完整验证集loss
+选择真实最小值的best权重。`evaluation.patience` 为正整数或null，`min_delta` 为非负有限数；
+二者只控制早停，min_delta不阻止保存更小的真实验证loss。完成后以best评测完整测试集；
+训练loss与 `report.heldout` 分开。新增流程仍待Slurm数值验收，生成的独立评测尚未接入此路径。
+
+Last checkpoint保持format2和training_state v1，另存 `training_state.evaluation`，包含验证历史、
+manifest摘要、best路径/文件SHA256和早停状态。Best为无optimizer/training_state的format2权重文件。
+完整resume必须保留并校验这对文件，验证历史可回放且与已完成epoch一致。Best候选文件只在last
+原子提交后替换旧best；中断时按last记录的摘要从best/候选恢复。正常完成保留best+last，另预留
+一次候选的临时空间；归档旧last时同时保留其对应best。
+
+同源推理遵守显式分区；切换来源自动清除继承的分区/摘要，不能将训练源索引套到新数据上。
+测试预测按结构写JSONL；不保留整批全量预测在内存。二分类AUROC以磁盘SQLite保存分数并精确处理
+ties，单类别测试集返回null；张量同时报告逐元素误差与逐结构Frobenius误差，零张量保留在绝对
+误差中，仅从相对误差分母排除并计数，不施加对称约束。详见
+[分区规范](../src/universal_gnn/data/splits/README.md)和[评测模块](../src/universal_gnn/engine/evaluation/README.md)。
+
 UGNN 统一包装原头的物理值：图标量 `[B,1]`，力场 total_energy `[B,1]`、forces `[N,3]`
 （eV/angstrom）、stress `[B,3,3]`（拉伸正号 GPa）。原官方返回类型可通过 provider.native_forward
 取得。详见 [原头协议、任务矩阵与配置](native_heads.md)。

@@ -500,3 +500,15 @@
 - 2026-11-03T22:37:48 +08:00: Read-only elevated git check now succeeded after permitted retry; active goal explicitly continues. Connect ordinary non-forwarding SSH to verify existing proxy via bounded GitGET and pull, then inspect task-owned base installation logs/disk. No login-node model computation; no user-owned proxy changes.
 
 - 2026-11-03T22:39:33 +08:00: Install log confirms missing SOCKS support in empty targetbase. Connect, proxyhealth/pull, fetch PySocks1.7.1 universalwheel via curl and verify PyPI SHA256, install offline into task-ownedbase then retry binary-only CUDA/common dependencies. No compilation/modelwork on login.
+
+- 2026-11-03T22:42:51 +08:00: PyPI metadata curl timed out before wheel download; local pip obtained PySocks1.7.1 wheel16KB, SHA2562725bd0a9925919b9b51739eea5f9e2bae91e83288108a9ad338b2e3a4435ee5. Connect for GitGEThealth/pull and verify task resource destination, then scp only this wheel to ignored bootstrapdir (no source transfer), then fresh gated work connection for offline install/binary dependency retry.
+
+- 2026-11-03T22:44:48 +08:00: Server pull verified commit1b8c33e and taskwheel destination; scp resource transfer initiated. Next ordinary connection verifies proxy/pull, wheel SHA, offline PySocks then binary-only dependencies into universal-base. Source edits remain local only.
+
+- 2026-11-03T22:48:45 +08:00: Connect ordinary SSH for proxyhealth/pull and latest failed-install logs; identify actual pip failure before another restore action. No model computation on login.
+
+- 2026-11-03T22:49:38 +08:00: New evidence: 1080 now refuses connections, unlike prior healthy user proxy. Before pull, diagnostic-only connection checks loopback listener/current-user sshd; inspect local ssh holders. If port is confirmed free, start exactly one task-owned dedicated -N -T proxy and recheck end-to-end. Do not kill any user process.
+
+- 2026-11-03T22:51:22 +08:00: Diagnostics confirmed local no SSH processes and remote1080 free; task dedicated proxy started exec73725. Next ordinary connection verifies end-to-end GitGET, then pull and read failed install logs. Do not treat listener alone as healthy. Record and close this ownedproxy at work end.
+
+- 2026-11-03T22:53:36 +08:00: New dedicated proxy end-to-end GitGET/pull succeeded. Failure log shows previous user proxy disappeared during NVRTC88MB download, not a package incompatibility. Reconnect gated to inspect bounded package/cache lines and retry under stable owned proxy; keep only one holder PID25840/exec73725.

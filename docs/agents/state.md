@@ -1,12 +1,12 @@
 # 当前状态
 
 Active goal：按照docs/plan/arxiv_v1_experiments.md开展实验；目标四模型×六任务×预训练微调/完整从头训练，48格/seed、三seed144。尚未提交正式全量训练。
-已实现孤立子进程OOM预检控制器/worker、固定组划分manifest、流式回归/二分类指标；17项本地纯控制/元数据/指标/选模协议测试通过；新增训练/推理分区及validation-best/test接入和Slurm验收脚本，数值集成仍未运行。本地代码准备提交，审批通道只读检查现已恢复。真实GPU worker、全量图规模扫描、训练验证/测试选模接入、官方scratch和全数据准备仍待完成。
-Guqq2代理Git协议GET200且pull通过；任务自有universal-base已建立。已读取安装失败日志：目标base缺少PySocks；正在经curl校验wheel离线引导后重试二进制依赖，未确认Torch恢复。已向用户请求后续执行指导；不干预现有用户SSH代理。
+commit1b8c33e已push并经Guqq2 pull同步。已实现孤立子进程OOM预检、固定组划分manifest、流式回归/二分类指标及监督/力场训练/推理分区、validation-best/test、可恢复best/last和Slurm验收入口；17项本地协议/静态检查通过，真实数值集成尚未运行。全量图规模扫描、官方完整scratch、分子输入、生成独立评测和完整数据仍待完成。
+任务自有universal-base已建立，PySocks1.7.1 wheel经SCP与SHA校验后离线安装/import成功。Torch安装会话25239已终止exit1，未确认Torch恢复；随后日志检查因1080拒绝连接停在pull前。最新本地检查已无SSH持有进程，正在按诊断门禁确认远端端口释放，再建立唯一任务专用代理。未结束任何用户SSH会话。
 
 # 当前计划
 
-1. 在执行通道可用且用户指导到达后，读取安装日志、修复仅任务自有环境并记录版本；模型/全量处理/测试均经Slurm。
+1. 恢复唯一任务专用代理并端到端验证、pull后读取安装日志；修复仅任务自有环境并记录版本；模型/全量处理/测试均经Slurm。
 2. 提交已通过本地检查的基础模块；真实GPU完整训练步/力场混合梯度/生成采样及现有回归测试经Slurm验收。预检仅typedCUDA OOM减半，B1失败如实记录；不因探针通过宣称全量就绪。
 3. 接入manifest分区、train-only统计、独立validation选best/test指标、有界checkpoint；补齐官方骨干完整scratch、非官方radius6/PBC分子输入和生成训练噪声/独立质量评测。
 4. 准备全数据与来源/有效N/过滤/分区/预训练重叠审计；按最坏结构预检并写回两初始化共同batch，逐任务完成一seed48格，再补齐三seed144及论文证据。
@@ -357,3 +357,9 @@ Guqq2代理Git协议GET200且pull通过；任务自有universal-base已建立。
 - 2026-11-03T22:19:02 +08:00: Automatic approval timed out for git add and its one permitted retry before command creation. No commit or push completed; new modules remain local. Remote log-inspection retry also timed out. No task-owned proxy/SSH holder remains; existing user proxy was not changed. Goal remains active; pending user guidance/execution channel recovery for remote checks and publication.
 
 - 2026-11-03T22:21:33 +08:00: Continue active goal; previous turn made code/test progress despite remote/publication approval timeout. Revalidate channel read-only; progress next opt-in manifest partition and validation-best/held-out evaluation integration locally. Existing legacy paths must remain compatible; real numerical verification still required on Slurm.
+
+- 2026-11-03T22:48:04 +08:00: 阶段进展：commit1b8c33e已push并经服务器pull确认；17项本地协议/静态检查通过，真实数值仍待Slurm。PySocks已经SHA校验、离线安装并import成功；Torch/common安装会话25239已确认仍存活，继续轮询同一handle，不重复启动安装。
+
+- 2026-11-03T22:48:45 +08:00: Correction to preceding live-install note: latest poll of session25239 returned terminal exit1, so installation is stopped, not a verified wait. PySocks1.7.1 import was verified before that failure; Torch success remains unproven. Next inspect logs before any install retry.
+
+- 2026-11-03T22:54:23 +08:00: Owned dedicated proxy PID25840(exec73725) started only after local old holder absent/remote1080 free, verified end-to-end GitGET and pull. Previous pip failure traced to proxy disappearing mid NVRTC88MB download (2.5MB received); no Torch restore claimed. PySocks remains verified. Inspect cache/precise URLs before retry.

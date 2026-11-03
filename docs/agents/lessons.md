@@ -209,3 +209,5 @@
 - 2026-11-03T21:58:03 +08:00: Git HTTPS smart protocol may return 405 to HEAD while PyPI proxy works. Do not infer proxy failure from unsupported HEAD method; use bounded GET of repository info/refs before pull. Preserve existing live user-owned proxy.
 
 - 2026-11-03T22:13:59 +08:00: Automatic approval deadlines can expire before a remote command is created. Treat this separately from SSH login/network rejection; after one retry, ask user for guidance and continue independent local work. Preserve existing user-owned proxy and do not infer remote installation success from a started SSH command. capacity probe success is not full-training coverage certification; fixed split helpers and metrics alone do not implement val-best evaluation.
+
+- 2026-11-03T22:54:23 +08:00: Empty pip --python target needs its own PySocks even when controller uses an existing pip. Curl/download a verified universalwheel, offline bootstrap target first. A healthy user-held proxy can disappear independently; use the mandated dedicated holder for long downloads after proving the old proxy gone, and preserve exact owner PID. Do not restart merely on listener or transient TLS evidence.

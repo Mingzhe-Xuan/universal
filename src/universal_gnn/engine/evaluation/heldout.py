@@ -102,18 +102,20 @@ class HoldoutEvaluation:
 
     def score_test(self, model, config, scales, output):
         import torch
+        from universal_gnn.engine.training import execution_record, version_record
 
         if self.best_sha256 is None or file_sha256(self.best_checkpoint) != self.best_sha256:
             raise ValueError("Validation-best artifact changed before test scoring")
         saved = torch.load(self.best_checkpoint, map_location="cpu", weights_only=True)
         model.load_state_dict(saved["state_dict"], strict=True)
         model.eval()
-        result = score_partition(model, self.test, config, scales, output)
-        result.update(selection=self.snapshot(), validation_structures=len(self.validation),
-                      test_structures=len(self.test), source_structures=self.manifest["source_count"],
-                      declared_train_structures=len(self.manifest["partitions"]["train"]),
-                      partition="test", checkpoint_role="validation_best")
-        return result
+        metadata = {"selection": self.snapshot(), "validation_structures": len(self.validation),
+                    "test_structures": len(self.test), "source_structures": self.manifest["source_count"],
+                    "declared_train_structures": len(self.manifest["partitions"]["train"]),
+                    "source_sha256": self.manifest["source_sha256"],
+                    "partition": "test", "checkpoint_role": "validation_best",
+                    "execution": execution_record(model), "versions": version_record()}
+        return score_partition(model, self.test, config, scales, output, metadata=metadata)
 
 
 def make_holdout(config, training, checkpoint, *, state=None):
@@ -130,7 +132,7 @@ def make_holdout(config, training, checkpoint, *, state=None):
     return result
 
 
-def score_partition(model, structures, config, scales, output):
+def score_partition(model, structures, config, scales, output, *, metadata=None):
     """One pass over held-out labels; preserve all predictions as JSONL on disk."""
     from contextlib import ExitStack
     import torch
@@ -183,5 +185,6 @@ def score_partition(model, structures, config, scales, output):
         result = {"structures": count, "normalized_loss": totals.loss(config),
                   "metrics": {name: accumulator.result() for name, accumulator in accumulators.items()},
                   "predictions": str(output / "predictions.jsonl"), "train_scales": copy.deepcopy(scales)}
+        result.update(metadata or {})
         (output / "metrics.json").write_text(json.dumps(result, indent=2, allow_nan=False), encoding="utf-8")
     return result

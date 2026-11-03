@@ -50,6 +50,9 @@ def test_training_partition_train_scales_best_selection_and_test_tail(tmp_path):
     tracker = report["heldout"]["selection"]["tracker"]
     assert tracker["best_loss"] == min(item["loss"] for item in tracker["history"])
     assert report["heldout"]["test_structures"] == 2
+    assert report["heldout"]["source_sha256"] == manifest["source_sha256"]
+    metrics_path = tmp_path / "trained/evaluation/epoch-3/metrics.json"
+    assert json.loads(metrics_path.read_text())["selection"] == report["heldout"]["selection"]
     predictions = [json.loads(line) for line in open(report["heldout"]["predictions"], encoding="utf-8")]
     assert {r["id"] for r in predictions} == {f"s{i}" for i in manifest["partitions"]["test"]}
     assert report["heldout"]["metrics"]["bandgap"]["mae"] > 1e5

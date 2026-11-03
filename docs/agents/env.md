@@ -100,3 +100,9 @@
 - 2026-11-03T22:13:59 +08:00: universal-base creation verified empty after successful pull. Binary Torch install command exited1; later log read did not execute because automatic approval timed out, including one retry. Do not record Torch/scientific packages as restored until logs and installed metadata are checked. Existing user proxy unchanged; latest measured available69190582272B before install.
 
 - 2026-11-03T22:39:33 +08:00: Diagnosed first Torch install: pip targetbase lacked PySocks (Missing dependencies for SOCKS support). Plan curl universal PySocks1.7.1 wheel+PyPI digest, no-index bootstrap into universal-base, then pinned binary-only retry. This modifies only task-ownedbase; package presence still pending confirmation.
+
+- 2026-11-03T22:48:04 +08:00: PySocks wheel scp completed; remote SHA256 matched2725bd0a9925919b9b51739eea5f9e2bae91e83288108a9ad338b2e3a4435ee5; offline target-base install and import verified PySocks1.7.1. Pinned binary Torch/scientific installation remains live in SSH exec session25239; do not restart merely on a polling timeout.
+
+- 2026-11-03T22:48:45 +08:00: Correction to preceding live-install note: latest poll of session25239 returned terminal exit1, so installation is stopped, not a verified wait. PySocks1.7.1 import was verified before that failure; Torch success remains unproven. Next inspect logs before any install retry.
+
+- 2026-11-03T22:54:23 +08:00: Owned dedicated proxy PID25840(exec73725) started only after local old holder absent/remote1080 free, verified end-to-end GitGET and pull. Previous pip failure traced to proxy disappearing mid NVRTC88MB download (2.5MB received); no Torch restore claimed. PySocks remains verified. Inspect cache/precise URLs before retry.
