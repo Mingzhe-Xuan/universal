@@ -325,6 +325,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     report = {"config": config, "versions": version_record(), "execution": execution,
               "components": component_audit(model), "components_during_training": training_components,
               "initialization": initialization,
+              "checkpoint_capability_updates": getattr(model, "_checkpoint_capability_updates", []),
               "supervised_outputs": list(supervised_outputs(config)),
               "structures": records, "selected_structures": len(structures),
               "available_structures": len(structures.source), "data_fingerprint": fingerprint,

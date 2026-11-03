@@ -3,7 +3,7 @@
 import hashlib
 from pathlib import Path
 
-from .optimization import architecture_signature, components
+from .optimization import architecture_signature, components, compare_architectures
 
 
 def initialize_components(model, path, selected=("backbone",)):
@@ -20,7 +20,7 @@ def initialize_components(model, path, selected=("backbone",)):
     for name in selected:
         if name == "adapter":
             fields = ("version", "native_spec", "adapter", "adapter_output_spec", "route", "adapter_version")
-            if any(old_signature["prediction"].get(key) != new_signature["prediction"].get(key) for key in fields):
+            if any(not compare_architectures(old_signature["prediction"].get(key),new_signature["prediction"].get(key))[0] for key in fields):
                 raise ValueError("warm-start adapter feature/basis semantics differ")
         a, b = old[name].state_dict(), new[name].state_dict()
         if set(a) != set(b) or any(a[k].shape != b[k].shape for k in a):
@@ -28,7 +28,7 @@ def initialize_components(model, path, selected=("backbone",)):
         for key in ("implementation", "module_types"):
             if old_signature["components"][name][key] != new_signature["components"][name][key]:
                 raise ValueError(f"warm-start {name} implementation differs")
-        if name == "readout" and old_signature["prediction"] != new_signature["prediction"]:
+        if name == "readout" and not compare_architectures(old_signature["prediction"], new_signature["prediction"])[0]:
             raise ValueError("warm-start readout feature/output semantics differ; select only compatible components")
         if name == "backbone":
             from .runtime import verify_extensions

@@ -47,6 +47,7 @@ def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None,
               "structures": []}
     if "prediction" in config or "optimization" in config:
         result["components"] = component_audit(model)
+        result["checkpoint_capability_updates"] = getattr(model,"_checkpoint_capability_updates",[])
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     streaming = output.suffix.lower() == ".jsonl"

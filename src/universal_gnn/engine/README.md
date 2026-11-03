@@ -91,3 +91,12 @@ and gradients through a frozen head to its input are preserved. All-frozen model
 selected compatible components, records source hashes, and builds a new optimizer. Full resume
 requires identical architecture, policy and parameter-group maps. prediction and optimization are
 rejected for generation. Old configs retain their original flat optimizer and state keys.
+
+`optimization.backbone_eval: true` keeps the backbone in eval mode while train_backbone may
+remain true: parameter and input derivatives stay enabled, with running-statistics/dropout
+behavior fixed. This is explicit and part of resume compatibility; absent/false retains the
+historical policy representation. New official CGCNN/Equiformer forcefields require it when
+training backbone parameters, following observed BN coupling/stochastic batch evaluations.
+Verified FeatureSpec derivative-capability upgrades from false to true alone are recorded and
+accepted on checkpoint replay. Capability downgrades, dimensions, representation, layer or policy
+changes still fail strict reconstruction; native tensor state and optimizer mapping do not change.

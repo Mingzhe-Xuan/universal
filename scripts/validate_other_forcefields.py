@@ -46,13 +46,16 @@ def configuration(model, path, spec, *, frozen, epochs):
     readout = {"name": "node_mlp", "pooling": "sum", "hidden_features": [32], "activation": "silu"}
     if not spec.even_scalars:
         readout["feature_processing"] = {"name": "scalar_invariants"}
-    return {"schema_version": 1, "seed": 123, "structures": "all", "batch_size": 5,
+    config = {"schema_version": 1, "seed": 123, "structures": "all", "batch_size": 5,
             "dtype": "float32", "device": "cpu", "epochs": epochs, "checkpoint_every": 1,
             "learning_rate": .001 if frozen else .0001,
             "backbone": {"name": model, "implementation": "official"},
             "dataset": {"path": str(path)}, "task": {"kind": "forcefield", "supervised_outputs": ["forces"]},
             "prediction": {"version": 1, "readout": readout},
             "optimization": {"train_backbone": not frozen, "train_readout": True}}
+    if model in {"cgcnn", "equiformer"} and not frozen:
+        config["optimization"]["backbone_eval"] = True
+    return config
 
 
 def reference_configuration(config):
@@ -122,6 +125,7 @@ def assess_batches(model, structures, *, train):
     selected = [structures[0],structures[1]]
     b = StructureBatch.from_structures(selected)
     combined = model(b,create_graph=False)
+    repeated = model(b,create_graph=False)
     separated = [model(StructureBatch.from_structures([s]),create_graph=False) for s in selected]
     errors, passed = {}, True
     for name in combined:
@@ -129,6 +133,9 @@ def assess_batches(model, structures, *, train):
         errors[name] = float((combined[name]-values).abs().max().detach())
         passed = passed and bool(torch.isclose(combined[name],values,rtol=2e-4,atol=2e-5).all())
     result = {"passed":passed,"max_abs_errors":errors,"rtol":2e-4,"atol":2e-5,
+              "repeat_max_abs_errors":{k:float((combined[k]-repeated[k]).abs().max().detach()) for k in combined},
+              "original_stochastic_settings":{k:getattr(model.backbone.model,k,None) for k in
+                   ("alpha_drop","proj_drop","out_drop","drop_path_rate")} if hasattr(model.backbone,"model") else {},
               "components":component_audit(model),"normalization_modules":[
                   {"name":name,"type":type(module).__qualname__,"training":module.training}
                   for name,module in model.backbone.named_modules()
@@ -158,6 +165,9 @@ def validate_mode(config, output, *, fd_step=.002):
         except Exception as error:
             result["errors"].append({"stage":stage,"error":repr(error),"traceback":traceback.format_exc()})
     try:
+        if config["optimization"].get("backbone_eval"):
+            with patch.dict(model._component_policy, {"backbone_eval": False}):
+                result["unrestricted_train_batch_diagnostic"] = assess_batches(model,structures,train=True)
         report = training.run_training(config,output/"training")
         trained = training.load_checkpoint(output/"training/checkpoint.pt")
         changes = {name:parameter_delta(before[name],module) for name,module in components(trained).items()}

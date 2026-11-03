@@ -1,4 +1,5 @@
 import importlib
+import copy
 from types import SimpleNamespace
 
 import pytest
@@ -64,3 +65,70 @@ def test_discrete_periodic_topology_retains_live_geometry_and_mixed_derivatives(
     gp,gc=torch.autograd.grad(energy,(pos,cell),create_graph=True)
     mixed=torch.autograd.grad(gp.square().sum()+gc.square().sum(),parameter)[0]
     assert gp.norm()>0 and gc.norm()>0 and mixed.isfinite() and mixed.abs()>0
+
+
+def test_backbone_eval_policy_is_explicit_bool_and_default_compatible():
+    from universal_gnn.readouts.configuration import normalize_optimization
+    base={"task":{"kind":"supervised","property":"bandgap"}}
+    assert normalize_optimization(base)==normalize_optimization({**base,"optimization":{"backbone_eval":False}})
+    assert normalize_optimization({**base,"optimization":{"backbone_eval":True}})["backbone_eval"]
+    with pytest.raises(ValueError,match="bool"):
+        normalize_optimization({**base,"optimization":{"backbone_eval":1}})
+
+
+def test_capability_upgrade_does_not_allow_shape_or_capability_downgrade():
+    from universal_gnn.engine.optimization import compare_architectures
+    old=FeatureSpec(8,"8x0e","invariant","scalar","invariant",
+                    {"positions":True,"strain":False,"mixed":False}).to_dict()
+    new=copy.deepcopy(old);new["gradients"].update(strain=True,mixed=True)
+    compatible,updates=compare_architectures(old,new)
+    assert compatible and len(updates)==2 and not old["gradients"]["strain"]
+    assert not compare_architectures(new,old)[0]
+    new["feature_dim"]=9
+    assert not compare_architectures(old,new)[0]
+
+
+def test_capability_upgrade_checkpoint_replay(monkeypatch,tmp_path):
+    from test_prediction_components import ControlledBackbone,config,batch
+    from universal_gnn.engine.optimization import component_checkpoint
+    monkeypatch.setattr(training,"make_backbone",lambda *a,**kw:ControlledBackbone())
+    c=config();c["dtype"]="float64"
+    model=training.build_model(c).double().eval()
+    def unverified(value):
+        if isinstance(value,dict):
+            if "gradients" in value:value["gradients"].update(strain=False,mixed=False)
+            for child in value.values():unverified(child)
+        elif isinstance(value,list):
+            for child in value:unverified(child)
+    unverified(model.prediction_descriptor)
+    expected=model(batch())
+    path=tmp_path/"previous.pt"
+    torch.save({"format_version":2,"config":c,"state_dict":model.state_dict(),
+                "components":component_checkpoint(model)},path)
+    restored=training.load_checkpoint(path)
+    torch.testing.assert_close(restored(batch()),expected,rtol=0,atol=0)
+    assert restored._checkpoint_capability_updates
+
+
+def test_trainable_eval_backbone_preserves_buffers_and_trains_force_gradients(monkeypatch):
+    from test_prediction_components import ControlledBackbone,config,batch
+    from universal_gnn.engine.optimization import make_optimizer
+    def factory(*a,**kw):
+        backbone=ControlledBackbone();backbone.forcefield_requires_eval_training=True
+        return backbone
+    monkeypatch.setattr(training,"make_backbone",factory)
+    c=config("node_mlp",task={"kind":"forcefield","supervised_outputs":["forces"]})
+    c["prediction"]["readout"]["pooling"]="sum"
+    with pytest.raises(ValueError,match="backbone_eval"):training.build_model(c)
+    c["optimization"]={"train_backbone":True,"backbone_eval":True}
+    model=training.build_model(c).double().train()
+    assert not model.backbone.training and model.energy_model.readout.training
+    assert all(p.requires_grad for p in model.backbone.parameters())
+    buffers={k:v.clone() for k,v in model.backbone.named_buffers()}
+    parameters={k:v.clone() for k,v in model.backbone.named_parameters()}
+    optimizer=make_optimizer(model,c)
+    model(batch(),create_graph=True)["forces"].square().sum().backward()
+    assert any(p.grad is not None and p.grad.norm()>0 for p in model.backbone.parameters())
+    optimizer.step()
+    for key,value in buffers.items():torch.testing.assert_close(dict(model.backbone.named_buffers())[key],value,rtol=0,atol=0)
+    assert any(not torch.equal(p,parameters[key]) for key,p in model.backbone.named_parameters())

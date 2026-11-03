@@ -19,6 +19,14 @@ def components(model):
 
 def configure_optimization(model, config):
     policy = normalize_optimization(config, has_adapter="adapter" in components(model))
+    root = getattr(model, "energy_model", model)
+    if (hasattr(model, "energy_model") and hasattr(root, "native_spec") and
+            getattr(root.backbone, "forcefield_requires_eval_training", False) and
+            policy["train_backbone"] and not policy.get("backbone_eval", False)):
+        reason = getattr(root.backbone, "forcefield_training_mode_reason", "requires deterministic per-structure execution")
+        raise ValueError(f"This forcefield backbone {reason}; set "
+                         "optimization.backbone_eval=true to train its parameters in eval mode, "
+                         "or optimization.train_backbone=false")
     model._component_policy = policy
     seen = set()
     for name, module in components(model).items():
@@ -38,7 +46,8 @@ def apply_component_modes(model):
     if not hasattr(model, "_component_policy") or not model.training:
         return
     for name, module in components(model).items():
-        if not model._component_policy["train_" + name]:
+        if (not model._component_policy["train_" + name] or
+                (name == "backbone" and model._component_policy.get("backbone_eval", False))):
             module.eval()
 
 
@@ -122,14 +131,37 @@ def component_checkpoint(model):
             "optimizer_groups": parameter_groups(model)}
 
 
+def compare_architectures(previous, current):
+    """A newly verified input-derivative capability does not change forward/state layout."""
+    candidate, upgrades = copy.deepcopy(previous), []
+
+    def visit(old, new, path):
+        if isinstance(old, dict) and isinstance(new, dict):
+            if {"feature_dim", "irreps", "kind", "basis", "gradients"} <= old.keys() & new.keys():
+                for name in ("positions", "strain", "mixed"):
+                    if old["gradients"].get(name) is False and new["gradients"].get(name) is True:
+                        old["gradients"][name] = True
+                        upgrades.append(path + ".gradients." + name)
+            for key in old.keys() & new.keys():
+                visit(old[key], new[key], path + "." + key)
+        elif isinstance(old, list) and isinstance(new, list):
+            for index, (a, b) in enumerate(zip(old, new)):
+                visit(a, b, path + f"[{index}]")
+
+    visit(candidate, current, "architecture")
+    return candidate == current, upgrades
+
+
 def verify_component_checkpoint(saved, model, *, training=False):
     expected = saved.get("components")
     if expected is None:
         return
-    if expected.get("version") != 1 or expected["architecture"] != architecture_signature(model):
+    compatible, upgrades = compare_architectures(expected.get("architecture"), architecture_signature(model))
+    if expected.get("version") != 1 or not compatible:
         raise ValueError("Checkpoint component architecture/signature mismatch")
     if training and (expected["policy"] != model._component_policy or expected["optimizer_groups"] != parameter_groups(model)):
         raise ValueError("Checkpoint optimization policy/parameter groups differ; use explicit warm-start")
+    model._checkpoint_capability_updates = upgrades
 
 
 class FrozenStateGuard:

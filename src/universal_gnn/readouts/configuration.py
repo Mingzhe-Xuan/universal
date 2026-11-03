@@ -117,7 +117,12 @@ def normalize_optimization(config, *, has_adapter=None):
         prediction = normalize_prediction(config)
         has_adapter = prediction is None or prediction["adapter"]["name"] != "none"
     result = deepcopy(config.get("optimization", {}))
-    fields(result, {"train_backbone", "train_readout", "train_adapter"}, "optimization")
+    fields(result, {"train_backbone", "train_readout", "train_adapter", "backbone_eval"}, "optimization")
+    if "backbone_eval" in result:
+        if type(result["backbone_eval"]) is not bool:
+            raise ValueError("optimization.backbone_eval must be bool")
+        if not result["backbone_eval"]:
+            result.pop("backbone_eval")
     if not has_adapter and "train_adapter" in result:
         raise ValueError("optimization.train_adapter requires an independent adapter; internal processing belongs to train_readout")
     for component in ("backbone", "adapter", "readout") if has_adapter else ("backbone", "readout"):
@@ -134,7 +139,7 @@ def validate_component_config(config):
             fields(config["prediction"], {"version", "readout", "adapter"}, "prediction")
             version(config["prediction"].get("version"), "prediction.version")
         if "optimization" in config:
-            fields(config["optimization"], {"train_backbone", "train_readout", "train_adapter"}, "optimization")
+            fields(config["optimization"], {"train_backbone", "train_readout", "train_adapter", "backbone_eval"}, "optimization")
             for key, value in config["optimization"].items():
                 if type(value) is not bool:
                     raise ValueError(f"optimization.{key} must be bool")

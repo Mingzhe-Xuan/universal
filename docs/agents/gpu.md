@@ -359,3 +359,9 @@
 - 2026-11-03T13:24:02+08:00: 775 array complete (queue empty),source e1e7090;new ordinary SSH health/pull current first then collect bounded JSON/log evidence plus read-only ORIGINAL Equiformer/OCP and ALIGNN graph-builder source for local diagnosis. No model computation on login. Reuse healthy owned50456;do not overwrite775 data or vendor source.
 
 - 2026-11-03T13:28:07+08:00: After next source commit/push,new normal SSH health/pull FIRST;775 done so source provenance stable. Submit only CGCNN,Equiformer corrected real chains and ALIGNN fixed-probe FD sweep+documented512F assembly viaSlurm. Reuse own50456 healthy,oneCPU24GB each;no new packages/vendor changes.
+
+- 2026-11-03T13:31:01+08:00: Actual d8db5a6 pulled afterHTTP200;780CGCNN,781Equiformer,782ALIGNN-FD/config512,783core/784MACE regressions submitted. Next ordinary work SSH health/pull first then collect bounded exact JSON/logs for these IDs and775 (no new jobs/source changes during runs);reuse healthy50456.
+
+- 2026-11-03T13:36:37+08:00: Next read-only work SSH health/pull d8db5a6 then refresh781 final result and bounded archive775/780-784;local new mode/compatibility code not yet pushed so running source provenance unchanged. Own50456 remainshealthy. After781 ends,commit/push tested policy correction,rerun onlyCGCNN eval-while-trainable andALIGNN converged h.0002 plusfinal regressions.
+
+- 2026-11-03T13:41:38+08:00: Next work SSH health/pull FIRST after local policy commit;781 complete before source sync. SubmitCGCNN/Equiformer explicit-eval-param actual chains andALIGNN h.0002 actualchain;three environment full regressions(core/MACE/equiformer) for policy/checkpoint boundary. Reuse healthy50456;no new dependencies/native-source edits,all computationSlurm.
