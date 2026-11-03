@@ -397,3 +397,7 @@
 - 2026-11-03T17:12:09+08:00: Diagnostic HTTP200 restored using same38788 proxy;no restart. Authorized collection retry:health/pull first,queue+bounded six-native reports/log archive only.
 
 - 2026-11-03T17:18:40+08:00: Authorized final integration submission connection:health-check reuse38788,pull locally committed transfer script FIRST,six Slurm1CPU16GB jobs for body transfer/frozen streamed inference/old checkpoints. No server tracked source edits or numeric login work.
+
+- 2026-11-03T17:27:54+08:00: Final transfer Slurm812-817 submitted afterHTTP200/pull0b22593. Authorized bounded collection:health/pull first,collect officialmetadata/regression/realmodel/transfer reports plus four small acceptance datasets for independent ID/geometry/label audit. Exclude allweights/checkpoints;capfile2MiB.
+
+- 2026-11-03T17:29:40+08:00: Collection SSH closed by Vlab remote before health/pull output,no results read. Authorized persistent final collection/sync/cleanup connection:health+pull before alltask operations;reuse owned38788,collect bounded final reports/data,verify812-817,wait for local docs push then pullsameconnection,identity-check stop only38788 and confirm remote1080released. If initialTLSgatefails,stop task operations and diagnose only.

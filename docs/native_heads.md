@@ -75,3 +75,5 @@ sbatch scripts/ugnn.slurm train configs/native_mace_force_only.yaml --output run
 只加载原主干的参数和缓冲区，保留目标的头初始化，重建优化器。不能把原头混入主干迁移。
 同模式原头的复用仍须通过完整任务、实现、状态与归一化语义检查。
 原头不重新挂载，不改变原模型状态路径；优化器按原模块路径分组，每个参数只出现一次。
+
+验证范围、三环境测试和六个官方模型的实际结果见 [验收记录](agents/native-heads.md)。

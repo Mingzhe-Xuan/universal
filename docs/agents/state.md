@@ -1,15 +1,12 @@
 # 当前状态
 
-按用户要求实现prediction.head_mode native/reset。reset保留官方主干并创建新头；native保留已验证官方原任务/头权重/池化/归一化。
-先检查六个原artifact的任务/normalizer/头模块边界，避免把同shape误当同任务。已有126x3/五骨干力场验收保持。
+prediction.head_mode native/reset 已实现并写入标准与配置。native 保留六个已登记官方原头/任务/归一化；reset 保留主干并随机初始化新头，冻结策略独立。
+Slurm 三环境各139项通过；六模型原头预测/冻结检查通过；五个匹配任务各10条真实记录微调、精确重载、续训通过。Equiformer IS2RE 只做预测与梯度诊断，没有伪造训练标签。
 
 # 当前计划
 
-contracts新增原生任务规格；official新增原头协议与物理输出包装；tasks新增native任务模型；engine新增原模块的无重复组件视图，接入冻结/优化器/严格重建/暖启动。
-旧无prediction路径不变，既有prediction默认reset且旧签名兼容；head_mode切换拒绝完整resume，显式组件暖启动。
-六官方原生前向/物理归一化对照、冻结头/主干、参数不重复、native与reset互换及旧checkpoint回放，经单元和Slurm真实链验证。
-所有计算Slurm，源码只在本地提交/服务器pull，不改上游层或图规则；未有原任务真实标签时只验证前向与梯度，不伪造训练目标。
-更新标准/README/配置/使用与证据，最后同步并清理唯一任务代理。无关docs/paper保留。
+812–817真实artifact双向主干迁移、目标头保留、全冻结流式推理及历史checkpoint零误差回放已通过；86文件哈希和五任务各10条原始ID/几何/绑定审计通过。
+完成最终文档检查与提交推送；复用持有中的SSH连接pull，关闭唯一代理38788并在同连接确认1080释放。无关docs/paper保留。
 
 # 变更记录
 
@@ -266,3 +263,5 @@ contracts新增原生任务规格；official新增原头协议与物理输出包
 - 2026-11-03T14:30:06+08:00: Started native/reset head-mode implementation. Need original task/normalizer metadata audit and disjoint parameter/mode ownership without reparenting official modules. Preserve reset/legacy state keys and old capability-upgrade compatibility.
 
 - 2026-11-03T17:05:17+08:00: Native head-mode implementation phase complete;139x3 Slurm tests pass. Enter original-artifact acceptance;next original numerical parity,five matching-label finetunes and EQdiagnostics.
+
+- 2026-11-03T17:32:08+08:00: Completed original-artifact acceptance and final integration;812-817allpass,86-file source/hash/geometry audit passed. Enter final documentation/sync/owned-proxy cleanup;next close38788 and confirm1080released in same connection.
