@@ -120,3 +120,5 @@
 - 2026-11-04T02:52:50 +08:00: PreparedbutNOTINSTALLED providerdependencies:59PyPI wheels62,873,601B, pinnedPymatgen2025.6.14/Jarvis2026.6.12/Spglib2.6/Sklearn1.7.2/Pandas2.3.3/Setuptools80.9.0(pkg_resourcespayloadverified). PlusnativeDGL1.1.3cu12179,870,014B andTorchvision0.22.1cu1288,730,539B; total151,474,154B. Allunderlocaltmp/arxiv-linux-base; provider/native-provider manifests holdURLs/hashes/ABI. GPUregressionmustwaitforproviderinstallandchildpipcheckafterCUDA16.
 
 - 2026-11-04T03:31:12 +08:00: ReadonlyfixedsystemSDKlibrarymetadata shows /usr/local/cuda->CUDA12.4 libs plus /usr/lib CUDA11; noCuDNNfoundatcheckedfixedpaths. No librarycopied/importedorenvironmentchanged. These cannotbeclaimedasmatchinglockedCUDA12.8runtime. Provider151MBlocalmanifestreadybutupload/installpending.
+
+- 2026-11-04T06:06:12+08:00：Slurm863定向恢复provider缓存22资源47,426,518B（含Torchvision CUDA8,730,539B）；59个Torch独立provider缺38个24,177,622B。本地原59wheel仍完整，计划通过已有回环HTTP/SOCKS补齐38个，在既有自有universal-base安装59项并pipcheck，再跑Pymatgen/ASE结构评分；不需新下载CPU Torch。另7个CPU验证wheel的本机HTTPS下载两次被自动审批拒绝，已异步请求明确许可，未创建新CPU环境、未下载其资产，待答后再办。

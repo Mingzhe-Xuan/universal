@@ -225,3 +225,9 @@
 - 2026-11-04T03:31:12 +08:00: Update earlierNequIPpackageconfig limitation: embeddedconfigstillreferencesmissingbasecheckpoint, butZenodo23472045 separatelypublishesNequIP-OAM-S_pretrain_config.yaml (11565B,SHA256d61e684aa85e3cad83578042fa485df9fb9ab8d8a3f6fe56b8b20564d7f6f076). ItsnativeNequIPGNNModel usesfeaturewidths[128,64],typeembed32,2layers,lmax1,rmax4.5,trainablebessels8 andZBL. Do notguesslegacywidth. Freshmustoverridefixedseed42 withrunseed, resetper-typeenergyshifts/scales, fitavg_num_neighborsfromtraininggeometryonly ratherthanreusefittedpretraining25.59111819081615. Inspectnativebuilderversioncompatibility andfullstate/irrep/layout underSlurmbeforedeclaringfreshready.
 
 - 2026-11-04T04:25:38+08:00：Windows本会话Stop-Process即使PID/命令行匹配也发生内部NullReferenceException，进程与端口仍在，不能据命令exit0宣称清理完成。重查CIM所有权后用.NET Process.GetProcessById(PID).Kill()精确终止自有三个已完成HTTP进程，Get-NetTCPConnection核对三个监听实际释放。该经验属于环境操作，不写入业务代码。
+
+- 2026-11-04T04:54:06+08:00：监督器新代理刚Popen时，普通工作SSH有时先于专用SSH完成握手；健康curl7明确为1080连接拒绝，本地wheel HTTP仍200。不能当作TLS或资源服务故障。对同一新代理的端到端HEAD增加最多5次/20秒的connection-refused重试，仅适用于启动就绪竞态；仍不得重启健康代理、忽略其他失败或用监听代替端到端健康。旧64108实际已终止且finally核对1080释放后才启动替代监督器。
+
+- 2026-11-04T04:54:06+08:00：PowerShell不会为rg展开tests/test_*.py等参数；重复不存在路径会浪费诊断回合。先rg --files确认目录，用rg PATTERN tests -g " *.py\过滤，不能假定模块目录/单文件布局。
+
+- 2026-11-04T05:00:08+08:00：Vlab会在普通状态SSH上返回255（202.38.75.226主动关闭），即使刚验证的专用代理仍live、cleanup下一连接又可成功。不能因只读观察失败而在finally拆掉正在服务数据的健康代理。监督器改为每30秒重试同一观察路径，保留现有Popen，不据未知状态重交sbatch；fresh健康的SSH观察最多三次/间隔30秒，curl非255失败仍停止。去掉3秒密集SSH重试，普通连接超时45秒；变更仅本地控制器，工作body SHA不变。

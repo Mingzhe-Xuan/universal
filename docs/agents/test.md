@@ -1041,3 +1041,13 @@
 - 2026-11-04T04:31:07+08:00：实现前计划：generative协议用纯std测试覆盖epoch/ID/phase/draw隔离、batch/order独立、resume兼容和显式v1旧约定；晶胞先验只消费训练记录、对数体积/原子几何均值、非有限/退化拒绝、训练指纹绑定；固定条件无放回/稳定ID选择、Wasserstein解析样例。真实全Perov-5训练先验与源码/源数据/manifest SHA通过CPU Slurm计算；Torch训练、采样和val-best集成另需模型环境恢复后数值测试。
 
 - 2026-11-04T04:34:35+08:00：生成协议提交前实际检查：9/9纯std测试通过；覆盖动态训练噪声/固定评测噪声、旧v1完整续训兼容拒绝、训练专属体积先验、无放回条件、W1解析结果、源身份/输出不可覆盖、CLI Slurm门禁及无Torch/site依赖。compileall、bash -n、README围栏/相对路径及git diff --check通过。真实11356训练结构先验待发布后CPU Slurm执行；生成训练器尚未接入，不宣称数值验收。
+
+- 2026-11-04T05:03:13+08:00：实际Slurm860通过生成纯协议全部9测试，并从完整11356训练结构拟合先验14.129232628696206 Å³/atom，heldout fit使用0；收据已SCP回传，本地按4859cc9实际脚本/协议源码SHA、JSONL与manifest SHA、分区计数核对通过。生成Torch/Pymatgen两个新runtime文件共8测试尚未运行；其源文件compileall、两个Slurm脚本bash-n和质量CLI无Slurm拒绝已通过，不能把静态检查当数值验收。
+
+- 2026-11-04T05:09:36+08:00：本地监督器真实控制循环故障注入通过：模拟状态SSH255后健康Popen仍保留、下一观察恢复、专用代理仅创建一次、仅显式stop才清理，无真实网络/外部进程。首次fixture仅因Windows当前目录在临时目录内导致清理失败，改为先退出cwd上下文再清理后通过；没有降低断言。实际64242后续观察确认862 RUNNING且native字节从321230147增长至329485635，分片未从零重传。
+
+- 2026-11-04T05:12:56+08:00：实现前计划：预检解析仅允许注入生成默认噪声、训练先验与缺省采样体积；显式参数、骨干/图/cutoff/采样步数不得变更，畸形worker解析不得通过或触发减batch。现有纯控制4测试保持通过，并增加正确解析/拒绝篡改/失败留档的故障注入；Torch真实worker与训练对照待Slurm环境。provider缓存复用既有recover_environment_cache.py，仅60个官方SHA/URL定向键，在Slurm复跑4缓存测试及恢复，记录命中/缺失；不扫描任意缓存、不改变版本或误称环境就绪。
+
+- 2026-11-04T05:41:10+08:00：新实现单元前计划：纯std蓝图测试验证MACE仅按shape重建零/一拟合统计、不读取源数值、不改变层宽/词表/cutoff；NequIP只提取官方GNN构造recipe，覆盖原seed42、shift/scale，跳过明确非persistent加速器，拒绝checkpoint loader/持久架构修改；统计必须绑定train全分区、dtype、source/manifest/ID指纹，区分MACE非零度与NequIP全节点分母。原始MACE/NequIP实际构造、模块/state/irreps布局、不同seed随机性和同seed头初始化对照留待Slurm，不以纯配置测试代替。
+
+- 2026-11-04T06:06:12+08:00：提交前检查：原预检控制4项与新增生成解析4项纯std测试通过（含控制器真实子进程、篡改拒绝且不减batch）；蓝图/懒加载7项纯std测试通过；结构评分metadata独立导入测试通过，compileall和文档/差异检查通过。结构评分其余5项真实Pymatgen/ASE测试需发布后在base补齐provider依赖的Slurm中运行，当前尚未执行。Torch构造/生成/weighted-loss数值仍待环境，不计入已通过。Slurm863实际4/4缓存测试通过，60目标恢复22个47,426,518B，完整报告已回传按目录SHA核对；59个独立provider仍缺38个24,177,622B。

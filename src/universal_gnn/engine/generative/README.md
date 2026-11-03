@@ -29,3 +29,20 @@ fingerprint and must not be silently substituted for it.
 
 The full generation trainer and quality evaluation still require numerical
 integration tests before this protocol can be counted as an accepted experiment.
+
+## Structural scoring without a model runtime
+
+`structure_quality.py` accepts standard records with `numbers`, Cartesian
+`positions`, row-vector `cell` and `pbc`. Its optional `record` callback adapts a
+lazy sequence of framework structures without storing feature tensors. NumPy, ASE
+and Pymatgen are loaded only for actual scoring; metadata imports do not need them
+or Torch. Numerical scoring tests run through Slurm.
+
+Geometry validity checks finite positive-volume periodic cells, unit-cell
+coordinates and a 0.5 angstrom minimum periodic distance. StructureMatcher uses
+fixed tolerances for uniqueness, novelty against training, and a match to the
+assigned test reference. It separately reports novelty for training-seen
+compositions, since an unseen composition is automatically novel. Volume/atom
+and density W1 remain separate from scale-normalized matching. Zero valid samples
+produce explicit null conditional metrics. This scorer does not train or sample
+a model and does not establish chemical or thermodynamic stability.

@@ -1,5 +1,18 @@
 # Backbones
 
+`blueprints.py` prepares native constructor arguments without importing model
+libraries. It retains architectural settings and replaces fitted energy shifts,
+scales and atomic reference energies with fresh constants. Native neighbor counts
+must come from the complete declared training partition, with source/manifest/ID
+fingerprints, dtype and the original cutoff. MACE uses edges/nonzero receivers;
+NequIP uses edges/all nodes, matching their native statistics conventions.
+The NequIP helper extracts only the author's original GNN recipe, supplies the
+current seed, and omits nonpersistent accelerator modifiers for eager construction.
+These helpers do not construct or numerically validate a network. The complete
+fresh-provider and engine-calibration paths still require Slurm acceptance.
+This package lazily resolves the existing invariant encoder aliases, preserving
+their original class identities while allowing metadata-only imports.
+
 All encoders return unpooled `NativeFeatures`. The six canonical names select the original
 [official providers](official/README.md) by default. Published weights must be prepared in the
 profile cache or specified explicitly; missing weights/dependencies fail without a fallback.
