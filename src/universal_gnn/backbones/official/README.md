@@ -102,9 +102,13 @@ formats/versions, not a promise that arbitrary third-party checkpoints are inter
 
 Provider changes for prediction v1 add only basis/transformation/derivative metadata and declared
 unused original head prefixes; original graph preprocessing and model layers remain intact.
-MACE declares verified positions/strain/mixed feature derivatives for new force fields. Other
-official providers currently declare strain/mixed unverified and are refused by new force-field
-assembly; this does not imply native force calculators are unavailable. Equiformer guarantees SO3.
+All six registered published profiles now declare verified positions/strain/mixed feature derivatives.
+CGCNN and Equiformer new forcefields require explicit optimization.backbone_eval=true while
+training backbone parameters: original BN/stochastic behavior remains fixed with gradients enabled.
+Frozen backbones already stay eval. Equiformer guarantees SO3. Exact checkpoints, real-data evidence,
+finite-difference convergence and release checks are in
+[forcefield validation](../../../../docs/agents/forcefield-backbones.md); arbitrary other artifacts
+still need their own capability validation.
 Original registered task heads may remain in the backbone state but do not contribute to the
 new prediction path; component audits list known prefixes and capacity upper bounds, not an exact
 measurement of effective task parameters. Dependencies/reference checks remain unchanged.

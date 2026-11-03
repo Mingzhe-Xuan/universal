@@ -73,7 +73,19 @@ optimization: {train_backbone: false, train_adapter: false, train_readout: true}
 因此仍可独立冻结。全部组件冻结时允许推理，训练拒绝空优化器。
 
 新式力场要求 `node_mlp + sum`，并要求主干声明已验证的 positions/strain/mixed 导数能力。
-目前官方 MACE 完成该声明；其他官方 provider 的 strain/mixed 尚未验证，新式力场组装会明确拒绝。
+六个已登记官方发布权重均已完成该声明；五个新增主干的测试及适用设置见 [力场验收](agents/forcefield-backbones.md)。
+CGCNN、Equiformer训练主干参数时必须显式使用：
+
+```yaml
+optimization:
+  train_backbone: true
+  train_readout: true
+  backbone_eval: true
+```
+
+这会保留主干参数梯度，同时固定BN运行统计并关闭随机训练层，保证本框架要求的结构独立、确定性力场执行。
+其余三个新主干ALIGNN、MEGNet、NequIP的默认全参模式通过。冻结主干时本来就保持eval，无需该额外设置。
+从已保存的其他训练策略切换到该设置仍须显式组件暖启动，不能直接复用旧优化器状态。
 仅力监督不需要能量/应力标签；能量、力、应力仍由同一新能量头计算。仅力标签不能确定绝对能量偏置。
 
 续训、换头与迁移
@@ -94,6 +106,8 @@ sbatch scripts/ugnn.slurm --mode train --config configs/prediction_spectrum.yaml
 
 `schema_version=1`、checkpoint format1/2 和 training_state.version1 不变；新 checkpoint 额外保存
 `components.version=1`，用于规格/参数组验证。旧文件缺此字段仍按旧构造重放；从旧32维路径改成新路径必须显式暖启动。
+仅将已验证导数能力元数据从false提升为true，不改变网络/权重结构，允许旧监督checkpoint回放并记录
+`checkpoint_capability_updates`；能力降级、形状、表示或训练策略变化仍会拒绝。
 推理可在 override 配置中关闭参数梯度，所有组件仍为 eval，并保留输出所需的输入求导。
 
 查看 `config.resolved.json` 的 prediction、optimization、resolved_components，以及 report.components，

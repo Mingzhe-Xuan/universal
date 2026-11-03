@@ -434,11 +434,17 @@ response保持辅助变量求导，不自动建立不同物理性质共享势能
 组件参数所有权不得重叠；优化器仅包含允许训练参数。冻结组件保持eval，参数和持久buffer不得改变。
 框架不因冻结使用no_grad或detach，保留输入导数及穿过冻结模块的梯度。全部冻结只允许推理。
 
+可选 `optimization.backbone_eval: true` 将主干置eval但保留train_backbone控制的参数梯度，
+用于固定BN统计/关闭随机层。absent/false保留历史策略的规范化表示；该字段须为bool且true属于续训策略。
+新式官方CGCNN/Equiformer力场训练主干参数时要求显式true，冻结主干则无需额外设置。
+
 新模型保存可选 `components` 字典：`version: 1`、architecture、policy、optimizer_groups。
 architecture包含规格、读出配置/实现、pooling位置、组件类型拓扑和state键/shape；
 optimizer_groups包含组件名称和有序参数名。原 `official_backbone` artifact/hash、extensions源码检查保持。
 该可选扩展不改变旧容器版本；未知components版本拒绝。旧文件不补写新组件或新state键。
 完整resume检查架构、冻结策略、参数分组，同时保留原数据/精度/采样/RNG/优化器兼容规则。
+仅FeatureSpec.gradients由false提升至已验证的true时允许元数据兼容更新并记录路径；
+该例外不允许能力降级、shape/irreps/基底/实现/层或策略变化，也不更改任何张量state。
 推理允许关闭参数梯度，但不改变架构，并保留输出所需输入导数。
 
 换头或训练策略使用显式 `--warm-start FILE --warm-start-components backbone`；可选择adapter/readout，

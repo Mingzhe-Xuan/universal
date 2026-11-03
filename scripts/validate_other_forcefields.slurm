@@ -14,4 +14,6 @@ export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
 models=(alignn cgcnn megnet nequip equiformer)
 interpreters=(/home/xmz/.venvs/universal-official/bin/python /home/xmz/.venvs/universal-official/bin/python /home/xmz/.venvs/universal-official/bin/python /home/xmz/.venvs/universal/bin/python /home/xmz/.venvs/universal-equiformer/bin/python)
 index="${SLURM_ARRAY_TASK_ID}"
-"${interpreters[$index]}" scripts/validate_other_forcefields.py --model "${models[$index]}" --output "runs/other-forcefields-${SLURM_ARRAY_JOB_ID}/${models[$index]}" "$@"
+numeric=()
+if [[ "${models[$index]}" == alignn ]]; then numeric=(--fd-step .0002); fi
+"${interpreters[$index]}" scripts/validate_other_forcefields.py --model "${models[$index]}" --output "runs/other-forcefields-${SLURM_ARRAY_JOB_ID}/${models[$index]}" "${numeric[@]}" "$@"

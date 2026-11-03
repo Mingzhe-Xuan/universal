@@ -1,14 +1,14 @@
 # 当前状态
 
-按用户要求测试其余五个官方骨干的新式能量求导力场：ALIGNN、CGCNN、MEGNet、NequIP、Equiformer。
-之前MACE/组件验收保留。当前其他provider能力仍未开放；先在隔离验收脚本中试验，不将未验证标记写成生产能力。
+五个其他官方骨干力场验收全部通过：ALIGNN、CGCNN、MEGNet、NequIP、Equiformer各冻结/全参10模式。
+788/789/790三环境各126 passed；791～795无临时能力覆盖完成普通入口4→5轮续训和全冻结推理10模式。
+CGCNN/Equiformer全参要求显式backbone_eval；保留原层和图规则，能力已开放。旧CGCNN771预测回放误差0。
+158份文件独立哈希、真实ID/坐标/晶格/force投影审计通过；MACE既有验收保留。
 
 # 当前计划
 
-scripts新增独立验收及Slurm入口，复用官方原权重、真实10结构forces投影、node_mlp+sum与既有训练器。
-各模型测试原生前向对照、位置/应变差分、混合梯度、冻结参数/buffer、eval与train批次独立、force-only冻结/全参训练、重载/推理。
-计算均通过Slurm，按既有环境分流，不修改官方图/网络层；仅有证据的能力开放，失败留存具体原因并修复常规适配问题。
-通过后补回归、文档与证据审计并关闭唯一任务代理；无关docs/paper保留。
+科学计算与实现验证已完成，完成文档/命令/格式检查及提交；通过现有工作SSH8965同步最后文档。
+随后只关闭身份核验的本任务代理50456，确认Guqq21080释放。无额外训练计划，保留全部历史失败和无关docs/paper。
 
 # 变更记录
 
@@ -254,3 +254,5 @@ scripts新增独立验收及Slurm入口，复用官方原权重、真实10结构
 
 
 - 2026-11-03T13:14:49+08:00: Started five-other-official-backbone forcefield assessment. Modules:scripts acceptance/Slurm,provider capability metadata only after evidence,optional minimal training-mode fix if actual BN coupling is found. Preserve original layers/preprocessing. Prior consultation notes retained.
+
+- 2026-11-03T14:10:05+08:00: Five-backbone stage COMPLETE:10candidate modes,10production full-resume/frozen-inference modes,126x3regressions,and158file/source-data audit passed. Enter finaldocs sync and owned50456 cleanup on held workSSH8965;no more numerical jobs needed.
