@@ -29,6 +29,29 @@ are hardlinked where possible; legacy bodies need a copy. A 20 GiB free-space re
 is enforced, and missing/mismatched resources remain explicit in the JSON report.
 It never scans arbitrary cache entries or installs a partial environment. Large cache
 verification needs the provided 12 GiB CPU Slurm allocation; do not run it on login.
+
+`prepare_arxiv_jarvis.slurm` prepares full fixed JARVIS releases, independently of
+Torch/environment restoration. Default bandgap preparation also creates binary
+classification in the same JSONL/split. Set `UGNN_DATA_KIND=phonon_dos` for all valid
+200-channel phonon DOS, or `electron_dos` for optional 300-channel electronic DOS.
+Source archive paths and fresh output folders are explicit; all source records are
+visited with audited exclusions and no atom-count/first-N cap. The job runs the five
+preparation fixture tests before full conversion and writes actual counts/hashes.
+See [the preparation module](../src/universal_gnn/data/preparation/README.md).
+
+After a successful common-resource transfer, `restore_common_base.slurm` verifies
+all chunks, the complete archive and each listed wheel, then installs the pinned
+foundation packages into the task-owned base with `--no-index`. It preserves a
+20 GiB reserve, rejects conflicting output files and runs archive fixture tests.
+This staged base is still incomplete until Torch/CUDA, provider extras and actual
+model/GPU checks pass; `pip check` alone is not a model-readiness certificate.
+
+After all 16 Torch/CUDA wheels are transferred, `install_offline_cuda_base.slurm`
+rechecks their fixed official SHA256 catalog, refuses missing resources, installs
+the exact CUDA build offline, runs `pip check`, and adds only the new shared-base
+path to the four task-owned model environments. It does not alter their isolated
+e3nn/PyG packages or any other project's environment. Provider extras and the full
+Slurm model/GPU regression remain separate gates before scientific training.
 # Real small-data matrix
 
 Download the named author archives listed in `prepare_acceptance_data.py` to `data/downloads`.

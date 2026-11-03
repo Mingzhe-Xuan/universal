@@ -1,17 +1,17 @@
 # 当前状态
 
-Active goal：按照docs/plan/arxiv_v1_experiments.md开展四模型×六任务×微调/完整scratch实验，48格/seed、三seed144；尚无正式全量训练结果。
-已发布1b8c33e/caccdf7/656f2ab：孤立子进程CUDA OOM预检、固定分区、train-only统计、validation-best/早停/可恢复best-last、独立test流式指标及Slurm验收入口。4994468修复data包入口提前导入Torch，18项本地协议/静态检查通过；服务器尚未确认pull此修复。
-Slurm821实际失败，发生在系统Python导入split测试阶段；本地python-S已复现eager Torch依赖并修复，保留原失败待重测。真实模型/CUDA训练步、混合梯度和既有完整回归尚未执行，不能据此启动正式长训练。
-任务自有base已创建，PySocks1.7.1已SHA校验并安装/import成功。旧代理失效残留3198388按UID/命令/启动时间核验后清理，1080释放。当前唯一任务代理96733：本地PID50964/jump3552/start23:16:01；最新轮询仍存活。安装控制31548也仍存活，Torch固定2.7.1cu128官方URL、依赖改用官方PyPI；实际安装完成尚无证据。近期普通连接代理健康超时，未越过失败pull门禁读取结果或提交新作业。
+Active goal：四模型×六任务×微调/完整scratch，48格/seed、三seed144。尚无正式全量训练结果，不能以协议测试/小样本替代。
+已发布90cf140及之前实现：OOM隔离预检、固定分区/val-best/test评测、配对checkpoint恢复、离线Git同步与定向wheel缓存恢复。Slurm822实际通过18协议测试；823通过4缓存测试并恢复官方SHA匹配Torch1,039,365,846B，15CUDA依赖未命中。新增全量JARVIS带隙/分类共享数据与200通道DOS准备器5本地测试通过；资源归档恢复4本地测试通过；待本次提交/服务器同步。
+base当前仅PySocks1.7.1，未安装Torch/科学包。49common wheels约101MB及15CUDA wheels2.799GB已本地下载、官方SHA/目标Linux依赖闭包核验。用户明确批准：离线Git bundle先SCP后gitpull；SCP大包失败后允许私有HTTP Range续传。
+HTTP服务6866/PID52372/127.0.0.1:54339仍存活，仅公开资源白名单。824已在node42实测资源HEAD200。825/826因wrap默认sh不支持pipefail立即失败；显式Bash引号修复后827/828重提。最新squeue无这两任务：827传入40,040,283B（9完整chunk+第10partial）后curl18退出；828初始健康检查超时。代理48663/PID28496/jump34748/start00:23:22已被Vlab关闭，须先核对残留端口，再新建唯一代理；不得重复启动旧下载/安装。
+新common归档校验/基础安装和精确CUDA离线安装Slurm模板已准备，尚未执行。真实模型/CUDA回归、全部官方scratch、radius6/PBC分子输入、生成训练/质量评测、完整六任务数据和48/144矩阵均待完成。
 
 # 当前计划
 
-1. 轮询已确认活跃的31548/96733；恢复健康pull门禁后，先核查全部目标base/pip进程和安装日志，不因观测超时重复启动。联网工作期间保留唯一专用代理，真正结束时精确关闭并确认1080释放。
-2. pull4994468并重跑CPU协议Slurm；基础环境恢复后，通过Slurm跑完整模型回归与实际CUDA OOM减batch/完整训练步验收，分别覆盖力场混合梯度、张量响应和生成采样。
-3. 官方完整scratch（尤其MACE需去掉复制的参考能/scale，NequIP发布config为checkpoint间接引用，需官方fresh构造与全键/shape/irreps核验）、非官方radius6/PBC分子输入、生成新噪声及独立质量评测仍待实现。
-4. 准备六任务全量数据与固定分区/来源哈希/有效N/排除/预训练重叠审计；最坏真实图资源预检后写回两初始化共同batch，逐任务完成48格，再补齐144及论文证据。保留20GiB余量、有界best-last并归档已完成optimizer。
-源码本地提交后服务器pull；生成物忽略；docs/paper及ustc-gpu未批量提交；不删除无关数据或终止用户会话。
+1. 发布/离线同步准备器与安装模板；源代码始终只经gitpull更新，保留用户docs/paper及ustc-gpu未跟踪文件。
+2. 先验证已断开的任务代理/端口，紧接着恢复唯一代理并立即续传已停止的common/CUDA资源。保留HTTP端点、分片和当前SHA；不从零重传，不重启健康代理，不结束用户会话。真正结束联网工作时精确关闭并确认1080释放。
+3. common全部SHA核验后，CPU Slurm组装/安装基础包；CUDA16资源齐备后CPU Slurm精确离线安装、pipcheck、链接仅任务ownedvenv，再运行完整Slurm模型/GPU回归和实际OOM减batch训练步检查。providerextras按实际缺失恢复，不把pipcheck当模型就绪。
+4. 通过Slurm准备/清点固定JARVIS全量数据；继续GMT介电、MLearn/rMD17、Perov-5；审计元素覆盖/组分区/预训练重叠。补齐官方fresh构造、分子图与生成独立评测，最坏真实图预检后逐任务跑48格并补齐三seed144。始终保留20GiB磁盘余量。
 
 # 变更记录
 
@@ -372,3 +372,5 @@ Slurm821实际失败，发生在系统Python导入split测试阶段；本地pyth
 - 2026-11-03T23:32:58 +08:00: USER EXPLICITLY APPROVED offline Git synchronization: allow necessary scp bundle upload before pull, then git pull --ff-only from verified bundle; do not edit server tracked source/change origin. First resource bundle4994468:6241B SHA2566001ab6e16a6b08e40ca9b69e80b5a3c51a7d14eb529c32a9953dfa353f92887, prerequisite656f2ab, head4994468 already pushed. Connect via ClearAllForwardings; no remote internet/proxy needed. After successful offlinepull inspect failed821 logs/ownbase process+versions and submit corrected18-protocol Slurm.
 
 - 2026-11-03T23:47:13 +08:00: 阶段进展：用户批准离线Git同步，4994468已实际离线pull；822重测运行。已确认无代理监听、无活跃安装器，base仅PySocks。官方16wheel元数据与定向缓存恢复器本地4测试通过，下一步提交/离线pull后Slurm核验旧cache以避免重复下载GPU栈；不扫描其他缓存或修改父环境。
+
+- 2026-11-04T01:00:52 +08:00: Reconciled snapshot to completed822/823,publicresources verifiedlocal,HTTP40MBprogress and terminal827/828/proxy,local9newtests andpendingfullscope; nextpublishthenrecovertransfer.

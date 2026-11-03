@@ -538,3 +538,27 @@
 - 2026-11-03T23:32:58 +08:00: USER EXPLICITLY APPROVED offline Git synchronization: allow necessary scp bundle upload before pull, then git pull --ff-only from verified bundle; do not edit server tracked source/change origin. First resource bundle4994468:6241B SHA2566001ab6e16a6b08e40ca9b69e80b5a3c51a7d14eb529c32a9953dfa353f92887, prerequisite656f2ab, head4994468 already pushed. Connect via ClearAllForwardings; no remote internet/proxy needed. After successful offlinepull inspect failed821 logs/ownbase process+versions and submit corrected18-protocol Slurm.
 
 - 2026-11-03T23:34:49 +08:00: Approved offlinebundleSCP completed0. Ordinary non-forwarding connection verifies6241B bundleSHA and prerequisite, gitpullFF to4994468 before ANY result/job operations; then read821trace, submit18-protocol retest, audit actualbase distributions/pip process and stale ownedproxy listener metadata. No internet operation/no newproxy.
+
+- 2026-11-03T23:48:51 +08:00: Approved offline resource batchSCP: published90cf140 bundle11992B SHA38ffd92c8d6359ec7a8172f515160319c1302f55812cc498dec2ca42a16a9fc3 and official16-wheel metadata catalog19800B. Then ordinary connection verifies/pulls90cf140 before reading822 result or submitting CPU12GiB cache recovery. No Internet/ownedproxy active, no source edits outsidegitpull.
+
+- 2026-11-03T23:50:37 +08:00: Bundle90cf140 and16-wheel catalog SCP completed. Ordinary no-forwarding offline connection verifies/pulls90cf140 first, reads822 completedartifact, verifies19KBcatalogSHA then submits CPU12GiB wheel-recovery job. Only lightweight wheelhouse filename inventory onlogin; all GBhash/legacydecode inSlurm.
+
+- 2026-11-03T23:55:38 +08:00: Ordinary offlineconnection: firstgitpull90cf140 fromverifiedbundle, then inspect specific823cachejob status/report/errors anddisk; no newproxy/Internet.822passed18protocols.
+
+- 2026-11-03T23:59:01 +08:00: Offline common-wheel resources SCP:25x<=4MiB chunks plus SHA manifest, 101280552B total, target ignored arxiv-base-bootstrap. Current source90cf140 already offlinepulled. No source edits/Internet/proxy. Assembly and full hash checks must be Slurm before install; failed transfers retain chunks for verified resume.
+
+- 2026-11-04T00:00:33 +08:00: First common-resource SCP batch closed at Vlab202.38.75.226 beforeWelcome/data, no completion claimed. Retry ONE4MiB chunk with bounded connection timeout to measure actual transfer; if samefailure inspectSSHchain rather than repeatedly resend101MB. Source90cf140alreadyofflinepulled; no proxy needed.
+
+- 2026-11-04T00:18:07 +08:00: USER EXPLICITLY APPROVED HTTP resumable transfer for large fixed wheel resources after SCP failures. Local read-only loopback service52372/session6866 port54339, whitelist42public-resource paths, local Range/HEAD/404 tests passed. Before any servertransfer: offlinepull90cf140, check1080free and localSSHholders; create exactlyone dedicatedproxy, then end-to-end HEAD localresourcehealth before resourcecurl. No publiclisten/no trackedsourcewrites. All fullhash/assembly viaSlurm, no duplicatepip.
+
+- 2026-11-04T00:24:08 +08:00: Priorloopback1080confirmedfree; uniqueproxy48663 started for approvedresourceHTTP, existinglocalservice52372:54339. Ordinary connection firstofflinepull90cf140, then actualHEAD localresourcehealth viaSOCKS. Ifsuccess submit CPU node42 resource-network probe; compute-loopback path must be independentlyverified, not assumed. No publicHTTPlisten, no modelwork onlogin.
+
+- 2026-11-04T00:29:29 +08:00: ApprovedHTTP: localendpointHEAD via loginSOCKS200; node42 networkprobe824 submitted. Next offlinepull90cf140 then verify824HTTP200/error log before submit CPU512MiB common-download job; actualjob also independentlyhealthchecks compute loopback, resumes4MiB chunks, verifies approvedmanifestSHA + all25chunkSHA inSlurm. Downloadonly; no installation/source edits.
+
+- 2026-11-04T00:32:20 +08:00: Node42 probe824verifiedHTTP200; common transfer825submitted. Ordinary connection firstofflinepull90cf140 then submit separateCPU512MiB CUDA-resource download: checks computeproxyhealth andfixedcatalogSHA; reuse recovered1.04GBTorch, fetch15localSHA-verifiedwheels with Range/persistentpartials/progress JSON, verifyeachSHA onSlurm,20GiBreserve. Downloadonly, no installer yet. Proxy48663 PID28496/jump34748/start00:23:22 andHTTP6866/PID52372:54339 retained for authorized work.
+
+- 2026-11-04T00:35:11 +08:00: Ordinary statusconnection firstofflinepull90cf140 then poll actual825common/826CUDA download jobs and durablebytes only; do not restart livejobs. Keep authorizedHTTPservice and uniqueproxy alive whiletransferring.
+
+- 2026-11-04T00:36:37 +08:00: Authoritative status:825/826 absentqueue and both logs fail immediately with /bin/sh set Illegaloptionpipefail; commonHTTPbytes0, no active transfers. Rootfix Slurmwrap must execBash with POSIX-safe quotedbody. Localbash syntax/quote roundtrip first, then offlinepull90cf140 and resubmit onlystoppedjobs; keep824successfulnodepath proof.
+
+- 2026-11-04T00:41:21 +08:00: Offlinepull90cf140 followedby specific827/828status/durablebyte audit to verify explicitBash resubmissions actuallyrun. Prior825/826terminal shellerrors preserved; no auto duplicatejobsubmit.
