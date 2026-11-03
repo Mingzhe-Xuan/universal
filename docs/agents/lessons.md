@@ -156,4 +156,12 @@
 
 - 2026-11-03T09:18:38+08:00: For prediction tasks, loading an official backbone does not restore original predictions when the unified task head is randomly initialized; usage must distinguish original-head inference from backbone-transfer fine-tuning. Current forcefield scales check all E/F/S labels even at zero loss weight. Local Bash syntax checks must discover bash from PATH rather than assume C:/Program Files/Git; this workspace uses F:/mingw/usr/bin/bash.exe.
 
+- 2026-11-03 09:38:42 +08:00：基准证据需按主干来源、任务头和源码版本拆分。原始模型加载/前向一致只证明provider保真，接随机新头后的任务精度仍需独立测试；旧变体跨任务矩阵不能转记为新官方主干基准。新头/池化/导数路线差异需作独立对照，避免将差异全部归因于GNN。
+
+- 2026-11-03 09:43:36 +08:00（解耦设计核查）：任务输出的旋转变换保证应显式声明并在换主干时保持可检查，不能只根据backbone.kind自动切换语义。辅助变量线性响应求导是一种输出参数化，并不自行保证与另一个能量/极化模型物理一致；监督项选择与所请求的计算输出也需要分别描述。此为后续设计建议，未新增实现。
+
 - 2026-11-03T09:47:14+08:00: Choose supervision independently of computed forcefield outputs: filtering only the final loss is insufficient if eager bindings/scales still require unselected E/S labels. Validate the selected canonical set once, filter bindings/scales/losses consistently, and include it in optimizer-resume compatibility. Force-only mixed parameter/coordinate gradients train an energy-derived conservative force, while energy offsets remain unidentified; tested against analytic gradient and real original-MACE fine-tuning.
+
+- 2026-11-03 10:00:49 +08:00（已记录于解耦需求评审稿）：组件解耦应同时约定pooling位置、FeatureSpec语义、冻结模块的buffer/eval策略和输入梯度链；只切requires_grad或换线性层不足以保证力场和续训正确。旧配置保持原构造，新组合显式启用，避免identity新默认改变历史checkpoint。具体要求见docs/plan/prediction_decoupling_requirements.md，尚未实施。
+
+- 2026-11-03 10:06:03 +08:00（需求修订已采纳）：第一版基础链使用原生节点特征直接接readout，首层按自动读取或显式声明的F建立可学习映射，无需统一32维adapter或额外reshape。F只描述大小，非标量仍需irreps/基底/映射；必要转换可归readout内部，独立adapter仅在复用价值明确时显式采用。需求/配置/训练归属及验收必须同步修订。

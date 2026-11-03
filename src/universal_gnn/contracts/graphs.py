@@ -108,9 +108,12 @@ class GNNOutput:
 
 
 class BaseGNN(nn.Module, ABC):
-    def __init__(self, irreps: str, kind: str, context_dim: int = 0):
+    def __init__(self, irreps: str | None = None, kind: str = "invariant", context_dim: int = 0,
+                 *, feature_dim=None, basis=None, transformation=None, gradient_capabilities=None):
         super().__init__()
         self.irreps, self.kind, self.context_dim = irreps, kind, context_dim
+        self.feature_dim, self.basis, self.transformation = feature_dim, basis, transformation
+        self.gradient_capabilities = gradient_capabilities or {}
         if kind not in {"invariant", "equivariant"} or context_dim < 0:
             raise ValueError("GNN requires invariant/equivariant kind and nonnegative context_dim")
 

@@ -25,6 +25,7 @@ def build_model(config, *, official_artifact=None):
     validate_config(config)
     backbone_config = dict(config["backbone"])
     name = backbone_config.pop("name")
+    declared_dim = backbone_config.pop("feature_dim", None)
     if official_artifact is not None:
         backbone_config["_artifact"] = official_artifact
     if "graph" in config:
@@ -38,14 +39,25 @@ def build_model(config, *, official_artifact=None):
         backbone_config["context_dim"] = CONTEXT_DIM
         return PeriodicDenoiser(make_backbone(name, **backbone_config))
     backbone = make_backbone(name, **backbone_config)
+    from universal_gnn.readouts.configuration import normalize_prediction
+    from universal_gnn.engine.optimization import configure_optimization
+
+    prediction = normalize_prediction(config, cutoff=getattr(backbone, "cutoff", None))
+    if prediction is None and declared_dim is not None:
+        from universal_gnn.contracts.components import resolve_feature_spec
+
+        resolve_feature_spec(backbone, declared_dim)
     if task["kind"] == "forcefield":
-        return ForceFieldModel(backbone)
-    if task["kind"] == "supervised":
+        model = ForceFieldModel(backbone, prediction=prediction, feature_dim=declared_dim)
+    elif task["kind"] == "supervised":
         spec = property_spec(task["property"], channels=task.get("channels"), unit=task.get("unit"),
                              definition=task.get("spec"))
-        return SupervisedModel(backbone, spec, route=task.get("route"),
-                               adapter_version=task.get("adapter_version", 2))
-    raise ValueError(f"Task kind not implemented: {task['kind']}")
+        model = SupervisedModel(backbone, spec, route=task.get("route"),
+                                adapter_version=task.get("adapter_version", 2), prediction=prediction, feature_dim=declared_dim)
+    else:
+        raise ValueError(f"Task kind not implemented: {task['kind']}")
+    configure_optimization(model, config)
+    return model
 
 
 def dataset(config, limit=None):
@@ -148,8 +160,16 @@ def execution_record(model):
             "geometry_basis_version": getattr(getattr(model, "adapter", None), "basis_version", None)}
 
 
-def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_path=None, event_callback=None) -> dict:
+def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_path=None, event_callback=None,
+                 warm_start=None, warm_start_components=("backbone",)) -> dict:
+    from universal_gnn.contracts.schema import validate_config
+
+    validate_config(config)
+    if resume is not None and warm_start is not None:
+        raise ValueError("resume and warm_start are mutually exclusive")
     if config["task"]["kind"] == "generation":
+        if warm_start is not None:
+            raise ValueError("Explicit component warm-start is not supported for generation")
         from universal_gnn.engine.generation import run_generation_training
 
         return run_generation_training(config, output, resume=resume, checkpoint_path=checkpoint_path,
@@ -158,9 +178,12 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
                                                restore_optimizer, save_training_checkpoint)
     from universal_gnn.engine.batching import batches, model_dtype, validate_batching
     from universal_gnn.engine.metrics import dataset_scales, loss_parts, weighted_loss, LossTotals
+    from universal_gnn.engine.optimization import (make_optimizer, resolved_model_config, component_audit,
+                                                  verify_component_checkpoint, FrozenStateGuard)
 
     config = copy.deepcopy(config)
     saved = torch.load(resume, map_location="cpu", weights_only=True) if resume else None
+    warm_saved = torch.load(warm_start, map_location="cpu", weights_only=True) if warm_start else None
     config.setdefault("dtype", saved["config"].get("dtype", "float64") if saved is not None else "float32")
     validate_batching(config)
     if saved is not None:
@@ -174,16 +197,36 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     output.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(config.get("seed", 123))
     device = config.get("device", "cpu")
-    model = build_model(config, official_artifact=saved.get("official_backbone") if saved else None).to(
+    artifact = saved.get("official_backbone") if saved else None
+    if warm_saved and "backbone" in warm_start_components:
+        source_config = checkpoint_config(warm_saved)
+        if source_config["backbone"]["name"] != config["backbone"]["name"]:
+            raise ValueError("warm-start backbone model name differs")
+        if (not config["backbone"].get("checkpoint") or
+                config["backbone"].get("checkpoint") == source_config["backbone"].get("checkpoint")):
+            artifact = warm_saved.get("official_backbone")
+    model = build_model(config, official_artifact=artifact).to(
         device=device, dtype=model_dtype(config))
     if saved is not None:
         from universal_gnn.engine.runtime import verify_extensions
 
         verify_extensions(saved, model)
         model.load_state_dict(saved["state_dict"], strict=True)
+        verify_component_checkpoint(saved, model, training=True)
+    initialization = None
+    if warm_start is not None:
+        from universal_gnn.engine.warm_start import initialize_components
+
+        initialization = initialize_components(model, warm_start, warm_start_components)
+    frozen_state = FrozenStateGuard(model)
+    config = resolved_model_config(config, model)
+    if "prediction" in config or "optimization" in config:
+        (output / "config.resolved.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
+        if event_callback is not None:
+            event_callback("model_resolved", config=config, components=component_audit(model))
     execution = execution_record(model)
+    optimizer = make_optimizer(model, config)
     structures = dataset(config)
-    optimizer = torch.optim.Adam(model.parameters(), lr=config.get("learning_rate", 1e-3))
     fingerprint = data_fingerprint(structures)
     state = restore_optimizer(saved, optimizer, config, fingerprint) if saved is not None else None
     completed = state["completed_epochs"] if state is not None else 0
@@ -211,6 +254,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
         return totals.loss(config), {name: torch.cat(values) for name, values in collected.items()}
 
     segment_initial_loss, _ = evaluate(model)
+    frozen_state.verify()
     initial_loss = state["initial_loss"] if state is not None else segment_initial_loss
     starting = {key: value.detach().cpu().clone() for key, value in model.named_parameters()}
     history = list(state["history"]) if state is not None else []
@@ -236,6 +280,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
             loss = weighted_loss(parts, config)
             if not bool(torch.isfinite(loss)):
                 raise FloatingPointError("Nonfinite training loss")
+            frozen_state.verify()
             loss.backward()
             active = [p.grad for p in model.parameters() if p.grad is not None]
             if not active or not all(bool(torch.isfinite(g).all()) for g in active):
@@ -260,6 +305,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
                            structures=len(structures))
     model.eval()
     final_loss, _ = evaluate(model)
+    frozen_state.verify()
     delta = math.sqrt(sum(float((value.detach().cpu() - starting[key]).square().sum())
                           for key, value in model.named_parameters()))
     save_progress(epochs)
@@ -273,6 +319,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
         records.append({"id": structure.identifier, "geometry_sha256": hashlib.sha256(raw).hexdigest(),
                         "provenance": structure.metadata, "role": "train_and_reloaded_inference"})
     report = {"config": config, "versions": version_record(), "execution": execution,
+              "components": component_audit(model), "initialization": initialization,
               "supervised_outputs": list(supervised_outputs(config)),
               "structures": records, "selected_structures": len(structures),
               "available_structures": len(structures.source), "data_fingerprint": fingerprint,
@@ -309,4 +356,8 @@ def load_checkpoint(path: str | Path, *, device="cpu"):
         device=device, dtype=model_dtype(config, legacy=True))
     verify_extensions(saved, model)
     model.load_state_dict(saved["state_dict"], strict=True)
+    if saved.get("components") is not None:
+        from universal_gnn.engine.optimization import verify_component_checkpoint
+
+        verify_component_checkpoint(saved, model)
     return model.eval()

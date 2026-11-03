@@ -70,6 +70,9 @@ class EquiformerBlock(nn.Module):
 
 class EquiformerEncoder(nn.Module):
     kind = "equivariant"
+    basis = "e3nn/component"
+    transformation = "O3"
+    gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
 
     def __init__(self, width=32, layers=2, cutoff=4., radial=16, context_dim=0):
         super().__init__()

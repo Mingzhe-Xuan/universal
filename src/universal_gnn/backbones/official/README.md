@@ -91,3 +91,14 @@ to load the package's original0.15 source snapshot; universal-equiformer isolate
 reusing the original Torch2.7/e3nn0.4.4/scatter/cluster/sparse binaries read-only. See
 [environment records](../../../../docs/agents/env.md) for exact paths. These are selected published
 formats/versions, not a promise that arbitrary third-party checkpoints are interchangeable.
+
+## Prediction component capability metadata
+
+Provider changes for prediction v1 add only basis/transformation/derivative metadata and declared
+unused original head prefixes; original graph preprocessing and model layers remain intact.
+MACE declares verified positions/strain/mixed feature derivatives for new force fields. Other
+official providers currently declare strain/mixed unverified and are refused by new force-field
+assembly; this does not imply native force calculators are unavailable. Equiformer guarantees SO3.
+Original registered task heads may remain in the backbone state but do not contribute to the
+new prediction path; component audits list known prefixes and capacity upper bounds, not an exact
+measurement of effective task parameters. Dependencies/reference checks remain unchanged.

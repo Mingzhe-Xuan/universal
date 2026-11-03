@@ -39,3 +39,10 @@ GCN; `plugin:/directory` may expose `build_gnn(**options)` with the same protoco
 configuration is supported for these wrapped models. Native backbones continue building their own
 required graphs; unsupported overrides fail explicitly. Legacy build_backbone plugins remain readable.
 See [the single standard](../../../docs/standards.md) and examples/custom_knn_gcn.
+
+## Native output metadata
+
+New prediction assembly reads feature_spec/irreps/feature_dim and transformation/gradient metadata;
+config backbone.feature_dim is an assertion/fallback, never a hidden-layer width override. Standard
+custom GNNs may omit irreps only for explicitly invariant scalar features, declaring feature_dim.
+All encoders still return unpooled NativeFeatures in input atom order. See contracts/components.py.

@@ -27,6 +27,8 @@ class OfficialEquiformer(OfficialBackbone):
         super().__init__(model, str(model.irreps_feature), "equivariant", model.max_radius, artifact,
                          context_dim=context_dim, version="atomicarchitects/equiformer-v1-oc20")
         self.configuration = configuration
+        self.transformation = "SO3"
+        self.unused_parameter_prefixes = ("model.head", "model.head_skip_connect", "model.auxiliary_head")
         self.load_report["symmetry"] = "SO(3); reflection equivariance is not claimed by this pretrained artifact"
 
     def native_input(self, batch):

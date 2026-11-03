@@ -77,3 +77,11 @@ checkpoint/reference/ten-structure acceptance path.
 from ten real acceptance structures, initializes the official MACE backbone, trains the energy-derived
 force predictor, checks trunk updates/loss decrease, full continuation and streamed reloaded inference.
 No energy/stress labels are fabricated; reports keep geometry/source IDs and the force-only label set.
+
+`validate_prediction_components.py --model cgcnn|mace --output runs/NAME` must run through Slurm.
+It checks original-provider reference parity and ten-real-structure native linear/MLP frozen/full
+training; CGCNN adds a real200-bin spectrum, MACE adds explicit-profile dielectric response and
+frozen-backbone force-only training/resume/all-frozen inference. It checks component state deltas,
+first-layer F, mode/parameter audits, rotation and force/strain finite differences. Native float32
+finite differences use step.002,rtol.02,atol.002; analytic float64 units use stricter tolerances.
+This is bounded execution acceptance, not held-out accuracy evaluation.

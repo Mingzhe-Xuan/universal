@@ -21,13 +21,19 @@ def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None,
     saved = torch.load(checkpoint, map_location="cpu", weights_only=True)
     config = checkpoint_config(saved)
     if config_override is not None:
-        check_model_config(config, config_override)
+        check_model_config(config, config_override, training=False)
         config = copy.deepcopy(config_override)
     config.setdefault("dtype", saved["config"].get("dtype", "float64"))
     if config["dtype"] != saved["config"].get("dtype", "float64"):
         raise ValueError("Inference precision must match the checkpoint dtype")
     config["device"] = device
     model = load_checkpoint(checkpoint, device=device)
+    if "optimization" in config or "prediction" in config:
+        from universal_gnn.engine.optimization import configure_optimization, resolved_model_config, component_audit
+
+        configure_optimization(model, config)
+        model.eval()
+        config = resolved_model_config(config, model)
     structures = open_structures(dataset_path, dtype=model_dtype(config), options=config["dataset"].get("options"))
     if limit is not None:
         if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
@@ -39,6 +45,8 @@ def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None,
               "checkpoint_format_version": saved.get("format_version", 1),
               "geometry_basis_version": getattr(getattr(model, "adapter", None), "basis_version", None),
               "structures": []}
+    if "prediction" in config or "optimization" in config:
+        result["components"] = component_audit(model)
     output = Path(output)
     output.parent.mkdir(parents=True, exist_ok=True)
     streaming = output.suffix.lower() == ".jsonl"

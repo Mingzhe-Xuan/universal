@@ -17,3 +17,7 @@ def validate_config(config):
         from universal_gnn.tasks.supervision import supervised_outputs
 
         supervised_outputs(config)
+    if "prediction" in config or "optimization" in config:
+        from universal_gnn.readouts.configuration import validate_component_config
+
+        validate_component_config(config)

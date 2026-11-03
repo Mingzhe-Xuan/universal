@@ -19,6 +19,9 @@ class MACEEncoder(nn.Module):
     """Official MACE interaction/product modules, exposed before energy readouts."""
 
     kind = "equivariant"
+    basis = "e3nn/component"
+    transformation = "O3"
+    gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
 
     def __init__(self, width=32, layers=2, cutoff=4., radial=8, context_dim=0):
         super().__init__()
@@ -84,6 +87,9 @@ class NequIPEncoder(nn.Module):
     """Official NequIP embedding and ConvNetLayer stack, stopping before scalar collapse."""
 
     kind = "equivariant"
+    basis = "e3nn/component"
+    transformation = "O3"
+    gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
 
     def __init__(self, width=32, layers=2, cutoff=4., radial=8, context_dim=0):
         super().__init__()

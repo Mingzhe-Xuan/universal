@@ -10,6 +10,7 @@ from universal_gnn.data.geometry import scatter_sum
 class GCN(BaseGNN):
     def __init__(self, width=16, layers=2, context_dim=0, input_dim=None, distance_scale=1.):
         super().__init__(f"{width}x0e", "invariant", context_dim)
+        self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
         if width < 1 or layers < 1 or distance_scale <= 0:
             raise ValueError("GCN requires positive width, layers and distance_scale")
         self.input_dim, self.distance_scale = input_dim, distance_scale

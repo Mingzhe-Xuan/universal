@@ -80,3 +80,14 @@ Force-field `task.supervised_outputs` selects labels and losses independently of
 Only selected data bindings/scales/labels are required; missing selected labels remain errors.
 The default is E/F/S for old configurations/checkpoints. Changing supervision is rejected for full
 continuation; reports record supervised_outputs and checkpoints persist the selected scales/config.
+
+## Component training and reconstruction
+
+`optimization.py` owns disjoint backbone/readout/optional-adapter parameter groups, persistent eval
+mode on frozen components, parameter/buffer state guards and auditable component specifications.
+Freezing never wraps forward in no_grad or detaches native features: coordinate/mixed gradients
+and gradients through a frozen head to its input are preserved. All-frozen models are inference-only.
+`warm_start.py` preflights keys/shapes/implementations/semantics and strictly initializes explicitly
+selected compatible components, records source hashes, and builds a new optimizer. Full resume
+requires identical architecture, policy and parameter-group maps. prediction and optimization are
+rejected for generation. Old configs retain their original flat optimizer and state keys.

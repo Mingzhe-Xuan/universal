@@ -32,6 +32,7 @@ class OfficialNequIP(OfficialBackbone):
         super().__init__(model, str(target.irreps_in["node_features"]), "equivariant", metadata["r_max"],
                          artifact, context_dim=context_dim, version=version("nequip"))
         self.feature_path, self._temporary = feature_path, temporary
+        self.unused_parameter_prefixes = ("model." + feature_path,)
         self.type_names = list(model.type_names)
         self.load_report["selected_model"] = selected
 

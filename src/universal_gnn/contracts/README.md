@@ -14,3 +14,12 @@ Never detach geometry in a differentiable forward. Batch construction preserves 
 `BaseGraphBuilder` and `BaseGNN` define extension input/output; `GNNOutput` carries unpooled nodes.
 Shapes, versioning, code provenance and all file formats are defined together in
 [docs/standards.md](../../../docs/standards.md).
+
+## Native prediction features v1
+
+`components.py` defines `FeatureSpec`, `ReadoutRequirement`, static dimension discovery and
+runtime `NativeFeatures` validation. Dimension precedence is feature_spec, irreps, model.feature_dim,
+then config backbone.feature_dim; all supplied dimensions must agree. Width alone does not describe
+non-scalar representations. Basis/transformation and position/strain/mixed derivative capabilities
+are explicit. New prediction assembly validates native nodes before any readout; optional graph
+features are preserved and the built-in heads declare that they do not consume them.

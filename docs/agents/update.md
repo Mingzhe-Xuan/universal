@@ -538,6 +538,16 @@
 
 - 2026-11-03T09:33:51+08:00: Added canonical task.supervised_outputs selection with old EFS default; data binding/scale/loss paths require only selected labels, report records supervision, full resume checks same set. Added original MACE force-only config and real-force acceptance harness, analytic gradient/selection and optimizer-resume tests. Original GNN modules and energy-derived force/stress computation unchanged.
 
+- 2026-11-03 09:38:42 +08:00：完成最新代码/验收与ALIGNN2.0论文和官方仓库对照。明确已修全量/mini-batch/float32/官方原模型，剩余正式评测、跨任务官方证据、读出方法对照、生成/模拟质量及训练配方不足；仅更新任务记录，保留force-only进行状态。
+
+- 2026-11-03 09:43:36 +08:00：按用户收窄范围完成标量/谱/力场/张量静态评估，聚焦可替换读出、信息保留、物理/网格/单位语义、任务能力声明与正式评测。未增加空间群/生成/模拟/联合多任务要求，未执行新实验或修改业务源码。
+
 - 2026-11-03T09:47:14+08:00: Completed force-only support and live original MACE validation764,10 real geometries/force labels, strict checkpoint/trunk update/loss decrease/full resume/reloaded inference.762/763 each80 passed.37120B evidence archive SHA9ff65e7bf5d5144c5c51eddedf2a1ff7881fb3ff99fedcd6c12415b47139a782 and independent raw-label/geometry audit saved under ignored results/force-only-764. Parallel static-assessment notes preserved.
 
 - 2026-11-03T09:50:23+08:00: Completed force-only source/evidence synchronization ef360c4 and verified own proxy shutdown/remote1080 release. New task supervision, source/gradient/label regression and official MACE real-force-only acceptance fully delivered; parallel assessment working-tree changes remain untouched.
+
+- 2026-11-03 10:00:49 +08:00：新增docs/plan/prediction_decoupling_requirements.md并更新索引，细化adapter/readout/pooling与组件训练策略解耦。保留旧模型路径，显式新prediction配置，约束force-only冻结几何梯度与严格续训；附实施单元和验收矩阵。本轮仅文档，未提交Git或运行模型。
+
+- 2026-11-03 10:06:03 +08:00：修订prediction_decoupling_requirements.md与索引，第一版收敛为统一模型输出协议+可替换readout。默认不插adapter，配置支持backbone.feature_dim声明且不改主干宽度，张量处理可在readout内复用并归其训练参数；同步配置/兼容/验收与路线。仅文档修改。
+
+- 2026-11-03T10:58:00+08:00: Prediction A-D implementation ready for first server validation:explicit native FeatureSpec+runtime contract, registry/direct+response heads, independent optional processing, component optimizer/freezing/eval+state guard, strict full resume and explicit component warm-start, metadata/audits/CLI. Official graph/layers unchanged. Local selected checks passed; unit training/full regression and real CGCNN/MACE acceptance pending Slurm. Requirement source and prior assessment history preserved.

@@ -1,5 +1,17 @@
 # 当前状态
 
+开始按docs/plan/prediction_decoupling_requirements.md实施A～E。新组合通过prediction.version:1显式启用，
+默认原生特征直连readout；保留旧32维适配/state_dict路径。计划增加特征语义/能力契约、基础/响应读出工厂、
+组件冻结与优化器分组、严格重建/暖启动及审计；官方主干只补元数据，不改原图/模型层。
+
+已按用户澄清修订解耦需求：默认Backbone→原生[N,F]→Readout，模型规格优先、自定义feature_dim回退、首次前向校验；必要表示处理封装于readout，独立adapter仅可选。结构图、训练归属、4份无独立adapter的配置模板与13项验收已同步，23条链接/50项需求引用/YAML/格式检查通过；尚未实施代码。
+
+已完成性质预测组件解耦需求文档docs/plan/prediction_decoupling_requirements.md及索引。文档包含47项需求、13项验收和4份未来配置模板，明确旧配置兼容、聚合顺序、组件冻结和力场输入梯度；23条相对链接、YAML与格式检查通过。状态为需求评审稿，尚未实施；既有任务与历史记录保留。
+
+性质预测专项评估已完成：范围为标量、谱、力场与张量。主要限制为固定适配/读出、谱语义与单位校验不足、张量默认路线随主干变化、力场计算输出与监督选择未完全分离，以及正式评测/官方跨任务证据不足。本轮未修改源码或执行实验，原force-only实现记录保留。
+
+并行静态评估已完成：当前全量/mini-batch/精度和六官方主干问题已修复；对照ALIGNN2.0的主要差距为正式held-out评测、官方模型跨任务基准、任务头基线、固定噪声生成及短程物理工作流。结论来自源码与证据静态核查，未新跑实验；既有force-only实现状态与计划保留。
+
 Force-only support COMPLETE: only selected labels/scales/losses required; official GNN and energy-derived forces unchanged.762/763 each80 passed,764 MACE10 original real-force labels passed optimization/full resume/reloaded inference and exact geometry/label audit. Final server sync ef360c4 and identity-checked own proxy33236 cleanup completed; remote1080 release confirmed.
 
 本轮MACE力场使用说明已完成：新增configs/mace_forcefield.yaml和docs/mace_forcefield.md，核对
@@ -14,6 +26,19 @@ NequIP756确认官方计算器自身的双线程float32力重复性误差，758�
 本地证据归档33372字节/55文件，完整hash与85个原始源码hash、六模型相同数据指纹、CLI配置/轮数/条数均独立审计通过。详见official-pretrained.md。最后工作连接20801已pull7724686并核验六份validation、CLI与三环境回归；队列无当前用户作业。精确关闭自有代理43152后，同一连接确认OFFICIAL_PROXY_1080_RELEASED并正常退出；两本地HTTP资源服务已停止。所有计算仅Slurm，源码仅本地提交/push→服务器pull；docs/paper保持不动。
 
 # 当前计划
+
+本轮实施：A contracts/components与配置校验/维度回退；B readouts工厂/聚合/显式内部处理及tasks组装；
+C engine组件训练策略与冻结模式；D checkpoint签名/分组兼容、显式组件暖启动和resolved审计；
+E ACC-01～13测试映射、模块README与真实官方CGCNN/MACE标量/谱/张量/冻结force-only链。
+所有实际训练/推理和完整回归通过Slurm；本地只做解析、静态和小型解析梯度检查。保留现有需求文档及过程历史。
+
+修订交付：向用户提供更新后的需求文档；本轮修订完成，无待执行实验或源码改造。实施时以最新默认原生特征直连路径为准，保留历史配置重建与冻结力场梯度要求。
+
+文档交付：向用户提供需求文件及范围说明。本轮文档任务已完成，无待执行代码或服务器操作；后续实施按文档中的A～E单元分别登记测试与验收，不将评审稿视为现有功能。
+
+专项评估交付：按四类性质及共用接口说明缺口，建议先明确任务语义/变换保证、开放adapter/readout配置，再补正式评测和官方主干四类矩阵；不将生成、模拟、多任务或空间群约束列为本轮要求。无新增实现待办。
+
+评估交付：向用户说明功能缺口与验证不足，建议先补固定划分/评估及任务头对照，再完成官方主干跨任务矩阵；本轮不启动修复或新增实验，不改变下述force-only计划。
 
 Force-only current plan COMPLETE: implementation, real-data validation, evidence/doc synchronization and dedicated-proxy cleanup finished. No remaining force-only work; parallel static-review task records preserved.
 
@@ -239,6 +264,24 @@ Force-only current plan COMPLETE: implementation, real-data validation, evidence
 
 - 2026-11-03T09:26:26+08:00: Started explicit force-only supervision support. Preserve official backbone and energy-derived forces; task.supervised_outputs selects labels/scales/losses, default E/F/S. No fake energy/stress labels. Plan actual original MACE fine-tuning using force-only projections of existing real cohorts, with all computations in Slurm.
 
+- 2026-11-03 09:36:17 +08:00：进入当前实现与ALIGNN2.0差距静态评估；采用最新官方provider/mini-batch实现与历史矩阵分离的证据口径，不将旧缺陷沿用为当前缺陷；下一步核查代码与论文。
+
+- 2026-11-03 09:38:42 +08:00：完成当前实现对照ALIGNN2.0评估；确认新版六官方模型验收集中在同一十结构带隙，历史96格为旧变体；训练evaluate使用训练集且缺少正式测试指标，生成每结构固定时间/噪声且官方条件只拼读出层，模拟短FIRE/MD和Gamma模式。下一步交付分优先级缺口，不修改源码。
+
+- 2026-11-03 09:42:17 +08:00：进入四类性质预测解耦专项评估；仅核查标量/谱/力场/张量，保留当前force-only任务，不将生成/模拟扩展列为本轮要求。
+
+- 2026-11-03 09:43:36 +08:00：完成四类性质解耦专项核查。确认ScalarAdapter默认32维/固定读出、谱缺少通用网格语义、张量默认路线与backbone.kind耦合；ResponseReadout辅助q的线性求导不自动建立同一物理势关系；force-only监督代码已存在但ForceFieldModel仍计算E/F/S。下一步向用户交付优先级建议，原实施状态保留。
+
 - 2026-11-03T09:47:14+08:00: Force-only implementation/Slurm validation stage COMPLETE.762/763 each80 passed;764 original MACE10 real force-only labels trained1.13103690514->0.59997976743, trunkdelta0.40074819677, resumed1->4 and reloaded inference10. Local audit verifies original labels/geometry exactly and all13 manifest hashes. Next final docs sync/proxy33236 cleanup; preserve parallel static-evaluation changes.
 
 - 2026-11-03T09:50:23+08:00: Force-only final stage COMPLETE: same final work connection synced ef360c4, verified762/76380-test logs and764 real-force-only artifact, queue empty, terminated identity-checked own proxy33236 and received FORCE_ONLY_PROXY_1080_RELEASED, SSH exit0. No remaining computations or task proxy. Parallel static-assessment edits retained.
+
+- 2026-11-03 09:55:25 +08:00：进入性质预测组件解耦需求编写阶段；用户要求在docs落地文档，范围为adapter/readout/pooling/冻结策略，下一步形成可验收需求并静态校验，不修改业务代码。
+
+- 2026-11-03 10:00:49 +08:00：完成性质预测组件解耦需求及计划索引；47项需求/13项验收覆盖接口、组件工厂、聚合、训练策略、配置与兼容，4份YAML模板和23条相对链接通过检查。下一步交付用户评审，本轮不实施源码或连接服务器。
+
+- 2026-11-03 10:02:12 +08:00：按用户澄清进入原生特征直连readout需求修订；adapter不再默认独立层，新增自动/显式feature_dim与首次前向校验要求，下一步同步全文和验收。
+
+- 2026-11-03 10:06:03 +08:00：完成原生特征直连readout需求修订；维度自动优先/显式声明/首次shape校验及变换语义边界已定义，独立adapter不作为基础链门槛。4份无adapter YAML、23条链接、50项需求及13项验收引用检查通过。下一步交付用户，本轮不实施代码。
+
+- 2026-11-03T10:25:44+08:00: Started authorized implementation of prediction_decoupling_requirements A-E. Native features directly feed explicit readout for prediction.version1; legacy assembly/state keys remain. Modules:contracts/components,readouts/factory, tasks composition,engine/optimization and checkpoint/CLI integration. Official providers metadata only. Full Slurm regression and real CGCNN/MACE chains required before completion.

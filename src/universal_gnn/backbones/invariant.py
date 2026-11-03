@@ -37,6 +37,9 @@ class GatedConvolution(nn.Module):
 
 class InvariantEncoder(nn.Module):
     kind = "invariant"
+    basis = "scalar"
+    transformation = "invariant"
+    gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
 
     def __init__(self, width: int = 32, layers: int = 2, cutoff: float = 4.0,
                  radial: int = 24, context_dim: int = 0):

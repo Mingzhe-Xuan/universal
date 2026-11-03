@@ -28,3 +28,11 @@ this verifies execution, not generative quality. See docs/agents/acceptance.md f
 For higher geometric derivatives, pass a batch whose positions require gradients and set
 create_graph=True. ForceFieldModel retains that external graph; evaluation defaults avoid
 retaining the force Hessian unless explicitly requested.
+
+## Prediction v1 composition
+
+With prediction.version1, SupervisedModel composes native FeatureSpec, an explicitly selected
+independent adapter (otherwise None), and a registered readout. ForceFieldModel requires node_mlp
+with sum pooling and verified position/strain/mixed derivatives; it derives forces and stress from
+atomic energy summation, preserving task.supervised_outputs selection. Legacy task.route and
+adapter_version cannot be mixed with prediction. Omitting prediction keeps historical assembly.

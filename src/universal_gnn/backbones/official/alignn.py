@@ -54,6 +54,7 @@ class OfficialALIGNN(OfficialBackbone):
         super().__init__(model, f"{settings['hidden_features']}x0e", "invariant", configuration["cutoff"], artifact,
                          context_dim=context_dim, version=version("alignn"))
         self.configuration = configuration
+        self.unused_parameter_prefixes = ("model.fc", "model.fc_atomwise", "model.fc_additional_output")
         self.feature_path = (f"gcn_layers.{len(model.gcn_layers) - 1}" if len(model.gcn_layers) else
                              f"alignn_layers.{len(model.alignn_layers) - 1}" if len(model.alignn_layers) else "atom_embedding")
 

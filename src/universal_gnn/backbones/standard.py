@@ -17,6 +17,9 @@ class StandardBackbone(nn.Module):
         self.gnn, self.graph_builder = gnn, graph_builder
         self.irreps, self.kind, self.cutoff = gnn.irreps, gnn.kind, cutoff
         self.context_dim = gnn.context_dim
+        for name in ("feature_dim", "basis", "transformation", "gradient_capabilities", "feature_spec"):
+            if hasattr(gnn, name):
+                setattr(self, name, getattr(gnn, name))
         self.extension_provenance = {}
         for role, component in [("gnn", gnn), ("graph", graph_builder)]:
             if hasattr(component, "extension_provenance"):
@@ -41,5 +44,10 @@ class StandardBackbone(nn.Module):
         features = NativeFeatures(output.nodes, self.irreps, self.kind, batch.batch, batch.ptr, batch,
                                   output.graph_features, {**output.metadata, "graph": graph.metadata,
                                                           "protocol_version": 1})
-        features.validate()
+        if hasattr(self, "_prediction_feature_spec"):
+            from universal_gnn.contracts.components import validate_native_features
+
+            validate_native_features(features, self._prediction_feature_spec, batch)
+        else:
+            features.validate()
         return features

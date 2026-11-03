@@ -42,6 +42,9 @@ def _flag_parser():
     parser.add_argument("--graph", help="knn, radius, stored, or plugin:/directory for standard wrapped models")
     parser.add_argument("--dataset", help="Structure file or plugin:/directory")
     parser.add_argument("--resume", type=Path, help="Training continuation / inference checkpoint")
+    parser.add_argument("--warm-start", type=Path, help="Explicit component weights initialization with a new optimizer")
+    parser.add_argument("--warm-start-components", nargs="+", choices=["backbone", "adapter", "readout"],
+                        help="Components to initialize strictly; default backbone")
     parser.add_argument("--task", help="Property name, forcefield, or generation")
     parser.add_argument("--config", type=Path, help="YAML or JSON configuration")
     parser.add_argument("--logging", type=Path, help="Directory for logs, resolved config and report")
@@ -59,6 +62,10 @@ def _prepare(arguments):
     from universal_gnn.engine.runtime import check_model_config, checkpoint_config
 
     train = arguments.mode == "train"
+    if arguments.warm_start is not None and (not train or arguments.resume is not None):
+        raise ValueError("--warm-start is training-only and mutually exclusive with --resume")
+    if arguments.warm_start_components and arguments.warm_start is None:
+        raise ValueError("--warm-start-components requires --warm-start")
     if train:
         if arguments.save is None:
             raise ValueError("--save is required for training")
@@ -78,14 +85,14 @@ def _prepare(arguments):
                             graph=arguments.graph,
                             device=arguments.device, epochs=arguments.epochs, training=train)
     if base is not None:
-        check_model_config(base, config)
+        check_model_config(base, config, training=train)
     destination = arguments.save if train else arguments.results
     if destination.is_dir():
         raise ValueError("--save/--results must name a file, not an existing directory")
     directory = arguments.logging or destination.parent / (destination.stem + ".logs")
     if directory.is_file():
         raise ValueError("--logging must name a directory")
-    inputs = [p.resolve() for p in [arguments.config, arguments.resume] if p is not None]
+    inputs = [p.resolve() for p in [arguments.config, arguments.resume, arguments.warm_start] if p is not None]
     if not str(config["dataset"]["path"]).startswith("plugin:"):
         inputs.append(Path(config["dataset"]["path"]).resolve())
     forbidden = [p for p in inputs if not (train and arguments.resume and p == arguments.resume.resolve())]
@@ -121,7 +128,8 @@ def main(argv=None):
             from universal_gnn.engine.training import run_training
 
             report = run_training(config, directory, resume=arguments.resume, checkpoint_path=arguments.save,
-                                  event_callback=log)
+                                  event_callback=log, warm_start=arguments.warm_start,
+                                  warm_start_components=arguments.warm_start_components or ("backbone",))
             summary = {"passed": report["passed"], "structures": report.get("selected_structures", len(report["structures"])),
                        "completed_epochs": report["completed_epochs"], "checkpoint": str(arguments.save),
                        "logging": str(directory)}
@@ -131,6 +139,8 @@ def main(argv=None):
             result = run_inference(arguments.resume, config["dataset"]["path"], arguments.results,
                                    device=config.get("device", "cpu"), limit=arguments.limit,
                                    config_override=config)
+            if "prediction" in config or "optimization" in config:
+                (directory / "config.resolved.json").write_text(json.dumps(result["config"], indent=2), encoding="utf-8")
             summary = {"structures": result["structure_count"], "results": str(arguments.results),
                        "logging": str(directory)}
         log("completed", **summary)

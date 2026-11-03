@@ -21,6 +21,8 @@ class OfficialMACE(OfficialBackbone):
             irreps += product.linear.irreps_out
         super().__init__(model, str(irreps), "equivariant", float(model.r_max), artifact,
                          context_dim=context_dim, version=version("mace-torch"))
+        self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
+        self.unused_parameter_prefixes = ("model.readouts",)
 
     def native_input(self, batch):
         from ase import Atoms

@@ -33,7 +33,7 @@ def checkpoint_config(saved):
     return config
 
 
-def check_model_config(expected, actual):
+def check_model_config(expected, actual, *, training=True):
     from universal_gnn.backbones.official.profiles import PROFILES
 
     def normalized(settings):
@@ -46,6 +46,13 @@ def check_model_config(expected, actual):
         raise ValueError("Model settings do not match the checkpoint backbone")
     if expected.get("graph") != actual.get("graph"):
         raise ValueError("Graph settings do not match the checkpoint")
+    from universal_gnn.readouts.configuration import normalize_prediction, normalize_optimization
+
+    cutoff = expected.get("resolved_components", {}).get("backbone_cutoff")
+    if normalize_prediction(expected, cutoff=cutoff) != normalize_prediction(actual, cutoff=cutoff):
+        raise ValueError("Prediction readout/adapter architecture differs from checkpoint; use explicit warm-start")
+    if training and normalize_optimization(expected) != normalize_optimization(actual):
+        raise ValueError("Optimization policy differs from checkpoint; use explicit warm-start")
     fields = ("kind", "property", "route", "channels", "unit", "spec")
     for key in fields:
         if expected["task"].get(key) != actual["task"].get(key):
@@ -97,6 +104,11 @@ def restore_optimizer(saved, optimizer, config, fingerprint):
         return None
     if state.get("version") != 1:
         raise ValueError("Unsupported optimizer continuation state")
+    if saved.get("components") is not None:
+        groups = [{"name": g.get("name"), "parameters": len(g["params"])} for g in optimizer.param_groups]
+        expected_groups = [{"name": g["name"], "parameters": len(g["parameters"])} for g in saved["components"]["optimizer_groups"]]
+        if groups != expected_groups:
+            raise ValueError("Checkpoint optimizer parameter groups differ; use explicit warm-start")
     if state["data_fingerprint"] != fingerprint:
         raise ValueError("Resume requires the same selected structures, target bindings and labels")
     if saved["config"].get("seed", 123) != config.get("seed", 123):
@@ -137,6 +149,10 @@ def save_training_checkpoint(path, model, optimizer, config, versions, state, *,
     artifact = getattr(getattr(model, "backbone", None), "official_artifact", None)
     if artifact is not None:
         payload["official_backbone"] = artifact
+    if "prediction" in config or "optimization" in config:
+        from universal_gnn.engine.optimization import component_checkpoint
+
+        payload["components"] = component_checkpoint(model)
     if scales is not None:
         payload["scales"] = scales
     path = Path(path)

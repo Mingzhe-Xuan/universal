@@ -759,6 +759,34 @@
 
 - 2026-11-03T09:33:51+08:00: Local config/analytic units8 passed, including force-only missing E/S bindings, mixed coordinate/parameter derivative and unidentified energy offset; compileall passed. Config/CLI selection, doc links, Python and Bash syntax passed. Fixed only extra test-log EOF blank found by diff --check; no assertion/tolerance change. Full numeric training/resume/EFS regression and original MACE acceptance remain pending Slurm.
 
+## 2026-11-03 09:36:17 +08:00：当前实现对照ALIGNN2.0静态检查
+
+- 范围：当前训练/评测/模型接入/生成/工作流及最新证据；预期每项不足有代码或验收边界依据，区分功能未实现与未跑基准，保留其他正在进行任务。仅文档评估，无训练、推理或服务器连接；最终检查引用路径与diff。
+
+- 实际结果：8/8本地引用存在；训练集evaluate/归一化损失、生成固定seed、官方context输出拼接、短FIRE/MD/Gamma、六官方带隙验收与历史变体矩阵逐项核对。论文3.3/3.6与官方复现入口已核实。任务记录git diff --check通过（仅换行提示）。本轮不执行计算测试，不挪用其他任务结果。
+
+## 2026-11-03 09:42:17 +08:00：四类性质预测解耦专项核查
+
+- 范围：PropertySpec/NativeFeatures、ScalarAdapter/EquivariantAdapter、PropertyReadout/ResponseReadout、ForceFieldModel与supervision、训练评估和官方证据。预期明确实际接口限制、物理语义和待验证项；不把可配置监督误判为缺失，不强加空间群或多任务要求。静态检查，不新增训练/服务器操作。
+
+- 实际结果：7/7本地引用存在；逐项核对固定adapter/readout、q线性响应、谱shape、E/F/S计算与supervised_outputs选择、训练集evaluate及六官方带隙验收。读取相关既有单元仅作覆盖核查，不声称本轮重跑；任务记录git diff --check通过（仅换行提示），无模型计算。
+
 - 2026-11-03T09:47:14+08:00: Actual source c0b31c2 Slurm762 core/763 MACE full regressions80 passed each.764 original MACE force-only4epochs/batch5/f32 passed: strict artifact load1.0, force loss1.13103690514->0.59997976743,trunkdelta0.40074819677; full continuation1->4 and streamed inference10 passed. Local independent audit checks13 file hashes and10 original-vs-force-only IDs/numbers/positions/cell/PBC/forces exactly; training targets contain ONLYforces. No fabricated E/S or newDFT. Documentation/evidence links and diff formatting checked before proof commit.
 
 - 2026-11-03T09:50:23+08:00: Final force-only sync/cleanup integration passed: ef360c4 on server, actual80-test logs and764 force-only validation present, queue empty; only local proxy33236 with recorded name/startUTC2026-11-03T01:36:17.2531606Z stopped, same SSH confirmed remote1080 released and exit0. Closure-only docs diff/history preservation checked before commit; no code changes or extra tests after passed regressions.
+
+## 2026-11-03 09:55:25 +08:00：组件解耦需求文档检查计划
+
+- 检查新需求文档与计划索引的相对链接、引用源码路径、代码围栏、需求/验收编号、YAML示例语法及冻结/梯度/旧checkpoint语义一致性。预期所有示例明确为未来配置且范围限于性质预测；保留既有变更历史及其他任务。纯文档变更，无需新增模型单元或服务器计算；完成后记录实际结果。
+
+- 实际结果：23条相对链接有效，47项需求编号和13项验收编号完整且唯一，4个YAML模板经PyYAML解析及关键语义检查通过；状态标记/代码围栏/新文件行尾空白检查通过。首轮检查器的中文状态断言受PowerShell管道编码影响，保持相同预期改用Unicode转义后全项通过，未降低文档标准。git diff --check通过（仅换行提示）。本轮仅文档检查，13项模型验收尚未执行。
+
+## 2026-11-03 10:02:12 +08:00：原生特征直连readout需求修订检查计划
+
+- 检查默认结构、维度优先级/冲突与首次前向、非标量表示边界、可选adapter及readout内部处理的训练归属是否一致；检查YAML示例不要求独立adapter、旧配置兼容和冻结几何梯度仍保留。核对相对链接、需求编号/验收引用、围栏/空白和diff；纯文档，无业务源码/实验/服务器操作。
+
+- 实际结果：23条相对链接有效，50项需求定义唯一且显式引用均存在，13项验收完整；4份YAML均经PyYAML解析且不配置独立adapter/train_adapter。核对F=256声明与128首层、默认直连图、response内部feature_processing、force-only冻结示例、状态标记/围栏/行尾空白，全部通过；git diff --check通过（仅换行提示）。模型验收项仍未执行，本轮无源码/服务器操作。
+
+- 2026-11-03T10:25:44+08:00: PRE-IMPLEMENTATION A-E/ACC01-13: static/native feature_dim discovery/assertion/missing declarations, runtime shape/mapping/dtype/geometry/semantic mismatch, non-scalar representation refusal; nativeF256/otherF linear+MLP+node energy, pooling-before/after nonlinear difference and batch separation; registry extension on2 feature specs; explicit scalar/geometry processing/no independent adapter and response rotation/parameter gradients. Controlled BN/dropout frozen params/buffers/modes, unique optimizer groups/all-frozen train error/infer allowed, frozen MACE mixed input/head gradients with force-only labels. Strict unknown config/version/scope/pooling/route/optimization errors including generation blocks. Legacy checkpoint numeric replay and EFS/force-only resume remain. New reconstruction/full resume equivalence, incompatible strategy/head rejection, explicit component-only warm-start provenance. Resolved configs/component audits/unused native heads. Real Slurm budget:CGCNN official bandgap and200-bin spectrum10 structures, frozen/full scalar modes; MACE official bandgap frozen/full plus frozen force-only10 real labels; response dielectric10 real with explicit small_response/basis2 (supported original provider), original native reference checks retained. dtype float32 actual official, float64 analytic finite differences/rotation; existing tolerances unchanged. No DFT or new generative/workflow requirements.
+
+- 2026-11-03T10:58:00+08:00: Local pre-server checks:20 existing supervision/official parser tests passed;21 selected native-dimension/config/registry/pooling/all-frozen analytic cases passed (5 server-only deselected); compileall passed. Added runtime semantic/mapping/dtype corruption, explicit adapter ownership, persistent-buffer guard and checkpoint signature tests. Real official float32 finite differences predeclared step.002/rtol.02/atol.002; analytic f64 force/stress rtol2e-5/atol1e-9; old reference tolerances unchanged. Full suite and real harness are Slurm-only and pending.

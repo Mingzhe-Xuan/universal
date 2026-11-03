@@ -95,6 +95,10 @@ class OfficialBackbone(nn.Module):
         self.feature_irreps = str(irreps)
         self.irreps = str(irreps) + (f" + {context_dim}x0e" if context_dim else "")
         self.kind, self.cutoff, self.context_dim = kind, float(cutoff), context_dim
+        self.basis = "e3nn/component" if kind == "equivariant" else "scalar"
+        self.transformation = "O3" if kind == "equivariant" else "invariant"
+        self.gradient_capabilities = {"positions": True, "strain": False, "mixed": False}
+        self.unused_parameter_prefixes = ()
         self.official_artifact, self.backend_version = artifact, version
         native_module = re.sub(r"^<torch_package_\d+>\.", "", type(model).__module__)
         self.load_report = {"strict": True, "parameter_coverage": 1., "buffer_coverage": 1.,
