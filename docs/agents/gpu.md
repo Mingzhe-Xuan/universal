@@ -1444,3 +1444,41 @@
 - 2026-11-04T04:26:15 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepull668b59a6fada25c90e6bf5f4ede43a2c8eebf07a first; no login computation or user session termination.
 
 - 2026-11-04T04:26:36+08:00：计划连接：将本次数据验收文档提交发布后，制作仅668b59a之后的文档增量bundle；SCP上传至任务bootstrap目录后原子更新published-sync，现有监督器下一次普通连接先SHA验证并pull，随后轻量队列检查。用户已允许离线Git同步，不修改origin，不重启健康代理，不在登录节点计算。
+
+- 2026-11-04T04:26:52 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull668b59a6fada25c90e6bf5f4ede43a2c8eebf07a first; no login computation or user session termination.
+
+- 2026-11-04T04:26:58 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepull668b59a6fada25c90e6bf5f4ede43a2c8eebf07a first; no login computation or user session termination.
+
+- 2026-11-04T04:26:58 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepull668b59a6fada25c90e6bf5f4ede43a2c8eebf07a first; no login computation or user session termination.
+
+- 2026-11-04T04:27:37 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:27:55 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener; read-only retry1. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:28:01 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:28:01 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:28:39 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:29:16 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:29:52 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:30:29 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:31:05 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:31:43 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:32:19 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:32:56 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:33:32 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:33:38 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:33:38 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.
+
+- 2026-11-04T04:34:16 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulleba44d87ff906a9b225f44acc5967ca8ae22fad6 first; no login computation or user session termination.

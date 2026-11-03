@@ -1037,3 +1037,7 @@
 - 2026-11-04T04:15:53+08:00 Perov-5提交前实际检查：纯std数据fixture6/6、原MLearn7/7、JARVIS5/5通过；compileall、Slurm脚本bash -n、CLI无Slurm拒绝、Markdown围栏/路径及git diff --check通过。首次fixture失败源于测试ID区间相交，已修正fixture为互斥ID；同时将全原档校验前移到解析之前，损坏资源在依赖导入/输出创建前拒绝。未降低原有测试要求。真实ASE3项及全量转换未运行，提交后必须Slurm验收，不计为已通过。声子/MLearn回传审计计数、划分、数据SHA和实际4595354源码SHA核对通过。
 
 - 2026-11-04T04:25:38+08:00：实际Slurm858通过全部9项Perov-5测试（包含3项ASE3.27 CIF解析）；859再次9/9通过并完成18928/18928转换，11356/3787/3785作者划分，最大5原子。回传audit与实际668b59a两份源码SHA、三原CSV的大小/SHA/Git blob登记均核验通过。没有把该阶段当作GPU/正式训练验收。
+
+- 2026-11-04T04:31:07+08:00：实现前计划：generative协议用纯std测试覆盖epoch/ID/phase/draw隔离、batch/order独立、resume兼容和显式v1旧约定；晶胞先验只消费训练记录、对数体积/原子几何均值、非有限/退化拒绝、训练指纹绑定；固定条件无放回/稳定ID选择、Wasserstein解析样例。真实全Perov-5训练先验与源码/源数据/manifest SHA通过CPU Slurm计算；Torch训练、采样和val-best集成另需模型环境恢复后数值测试。
+
+- 2026-11-04T04:34:35+08:00：生成协议提交前实际检查：9/9纯std测试通过；覆盖动态训练噪声/固定评测噪声、旧v1完整续训兼容拒绝、训练专属体积先验、无放回条件、W1解析结果、源身份/输出不可覆盖、CLI Slurm门禁及无Torch/site依赖。compileall、bash -n、README围栏/相对路径及git diff --check通过。真实11356训练结构先验待发布后CPU Slurm执行；生成训练器尚未接入，不宣称数值验收。
