@@ -52,8 +52,13 @@ def build_model(config, *, official_artifact=None):
     elif task["kind"] == "supervised":
         spec = property_spec(task["property"], channels=task.get("channels"), unit=task.get("unit"),
                              definition=task.get("spec"))
-        model = SupervisedModel(backbone, spec, route=task.get("route"),
-                                adapter_version=task.get("adapter_version", 2), prediction=prediction, feature_dim=declared_dim)
+        if prediction is not None and prediction["head_mode"] == "native":
+            from universal_gnn.tasks.native import NativeTaskModel
+
+            model = NativeTaskModel(backbone,spec,prediction=prediction,feature_dim=declared_dim)
+        else:
+            model = SupervisedModel(backbone, spec, route=task.get("route"),
+                                    adapter_version=task.get("adapter_version", 2), prediction=prediction, feature_dim=declared_dim)
     else:
         raise ValueError(f"Task kind not implemented: {task['kind']}")
     configure_optimization(model, config)
@@ -290,7 +295,9 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
             if not active or not all(bool(torch.isfinite(g).all()) for g in active):
                 raise FloatingPointError("Missing/nonfinite parameter gradients")
             gradient_squared += sum(float(g.detach().square().sum()) for g in active)
-            backbone_squared += sum(float(p.grad.detach().square().sum()) for p in model.backbone.parameters()
+            from universal_gnn.engine.optimization import components
+
+            backbone_squared += sum(float(p.grad.detach().square().sum()) for p in components(model)["backbone"].parameters()
                                     if p.grad is not None)
             torch.nn.utils.clip_grad_norm_(model.parameters(), config.get("clip_grad_norm", 10.))
             optimizer.step()

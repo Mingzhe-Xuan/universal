@@ -10,6 +10,8 @@ from universal_gnn.readouts.configuration import normalize_optimization
 
 def components(model):
     root = getattr(model, "energy_model", model)
+    if hasattr(root,"native_components"):
+        return root.native_components
     result = {"backbone": root.backbone}
     if getattr(root, "adapter", None) is not None:
         result["adapter"] = root.adapter

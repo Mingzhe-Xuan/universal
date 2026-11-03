@@ -61,8 +61,15 @@ def normalize_prediction(config, *, cutoff=None):
     if {"route", "adapter_version"} & set(config["task"]):
         raise ValueError("prediction conflicts with legacy task.route/task.adapter_version")
     value = deepcopy(config["prediction"])
-    fields(value, {"version", "readout", "adapter"}, "prediction")
+    fields(value, {"version", "head_mode", "readout", "adapter"}, "prediction")
     version(value.get("version"), "prediction.version")
+    value.setdefault("head_mode", "reset")
+    if not isinstance(value["head_mode"],str) or value["head_mode"] not in {"native","reset"}:
+        raise ValueError("prediction.head_mode must be native or reset")
+    if value["head_mode"] == "native":
+        if "adapter" in value or "readout" in value:
+            raise ValueError("prediction.head_mode=native preserves original pooling/normalization/head; remove readout/adapter")
+        return value
     if "readout" not in value:
         raise ValueError("prediction.readout is required")
     readout = value["readout"]
@@ -115,7 +122,7 @@ def normalize_optimization(config, *, has_adapter=None):
         return None
     if has_adapter is None:
         prediction = normalize_prediction(config)
-        has_adapter = prediction is None or prediction["adapter"]["name"] != "none"
+        has_adapter = prediction is None or (prediction["head_mode"] != "native" and prediction["adapter"]["name"] != "none")
     result = deepcopy(config.get("optimization", {}))
     fields(result, {"train_backbone", "train_readout", "train_adapter", "backbone_eval"}, "optimization")
     if "backbone_eval" in result:
@@ -136,7 +143,7 @@ def normalize_optimization(config, *, has_adapter=None):
 def validate_component_config(config):
     if "prediction" in config or "optimization" in config:
         if "prediction" in config:
-            fields(config["prediction"], {"version", "readout", "adapter"}, "prediction")
+            fields(config["prediction"], {"version", "head_mode", "readout", "adapter"}, "prediction")
             version(config["prediction"].get("version"), "prediction.version")
         if "optimization" in config:
             fields(config["optimization"], {"train_backbone", "train_readout", "train_adapter", "backbone_eval"}, "optimization")

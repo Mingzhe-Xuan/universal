@@ -97,6 +97,16 @@ def select_packaged_model(loaded, model_key=None):
 
 
 class OfficialBackbone(nn.Module):
+    def native_task_contract(self):
+        from .native_heads import native_contract
+
+        return native_contract(self)
+
+    def native_prediction(self, batch, contract):
+        from .native_heads import native_prediction
+
+        return native_prediction(self, batch, contract)
+
     def __init__(self, model, irreps, kind, cutoff, artifact, *, context_dim=0, version=None):
         super().__init__()
         self.model = model

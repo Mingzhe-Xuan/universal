@@ -22,6 +22,9 @@ def small(value):
 
 
 def main(args):
+    from universal_gnn.contracts.e3nn_compat import load_o3
+
+    load_o3()
     b=make_backbone(args.model,implementation="official").float().eval()
     artifact=b.official_artifact;raw={}
     if args.model in {"cgcnn","equiformer"}:

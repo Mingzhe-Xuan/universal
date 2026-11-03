@@ -23,3 +23,11 @@ then config backbone.feature_dim; all supplied dimensions must agree. Width alon
 non-scalar representations. Basis/transformation and position/strain/mixed derivative capabilities
 are explicit. New prediction assembly validates native nodes before any readout; optional graph
 features are preserved and the built-in heads declare that they do not consume them.
+# Original-head task contract
+
+`native.NativeTaskContract` declares the original property, scope, shape, kind,
+unit, reduction, head module paths, pooling, normalization and artifact hashes.
+`native` selection validates the complete task contract, not merely output width.
+Custom providers can implement `native_task_contract()` and
+`native_prediction(batch, contract)` using the same protocol. Providers without
+an explicit verified contract must use `head_mode: reset`.

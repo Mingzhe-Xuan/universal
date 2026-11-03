@@ -22,6 +22,7 @@ CATALOG = {
     "formation_energy": PropertySpec("formation_energy", "graph", (1,), "eV/atom"),
     "bandgap": PropertySpec("bandgap", "graph", (1,), "eV"),
     "total_energy": PropertySpec("total_energy", "graph", (1,), "eV", reduction="sum"),
+    "oc20_relaxed_energy": PropertySpec("oc20_relaxed_energy", "graph", (1,), "eV", reduction="sum"),
     "classification": PropertySpec("classification", "graph", (2,), "class", kind="classification"),
     "atom_scalar": PropertySpec("atom_scalar", "node", (1,), "dataset_defined", reduction="none"),
     "spectrum": PropertySpec("spectrum", "graph", (200,), "dataset_defined"),

@@ -69,7 +69,13 @@ class SupervisedModel(nn.Module):
 class ForceFieldModel(nn.Module):
     def __init__(self, backbone: nn.Module, *, prediction=None, feature_dim=None):
         super().__init__()
-        self.energy_model = SupervisedModel(backbone, property_spec("total_energy"), prediction=prediction, feature_dim=feature_dim)
+        if prediction is not None and prediction.get("head_mode") == "native":
+            from .native import NativeTaskModel
+
+            self.energy_model = NativeTaskModel(backbone, property_spec("total_energy"),prediction=prediction,
+                                                 feature_dim=feature_dim,forcefield=True)
+        else:
+            self.energy_model = SupervisedModel(backbone, property_spec("total_energy"), prediction=prediction, feature_dim=feature_dim)
         if prediction is not None:
             for name, available in self.energy_model.native_spec.gradients.items():
                 if not available:

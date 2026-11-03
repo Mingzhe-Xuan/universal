@@ -100,3 +100,15 @@ training backbone parameters, following observed BN coupling/stochastic batch ev
 Verified FeatureSpec derivative-capability upgrades from false to true alone are recorded and
 accepted on checkpoint replay. Capability downgrades, dimensions, representation, layer or policy
 changes still fail strict reconstruction; native tensor state and optimizer mapping do not change.
+# Native component ownership
+
+`component_views.py` provides non-registering views of the unchanged official
+model. Native `backbone` owns the original body; `readout` owns the original
+pooling/head/normalization modules listed in its task contract. Optimizers contain
+each parameter once. Shared parameters between the roles are rejected. Frozen
+components keep parameters, persistent buffers and eval modes fixed while input
+gradients remain enabled.
+
+Full resume requires the same head mode. Explicit backbone warm-start between
+native/reset modes transfers only the body, preserving the target's head. Original
+head tensors and the transfer boundary are listed in the warm-start report.

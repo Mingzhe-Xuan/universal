@@ -36,3 +36,17 @@ independent adapter (otherwise None), and a registered readout. ForceFieldModel 
 with sum pooling and verified position/strain/mixed derivatives; it derives forces and stress from
 atomic energy summation, preserving task.supervised_outputs selection. Legacy task.route and
 adapter_version cannot be mixed with prediction. Omitting prediction keeps historical assembly.
+# Official prediction heads
+
+`native.NativeTaskModel` implements `prediction.head_mode: native`. It invokes the
+provider's original prediction path and verified `NativeTaskContract`, including
+pooling, references and normalization. Task names, units and shapes must match
+that contract. Native mode rejects additional adapters, readouts and conditioning.
+`reset` remains the default for version-1 prediction configurations.
+
+Original head modules remain inside the provider: `engine.component_views`
+partitions their existing parameters and buffers without registering aliases.
+`optimization.train_readout` and `train_backbone` independently select training;
+freezing never disables input autograd. Force potentials use their original
+energy head with UGNN's differentiable force/stress operator. The UGNN interface
+uses energy `[B,1]`, forces eV/angstrom and stress GPa.
