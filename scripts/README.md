@@ -21,6 +21,14 @@ package inventory, JUnit result and explicit acceptance JSON; failures stop the 
 control/split/metric/selection protocol tests with system Python on a CPU allocation.
 It can run while scientific dependencies are restoring, records commit/job/result
 JSON, and does not certify neural-model, CUDA or full-data resource behavior.
+
+`recover_environment_cache.slurm` hashes/extracts only the public wheel URLs named
+by an official SHA256 catalog. It handles pip's separate `http-v2/*.body` format and
+legacy `http/` cc4 msgpack bodies, preserving source caches. Verified modern bodies
+are hardlinked where possible; legacy bodies need a copy. A 20 GiB free-space reserve
+is enforced, and missing/mismatched resources remain explicit in the JSON report.
+It never scans arbitrary cache entries or installs a partial environment. Large cache
+verification needs the provided 12 GiB CPU Slurm allocation; do not run it on login.
 # Real small-data matrix
 
 Download the named author archives listed in `prepare_acceptance_data.py` to `data/downloads`.

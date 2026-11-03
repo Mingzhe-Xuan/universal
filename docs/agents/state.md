@@ -1,16 +1,17 @@
 # 当前状态
 
-Active goal：按照docs/plan/arxiv_v1_experiments.md开展实验；目标四模型×六任务×预训练微调/完整从头训练，48格/seed、三seed144。尚未提交正式全量训练。
-commits1b8c33e/caccdf7/656f2ab已push并经Guqq2 pull同步。已实现孤立子进程OOM预检、固定组划分manifest、流式回归/二分类指标及监督/力场训练/推理分区、validation-best/test、可恢复best/last和Slurm验收入口；18项本地协议/静态检查通过（含无site-packages导入回归），真实数值集成尚未运行。全量图规模扫描、官方完整scratch、分子输入、生成独立评测和完整数据仍待完成。
-任务自有universal-base已建立，PySocks1.7.1 wheel经SCP与SHA校验后离线安装/import成功。Torch安装会话25239已终止exit1，未确认Torch恢复；随后日志检查因1080拒绝连接停在pull前。最新本地检查已无SSH持有进程，正在按诊断门禁确认远端端口释放，再建立唯一任务专用代理。未结束任何用户SSH会话。
+Active goal：按照docs/plan/arxiv_v1_experiments.md开展四模型×六任务×微调/完整scratch实验，48格/seed、三seed144；尚无正式全量训练结果。
+已发布1b8c33e/caccdf7/656f2ab：孤立子进程CUDA OOM预检、固定分区、train-only统计、validation-best/早停/可恢复best-last、独立test流式指标及Slurm验收入口。4994468修复data包入口提前导入Torch，18项本地协议/静态检查通过；服务器尚未确认pull此修复。
+Slurm821实际失败，发生在系统Python导入split测试阶段；本地python-S已复现eager Torch依赖并修复，保留原失败待重测。真实模型/CUDA训练步、混合梯度和既有完整回归尚未执行，不能据此启动正式长训练。
+任务自有base已创建，PySocks1.7.1已SHA校验并安装/import成功。旧代理失效残留3198388按UID/命令/启动时间核验后清理，1080释放。当前唯一任务代理96733：本地PID50964/jump3552/start23:16:01；最新轮询仍存活。安装控制31548也仍存活，Torch固定2.7.1cu128官方URL、依赖改用官方PyPI；实际安装完成尚无证据。近期普通连接代理健康超时，未越过失败pull门禁读取结果或提交新作业。
 
 # 当前计划
 
-1. 恢复唯一任务专用代理并端到端验证、pull后读取安装日志；修复仅任务自有环境并记录版本；模型/全量处理/测试均经Slurm。
-2. 提交已通过本地检查的基础模块；真实GPU完整训练步/力场混合梯度/生成采样及现有回归测试经Slurm验收。预检仅typedCUDA OOM减半，B1失败如实记录；不因探针通过宣称全量就绪。
-3. 接入manifest分区、train-only统计、独立validation选best/test指标、有界checkpoint；补齐官方骨干完整scratch、非官方radius6/PBC分子输入和生成训练噪声/独立质量评测。
-4. 准备全数据与来源/有效N/过滤/分区/预训练重叠审计；按最坏结构预检并写回两初始化共同batch，逐任务完成一seed48格，再补齐三seed144及论文证据。
-源码本地提交后服务器pull；不删除无关数据、不修改用户SSH会话；生成物忽略；docs/paper为用户文件，不批量提交。
+1. 轮询已确认活跃的31548/96733；恢复健康pull门禁后，先核查全部目标base/pip进程和安装日志，不因观测超时重复启动。联网工作期间保留唯一专用代理，真正结束时精确关闭并确认1080释放。
+2. pull4994468并重跑CPU协议Slurm；基础环境恢复后，通过Slurm跑完整模型回归与实际CUDA OOM减batch/完整训练步验收，分别覆盖力场混合梯度、张量响应和生成采样。
+3. 官方完整scratch（尤其MACE需去掉复制的参考能/scale，NequIP发布config为checkpoint间接引用，需官方fresh构造与全键/shape/irreps核验）、非官方radius6/PBC分子输入、生成新噪声及独立质量评测仍待实现。
+4. 准备六任务全量数据与固定分区/来源哈希/有效N/排除/预训练重叠审计；最坏真实图资源预检后写回两初始化共同batch，逐任务完成48格，再补齐144及论文证据。保留20GiB余量、有界best-last并归档已完成optimizer。
+源码本地提交后服务器pull；生成物忽略；docs/paper及ustc-gpu未批量提交；不删除无关数据或终止用户会话。
 
 # 变更记录
 
@@ -365,3 +366,9 @@ commits1b8c33e/caccdf7/656f2ab已push并经Guqq2 pull同步。已实现孤立子
 - 2026-11-03T22:54:23 +08:00: Owned dedicated proxy PID25840(exec73725) started only after local old holder absent/remote1080 free, verified end-to-end GitGET and pull. Previous pip failure traced to proxy disappearing mid NVRTC88MB download (2.5MB received); no Torch restore claimed. PySocks remains verified. Inspect cache/precise URLs before retry.
 
 - 2026-11-03T23:12:29 +08:00: Ownership guard stopped no processes: holderPID25840 was already gone before Stop-Process. Authoritative polls now show73725 terminal (server114.214.215.42 not responding) and install-controller12487 terminal1; CIM finds no local ssh processes. Remote pip state unproven until a new healthy/pulled connection checks it. Do not restart installation from lost observation alone.
+
+- 2026-11-03T23:26:50 +08:00: Current snapshot reconciled with actual commits, failedSlurm821, local18-test fix, verifiedlive31548/96733 and pending GPU/full-data requirements. Full goal remains active.
+
+- 2026-11-03T23:32:58 +08:00: USER EXPLICITLY APPROVED offline Git synchronization: allow necessary scp bundle upload before pull, then git pull --ff-only from verified bundle; do not edit server tracked source/change origin. First resource bundle4994468:6241B SHA2566001ab6e16a6b08e40ca9b69e80b5a3c51a7d14eb529c32a9953dfa353f92887, prerequisite656f2ab, head4994468 already pushed. Connect via ClearAllForwardings; no remote internet/proxy needed. After successful offlinepull inspect failed821 logs/ownbase process+versions and submit corrected18-protocol Slurm.
+
+- 2026-11-03T23:47:13 +08:00: 阶段进展：用户批准离线Git同步，4994468已实际离线pull；822重测运行。已确认无代理监听、无活跃安装器，base仅PySocks。官方16wheel元数据与定向缓存恢复器本地4测试通过，下一步提交/离线pull后Slurm核验旧cache以避免重复下载GPU栈；不扫描其他缓存或修改父环境。
