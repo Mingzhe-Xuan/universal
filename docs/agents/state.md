@@ -7,8 +7,8 @@ CGCNN/Equiformer全参要求显式backbone_eval；保留原层和图规则，能
 
 # 当前计划
 
-科学计算与实现验证已完成，完成文档/命令/格式检查及提交；通过现有工作SSH8965同步最后文档。
-随后只关闭身份核验的本任务代理50456，确认Guqq21080释放。无额外训练计划，保留全部历史失败和无关docs/paper。
+全部完成：最终文档d36b948已通过同一工作SSH8965同步，队列为空；仅身份核验的本任务代理50456已关闭，Guqq21080释放且SSH正常退出。
+无待执行计算、源码修改、同步或网络清理。后续本地提交仅记录已观测的收尾，不再连接服务器；保留历史失败和无关docs/paper。
 
 # 变更记录
 
@@ -256,3 +256,5 @@ CGCNN/Equiformer全参要求显式backbone_eval；保留原层和图规则，能
 - 2026-11-03T13:14:49+08:00: Started five-other-official-backbone forcefield assessment. Modules:scripts acceptance/Slurm,provider capability metadata only after evidence,optional minimal training-mode fix if actual BN coupling is found. Preserve original layers/preprocessing. Prior consultation notes retained.
 
 - 2026-11-03T14:10:05+08:00: Five-backbone stage COMPLETE:10candidate modes,10production full-resume/frozen-inference modes,126x3regressions,and158file/source-data audit passed. Enter finaldocs sync and owned50456 cleanup on held workSSH8965;no more numerical jobs needed.
+
+- 2026-11-03T14:13:08+08:00: Final stage COMPLETE:all5otherofficialbackbones/10candidate+10productionmodes/126x3+158fileaudit done;d36b948synced,sameSSH8965confirmedonlyowned50456closedand1080released,exit0. No remaining work/resources;docs/paper unrelated preserved.

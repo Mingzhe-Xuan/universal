@@ -573,3 +573,5 @@
 - 2026-11-03T13:49:03+08:00: Five other official providers frozen/full candidate acceptance complete (10modes).CGCNN/EQ full require explicit backbone_eval preserving trainable params;ALIGNN h convergence fixed numerical check.Three env126 passed each. Promote only proven capability metadata;final ordinary production resume/inference and actual old-CGCNN metadata-upgrade replay remain.
 
 - 2026-11-03T14:06:10+08:00: Five-other-backbone task scientifically complete:10candidate frozen/full modes and10ordinary production continuation/inference modes passed;MEGNet/NQ normaltrain,CGCNN/EQ explicit trainable-eval,ALIGNN convergedFDstep.0002. OldCGCNN numeric replay exact. Capability flags nowenabled;final docs+standards/mode constraints and158file evidence archived. Enter final documentation synchronization/proxy cleanup.
+
+- 2026-11-03T14:13:08+08:00: Closed requested other-backbone forcefield task:allfive verifiedandcapabilitiesenabled,specialCGCNN/EQtrainable-eval policy documented,metadata-upgrade oldcheckpointnumericreplay0,three-env126regressions,plainproductioncontinuation/inference validated. Final server syncandproxycleanup observedcomplete.
