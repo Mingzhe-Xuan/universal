@@ -22,7 +22,7 @@ for pattern in patterns:
     subprocess.run(["python3", "-m", "unittest", "discover", "-s", "tests", "-p", pattern, "-v"], check=True)
 result = {"passed": True, "test_modules": patterns, "git_commit": commit,
           "slurm_job_id": os.environ["SLURM_JOB_ID"], "node": os.environ.get("SLURMD_NODENAME"),
-          "scope": "17 pure control/protocol/metric tests; no neural model or CUDA execution"}
+          "scope": "18 pure control/protocol/metric tests; no neural model or CUDA execution"}
 Path(f"runs/arxiv-protocol-{os.environ['SLURM_JOB_ID']}.json").write_text(json.dumps(result, indent=2))
 print(json.dumps(result))
 PY

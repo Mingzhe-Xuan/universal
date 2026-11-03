@@ -516,3 +516,21 @@
 - 2026-11-03T22:56:07 +08:00: Owned proxy GitGEThealth succeeded and prior failure identified as lost old listener. Now connect/pull caccdf7 and retry the stopped binary install under stable dedicated proxy; pip cache retained, no compilation/model imports. Keep holder73725 alive while downloading.
 
 - 2026-11-03T22:59:32 +08:00: Live install12487 and dedicated proxy73725 last confirmed running; connect for GitGEThealth/pull and bounded install progress/metadata inspection only, do not restart active install. No model import or tests on login.
+
+- 2026-11-03T23:03:25 +08:00: Connect for GitGEThealth/pull656f2ab, submit17-protocol CPU Slurmjob (512MiB/5min), view queue and stat only the two exact public NVRTC wheel CacheControl keys. Do not hash/scan cache on login or interfere with active pip12487/proxy73725.
+
+- 2026-11-03T23:06:06 +08:00: CPU-protocol submission connection failed bounded GitGET health before pull, so NO sbatch executed. Diagnose existing task proxy end-to-end only (loopback/current-user SSH/public health), preserving holderPID25840; no business/result inspection before restored pull gate.
+
+- 2026-11-03T23:11:12 +08:00: Owned proxyPID25840/child58048 (start22:50:58), remoteholder3198388(start22:51:03), both Git/PyPI time out20sec while localpublicGitHub200. Proxy73725/pip12487 still live; do not restart installer. Rebuild this proven-unusable owned proxy once, not user sessions: verify exact process command/start identity, stop only owned holder (and owned jump child if necessary), diagnostic-only check1080free, then start one replacement and end-to-end test before pull. If fresh replacement fails stop repetition.
+
+- 2026-11-03T23:12:29 +08:00: Ownership guard stopped no processes: holderPID25840 was already gone before Stop-Process. Authoritative polls now show73725 terminal (server114.214.215.42 not responding) and install-controller12487 terminal1; CIM finds no local ssh processes. Remote pip state unproven until a new healthy/pulled connection checks it. Do not restart installation from lost observation alone.
+
+- 2026-11-03T23:13:07 +08:00: Diagnostic confirms stale remote3198388 startTueNov3 22:51:03 still holds1080 after both known localproxy/jump vanished and session73725 terminaltimeout. Authorized diagnostic cleanup connection must independently verify currentuid, exact sshd command/start and ss portPID before SIGTERM only3198388, then confirm portfree. No task results/source/job operations before pull.
+
+- 2026-11-03T23:15:12 +08:00: Cleanup guard made NO mutation: ss-ltnp does not expose PID to this user. UID/command and exact22:51:03 start of3198388 match task-holder25840 start22:50:58 recorded immediately after creation; no localSSH remains, and all work connections ClearAllForwardings. This independently identifies dead task connection perAGENTS even without hidden ss process fields. Retry cleanup of only3198388 after same exact identity checks; if ss reveals another owner, abort.
+
+- 2026-11-03T23:16:32 +08:00: Stale owned3198388 terminated after exact correlation checks; ss confirmed1080free. One replacement dedicated proxy exec96733 started. Ordinary work connection must GitGEThealth/pull before protocolsbatch, exact cache stats and ownbase pip process status. No installer restart until actual process state verified.
+
+- 2026-11-03T23:19:42 +08:00: Replacementproxy exec96733 PID50964/start23:16:01 confirmedhealthy; pull656f2ab, CPU Slurm821 submittednode42. Next gated connection reads821 result and audits ALL ownbase Python/pip command lines before any reinstall (do not infer absence from original launcher shape). If none remain, change dependency index to officialPyPI using identical official Torch2.7.1cu128 directwheelURL; avoids slowNvidiahost, no version change/no build.
+
+- 2026-11-03T23:21:18 +08:00: Slurm821 failed importing split test under systemPython; no successJSON. Connect gated to read full821.err and currentPyPIinstall tail; no Slurm retest until root cause fixed locally. Installer31548 confirmed launched only after allbase-pip process audit empty.

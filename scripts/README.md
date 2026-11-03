@@ -17,7 +17,7 @@ capacity certification. Use `--export=ALL,UGNN_TEST_ENV=universal-mace` or
 `universal-official` for the isolated model environments. The job records the commit,
 package inventory, JUnit result and explicit acceptance JSON; failures stop the job.
 
-`sbatch scripts/validate_arxiv_protocols.slurm` independently runs the 17 pure
+`sbatch scripts/validate_arxiv_protocols.slurm` independently runs the 18 pure
 control/split/metric/selection protocol tests with system Python on a CPU allocation.
 It can run while scientific dependencies are restoring, records commit/job/result
 JSON, and does not certify neural-model, CUDA or full-data resource behavior.

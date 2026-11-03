@@ -1,12 +1,27 @@
 import copy
 import hashlib
 import json
+import os
+from pathlib import Path
+import subprocess
+import sys
 import unittest
 
 from universal_gnn.data.splits import create_manifest, validate_manifest
 
 
 class SplitManifestTests(unittest.TestCase):
+    def test_metadata_import_without_site_packages(self):
+        source = Path(__file__).resolve().parents[1] / "src"
+        code = ("import sys; from universal_gnn.data.splits import create_manifest; "
+                "from universal_gnn.data.splits.loading import load_partition; "
+                "from universal_gnn.engine.evaluation.selection import ValidationTracker; "
+                "from universal_gnn.engine.evaluation.heldout import verified_best; "
+                "import universal_gnn.data as data; "
+                "assert set(data.__all__) <= set(dir(data)); assert 'torch' not in sys.modules")
+        subprocess.run([sys.executable, "-S", "-c", code],
+                       env={**os.environ, "PYTHONPATH": str(source)}, check=True)
+
     def setUp(self):
         self.records = [{"id": f"s{i}", "group": f"g{i // 2}"} for i in range(40)]
         self.digest = hashlib.sha256(b"dataset fixture").hexdigest()

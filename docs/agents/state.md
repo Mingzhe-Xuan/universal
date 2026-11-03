@@ -1,7 +1,7 @@
 # 当前状态
 
 Active goal：按照docs/plan/arxiv_v1_experiments.md开展实验；目标四模型×六任务×预训练微调/完整从头训练，48格/seed、三seed144。尚未提交正式全量训练。
-commit1b8c33e已push并经Guqq2 pull同步。已实现孤立子进程OOM预检、固定组划分manifest、流式回归/二分类指标及监督/力场训练/推理分区、validation-best/test、可恢复best/last和Slurm验收入口；17项本地协议/静态检查通过，真实数值集成尚未运行。全量图规模扫描、官方完整scratch、分子输入、生成独立评测和完整数据仍待完成。
+commits1b8c33e/caccdf7/656f2ab已push并经Guqq2 pull同步。已实现孤立子进程OOM预检、固定组划分manifest、流式回归/二分类指标及监督/力场训练/推理分区、validation-best/test、可恢复best/last和Slurm验收入口；18项本地协议/静态检查通过（含无site-packages导入回归），真实数值集成尚未运行。全量图规模扫描、官方完整scratch、分子输入、生成独立评测和完整数据仍待完成。
 任务自有universal-base已建立，PySocks1.7.1 wheel经SCP与SHA校验后离线安装/import成功。Torch安装会话25239已终止exit1，未确认Torch恢复；随后日志检查因1080拒绝连接停在pull前。最新本地检查已无SSH持有进程，正在按诊断门禁确认远端端口释放，再建立唯一任务专用代理。未结束任何用户SSH会话。
 
 # 当前计划
@@ -363,3 +363,5 @@ commit1b8c33e已push并经Guqq2 pull同步。已实现孤立子进程OOM预检�
 - 2026-11-03T22:48:45 +08:00: Correction to preceding live-install note: latest poll of session25239 returned terminal exit1, so installation is stopped, not a verified wait. PySocks1.7.1 import was verified before that failure; Torch success remains unproven. Next inspect logs before any install retry.
 
 - 2026-11-03T22:54:23 +08:00: Owned dedicated proxy PID25840(exec73725) started only after local old holder absent/remote1080 free, verified end-to-end GitGET and pull. Previous pip failure traced to proxy disappearing mid NVRTC88MB download (2.5MB received); no Torch restore claimed. PySocks remains verified. Inspect cache/precise URLs before retry.
+
+- 2026-11-03T23:12:29 +08:00: Ownership guard stopped no processes: holderPID25840 was already gone before Stop-Process. Authoritative polls now show73725 terminal (server114.214.215.42 not responding) and install-controller12487 terminal1; CIM finds no local ssh processes. Remote pip state unproven until a new healthy/pulled connection checks it. Do not restart installation from lost observation alone.

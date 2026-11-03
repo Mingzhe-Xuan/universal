@@ -1,5 +1,11 @@
 # Data and differentiable geometry
 
+The package-level geometry API loads lazily. Importing split manifests and source
+partition metadata does not import Torch; requesting `radius_graph`, `PeriodicGraph`
+or the other existing geometry exports loads their original implementation on demand.
+This permits control-plane validation in a minimal Python environment without changing
+the geometry API used by models.
+
 Geometry uses `r_ij = positions[src] + image @ cell - positions[dst]` with row-vector cells.
 `radius_graph` enumerates all periodic images within cutoff, including self images and multiple
 images of the same pair in small cells. It does not silently impose a neighbor cap or minimum-image

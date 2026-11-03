@@ -106,3 +106,5 @@
 - 2026-11-03T22:48:45 +08:00: Correction to preceding live-install note: latest poll of session25239 returned terminal exit1, so installation is stopped, not a verified wait. PySocks1.7.1 import was verified before that failure; Torch success remains unproven. Next inspect logs before any install retry.
 
 - 2026-11-03T22:54:23 +08:00: Owned dedicated proxy PID25840(exec73725) started only after local old holder absent/remote1080 free, verified end-to-end GitGET and pull. Previous pip failure traced to proxy disappearing mid NVRTC88MB download (2.5MB received); no Torch restore claimed. PySocks remains verified. Inspect cache/precise URLs before retry.
+
+- 2026-11-03T23:19:42 +08:00: Network-source adjustment planned only after active-process audit: Torch exact officialdownload-r2 URL unchanged2.7.1cu128; dependencies resolved from PyPI instead of CUDA-only index linking slowpypi.nvidia.com. NVRTC PyPI SHA equalsoriginala0fa9c2a21583105550ebd871bd76e2037205d56f33f128e69f6d2a55e0af9ed. No matching complete exact NVRTC cachebody found at either publicURL key. Base still not declared restored.
