@@ -198,6 +198,13 @@ def test_force_only_frozen_backbone_head_gradients_and_finite_differences(factor
     numeric_stress = numeric_stress / torch.linalg.det(b.cell[0]).abs() * 160.21766208
     torch.testing.assert_close(value["stress"][0,0,0],numeric_stress.squeeze(),rtol=2e-5,atol=1e-9)
     torch.testing.assert_close(value["forces"][:4].sum(0),torch.zeros(3,dtype=torch.float64),rtol=0,atol=1e-12)
+    for i in range(b.num_graphs):
+        start, end = int(b.ptr[i]), int(b.ptr[i+1])
+        single = Structure(b.numbers[start:end], b.positions[start:end], b.cell[i], b.pbc[i], str(i))
+        separate = m(StructureBatch.from_structures([single]), create_graph=False)
+        for name in ("total_energy", "forces", "stress"):
+            expected = value[name][start:end] if name == "forces" else value[name][i:i+1]
+            torch.testing.assert_close(separate[name], expected, rtol=1e-10, atol=1e-11)
     c["prediction"]["readout"]["pooling"]="mean"
     with pytest.raises(ValueError,match="pooling"):training.build_model(c)
 
@@ -353,3 +360,27 @@ def test_non_scalar_explicit_processing_and_scalar_response_guarantee(monkeypatc
     monkeypatch.setattr(training,"make_backbone",lambda *a,**kw:scalar)
     m = training.build_model(c)
     assert m.readout.descriptor["transformation_guarantee"] == "fixed_frame_components"
+
+
+def test_warm_start_preserves_plugin_source_checks(monkeypatch, tmp_path):
+    from universal_gnn.engine.warm_start import initialize_components
+
+    def make(name, **options):
+        model = ControlledBackbone()
+        model.extension_provenance = {"gnn":{"source_sha256":options["fingerprint"],"factory":"build_gnn"}}
+        return model
+
+    monkeypatch.setattr(training,"make_backbone",make)
+    c = config();c["backbone"]["fingerprint"] = "original"
+    source = training.build_model(c)
+    path = tmp_path / "source.pt"
+    torch.save({"format_version":2,"config":c,"state_dict":source.state_dict(),
+                "extensions":source.backbone.extension_provenance},path)
+    compatible = training.build_model(c)
+    assert initialize_components(compatible,path)["optimizer_rebuilt"]
+    changed = copy.deepcopy(c);changed["backbone"]["fingerprint"] = "changed"
+    target = training.build_model(changed)
+    before = {key:value.clone() for key,value in target.state_dict().items()}
+    with pytest.raises(ValueError,match="plugin code changed"):
+        initialize_components(target,path)
+    for key,value in before.items():torch.testing.assert_close(value,target.state_dict()[key],rtol=0,atol=0)

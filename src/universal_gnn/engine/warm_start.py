@@ -31,6 +31,9 @@ def initialize_components(model, path, selected=("backbone",)):
         if name == "readout" and old_signature["prediction"] != new_signature["prediction"]:
             raise ValueError("warm-start readout feature/output semantics differ; select only compatible components")
         if name == "backbone":
+            from .runtime import verify_extensions
+
+            verify_extensions({"extensions": getattr(old[name], "extension_provenance", {})}, model)
             for key in ("irreps", "kind", "cutoff"):
                 if getattr(old[name], key, None) != getattr(new[name], key, None):
                     raise ValueError(f"warm-start backbone {key} differs")
