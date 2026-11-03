@@ -108,5 +108,5 @@ sbatch --partition=compute --cpus-per-task=2 --mem=12G --time=00:30:00 \
 
 官方API见 [MACE ASE文档](https://mace-docs.readthedocs.io/en/latest/guide/ase.html)；
 本例model_paths参数另与本项目实际MACE0.3.16发行包核对。当前UGNN CLI没有直接保留原MACE头的
-零样本推理开关。上述配置与命令已核对现有接口，未在未提供的用户数据上执行新的训练；此前
-官方MACE十结构带隙验收与本力场配方的实际数据验收是两回事。
+零样本推理开关。force-only路径已在既有十个真实结构及原力标签上完成训练/续训/重载验收，
+两环境各80项回归通过，详见 [仅力监督验收](agents/force-only.md)。未在未提供的用户模拟数据上训练。
