@@ -1,0 +1,19 @@
+schema_version: 1
+seed: 123
+structures: null
+batch_size: 5
+dtype: float32
+device: cpu
+epochs: 30
+learning_rate: 0.001
+checkpoint_every: 1
+backbone: {name: mace, implementation: official}
+dataset:
+  path: data/acceptance/forcefield-10.json
+  bindings:
+    forces: {key: forces, unit: eV/angstrom}
+task: {kind: forcefield, supervised_outputs: [forces]}
+prediction:
+  version: 1
+  readout: {name: node_mlp, pooling: sum, hidden_features: [64], activation: silu}
+optimization: {train_backbone: false, train_readout: true}

@@ -79,8 +79,12 @@ def component_audit(model):
 
 def architecture_signature(model):
     root = getattr(model, "energy_model", model)
-    descriptor = getattr(root, "prediction_descriptor", {"version": "legacy", "route": root.route,
-                             "adapter_version": getattr(root.adapter, "basis_version", None)})
+    descriptor = getattr(root, "prediction_descriptor", None)
+    if descriptor is None:
+        descriptor = {"version": "legacy", "route": root.route,
+                      "native_irreps": root.backbone.irreps, "adapter_irreps": root.adapter.irreps,
+                      "output_spec": root.spec.to_dict(), "backbone_cutoff": getattr(root.backbone, "cutoff", None),
+                      "adapter_version": getattr(root.adapter, "basis_version", None)}
     # Canonical JSON types keep tuples and file-loaded lists equivalent.
     return json.loads(json.dumps({"prediction": descriptor, "components": {
         name: {"implementation": type(module).__module__ + "." + type(module).__qualname__,
@@ -89,7 +93,7 @@ def architecture_signature(model):
         for name, module in components(model).items()}}))
 
 
-def resolved_model_config(config, model):
+def resolved_model_config(config, model, *, structure_count=None):
     result = copy.deepcopy(config)
     if "prediction" in config or "optimization" in config:
         root = getattr(model, "energy_model", model)
@@ -98,8 +102,18 @@ def resolved_model_config(config, model):
         result["optimization"] = dict(model._component_policy)
         result["resolved_components"] = architecture_signature(model)["prediction"]
         for key, value in {"seed": 123, "batch_size": 32, "max_atoms": None, "shuffle": True,
-                           "dtype": "float32", "device": "cpu", "learning_rate": .001}.items():
+                           "dtype": "float32", "device": "cpu", "learning_rate": .001,
+                           "epochs": 10, "structures": None, "checkpoint_every": 0,
+                           "clip_grad_norm": 10., "report_structure_limit": 1000}.items():
             result.setdefault(key, value)
+        result["dataset"].setdefault("selection", "first")
+        result["dataset"].setdefault("selection_seed", result["seed"])
+        if structure_count is not None:
+            result.setdefault("report_predictions", structure_count <= 1000)
+        if result["task"]["kind"] == "forcefield":
+            from universal_gnn.tasks.supervision import supervised_outputs
+
+            result["task"]["supervised_outputs"] = list(supervised_outputs(config))
     return result
 
 

@@ -6,6 +6,10 @@ ALIGNN、CGCNN、MEGNet 默认选择官方实现与已登记的发布权重，�
 具体包、源码、权重配置及已验收范围见 [官方接入](../src/universal_gnn/backbones/official/README.md)
 与 [环境记录](agents/env.md)。NequIP隔离e3nn版本，Equiformer另隔离旧版PyG。
 
+原生特征读出、linear/MLP/response、冻结训练和显式组件暖启动见
+[配置性质预测组件](prediction_components.md)，完整字段定义见 [格式标准](standards.md#prediction-组件协议-v1)。
+通过 `prediction.version: 1` 显式启用；省略时保留旧32维适配与历史 checkpoint 行为。
+
 ## 文档约定的命令行
 
 主入口为 `ugnn --mode train/infer --model ... --dataset ... --task ... --config ...`。

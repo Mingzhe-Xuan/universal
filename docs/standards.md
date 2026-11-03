@@ -155,7 +155,7 @@ class MyGNN(BaseGNN):
 1. 构图并检查索引、映射、特征；
 2. 调用 GNN，检查 GNNOutput；
 3. 包成现有 `NativeFeatures`，提供 `.encode(batch, context)`、`.irreps`、`.kind`、`.cutoff`；
-4. 接入原有 scalar/equivariant adapter 和通用读出器。
+4. `prediction.version: 1` 时原生节点直连已注册读出，或显式使用可选 adapter；省略 prediction 时保留原有 scalar/equivariant adapter 和通用读出器。
 
 `backbone.cutoff` 是包装层几何提升/方向读出的半径，不等于 KNN 的 k。
 `graph.cutoff` 才是 radius 构图的截断；新式 build_gnn 工厂接收除包装层 cutoff 外的 backbone 选项。
@@ -365,6 +365,94 @@ artifact are restored as legacy even though the default for new construction has
 also requires its original `atom_init`. Without an explicit path, the checksum-verified profile
 in backbones/official/profiles.py is used. Weights must be prepared before submitting training.
 Changing `--model` clears another official model's checkpoint and architecture-specific options.
+
+## Prediction 组件协议 v1
+
+`prediction.version: 1` 是显式可选的新组装协议；`schema_version: 1`、数据协议v1、checkpoint
+format1/2 和 `training_state.version: 1` 保持不变。无 prediction 的配置与旧checkpoint继续按历史
+32维适配、route、adapter/basis_version、state_dict 键重建，不自动迁移。
+
+```yaml
+prediction:
+  version: 1
+  readout: {name: graph_mlp, pooling: mean, hidden_features: [128, 64], activation: silu}
+optimization: {train_backbone: false, train_readout: true}
+```
+
+### 输入规格与维度
+
+`contracts.FeatureSpec` 的版本为1，字段为 `feature_dim`、`irreps`、`kind`、`basis`、
+`transformation`、`gradients`，及审计字段 `source`、`dimension_assertion`。
+优先读取模型 feature_spec（对象、字典或无参方法），再读取 irreps、模型 feature_dim；
+config `backbone.feature_dim` 只用于回退或一致性断言，不传入主干构造器修改隐藏层。
+全部有效维度声明须相同且为正整数。特征没有公开维度时在读出组装阶段拒绝，不创建 lazy 参数。
+
+偶标量不变模型可只声明 `kind: invariant` 和 feature_dim，规范生成 `Fx0e` 与 scalar/invariant 语义。
+非标量需准确 irreps、基底及 O3/SO3 变换声明；不能只依据宽度处理成标量。
+当前内置等变转换要求 `basis: e3nn/component`；其他基底需自定义兼容读出或转换。
+`gradients: {positions: bool, strain: bool, mixed: bool}` 缺项默认 false，表示未经能力声明，
+不是由维度推断出的数学保证。新式力场要求三项均 true。
+
+自定义标准类允许 `BaseGNN(irreps=None, feature_dim=F, kind="invariant", ...)`；
+basis、transformation、gradient_capabilities 可通过基类参数声明。
+旧接口提供 irreps 的用法保持。`StandardBackbone` 将声明传给新式组装。
+每次 forward 在读出前验证 `[N,F]`、输入几何引用、batch/ptr、dtype/device、有限性和声明的表示语义。
+可选 graph_features 保留，但内置读出明确不消费；自定义读出通过 ReadoutRequirement 声明是否使用。
+
+### 读出与处理
+
+| readout.name | 输入与运算顺序 | 附加字段 |
+| --- | --- | --- |
+| linear | 原生偶标量F；图池化后 Linear(F,D)，节点任务直接 Linear | bias，默认true |
+| graph_mlp | 原生偶标量F；先图池化再MLP，仅graph scope | hidden_features正整数列表，activation=silu，bias=true |
+| node_mlp | 原生偶标量F；先节点MLP再池化 | 同上 |
+| response | 辅助变量求导；处理后的表示进入现有ResponseReadout | feature_processing |
+
+D及输出形状来自 `PropertySpec`；读出不能重复声明另一套输出宽度。
+`pooling` 默认来自性质 reduction，并必须与其相同：图任务 sum/mean，节点 none；response图任务仅mean。
+新式力场限定 node_mlp+sum，将逐原子标量能量求和，再对位置/应变求力/应力。
+`task.supervised_outputs` 仍控制E/F/S标签、scale和loss；force-only无需E/S标签。
+
+`readout.feature_processing` 默认 `{name: none, version: 1}`，可选：
+
+- `scalar_invariants`：标量与非标量范数等不变量，宽度从输入irreps确定，无隐式32维压缩。
+- `equivariant`：须明确 `profile: small_response`、`basis_version: 1|2`；cutoff显式指定或取backbone.cutoff。
+  内部复用已有几何/等变表示处理，归属readout参数组，输出规格单独记录。
+
+response若无等变处理，偶标量输入预测固定坐标分量；采用等变处理时记录O3或SO3 Cartesian保证。
+非标量输入不能隐式当固定标量。主干kind不再自动选择张量路线。
+response保持辅助变量求导，不自动建立不同物理性质共享势能的关系，不施加空间群掩码。
+
+`prediction.adapter` 也接受上述三种处理，只有显式非none才实例化独立组件；内部与独立处理不能重复同一种转换。
+每段处理及 prediction 均检查未知字段和显式版本。generation拒绝prediction/optimization。
+自定义读出注册方法见 [readouts](../src/universal_gnn/readouts/README.md)。
+
+### 优化、重建与审计
+
+`optimization.train_backbone/train_readout` 默认true；仅实际存在独立adapter时允许train_adapter，默认true。
+无prediction的历史路径也允许单独配置optimization，历史adapter为实际组件。
+组件参数所有权不得重叠；优化器仅包含允许训练参数。冻结组件保持eval，参数和持久buffer不得改变。
+框架不因冻结使用no_grad或detach，保留输入导数及穿过冻结模块的梯度。全部冻结只允许推理。
+
+新模型保存可选 `components` 字典：`version: 1`、architecture、policy、optimizer_groups。
+architecture包含规格、读出配置/实现、pooling位置、组件类型拓扑和state键/shape；
+optimizer_groups包含组件名称和有序参数名。原 `official_backbone` artifact/hash、extensions源码检查保持。
+该可选扩展不改变旧容器版本；未知components版本拒绝。旧文件不补写新组件或新state键。
+完整resume检查架构、冻结策略、参数分组，同时保留原数据/精度/采样/RNG/优化器兼容规则。
+推理允许关闭参数梯度，但不改变架构，并保留输出所需输入导数。
+
+换头或训练策略使用显式 `--warm-start FILE --warm-start-components backbone`；可选择adapter/readout，
+须逐组件通过状态键/shape/实现与语义检查；原官方artifact也须兼容。目标使用完整独立配置，重建优化器。
+不允许全模型strict=False吞掉差异。旧32维→新路径迁移也使用此入口，只初始化兼容backbone。
+report.initialization保存源checkpoint SHA、加载键、忽略和新初始化组件及优化器重建标记。
+
+`config.resolved.json` 保存归一化prediction/optimization、原生F及来源、输入/输出规格、处理方式、
+pooling位置和有效运行默认值。report.components列出各组件总/允许训练/冻结参数、实际模式，
+内部处理不重复计入adapter。已知原任务头未使用参数单列；task_parameter_upper_bound与
+effective_trainable_upper_bound为排除已知未使用参数后的上界，非精确有效容量测量。
+报告中的训练损失与小规模执行验收不代表独立测试集性能。
+
+完整配置和命令见 [组件使用说明](prediction_components.md)。
 The new task head is randomly initialized; the original pretrained trunk is fine-tuned by default.
 
 Checkpoint format2 can include `official_backbone` with version1, provider, source, files (original

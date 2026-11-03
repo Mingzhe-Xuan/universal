@@ -1,59 +1,15 @@
 # 当前状态
 
-开始按docs/plan/prediction_decoupling_requirements.md实施A～E。新组合通过prediction.version:1显式启用，
-默认原生特征直连readout；保留旧32维适配/state_dict路径。计划增加特征语义/能力契约、基础/响应读出工厂、
-组件冻结与优化器分组、严格重建/暖启动及审计；官方主干只补元数据，不改原图/模型层。
-
-已按用户澄清修订解耦需求：默认Backbone→原生[N,F]→Readout，模型规格优先、自定义feature_dim回退、首次前向校验；必要表示处理封装于readout，独立adapter仅可选。结构图、训练归属、4份无独立adapter的配置模板与13项验收已同步，23条链接/50项需求引用/YAML/格式检查通过；尚未实施代码。
-
-已完成性质预测组件解耦需求文档docs/plan/prediction_decoupling_requirements.md及索引。文档包含47项需求、13项验收和4份未来配置模板，明确旧配置兼容、聚合顺序、组件冻结和力场输入梯度；23条相对链接、YAML与格式检查通过。状态为需求评审稿，尚未实施；既有任务与历史记录保留。
-
-性质预测专项评估已完成：范围为标量、谱、力场与张量。主要限制为固定适配/读出、谱语义与单位校验不足、张量默认路线随主干变化、力场计算输出与监督选择未完全分离，以及正式评测/官方跨任务证据不足。本轮未修改源码或执行实验，原force-only实现记录保留。
-
-并行静态评估已完成：当前全量/mini-batch/精度和六官方主干问题已修复；对照ALIGNN2.0的主要差距为正式held-out评测、官方模型跨任务基准、任务头基线、固定噪声生成及短程物理工作流。结论来自源码与证据静态核查，未新跑实验；既有force-only实现状态与计划保留。
-
-Force-only support COMPLETE: only selected labels/scales/losses required; official GNN and energy-derived forces unchanged.762/763 each80 passed,764 MACE10 original real-force labels passed optimization/full resume/reloaded inference and exact geometry/label audit. Final server sync ef360c4 and identity-checked own proxy33236 cleanup completed; remote1080 release confirmed.
-
-本轮MACE力场使用说明已完成：新增configs/mace_forcefield.yaml和docs/mace_forcefield.md，核对
-原主干/随机新能量头、E/F/S标签与单位、Slurm训练/推理命令；明确原MACE头零样本预测使用
-官方MACECalculator，原始.model不是--resume。配置/CLI合并、Python/Bash语法、7个本地链接
-与格式检查通过；未连接服务器、未执行未提供用户数据的新实验。此前验收历史保留。
-
-已完成明确范围的实现与实际验收：默认全量、训练/推理mini-batch、可配置精度及JSONL索引/流式输出；六标准模型名默认官方原模型与已登记发布权重，旧变体显式legacy且旧checkpoint兼容。Slurm754/755两环境各71项完整回归，新Equiformer环境也71项。MACE743、CGCNN744、MEGNet745、ALIGNN753、NequIP758、Equiformer759均完成原生对照、10真实结构微调与自包含重载（6/6）。
-
-NequIP756确认官方计算器自身的双线程float32力重复性误差，758改用单线程后特征/能量/力差异均为0，原容差不变。Equiformer在独立PyG2.0.4环境中保留原始上游源码，特征/预测差异均为0。所有模型主干实际更新、loss下降、一/二阶导数有限；旧失败保留。Slurm760实际文档CLI由默认官方ALIGNN缓存训练2轮、完整续训至3轮、推理10条通过。编号3原文未提供，本轮按起始已声明的精度/大数据运行时范围处理；没有把未给出的其他问题记为已验收。
-
-本地证据归档33372字节/55文件，完整hash与85个原始源码hash、六模型相同数据指纹、CLI配置/轮数/条数均独立审计通过。详见official-pretrained.md。最后工作连接20801已pull7724686并核验六份validation、CLI与三环境回归；队列无当前用户作业。精确关闭自有代理43152后，同一连接确认OFFICIAL_PROXY_1080_RELEASED并正常退出；两本地HTTP资源服务已停止。所有计算仅Slurm，源码仅本地提交/push→服务器pull；docs/paper保持不动。
+性质预测解耦A-D已通过首轮完整回归：Slurm765/766在core/MACE环境各114 passed。
+prediction.version1默认原生特征直连，4类读出、显式表示处理、组件冻结/优化器、严格续训与组件暖启动可用。
+真实链767/768在启动前被已安装scripts包遮蔽，尚无实际模型结果；已修正脚本入口，下一步重提。
+新补充默认值审计、训练时模式、adapter基底暖启动校验和4份使用配置；官方图/层保持原样。
 
 # 当前计划
 
-本轮实施：A contracts/components与配置校验/维度回退；B readouts工厂/聚合/显式内部处理及tasks组装；
-C engine组件训练策略与冻结模式；D checkpoint签名/分组兼容、显式组件暖启动和resolved审计；
-E ACC-01～13测试映射、模块README与真实官方CGCNN/MACE标量/谱/张量/冻结force-only链。
-所有实际训练/推理和完整回归通过Slurm；本地只做解析、静态和小型解析梯度检查。保留现有需求文档及过程历史。
-
-修订交付：向用户提供更新后的需求文档；本轮修订完成，无待执行实验或源码改造。实施时以最新默认原生特征直连路径为准，保留历史配置重建与冻结力场梯度要求。
-
-文档交付：向用户提供需求文件及范围说明。本轮文档任务已完成，无待执行代码或服务器操作；后续实施按文档中的A～E单元分别登记测试与验收，不将评审稿视为现有功能。
-
-专项评估交付：按四类性质及共用接口说明缺口，建议先明确任务语义/变换保证、开放adapter/readout配置，再补正式评测和官方主干四类矩阵；不将生成、模拟、多任务或空间群约束列为本轮要求。无新增实现待办。
-
-评估交付：向用户说明功能缺口与验证不足，建议先补固定划分/评估及任务头对照，再完成官方主干跨任务矩阵；本轮不启动修复或新增实验，不改变下述force-only计划。
-
-Force-only current plan COMPLETE: implementation, real-data validation, evidence/doc synchronization and dedicated-proxy cleanup finished. No remaining force-only work; parallel static-review task records preserved.
-
-本轮说明计划已完成：原生预测与框架微调两条入口、MACE力场配置、标准标签/单位、Slurm命令和
-对应检查均已交付。没有用户数据时不宣称完成该数据集训练。
-
-本轮上述明确实现范围、六官方模型十结构验收、文档/证据与网络清理均已完成，无待执行计算。
-以下保留本轮模块划分与验收范围；编号3若另有原文，作为新增明确范围处理。
-
-研究定位补充：交付第一版基准、模型—任务解耦与证据边界建议；本次讨论无额外训练或实现待办，不修改下述实现范围。
-
-1. 数据/运行单元：默认全部结构，显式限制/随机子集；可配置mini-batch、shuffle、原子预算和float32/64；JSONL索引读取，训练统计按有效标签计数，推理逐batch输出，续训恢复一致。
-2. 官方模型单元：独立official模块，每个provider保留官方架构、预处理和buffer，严格加载真实checkpoint，仅增加输出特征包装及新读出。现有变体明确为legacy，不能作为验收替代。调研ALIGNN/CGCNN/MEGNet/MACE/NequIP/Equiformer的可训练发布权重和依赖。
-3. 验收单元：主干参数覆盖、官方前向/中间特征对照、输入和参数梯度、checkpoint自包含重载；六模型各10真实结构微调，记录来源/hash、版本、Slurm、损失和主干参数变化。所有实际训练/推理在Slurm。
-4. 更新标准/usage/模块README及环境、测试、经验记录，逐项审计后才能完成目标。
+提交已通过本地检查的入口/审计补充；复用既有环境和真实数据，通过Slurm重跑core/MACE完整回归及
+CGCNN/MACE原生linear/MLP冻结/全参、200通道谱、显式profile张量和冻结force-only真实链。
+随后修复实际失败、同步标准/usage/示例和验收映射，归档证据并清理本任务代理。
 
 # 变更记录
 
@@ -285,3 +241,8 @@ Force-only current plan COMPLETE: implementation, real-data validation, evidence
 - 2026-11-03 10:06:03 +08:00：完成原生特征直连readout需求修订；维度自动优先/显式声明/首次shape校验及变换语义边界已定义，独立adapter不作为基础链门槛。4份无adapter YAML、23条链接、50项需求及13项验收引用检查通过。下一步交付用户，本轮不实施代码。
 
 - 2026-11-03T10:25:44+08:00: Started authorized implementation of prediction_decoupling_requirements A-E. Native features directly feed explicit readout for prediction.version1; legacy assembly/state keys remain. Modules:contracts/components,readouts/factory, tasks composition,engine/optimization and checkpoint/CLI integration. Official providers metadata only. Full Slurm regression and real CGCNN/MACE chains required before completion.
+
+
+- 2026-11-03T11:01:28+08:00: A-D implementation and bounded local checks complete:28 new selected passed/6 server-only deselected,20 existing passed; syntax/diff checks passed. Enter Slurm regression and real official acceptance. No remote operations yet.
+
+- 2026-11-03T11:09:43+08:00: Source ae90d7e synchronized; Slurm765/766 full regression and767/768 real official acceptance submitted. Enter actual validation; docs/examples/standards being updated while jobs run.

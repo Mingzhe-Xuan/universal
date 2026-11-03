@@ -239,6 +239,8 @@ def test_new_checkpoint_resume_warm_start_and_inference_policy(factory,tmp_path)
     a=training.load_checkpoint(tmp_path/'continuous/checkpoint.pt');d=training.load_checkpoint(tmp_path/'resumed/checkpoint.pt')
     for key,value in a.state_dict().items():torch.testing.assert_close(value,d.state_dict()[key],rtol=0,atol=0)
     saved=torch.load(tmp_path/'continuous/checkpoint.pt',weights_only=True)
+    assert saved['config']['clip_grad_norm']==10. and saved['config']['dataset']['selection']=='first'
+    assert saved['config']['report_predictions'] and saved['config']['report_structure_limit']==1000
     assert saved['components']['version']==1 and [v['name'] for v in saved['components']['optimizer_groups']]==['readout']
     changed=copy.deepcopy(c);changed['optimization']['train_backbone']=True
     with pytest.raises(ValueError,match='warm-start'):training.run_training(changed,tmp_path/'bad',resume=tmp_path/'prefix/checkpoint.pt')
@@ -300,3 +302,54 @@ def test_checkpoint_signature_and_scope_refusals(factory):
     with pytest.raises(ValueError,match="scope"):validate_config(c)
     c = config("linear", task={"kind":"supervised","property":"dielectric"})
     with pytest.raises(ValueError,match="construction"):validate_config(c)
+
+
+def test_warm_start_adapter_basis_semantics_refused(factory, tmp_path):
+    from universal_gnn.engine.warm_start import initialize_components
+    c = config("response", task={"kind":"supervised","property":"dielectric"})
+    c["prediction"]["adapter"] = {"name":"equivariant","profile":"small_response","basis_version":1}
+    source = training.build_model(c)
+    path = tmp_path / "source.pt"
+    torch.save({"format_version":2,"config":c,"state_dict":source.state_dict()},path)
+    target_config = copy.deepcopy(c)
+    target_config["prediction"]["adapter"]["basis_version"] = 2
+    target = training.build_model(target_config)
+    with pytest.raises(ValueError,match="basis semantics"):
+        initialize_components(target,path,["adapter"])
+
+
+def test_resolved_effective_defaults(factory):
+    from universal_gnn.engine.optimization import resolved_model_config
+    c = config()
+    resolved = resolved_model_config(c, training.build_model(c), structure_count=1201)
+    assert resolved["epochs"] == 10 and resolved["checkpoint_every"] == 0
+    assert resolved["structures"] is None and not resolved["report_predictions"]
+    assert resolved["dataset"]["selection_seed"] == resolved["seed"] == 123
+    assert resolved["prediction"]["readout"]["bias"] is True
+    assert resolved["resolved_components"]["readout"]["pooling_position"] == "before_network"
+
+
+def test_non_scalar_explicit_processing_and_scalar_response_guarantee(monkeypatch):
+    class VectorBackbone(nn.Module):
+        kind, irreps, basis, transformation, cutoff = "equivariant", "1x1o", "e3nn/component", "O3", 2.
+
+        def encode(self, b, context=None):
+            centers = scatter_mean(b.positions, b.batch, b.num_graphs)[b.batch]
+            return NativeFeatures(b.positions-centers,self.irreps,self.kind,b.batch,b.ptr,b)
+
+    monkeypatch.setattr(training,"make_backbone",lambda *a,**kw:VectorBackbone())
+    c = config("linear")
+    with pytest.raises(ValueError,match="even scalar"):training.build_model(c)
+    c["prediction"]["readout"]["feature_processing"] = {"name":"scalar_invariants"}
+    m = training.build_model(c).double().eval()
+    assert m.readout.core.network[0].in_features == 1 and m.adapter is None
+    b = batch()
+    torch.testing.assert_close(m(b),m(b.with_geometry(-b.positions,-b.cell)),rtol=1e-12,atol=1e-12)
+    c = config("response",task={"kind":"supervised","property":"dielectric"})
+    with pytest.raises(ValueError,match="explicit"):training.build_model(c)
+
+    scalar = ControlledBackbone()
+    scalar.kind, scalar.transformation = "equivariant", "O3"
+    monkeypatch.setattr(training,"make_backbone",lambda *a,**kw:scalar)
+    m = training.build_model(c)
+    assert m.readout.descriptor["transformation_guarantee"] == "fixed_frame_components"

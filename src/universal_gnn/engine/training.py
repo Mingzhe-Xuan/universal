@@ -220,13 +220,14 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
         initialization = initialize_components(model, warm_start, warm_start_components)
     frozen_state = FrozenStateGuard(model)
     config = resolved_model_config(config, model)
+    execution = execution_record(model)
+    optimizer = make_optimizer(model, config)
+    structures = dataset(config)
+    config = resolved_model_config(config, model, structure_count=len(structures))
     if "prediction" in config or "optimization" in config:
         (output / "config.resolved.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
         if event_callback is not None:
             event_callback("model_resolved", config=config, components=component_audit(model))
-    execution = execution_record(model)
-    optimizer = make_optimizer(model, config)
-    structures = dataset(config)
     fingerprint = data_fingerprint(structures)
     state = restore_optimizer(saved, optimizer, config, fingerprint) if saved is not None else None
     completed = state["completed_epochs"] if state is not None else 0
@@ -260,6 +261,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     history = list(state["history"]) if state is not None else []
     gradient_norms = list(state["gradient_norms"]) if state is not None else []
     backbone_gradient_norms = list(state["backbone_gradient_norms"]) if state is not None else []
+    training_components = None
 
     def save_progress(epoch):
         save_training_checkpoint(checkpoint, model, optimizer, config, versions,
@@ -270,6 +272,8 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
 
     for epoch in range(completed, epochs):
         model.train()
+        if training_components is None:
+            training_components = component_audit(model)
         totals, gradient_squared, backbone_squared, steps = LossTotals(), 0., 0., 0
         for batch in batches(structures, config, epoch=epoch):
             optimizer.zero_grad(set_to_none=True)
@@ -319,7 +323,8 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
         records.append({"id": structure.identifier, "geometry_sha256": hashlib.sha256(raw).hexdigest(),
                         "provenance": structure.metadata, "role": "train_and_reloaded_inference"})
     report = {"config": config, "versions": version_record(), "execution": execution,
-              "components": component_audit(model), "initialization": initialization,
+              "components": component_audit(model), "components_during_training": training_components,
+              "initialization": initialization,
               "supervised_outputs": list(supervised_outputs(config)),
               "structures": records, "selected_structures": len(structures),
               "available_structures": len(structures.source), "data_fingerprint": fingerprint,

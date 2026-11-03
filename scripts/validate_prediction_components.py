@@ -19,7 +19,7 @@ from universal_gnn.engine.batching import model_dtype
 from universal_gnn.engine.inference import run_inference
 from universal_gnn.engine.optimization import component_audit, components
 from universal_gnn.engine.training import build_model, dataset, load_checkpoint, run_training
-from scripts.validate_official import independent_reference
+from validate_official import independent_reference
 
 
 def base_config(model, entry):

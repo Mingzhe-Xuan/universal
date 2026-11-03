@@ -113,3 +113,12 @@ batching and precision settings. The six canonical names now select official pro
 weights/dependencies fail explicitly. The original variants require implementation: legacy and
 cannot load the official weights. Official checkpoint acceptance is recorded separately from the
 historical multi-task variant matrix.
+
+## Native prediction components
+
+Set `prediction.version: 1` to use native node features with a registered linear/graph_mlp/node_mlp/
+response head. The CLI flags above stay unchanged. See [component recipes](../prediction_components.md)
+for four runnable configs, train/infer/resume commands, freezing and explicit
+`--warm-start FILE --warm-start-components backbone`. Resume requires identical components and
+training policy; changing a head or policy uses component warm-start with a new optimizer.
+Without prediction, historical adapter/readout construction remains unchanged.

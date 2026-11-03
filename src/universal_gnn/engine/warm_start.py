@@ -18,6 +18,10 @@ def initialize_components(model, path, selected=("backbone",)):
         raise ValueError(f"warm_start_components={selected}: source={list(old)}, target={list(new)}")
     # Preflight every selected component before mutating any target parameters.
     for name in selected:
+        if name == "adapter":
+            fields = ("version", "native_spec", "adapter", "adapter_output_spec", "route", "adapter_version")
+            if any(old_signature["prediction"].get(key) != new_signature["prediction"].get(key) for key in fields):
+                raise ValueError("warm-start adapter feature/basis semantics differ")
         a, b = old[name].state_dict(), new[name].state_dict()
         if set(a) != set(b) or any(a[k].shape != b[k].shape for k in a):
             raise ValueError(f"warm-start {name} state keys/shapes differ; select only compatible components")
