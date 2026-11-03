@@ -109,3 +109,12 @@ inspection of the original artifact metadata, head module paths, scalar normaliz
 forward sources. It runs no training and does not change model layers; tensor weights are
 summarized by shape rather than exported. This establishes native-task contracts before wiring
 the official prediction head into UGNN.
+# Original head acceptance
+
+`validate_native_heads.py --model MODEL --output runs/native-heads/MODEL` must run
+through Slurm. It compares original public predictions and physical normalization,
+checks each independent freeze policy and mixed force gradients, trains on ten
+real matching records where available, and checks checkpoint reload/resume.
+Equiformer's registered IS2RE head has no matching labels in this cohort: only
+original prediction and gradient diagnostics run; band-gap labels are never
+substituted for relaxed-energy labels.

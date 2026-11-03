@@ -381,3 +381,11 @@
 - 2026-11-03T14:37:34+08:00: d1953b4 pulled/health200;metadataSlurm796ALIGNN797CGCNN798MEGNet799MACE800NequIP801Equiformer submitted. Next ordinary workSSH health/pull current first then archive only these boundedJSON/err logs to localresults for task/head/norm source review;reuse own46820 healthy. No loginmodel execution or source edits.
 
 - 2026-11-03T15:31:33+08:00: Authorized connection: health-check existing owned SOCKS proxy46820, git pull committed local implementation FIRST, rerun only failed EQ metadata801 through Slurm, submit numerical/native and full regression suites through Slurm. No server tracked edits, installs or unrelated data changes.
+
+- 2026-11-03T16:55:29+08:00: Proxy recovery diagnostic authorized: owned PID46820 is absent locally. Before pull gate inspect ONLY remote loopback1080/listener owner/current user sshd and end-to-end SOCKS health; no task files/results/jobs. If loopback free, create one new dedicated owned hidden proxy and verify before git pull.
+
+- 2026-11-03T16:58:54+08:00: Replacement dedicated proxy38788 startUTC2026-11-03T08:56:49.4544046Z passed HTTP200;git pull9ab9aec;Slurm802EQmetadata,803/804/805 three-env full tests submitted. Next authorized read-only connection health/pull first, collect bounded metadata/logs for implementation verification.
+
+- 2026-11-03T17:01:01+08:00: Authorized next collection connection:reuse healthy proxy38788,mandatory health/pull before bounded Slurm803-805 logs and completed802metadata. No numerical work on login.
+
+- 2026-11-03T17:05:17+08:00: Authorized next connection:reuse proxy38788,health-check/pull new committed harness first;submit six original-artifact acceptance jobs1CPU12GB through Slurm. No server tracked source edits,training/inference on login,or new dependencies.

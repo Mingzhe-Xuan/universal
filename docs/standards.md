@@ -468,3 +468,20 @@ head strictly. Original weight paths need not exist on reload, but compatible of
 and source code remain required. These published pickle-based artifacts must be trusted; the
 custom plugin protocol's state_dict-only behavior does not make upstream pickle formats safe.
 Source/backend signature mismatches are errors, even when tensor dimensions happen to agree.
+
+## 官方预测头选择
+
+`prediction.head_mode` 为 `native` 或 `reset`，省略默认 `reset`。
+`native` 保留官方头、权重、池化、归一化与原任务，禁止额外 `readout/adapter`；
+`reset` 按 `prediction.readout` 新建随机初始化的 UGNN 头，保留 backbone 权重。
+`optimization.train_readout` 控制头是否训练，与头的选择独立。
+
+NativeTaskContract v1 规定 property、scope、shape、kind、unit、reduction、head_paths、
+原池化/归一化、artifact SHA256 和是否为瞬时势能。任务规格须完整匹配；未知 artifact
+不得按 shape 猜任务。原模块路径和 checkpoint 状态键不变，组件视图分别管理原主干和头，
+共享参数导致边界不明确时报错。完整续训不得切换 head_mode；显式主干 warm-start
+跨模式只迁移 body，保留目标头，重建优化器。旧 reset 签名与历史 checkpoint 保持兼容。
+
+UGNN 统一包装原头的物理值：图标量 `[B,1]`，力场 total_energy `[B,1]`、forces `[N,3]`
+（eV/angstrom）、stress `[B,3,3]`（拉伸正号 GPa）。原官方返回类型可通过 provider.native_forward
+取得。详见 [原头协议、任务矩阵与配置](native_heads.md)。

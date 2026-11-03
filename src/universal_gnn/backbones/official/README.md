@@ -109,6 +109,17 @@ Frozen backbones already stay eval. Equiformer guarantees SO3. Exact checkpoints
 finite-difference convergence and release checks are in
 [forcefield validation](../../../../docs/agents/forcefield-backbones.md); arbitrary other artifacts
 still need their own capability validation.
-Original registered task heads may remain in the backbone state but do not contribute to the
+In reset mode, original registered task heads may remain in the backbone state but do not contribute to the
 new prediction path; component audits list known prefixes and capacity upper bounds, not an exact
 measurement of effective task parameters. Dependencies/reference checks remain unchanged.
+
+## Original task heads
+
+`native_heads.py` provides verified original-head contracts for the registered
+artifact hashes: ALIGNN/CGCNN band gap, MEGNet formation energy per atom,
+MACE/NequIP total energy potentials, and Equiformer OC20 IS2RE relaxed energy.
+Unknown artifacts require an explicit provider contract; output shape alone
+does not identify a task. CGCNN and OCP target normalization is restored once;
+MatGL inverse_transform and original potential scale/reference layers execute
+inside the original model. Native component views never reparent or duplicate
+the original modules. See [head selection](../../../../docs/native_heads.md).

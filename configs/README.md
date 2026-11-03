@@ -44,3 +44,11 @@ set a larger total `--epochs` when continuing a complete run. See docs/plan/usag
 `custom_knn_gcn.yaml` follows schema_version 1 and selects independent graph/GNN directory factories.
 It uses ten real ASE G2-1 molecules prepared with `scripts/prepare_molecular_data.py` on Slurm.
 See docs/standards.md for the single config/dataset/checkpoint/interface specification.
+# Official head selection
+
+`native_bandgap.yaml` preserves the registered ALIGNN band-gap head and weights.
+`native_mace_force_only.yaml` preserves the original MACE energy head and trains
+against force labels only. Set dataset.path to your real simulation data.
+`prediction: {version: 1, head_mode: native}` accepts no readout/adapter settings.
+For a new task use `head_mode: reset` with an explicit registered readout.
+Freezing remains controlled by optimization, independently of the selected head.

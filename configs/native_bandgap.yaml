@@ -1,0 +1,17 @@
+schema_version: 1
+seed: 123
+structures: null
+batch_size: 16
+dtype: float32
+device: cpu
+epochs: 30
+learning_rate: 0.0001
+checkpoint_every: 1
+backbone: {name: alignn, implementation: official}
+dataset:
+  path: data/acceptance/bandgap-10.json
+  bindings:
+    bandgap: {key: optb88vdw_bandgap, unit: eV}
+task: {kind: supervised, property: bandgap}
+prediction: {version: 1, head_mode: native}
+optimization: {train_backbone: false, train_readout: true}
