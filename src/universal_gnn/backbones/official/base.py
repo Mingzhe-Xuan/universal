@@ -74,6 +74,14 @@ def capture_features(forward, module, extract, *, before=False):
     raise RuntimeError("Original model did not reach the configured readout boundary")
 
 
+def attach_periodic_topology(data, builder, radius, max_neighbors):
+    # Discrete cell-repeat counts/neighbor selection have no geometry derivative.
+    # Keep the original live pos/cell tensors for the upstream distance computation.
+    with torch.no_grad():
+        data.edge_index, data.cell_offsets, data.neighbors = builder(data, radius, max_neighbors)
+    return data
+
+
 def select_packaged_model(loaded, model_key=None):
     if isinstance(loaded, nn.ModuleDict):
         if model_key is None:

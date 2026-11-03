@@ -4,7 +4,7 @@ import io
 
 import torch
 
-from .base import OfficialBackbone, ReferenceValue, artifact_files, capture_features, default_dtype
+from .base import OfficialBackbone, ReferenceValue, artifact_files, capture_features, default_dtype, attach_periodic_topology
 
 
 class OfficialEquiformer(OfficialBackbone):
@@ -27,6 +27,11 @@ class OfficialEquiformer(OfficialBackbone):
         super().__init__(model, str(model.irreps_feature), "equivariant", model.max_radius, artifact,
                          context_dim=context_dim, version="atomicarchitects/equiformer-v1-oc20")
         self.configuration = configuration
+        self.original_otf_graph = bool(model.otf_graph)
+        # Use the original model's precomputed-topology path; live distances remain
+        # in _forward_use_pbc. OCP's integer arange bounds cannot carry strain grad.
+        if self.original_otf_graph:
+            model.otf_graph = False
         self.transformation = "SO3"
         self.unused_parameter_prefixes = ("model.head", "model.head_skip_connect", "model.auxiliary_head")
         self.load_report["symmetry"] = "SO(3); reflection equivariance is not claimed by this pretrained artifact"
@@ -42,7 +47,7 @@ class OfficialEquiformer(OfficialBackbone):
             raise ValueError("The original Equiformer OC20 embedding supports atomic numbers below 84")
         converter = AtomsToGraphs(max_neigh=self.model.max_neighbors, radius=self.cutoff,
                                   r_energy=False, r_forces=False, r_distances=False,
-                                  r_edges=not self.model.otf_graph, r_fixed=True)
+                                  r_edges=not self.original_otf_graph, r_fixed=True)
         graphs = []
         with default_dtype(batch.positions.dtype):
             for i in range(batch.num_graphs):
@@ -60,7 +65,12 @@ class OfficialEquiformer(OfficialBackbone):
                 graph.pos = ReferenceValue.apply(graph.pos.to(batch.positions), batch.positions[start:end])
                 graph.cell = ReferenceValue.apply(graph.cell.to(batch.cell), batch.cell[i:i + 1])
                 graphs.append(graph)
-        return Batch.from_data_list(graphs)
+        data = Batch.from_data_list(graphs)
+        if self.original_otf_graph:
+            from ocpmodels.common.utils import radius_graph_pbc
+
+            attach_periodic_topology(data, radius_graph_pbc, self.cutoff, self.model.max_neighbors)
+        return data
 
     def native_forward(self, batch):
         captured = []

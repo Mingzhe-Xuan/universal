@@ -55,6 +55,15 @@ def configuration(model, path, spec, *, frozen, epochs):
             "optimization": {"train_backbone": not frozen, "train_readout": True}}
 
 
+def reference_configuration(config):
+    result = copy.deepcopy(config)
+    if result["backbone"]["name"] == "cgcnn":
+        # Original CIFData requires a scalar label slot, unused by prediction parity.
+        # Its adapter takes the first component of the existing real force label.
+        result["task"]["property"] = "forces"
+    return result
+
+
 def snapshot(module):
     return {key: value.detach().cpu().clone() for key, value in module.state_dict().items()}
 
@@ -64,7 +73,7 @@ def parameter_delta(before, module):
                          for key, value in module.named_parameters()))
 
 
-def assess_gradients(model, structures):
+def assess_gradients(model, structures, *, step=.002):
     model.eval()
     source = structures[0]
     perturbation = .017 * torch.sin(torch.arange(source.positions.numel()).reshape_as(source.positions) * .73 + .31)
@@ -82,7 +91,6 @@ def assess_gradients(model, structures):
     assert norms["readout"] > 1e-10
     if model._component_policy["train_backbone"]: assert norms["backbone"] > 1e-10
     torch.testing.assert_close(value["forces"].sum(0),torch.zeros(3),rtol=0,atol=2e-5)
-    step = .002
     forces, stresses = [], []
     for atom in range(min(2,len(source.numbers))):
         for axis in range(3):
@@ -130,7 +138,7 @@ def assess_batches(model, structures, *, train):
     return result
 
 
-def validate_mode(config, output):
+def validate_mode(config, output, *, fd_step=.002):
     output.mkdir(parents=True,exist_ok=True)
     result = {"config":config,"errors":[],"candidate_metadata_only":True}
     torch.manual_seed(config["seed"])
@@ -139,7 +147,7 @@ def validate_mode(config, output):
     before = {name:snapshot(module) for name,module in components(model).items()}
     result["original_capabilities"] = model.backbone.assessment_original_capabilities
     result["native_spec"] = model.energy_model.native_spec.to_dict()
-    for stage, action in (("derivatives",lambda:assess_gradients(model,structures)),
+    for stage, action in (("derivatives",lambda:assess_gradients(model,structures,step=fd_step)),
                           ("eval_batch",lambda:assess_batches(model,structures,train=False)),
                           ("train_batch",lambda:assess_batches(model,structures,train=True))):
         try:
@@ -187,15 +195,31 @@ def validate(args):
     backbone = training.make_backbone(args.model,implementation="official").float().eval()
     spec = resolve_feature_spec(backbone)
     config = configuration(args.model,path,spec,frozen=True,epochs=args.epochs)
-    reference = independent_reference(backbone,force_only,config)
+    reference = independent_reference(backbone,force_only,reference_configuration(config))
     original_load = copy.deepcopy(backbone.load_report)
     del backbone
     modes = {}
     with candidate_capabilities():
+        if args.fd_sweep:
+            torch.manual_seed(config["seed"])
+            model = training.build_model(config).float()
+            values = [assess_gradients(model,force_only,step=step) for step in (.002,.001,.0005,.0002,.0001)]
+            result = {"model":args.model,"slurm_job_id":os.environ["SLURM_JOB_ID"],"steps":values,
+                      "interpretation":"fixed model/probe finite-difference convergence diagnostic; no tolerance change"}
+            if args.model == "alignn":
+                from universal_gnn.engine.configuration import load_config
+
+                documented = training.build_model(load_config("configs/prediction_bandgap.yaml"))
+                result["documented_bandgap_first_layer"] = documented.readout.core.network[0].in_features
+                assert result["documented_bandgap_first_layer"] == 512
+            (args.output/"fd-sweep.json").write_text(json.dumps(result,indent=2))
+            print(json.dumps({"model":args.model,"steps":[{k:v[k] for k in
+                  ("step","forces_max_abs_error","stress_max_abs_error","forces_finite_difference_passed","stress_finite_difference_passed")} for v in values]}))
+            return True
         for frozen in (True,False):
             name = "frozen" if frozen else "full"
             config = configuration(args.model,path,spec,frozen=frozen,epochs=args.epochs)
-            modes[name] = validate_mode(config,args.output/name)
+            modes[name] = validate_mode(config,args.output/name,fd_step=args.fd_step)
     result = {"model":args.model,"passed":all(v["passed"] for v in modes.values()),
               "slurm_job_id":os.environ["SLURM_JOB_ID"],"independent_reference":reference,
               "official_load":original_load,"modes":modes,"production_capabilities_changed":False,
@@ -211,9 +235,12 @@ if __name__ == "__main__":
     parser.add_argument("--model",choices=MODELS,required=True)
     parser.add_argument("--output",type=Path,required=True)
     parser.add_argument("--epochs",type=int,default=4)
+    parser.add_argument("--fd-step",type=float,default=.002)
+    parser.add_argument("--fd-sweep",action="store_true",help="Fixed-probe step convergence diagnostic without training")
     args = parser.parse_args()
     if not os.environ.get("SLURM_JOB_ID"):raise SystemExit("Submit through Slurm")
     if args.epochs < 1:raise SystemExit("epochs must be positive")
+    if not math.isfinite(args.fd_step) or args.fd_step <= 0:raise SystemExit("fd-step must be finite and positive")
     args.output.mkdir(parents=True,exist_ok=True)
     try:
         passed = validate(args)

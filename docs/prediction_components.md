@@ -6,7 +6,7 @@
 
 | 示例 | 主干 | 读出及训练方式 |
 | --- | --- | --- |
-| [带隙](../configs/prediction_bandgap.yaml) | 官方 ALIGNN | 原生256维 → graph_mlp，全参训练 |
+| [带隙](../configs/prediction_bandgap.yaml) | 官方 ALIGNN | 原生512维 → graph_mlp，全参训练 |
 | [200通道谱](../configs/prediction_spectrum.yaml) | 官方 CGCNN | 原生64维 → linear，冻结主干 |
 | [介电响应](../configs/prediction_response.yaml) | 官方 MACE | response 内部 small_response / basis2，冻结主干 |
 | [仅力监督](../configs/prediction_force_only.yaml) | 官方 MACE | node_mlp → sum 得能量 → 求导，冻结主干 |
@@ -50,7 +50,7 @@ Equiformer 目前声明 SO(3)，不能据此声称反射下的 O(3) 保证。
 原生维度与自定义模型
 
 维度依次从 `feature_spec`、`irreps`、模型 `feature_dim` 读取，配置 `backbone.feature_dim` 仅作回退或一致性断言。
-例如带隙示例的256是输出规格断言，不修改官方隐藏层宽度。声明冲突在组装时拒绝；
+例如带隙示例的512是该发布权重的输出规格断言，不修改官方隐藏层宽度。声明冲突在组装时拒绝；
 实际节点 shape、映射、dtype/device、几何引用和表示语义在前向时校验。
 自定义模型接口见 [标准](standards.md)，可直接使用现有 [KNN+GCN](../examples/custom_knn_gcn/README.md)。
 声明了不变标量语义的模型允许只提供 feature_dim；等变非标量必须提供 irreps、basis、transformation。

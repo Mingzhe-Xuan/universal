@@ -94,3 +94,6 @@ production guards/default declarations remain unchanged until actual results jus
 It records original reference parity, force/strain finite differences, mixed gradients, eval/train
 batch independence, frozen states, force-only optimization and checkpoint inference independently,
 including failed stages. No original backbone layer/graph is changed and no DFT is executed.
+`--fd-sweep` holds the model/probe fixed and records step convergence without training;
+`--fd-step` changes only the numerical differentiation step, never rtol/atol. This diagnoses
+truncation versus derivative failures before a candidate can be accepted.

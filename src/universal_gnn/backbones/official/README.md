@@ -64,6 +64,12 @@ fine-tuned model plus the new heads; the embedded artifact reconstructs the orig
   features are scalars and its upstream symmetry is SO(3); reflection equivariance is not claimed.
   V2 checkpoints are not interchangeable with this provider and its rotation detach is not patched.
 
+For V1, original OCP radius_graph_pbc executes only its discrete topology selection under no_grad,
+then the original model's supported precomputed-topology path computes distances/vectors from the
+unchanged live pos/cell tensors. This avoids OCP arange accepting strain-dependent cell-repeat
+bounds. No upstream code, neighbor rule, distance expression or model layer is replaced; both
+native parity and coordinate/strain/mixed derivatives must pass separately.
+
 `reference.py` exercises independent upstream entry points: MACE/NequIP calculators, MatGL
 predict_structure, ALIGNN Graph, CGCNN CIFData/collate_pool and the standalone original Equiformer
 constructor/forward. CGCNN adapts only CIFData's file-reading call to supply the exact in-memory

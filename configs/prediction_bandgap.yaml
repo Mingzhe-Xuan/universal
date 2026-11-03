@@ -10,7 +10,7 @@ checkpoint_every: 1
 backbone:
   name: alignn
   implementation: official
-  feature_dim: 256
+  feature_dim: 512
 dataset:
   path: data/acceptance/bandgap-10.json
   bindings:
