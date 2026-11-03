@@ -1024,3 +1024,14 @@
 - 2026-11-04T02:57:52 +08:00: Implementation unit fullMLearnE/F preparation: stdlib streaming12 pinnedJSONs, receipt/blob/SHA integrity, homogeneous ordered sites/occupancy/PBC, finite totalEandNx3F, auditinvalids/noatomcap; releasedtestimmutable, group training/validation by explicit MDdescriptionfamily+exactgeometry, detectcross-releasedexactduplicate, disclose release-test trajectoryfamilyoverlap (bounded first Cu/Si records confirmsameAIMDfamily intrain/test). Tests bounded12file fixtures/zeroF/largeN/group roles/seed/digest/path/conflicts/unitsmetadata; unchangedJARVIS/GMT andmanifest regressions. Realfullsource conversion remainsSlurm.
 
 - 2026-11-04T03:08:14 +08:00: MLearn localunit PASSED7 incl no-site/noTorch imports; original5JARVIS +6GMT(1NumPy-onlyskip) +5splitmanifest regressions pass. Sourcecompile,MLearnSlurmBashsyntax,affectedREADME/auditdoclinks/fences,gitwhitespace passed. Fullreleased12filepreparation NOTRUN yet, requiringSlurm.
+
+- 2026-11-04T03:31:12 +08:00: ActualSlurm854 ALL19_MLEARN_JARVIS_GMT_FIXTURES_PASSED, including7MLearn+5Jarvis+7GMTwithNumPy; independentCPU. Full855 datajobpendingbehind853, notcountedcomplete. Direct-official-network draft AST/Bashsyntax passedbutNOTEXECUTED pendinguserexception. NequIPauthorpretrainconfig11565B matchespublishedMD51282055dbeb9d34db7c3220b8cdb9624 and existingcheckpointMD58190d6e0a323e40cca098e537a554075; no model loaded.
+
+- 2026-11-04T03:40:35 +08:00: Implementationunit officialinitializationpolicy + CGCNN/ALIGNN freshconstructors: localstdlibfixtures verifystrictmodevalidation, no load/reset/copyin scratch, exactstatekeys/shapes inclBNbuffers, defaultpretrained strictload, unsupportedprovidersfailclosed, noTorchmetadataimport. Slurm-only realprofiles must comparekeys/shapes/featureirreps, same/differentseedhashes, freshBNmean0var1/counter0, nativehead rejection, warmstart conflict, strictresume/new-default compatibility andfreshUGNNstate restore. Pretrainedpathmustunchanged. MACE/NequIPfresh notclaimeduntilseparateconstructor/train-geometrynormcalibration andrealtests; no recursivepartialreset fallback.
+
+### 2026-11-04T04:10:45+08:00 Perov-5 全量生成数据准备单元（实现前计划）
+- 纯数据 fixture：固定三份CSV登记/大小/SHA/Git blob验证；遍历全部行，保留作者train/val/test与material_id；重复ID、跨分区相同几何、损坏CIF/无序占位均显式失败或审计；不使用性质标签筛选。
+- CIF通过ASE3.27官方解析器，验证单结构、完整占位、周期三维晶胞、严格5原子；坐标/顺序与ASE读入结果一致，不做primitive/标准化/超胞。纯策略fixture可本地std库；真实ASE读CIF fixture和全量转换必须Slurm。
+- 静态：compileall、bash -n、CLI无Slurm拒绝、git diff --check、文档链接/围栏。提交前记录实际结果；源码发布后经离线pull，独立CPU Slurm执行ASE集成与全量审计。
+
+- 2026-11-04T04:15:53+08:00 Perov-5提交前实际检查：纯std数据fixture6/6、原MLearn7/7、JARVIS5/5通过；compileall、Slurm脚本bash -n、CLI无Slurm拒绝、Markdown围栏/路径及git diff --check通过。首次fixture失败源于测试ID区间相交，已修正fixture为互斥ID；同时将全原档校验前移到解析之前，损坏资源在依赖导入/输出创建前拒绝。未降低原有测试要求。真实ASE3项及全量转换未运行，提交后必须Slurm验收，不计为已通过。声子/MLearn回传审计计数、划分、数据SHA和实际4595354源码SHA核对通过。

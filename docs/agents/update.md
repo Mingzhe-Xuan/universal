@@ -702,3 +702,7 @@
 - 2026-11-04T02:52:50 +08:00: Completed sourceb6e83d5/Slurm84712tests, actualfullGMT5000->4999(split3998/502/499,max88) andfullJARVIS75993->75993(split60823/7590/7580,max140); smallaudit/codeSHA evidence copiedandverified. Slurm853 continuesDOSfrompartials. Locallydownloaded15MLearn/PerovfixedGitblobs41,310,943B and59+2providerwheels151,474,154B; noneofthese installed/preprocessedlocally. Formal48/144trainingNOTstarted.
 
 - 2026-11-04T03:08:14 +08:00: Preparepublish fullMLearnE/F standardJSONL preprocessor withauthor-test retention, per-elementtrainingfamilyvalidation, exact-cross-releasegeometry refusal, fullsource/blobSHA checks/noatomcap,7fixtures. Preserve prioractualGMT4999/JARVIS75993 audits. Addcontrolledgroup/split hooks withoutchangingexistingreleaseoutputs; existingpreparertests remainpass.
+
+- 2026-11-04T03:31:12 +08:00: 4595354publishedandverifiedofflinepull; fullMLearnstandardizer/author-test+groupedvalidation implementedand19Slurmfixturespassed. Data855queuedseriallyafter853; originalfullGMT4999andgap75993evidencepreserved. RecoveredstandaloneofficialNequIPpretrainarchitecture YAML, enablingexactconstructorworknext withoutguessing orrecursivepartialreset. Networkdirectexceptionrequestedwithconcretesyntaxcheckeddraft, notexecuted.
+
+- 2026-11-04T04:15:53+08:00 Perov-5准备器：固定三CSV逐文件验证，沿用作者三划分，ASE读取完整5原子晶胞，丢弃性质列，不做primitive/标签筛选，ID重复或跨分区精确几何显式拒绝。6项纯数据测试通过，实际ASE与全量待Slurm。回传并验收声子14244和MLearn1566的完整审计；尚无正式训练。CGCNN/ALIGNN初始化原型留在本地未发布，不能称所有官方scratch已支持。

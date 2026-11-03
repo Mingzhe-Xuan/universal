@@ -10,7 +10,7 @@ python -m universal_gnn.data.preparation data/downloads/jarvis-edos-pdos-2921685
   --kind phonon_dos --output data/arxiv-v1/jarvis-phonon-dos --split-seed 0
 ```
 
-The module requires only Python's standard library. Source atoms become dataset-v1
+The JARVIS writer requires only Python's standard library. Source atoms become dataset-v1
 JSONL with atomic numbers, Cartesian angstrom positions, row-vector cells and 3D PBC.
 Fractional input coordinates are converted using the supplied cell. Invalid geometry
 or missing/nonfinite labels are audited by source index/ID; no first-N or atom-count
@@ -102,3 +102,31 @@ test frames, rather than trajectory-independent generalization. Description
 families can merge distinct simulations with identical descriptions; they are not
 a claim of uniquely identified trajectories. Exclusion and full source/partition
 counts, per-file hashes and actual element coverage remain mandatory evidence.
+
+## Perov-5 generation structures
+
+`perov5.py` consumes the three pinned CDVAE `data/perov_5/{train,val,test}.csv`
+resources. Use the same per-file receipt fields as MLearn, with repository
+`txie-93/cdvae`, and place their original files under sibling `perov5/`.
+The receipt can include other repositories; only these three resources are used.
+Each CSV's original size, SHA256 and Git blob are verified before reading.
+
+```bash
+sbatch scripts/prepare_arxiv_perov5.slurm
+```
+
+ASE 3.27 parses each CIF, retaining the released conventional cell and atom order.
+There is no primitive reduction, standardization or supercell construction. Exactly
+one periodic 3D five-atom structure with full occupancy is required; invalid CIFs,
+disorder and malformed geometry are audited by source row and material ID.
+The writer visits every row. It neither reads nor filters on scalar property
+columns. Output `targets` is empty; clean positions/cell are the generation data.
+The intended task is conditioned on composition and atom count.
+
+The author's train/val/test assignments remain immutable (`val` becomes
+`validation`). Duplicate material IDs and exact geometries crossing partitions
+stop preparation for review, rather than being silently reassigned. Exact Cartesian
+grouping is not a crystallographic equivalence check. Source and data hashes,
+exclusions, actual counts, element coverage and the parser preparation source hash
+are recorded in the audit. A dataset audit alone does not validate the subsequent
+generation training or independent held-out sampling evaluation.

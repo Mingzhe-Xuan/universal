@@ -118,3 +118,5 @@
 - 2026-11-04T01:43:44 +08:00: Actual Slurm832 installed49 common dependencies into task-owned universal-base; pipcheck passed. NumPy1.26.4/SciPy1.15.3/ASE3.27.0/PyG2.7.0/pytest9.1.1. Torch/CUDA/providerextras still not installed; no childbase link or GPU-readiness claim. 830 common archive25parts SHA verified before install.
 
 - 2026-11-04T02:52:50 +08:00: PreparedbutNOTINSTALLED providerdependencies:59PyPI wheels62,873,601B, pinnedPymatgen2025.6.14/Jarvis2026.6.12/Spglib2.6/Sklearn1.7.2/Pandas2.3.3/Setuptools80.9.0(pkg_resourcespayloadverified). PlusnativeDGL1.1.3cu12179,870,014B andTorchvision0.22.1cu1288,730,539B; total151,474,154B. Allunderlocaltmp/arxiv-linux-base; provider/native-provider manifests holdURLs/hashes/ABI. GPUregressionmustwaitforproviderinstallandchildpipcheckafterCUDA16.
+
+- 2026-11-04T03:31:12 +08:00: ReadonlyfixedsystemSDKlibrarymetadata shows /usr/local/cuda->CUDA12.4 libs plus /usr/lib CUDA11; noCuDNNfoundatcheckedfixedpaths. No librarycopied/importedorenvironmentchanged. These cannotbeclaimedasmatchinglockedCUDA12.8runtime. Provider151MBlocalmanifestreadybutupload/installpending.

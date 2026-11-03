@@ -56,13 +56,41 @@ JSONL SHA256：`e06ce343c1cc4c727664255dcef8f2ad09f65b1c50546294ae44e7d90793fd58
 - [Perov-5作者划分](https://github.com/txie-93/cdvae/tree/f857f598d6f6cca5dc1ea0582d228f12dcc2c2ea/data/perov_5)：`train.csv`、`val.csv`、`test.csv`，3文件。
 
 原档与下载收据在本地忽略目录 `data/downloads/arxiv-matrix-raw/`。
-这里只做文件下载和校验、首记录格式诊断；尚未完成服务器传输、全量转换、有效样本/元素统计及冻结分区验收。
+其中MLearn已完成下述Slurm全量准备；Perov-5目前仍只有原档，转换器正待Slurm实测，不能提前填写完整样本数。
 MLearn应保留作者测试文件来源，验证集仅从作者训练数据中划出；Perov-5保留作者三个划分。
 旧的 `tmp/mlearn-source.zip` 是截断ZIP，不能作为完整资源使用；新流程只下载以上12个固定Git blob。
 
+## JARVIS 声子谱：完成全原档转换
+
+Slurm 853 / node42，源码 `459535470f1d3ff440c507c0f1ee73db57e05bc8`；853整体已完成。
+固定 Figshare 29216859 原档遍历55,659条，其中14,244条具有有限、长度200的 `pdos_elast`；
+其余41,415条因标签缺失、非有限或长度不符而逐条写入排除清单。
+训练/验证/测试为11,394 / 1,424 / 1,426，最大64原子，无原子数裁剪。
+保留原向量顺序和尺度，不虚构频率轴或归一化。
+
+JSONL SHA256：`d20b16ad37ddbb1bbab534b2e41c9f7f01e07a127b8fb74e133dd7baca86c891`。
+服务器 `data/arxiv-v1/jarvis-phonon-dos/`；本地审计 `results/paper-data-20261104/jarvis-phonon-dos/audit.json`。
+已按审计记录的4595354提交核对实际准备器源码SHA，不能拿后续工作树版本冒充当时执行版本。
+
+## MLearn 力场：完成12原档全量转换
+
+Slurm 855 / node42，源码4595354，全部1,566条原始记录有效，无排除。
+训练/验证/测试为1,309 / 93 / 164，最大108原子。
+保留作者全部164条测试帧；仅对作者training按元素、描述族及精确几何进行分组验证划分。
+能量是结构总能量eV，力是有序N×3、eV/Å，不加入stress监督。
+
+作者训练/测试文件共享AIMD描述族，审计明确列出重叠。
+这里只能声称作者测试帧上的评测，不能声称轨迹独立的测试；训练与验证描述族已隔离。
+实际1,566来自固定12原档，不以数据注册表的近似1,730替代。
+
+JSONL SHA256：`0ca42ef08e9f627f8f851de6a75bd958bb7632ec73a7fbc09a460baba20fe417`。
+服务器 `data/arxiv-v1/mlearn-forcefield/`；本地审计 `results/paper-data-20261104/mlearn-forcefield/audit.json`。
+原档登记的12个大小/SHA/Git blob及两份准备源码SHA均已核对。
+Slurm854实际通过19项MLearn/JARVIS/GMTNet fixture；855再次通过7项MLearn测试并完成全量转换。
+
 ## 仍在进行
 
-JARVIS DOS固定原档的服务器续传、完整声子DOS转换正在Slurm中推进；带隙/分类已完成。
-853从851保留的partial继续，已完成GMT输出仅在原档/JSONL哈希核验后复用。
+五类下游任务的数据现已准备：分类、带隙、介电、声子谱、力场；生成任务仍需Perov-5全量转换和工作流验收。
+CUDA依赖由857继续断点传输，尚未安装，不能据数据就绪宣布可开展完整矩阵。
 Vlab不稳定时保留分片；同时发生的大文件传输按数据优先串行调度。
 没有对不支持的元素或大结构做静默剔除，也没有把样例或测试fixture计为全量科学实验。

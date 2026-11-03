@@ -1,19 +1,17 @@
 # 当前状态
 
-Active goal：四模型×六任务×微调/完整scratch，48格/seed、三seed144。尚无正式全量训练结果，不能以协议测试/小样本替代。
-本地/GitHub/服务器已同步b6e83d5：OOM隔离预检、固定分区/val-best/test评测、配对checkpoint恢复、离线Git同步、定向wheel缓存恢复、全量JARVIS/GMTNet准备器和离线安装模板。Slurm822通过18协议测试；823通过4缓存测试并恢复官方SHA匹配Torch1,039,365,846B；829通过9项准备/归档fixture；847通过全部12项JARVIS/GMTNet测试，包含真实NumPy标量/数组pickle。以上均不是正式科学任务结果。
-Slurm830已续传完成101,263,360B通用归档并核验25分片；832完成49项通用依赖离线安装，pip check通过。base包含NumPy1.26.4/SciPy1.15.3/ASE3.27.0/PyG2.7.0等，Torch/CUDA尚未安装。15CUDA wheels2.799GB已本地完整下载并核对官方SHA；服务器NVRTC/runtime/CUPTI完整SHA已通过，cuDNN partial持续增加，最新native依赖字节154,559,827B（不含已恢复Torch）。用户明确批准离线Git bundle和私有HTTP Range续传。
-HTTP wheel服务6866/PID52372/127.0.0.1:54339；固定公开数据服务69961/PID49084/127.0.0.1:50820。监督器exec59920/PID17164管理唯一自有代理和数据优先串行传输；最新853全数据任务RUNNING，852已在853提交成功后精确取消，pause-cuda已移除，完成数据后自动续传CUDA。当前精确状态/代理PID见tmp/arxiv-linux-base/transfer-supervisor.json。禁止接管未知端口或结束用户Guqq57180/jump53864。
-GMTNet全原档在851中实际转换完成：5000遍历、4999有效，train3998/val502/test499，最大88原子，排除JVASP-192一条格式/非有限标签。853完成JARVIS带隙/分类全75993有效记录，train60823/val7590/test7580，最大140原子，class0/1=53202/22791。两份审计已下载到忽略results/paper-data-20261104。853当前继续声子谱原档，仅对精确SOCKS greeting EOF(curl97)有限重试，不忽略其他97拒绝。MLearn12原档+Perov5三划分已本地固定Git blob校验，总41,310,943B，服务器转换未完成。细节见arxiv-data.md。
-已按元数据缺失列表本地准备59项provider wheels62,873,601B（官方PyPI SHA）及DGL1.1.3+cu121/Torchvision0.22.1+cu128两wheel88,600,553B；合计151,474,154B尚未上传安装。DGL源官方索引未发布hash，记录完整下载后的本地SHA及来源；Torchvision匹配官方索引SHA。新调度器须在CUDA16齐备后仅排base安装，GPU回归另等provider安装和child pipcheck，避免已知缺包时过早排GPU。
-真实模型/CUDA回归、provider额外依赖、全部官方scratch、radius6/PBC分子输入、生成训练/质量评测、完整六任务数据和48/144矩阵均待完成。
+Active goal：按照 docs/plan/arxiv_v1_experiments.md 开展四模型×六任务×微调/全主干scratch，48格/seed、三seed144。尚无正式全量训练结果，不以数据准备或fixture代替。
+已发布并同步4595354。完整数据审计已回传本地并按各自实际提交的源码核验：GMT介电4999有效（train3998/val502/test499，Slurm851完成该阶段）；JARVIS带隙/分类75993（60823/7590/7580，853）；声子谱14244（11394/1424/1426，853）；MLearn能量/力1566（1309/93/164，855）。853/855实际complete。无first-N/原子数裁剪。MLearn作者train/test存在AIMD描述族重叠，不能声称轨迹独立泛化。
+49项common依赖已在base安装，pipcheck通过；Torch/CUDA尚未安装。857继续HTTP Range续传15项CUDA依赖，实际进度见监督器状态文件；完整Torch根wheel已SHA恢复。额外provider资源151,474,154B本地已核验但尚未传输安装。
+唯一任务代理由监督器exec64108/PID37320管理；wheel HTTP exec6866/PID52372/127.0.0.1:54339。精确代理PID/字节以tmp/arxiv-linux-base/transfer-supervisor.json为准；不得结束用户Guqq57180/jump53864。数据HTTP69961/50820及MLearn48878/61582已无活动传输，可按所有权精确关闭。用户批准离线Git同步和私有HTTP续传；直接公网例外仍未获答，DRAFT未执行。
+Perov-5三份作者CSV已完整下载，新增全量准备器正在本地验收，待发布后Slurm实际ASE解析/转换。CGCNN/ALIGNN官方scratch初始化原型仍未发布，纯策略6测试通过，Torch数值/原包实际构造验收待环境恢复。MACE/NequIP完整fresh尚待实现；已取得作者NequIP外部原始架构配置并核验官方MD5。
 
 # 当前计划
 
-1. 源代码始终本地修改、提交、发布后只经gitpull更新；保留用户docs/paper及ustc-gpu未跟踪文件。
-2. 监督853续传/全量转换及独立audit结果。监督器观察两个任务名及两类字节进展，数据任务运行期间不提交CUDA，之后自动续传CUDA；保留分片/SHA，不重复common或活动任务。无进展/未知端口/新代理健康失败即停止诊断；只读SSH255有限重试，sbatch未知回执不自动重试。结束时精确关闭并确认1080释放。已异步询问Vlab限流/替代路径，未获答复，不影响现有授权路径继续。
-3. CUDA16资源齐备后CPU Slurm精确离线安装、pipcheck、链接仅任务ownedvenv，再运行完整Slurm模型/GPU回归和实际OOM减batch训练步检查。providerextras按实际缺失恢复，不把pipcheck当模型就绪。
-4. 通过Slurm准备/清点固定JARVIS全量数据；继续GMT介电、MLearn/rMD17、Perov-5；审计元素覆盖/组分区/预训练重叠。补齐官方fresh构造、分子图与生成独立评测，最坏真实图预检后逐任务跑48格并补齐三seed144。始终保留20GiB磁盘余量。
+1. Perov-5沿用作者三划分完成全量结构准备；本地仅纯数据fixture/静态检查，真实ASE解析与全量处理通过CPU Slurm。源代码本地提交发布后仅git pull同步；不提交用户docs/paper或ustc-gpu未跟踪文件。
+2. 保持现有已批准HTTP续传的字节进展；需要新增小资源传输时先确认排队再精确串行化本任务CUDA，不重启健康代理，不重复已完成原档。所有16资源核验后先base离线安装，provider补齐与child pipcheck后再Slurm真实GPU回归。
+3. 补齐四模型官方构造器fresh、训练集专属统计校准、radius6/PBC分子接口、生成fresh噪声及独立验证/测试采样评价；不以legacy变体替代。
+4. 真实最坏结构图和导数训练步OOM预检，batch逐级减至1，明确失败；用独立进程配对微调/scratch有效batch。三seed完整矩阵、val-best/final-test、指标与预训练重叠披露，始终保留20GiB磁盘余量。
 
 # 变更记录
 
@@ -384,3 +382,11 @@ GMTNet全原档在851中实际转换完成：5000遍历、4999有效，train3998
 - 2026-11-04T02:52:50 +08:00: 阶段完成：全量GMT介电4999与JARVIS带隙/分类75993的实际审计已下载并核对代码/数据哈希；声子原档仍由853续传。供应商依赖151,474,154B已本地准备但未安装。必要调度器升级已正常关闭旧9393/自有代理并确认1080释放，新监督器exec94158/pid57832已启动；只排CUDAbase安装，GPU回归另等provider就绪。当前snapshot supervising，资源和任务目标均未标complete；下一步声子全量、provider传输安装、真实CUDA测试及官方fresh/生成/分子适配。
 
 - 2026-11-04T02:57:52 +08:00: 进入MLearn力场全量准备单元。上一目标turn为实质progress：完成两份全量审计和依赖资源准备；本turn已用session94158确认续传监督器live。计划补齐作者test保留、训练来源分组验证和E/F标签标准化；发现作者train/test同AIMD族，必须披露边界而不能假称轨迹独立。
+
+- 2026-11-04T03:31:12 +08:00: 完成MLearn实现单元发布/同步4595354。实际Slurm854全部19项fixture通过；855完整12文件下载/转换已提交，afterany853且afterok854，尚无全量E/F结果。动态published-sync控制器exec64108/pid37320 live，pending855可防CUDA抢先传输；pause-cuda已移除。只读SDK元数据显示CUDA12.4/11，不能冒充锁定12.8环境。为提速已准备仅固定官方URL/SHA的direct下载DRAFT（未执行），异步请求AGENTS代理规则例外，未获答前保持原授权代理。独立新证据：已下载作者NequIP-OAM-S外部pretrain YAML并匹配官方MD5和现有checkpointMD5，可作为fresh原始架构蓝图；尚未实现/数值验证。
+
+- 2026-11-04T03:40:35 +08:00: 进入官方骨干初始化开关单元，先实现原始构造器可完整恢复的CGCNN/ALIGNN，其他模型显式拒绝未支持的scratch，保持完整四模型矩阵目标。MACE/NequIP需训练几何校准avg_num_neighbors和官方构造参重建，作者NequIP外部配置已取得，不用legacy变体替代。实际模型测试仍须Slurm环境恢复后验证。
+
+- 2026-11-04T04:10:45+08:00：实际核对853/855均complete，声子14244有效、MLearn1566有效（作者test164保留）。进入Perov-5全量生成数据准备单元；857仍续传CUDA。新的官方初始化原型尚未发布/数值验收。下一步审计回传、完整Perov-5作者划分转换与独立ASE验证。
+
+- 2026-11-04T04:15:04+08:00：回传声子/MLearn审计，核对计数、划分、数据SHA及实际4595354源码SHA全部通过；更新当前快照，保留全部历史。Perov-5纯数据6项、原MLearn7项与JARVIS5项本地通过，ASE实测待发布后Slurm。
