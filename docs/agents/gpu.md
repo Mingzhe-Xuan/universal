@@ -401,3 +401,5 @@
 - 2026-11-03T17:27:54+08:00: Final transfer Slurm812-817 submitted afterHTTP200/pull0b22593. Authorized bounded collection:health/pull first,collect officialmetadata/regression/realmodel/transfer reports plus four small acceptance datasets for independent ID/geometry/label audit. Exclude allweights/checkpoints;capfile2MiB.
 
 - 2026-11-03T17:29:40+08:00: Collection SSH closed by Vlab remote before health/pull output,no results read. Authorized persistent final collection/sync/cleanup connection:health+pull before alltask operations;reuse owned38788,collect bounded final reports/data,verify812-817,wait for local docs push then pullsameconnection,identity-check stop only38788 and confirm remote1080released. If initialTLSgatefails,stop task operations and diagnose only.
+
+- 2026-11-03T17:36:20+08:00: CLOSED:heldSSH84765 finalHTTP200,pulled4fc8796,queueempty. Identitychecked own38788(name/startUTC2026-11-03T08:56:49.4544046Z),stopped onlythatprocess,sameSSHconfirmed NATIVE_PROXY_1080_RELEASED,controllerexit0. No newserverconnections needed;closurelog-only commit remains local/GitHub.

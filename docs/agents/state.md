@@ -2,11 +2,12 @@
 
 prediction.head_mode native/reset 已实现并写入标准与配置。native 保留六个已登记官方原头/任务/归一化；reset 保留主干并随机初始化新头，冻结策略独立。
 Slurm 三环境各139项通过；六模型原头预测/冻结检查通过；五个匹配任务各10条真实记录微调、精确重载、续训通过。Equiformer IS2RE 只做预测与梯度诊断，没有伪造训练标签。
+最终实现与验收文档4fc8796已推送并同步服务器；唯一任务代理38788已按PID/启动时间核对后关闭，同一SSH连接确认1080释放、队列为空。
 
 # 当前计划
 
-812–817真实artifact双向主干迁移、目标头保留、全冻结流式推理及历史checkpoint零误差回放已通过；86文件哈希和五任务各10条原始ID/几何/绑定审计通过。
-完成最终文档检查与提交推送；复用持有中的SSH连接pull，关闭唯一代理38788并在同连接确认1080释放。无关docs/paper保留。
+本次native/reset开关任务已完成，无待运行作业或待关闭代理。只做本地收尾记录提交，不为同步操作历史重开服务器连接。
+无关docs/paper保持原状；数据、模型、checkpoint与批量结果保存在忽略目录。
 
 # 变更记录
 
@@ -265,3 +266,5 @@ Slurm 三环境各139项通过；六模型原头预测/冻结检查通过；五�
 - 2026-11-03T17:05:17+08:00: Native head-mode implementation phase complete;139x3 Slurm tests pass. Enter original-artifact acceptance;next original numerical parity,five matching-label finetunes and EQdiagnostics.
 
 - 2026-11-03T17:32:08+08:00: Completed original-artifact acceptance and final integration;812-817allpass,86-file source/hash/geometry audit passed. Enter final documentation/sync/owned-proxy cleanup;next close38788 and confirm1080released in same connection.
+
+- 2026-11-03T17:36:20+08:00: Completed native/reset task and closure:allrequired tests/evidence pass,4fc8796syncedserver,own38788closed,1080released,queueempty. No remainingrequired work;onlylocalclosurelogcommit,do not reopenSSH.
