@@ -1,19 +1,21 @@
 # 当前状态
 
 Active goal：四模型×六任务×微调/完整scratch，48格/seed、三seed144。尚无正式全量训练结果，不能以协议测试/小样本替代。
-已发布90cf140及之前实现：OOM隔离预检、固定分区/val-best/test评测、配对checkpoint恢复、离线Git同步与定向wheel缓存恢复。Slurm822实际通过18协议测试；823通过4缓存测试并恢复官方SHA匹配Torch1,039,365,846B，15CUDA依赖未命中。新增全量JARVIS带隙/分类共享数据与200通道DOS准备器5本地测试通过；资源归档恢复4本地测试通过；待本次提交/服务器同步。
-base当前仅PySocks1.7.1，未安装Torch/科学包。49common wheels约101MB及15CUDA wheels2.799GB已本地下载、官方SHA/目标Linux依赖闭包核验。用户明确批准：离线Git bundle先SCP后gitpull；SCP大包失败后允许私有HTTP Range续传。
-HTTP服务6866/PID52372/127.0.0.1:54339仍存活，仅公开资源白名单。824已在node42实测资源HEAD200。825/826因wrap默认sh不支持pipefail立即失败；显式Bash引号修复后827/828重提。最新squeue无这两任务：827传入40,040,283B（9完整chunk+第10partial）后curl18退出；828初始健康检查超时。代理48663/PID28496/jump34748/start00:23:22已被Vlab关闭，须先核对残留端口，再新建唯一代理；不得重复启动旧下载/安装。
-新common归档校验/基础安装和精确CUDA离线安装Slurm模板已准备，尚未执行。真实模型/CUDA回归、全部官方scratch、radius6/PBC分子输入、生成训练/质量评测、完整六任务数据和48/144矩阵均待完成。
+本地/GitHub/服务器已同步f13ed7b：OOM隔离预检、固定分区/val-best/test评测、配对checkpoint恢复、离线Git同步、定向wheel缓存恢复、全量JARVIS准备器和离线安装模板。Slurm822通过18协议测试；823通过4缓存测试并恢复官方SHA匹配Torch1,039,365,846B；829通过9项数据准备/归档fixture测试。以上均不是正式科学任务结果。
+Slurm830已续传完成101,263,360B通用归档并核验25分片；832完成49项通用依赖离线安装，pip check通过。base现在包含NumPy1.26.4/SciPy1.15.3/ASE3.27.0/PyG2.7.0等，Torch/CUDA尚未安装。15CUDA wheels2.799GB已本地完整下载并核对官方SHA；服务器保留NVRTC26,265,026B partial。用户明确批准离线Git bundle和私有HTTP Range续传。
+HTTP服务6866/PID52372/127.0.0.1:54339仅提供固定公开资源白名单；node42资源HTTP路径已实测。831因代理断开失败，JSON中的running是异常退出前旧状态，以日志/队列为准；已核对用户/名称/PENDING并取消833/834失效依赖。42080代理已终止，远端1080已确认释放。仅续传CUDA的本地监督器已启动(exec52877)，持久记录于tmp/arxiv-linux-base/transfer-supervisor.json；不会接管未知端口或结束用户SSH。
+真实模型/CUDA回归、provider额外依赖、全部官方scratch、radius6/PBC分子输入、生成训练/质量评测、完整六任务数据和48/144矩阵均待完成。
 
 # 当前计划
 
-1. 发布/离线同步准备器与安装模板；源代码始终只经gitpull更新，保留用户docs/paper及ustc-gpu未跟踪文件。
-2. 先验证已断开的任务代理/端口，紧接着恢复唯一代理并立即续传已停止的common/CUDA资源。保留HTTP端点、分片和当前SHA；不从零重传，不重启健康代理，不结束用户会话。真正结束联网工作时精确关闭并确认1080释放。
-3. common全部SHA核验后，CPU Slurm组装/安装基础包；CUDA16资源齐备后CPU Slurm精确离线安装、pipcheck、链接仅任务ownedvenv，再运行完整Slurm模型/GPU回归和实际OOM减batch训练步检查。providerextras按实际缺失恢复，不把pipcheck当模型就绪。
+1. 源代码始终本地修改、提交、发布后只经gitpull更新；保留用户docs/paper及ustc-gpu未跟踪文件。
+2. 监督CUDA续传作业和唯一代理，仅在实际断开且1080释放后恢复；保留分片/SHA，不重复下载已完成common，不重复提交活动作业。监督器遇无进展/未知端口/新代理健康失败即停止诊断。结束时精确关闭并确认1080释放。
+3. CUDA16资源齐备后CPU Slurm精确离线安装、pipcheck、链接仅任务ownedvenv，再运行完整Slurm模型/GPU回归和实际OOM减batch训练步检查。providerextras按实际缺失恢复，不把pipcheck当模型就绪。
 4. 通过Slurm准备/清点固定JARVIS全量数据；继续GMT介电、MLearn/rMD17、Perov-5；审计元素覆盖/组分区/预训练重叠。补齐官方fresh构造、分子图与生成独立评测，最坏真实图预检后逐任务跑48格并补齐三seed144。始终保留20GiB磁盘余量。
 
 # 变更记录
+
+- 2026-11-04 01:40 +08:00：进入剩余CUDA资源续传阶段。830/832实际成功，49common已安装；831失败和833/834依赖阻塞已核查并保留日志，精确取消两个PENDING作业。旧代理终止且1080空闲；监督器静态编译/plan通过后启动，仅管理自己创建的代理和CUDA下载，不自动宣称GPU可用。下一步续传、Slurm离线安装及真实GPU回归，同时推进数据/架构缺口。
 
 
 - 2026-11-02 00:04 +08:00：权限调整后重试仍被本地访问控制阻塞，提权通道再次被当前策略拒绝。未建立任何远程会话，无代理需要清理；下一步须使权限变更在执行环境生效后继续。
@@ -374,3 +376,5 @@ HTTP服务6866/PID52372/127.0.0.1:54339仍存活，仅公开资源白名单。82
 - 2026-11-03T23:47:13 +08:00: 阶段进展：用户批准离线Git同步，4994468已实际离线pull；822重测运行。已确认无代理监听、无活跃安装器，base仅PySocks。官方16wheel元数据与定向缓存恢复器本地4测试通过，下一步提交/离线pull后Slurm核验旧cache以避免重复下载GPU栈；不扫描其他缓存或修改父环境。
 
 - 2026-11-04T01:00:52 +08:00: Reconciled snapshot to completed822/823,publicresources verifiedlocal,HTTP40MBprogress and terminal827/828/proxy,local9newtests andpendingfullscope; nextpublishthenrecovertransfer.
+
+- 2026-11-04T01:43:44 +08:00: GMTNet全量介电准备器已实现并通过6项本地纯数据fixture，原5项JARVIS测试保持通过；新增NumPy二进制fixture仅Slurm执行。CUDA监督续传持续获得字节进展，尚未完整。下一步发布/离线同步后实跑NumPy fixture与完整数据准备；上一条历史01:40为手工时间误填，实际该状态更新在01:34左右。

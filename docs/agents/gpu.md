@@ -562,3 +562,119 @@
 - 2026-11-04T00:36:37 +08:00: Authoritative status:825/826 absentqueue and both logs fail immediately with /bin/sh set Illegaloptionpipefail; commonHTTPbytes0, no active transfers. Rootfix Slurmwrap must execBash with POSIX-safe quotedbody. Localbash syntax/quote roundtrip first, then offlinepull90cf140 and resubmit onlystoppedjobs; keep824successfulnodepath proof.
 
 - 2026-11-04T00:41:21 +08:00: Offlinepull90cf140 followedby specific827/828status/durablebyte audit to verify explicitBash resubmissions actuallyrun. Prior825/826terminal shellerrors preserved; no auto duplicatejobsubmit.
+
+- 2026-11-04T01:04:06 +08:00: ApprovedofflineSCP tinybundle f13ed7b published and verified24068B SHAa00966c8c28a2f83356dc21349a052255a9e774a0d4b494f8b3318c64ad4cff8, prerequisite90cf140. Then offlinepullf13 before newactions, run9fixtureSlurm, inspect oldproxy28496closed/stale1080. Serialize common->CUDA resourcejobs on nexthealthyproxy to avoid concurrentproxyhealth/download contention; preserve40MBpartial. No duplicateold827/828(they areterminal).
+
+- 2026-11-04T01:11:56 +08:00: Bundlef13SCP failed beforeauth with VlabTCPtimeout; publishedsource not yetsynced. Networkdiagnostic only: compare TCP22 reachability for configuredVlab gateway and SAMEauthorizedGuqq2target114.214.215.42, plus localpublic HTTPS. No task/result/job operations or authbypass; ifdirectroute works keep normalhostkey/pubkey checks and approvedofflinepull gate. No newproxy untiloldport/holderstateverified.
+
+- 2026-11-04T01:13:23 +08:00: VlabTCP22 nowrespondsbannerSSH2taokystrong; directGuqq2TCPappearsconnectedbutbannerrecv3sec timedout(firstprobe conflatedphases). Refine TCP-vs-SSH versionexchange to SAMEauthorizedhost, sendingonlyclientbanner, noauth/job/fileoperations. Then retrytinybundle overexistingroute ifhandshakehealthy; keepStrictHostKeyChecking unchanged.
+
+- 2026-11-04T01:14:21 +08:00: Tinybundle f13ed7b retrySCP succeeded0 overnormalVlabroute (noauthchanges). Ordinaryconnection verifySHA, offlinepullf13, submit9fixture CPUjob then inspectcurrent1080/SSHstarttimes before uniqueproxyrecovery. Publishedsource only, resourceslarge remainpartials.
+
+- 2026-11-04T01:16:22 +08:00: Published f13bundleSCP+offlinepull confirmed,9fixture829 submitted; remote1080free/no oldproxysshd. Prepare freshuniqueproxy IMMEDIATELY before resourcechain, not duringlongcoding. Chain checks no activeownresourcetasks, currentlocalHTTPhealth, serializes resumedcommon->CUDA, conditionally installsfoundation andverifiedCUDA thenfullGPUregression; eachjobafterok only, preservedpartials/20GiBreserve/no newtraining. No publicresourceURL needed.
+
+- 2026-11-04T01:17:06 +08:00: Uniqueproxy40370 started afterfreeportproof; ordinaryconnection nowofflinepullf13 then e2e localhealth and queue audit before submitting dependencychain. Resourceparts resume; commonthenCUDA serial avoidsproxy contention; foundation/CUDAinstall/fullregression waitafterok dependencies. Record exactchainIDsreturned andproxyowner, do notinfercompletedfromsubmission.
+
+- 2026-11-04T01:20:43 +08:00: Newownedproxy40370 exactPID42080/jump13448/start2026-11-04 01:16:32. CIM also shows unrelated USER Guqq57180/jump53864(start00:44:04); neverstop those. Sourcef13offlinepulled;9fixture829pendingresult. Serializedresourcechain submission99144 awaitingresult; do notduplicateifobservationtimeout.
+
+- 2026-11-04T01:23:52 +08:00: Serializedchain actualIDs830common,831CUDA(after830),832foundation(after830),833CUDAinstall(after831+832),834fullGPUregression(after833). Ordinaryofflinepullf13 then poll829fixture result and830-834actualstates/durablebytes; do notduplicatejobsubmissions or claimdonefrom dependencychain. Ownproxy40370/PID42080+jump13448 kept, unrelateduserGuqqnever touched.
+
+- 2026-11-04T01:33:27.021336 +08:00: Connection plan: offlinepullf13 first; audit own pending833/834 exact user/name/state then cancel only these unsatisfiable dependencies; inspect resource logs/1080; no model execution.
+
+- 2026-11-04T01:34:06 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:34:13 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:34:13 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:34:20 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:34:57 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:35:03 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:35:03 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:35:11 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:35:47 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:35:53 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:35:53 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:36:31 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:36:38 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:37:15 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:37:21 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:37:21 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:37:29 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:38:06 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:38:12 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:38:12 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:38:19 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:38:56 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:39:02 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:39:02 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:39:11 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:39:47 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:39:54 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:39:54 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:40:02 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:40:38 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:40:45 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:40:45 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:40:53 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:41:29 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:41:35 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:41:35 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:41:43 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:42:19 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:42:26 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:42:26 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:42:35 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:43:11 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:43:18 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:43:18 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:43:26 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:44:02 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:44:08 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:44:08 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each ordinary connection offlinepullf13 first; no login computation or user session termination.
+
+- 2026-11-04T01:44:16 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each ordinary connection offlinepullf13 first; no login computation or user session termination.

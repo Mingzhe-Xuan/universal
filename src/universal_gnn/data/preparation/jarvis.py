@@ -135,17 +135,37 @@ def geometry(atoms):
 
 
 def prepare_release(source, output, *, kind, split_seed=0, metal_threshold=.01, execution=None):
-    started = time.perf_counter()
     if kind not in SOURCES:
         raise ValueError("Unknown JARVIS preparation kind")
     if not finite_scalar(metal_threshold) or metal_threshold < 0:
         raise ValueError("metal_threshold must be finite and nonnegative")
+    field, channels, url = SOURCES[kind]
+
+    def targets(record):
+        value = record.get(field)
+        if kind == "bandgap":
+            if not finite_scalar(value):
+                raise ValueError("missing_or_nonfinite_label")
+            return {"bandgap": float(value), "classification": int(value > metal_threshold)}
+        if (not isinstance(value, list) or len(value) != channels or
+                not all(finite_scalar(v) for v in value)):
+            raise ValueError("missing_nonfinite_or_wrong_channels")
+        return {"spectrum": [float(v) for v in value]}
+
+    return prepare_records(source, output, records_from(source), kind=kind, field=field,
+                           channels=channels, url=url, targets=targets, split_seed=split_seed,
+                           metal_threshold=metal_threshold, execution=execution)
+
+
+def prepare_records(source, output, records, *, kind, field, channels, url, targets,
+                    split_seed=0, metal_threshold=None, execution=None, audit_details=None):
+    """Write validated source records using one immutable group and audit protocol."""
+    started = time.perf_counter()
     source, output = Path(source), Path(output)
     if output.exists() and any(output.iterdir()):
         raise FileExistsError("Preparation output must be empty")
     output.mkdir(parents=True, exist_ok=True)
     source_hash = file_sha256(source)
-    field, channels, url = SOURCES[kind]
     counts, group_records, known_ids = Counter(), [], {}
     dataset_hash, max_atoms, group_counts, class_counts = hashlib.sha256(), 0, Counter(), Counter()
     species_counts = Counter()
@@ -162,20 +182,15 @@ def prepare_release(source, output, *, kind, split_seed=0, metal_threshold=.01, 
         if a != b:
             parents[max(a, b)] = min(a, b)
     with (output / "structures.jsonl").open("wb") as data, (output / "exclusions.jsonl").open("w", encoding="utf-8") as excluded:
-        for index, record in enumerate(records_from(source)):
+        for index, record in enumerate(records):
             counts["source_records"] += 1
             identifier = record.get("jid") if isinstance(record, dict) else None
             reason = None
-            value = record.get(field) if isinstance(record, dict) else None
             if not isinstance(identifier, str) or not identifier:
                 reason = "missing_jid"
-            elif kind == "bandgap" and not finite_scalar(value):
-                reason = "missing_or_nonfinite_label"
-            elif kind != "bandgap" and (not isinstance(value, list) or len(value) != channels or
-                                        not all(finite_scalar(v) for v in value)):
-                reason = "missing_nonfinite_or_wrong_channels"
             if reason is None:
                 try:
+                    record_targets = targets(record)
                     atoms, fingerprint = geometry(record.get("atoms"))
                 except ValueError as error:
                     reason = str(error)
@@ -183,9 +198,7 @@ def prepare_release(source, output, *, kind, split_seed=0, metal_threshold=.01, 
                 counts[reason] += 1
                 excluded.write(json.dumps({"source_index": index, "id": identifier, "reason": reason}) + "\n")
                 continue
-            targets = ({"bandgap": float(value), "classification": int(value > metal_threshold)} if kind == "bandgap" else
-                       {"spectrum": [float(v) for v in value]})
-            content = hashlib.sha256(json.dumps({"geometry": fingerprint, "targets": targets}, sort_keys=True).encode()).hexdigest()
+            content = hashlib.sha256(json.dumps({"geometry": fingerprint, "targets": record_targets}, sort_keys=True).encode()).hexdigest()
             if identifier in known_ids:
                 if known_ids[identifier] != content:
                     raise ValueError(f"Conflicting source records for {identifier}")
@@ -196,7 +209,7 @@ def prepare_release(source, output, *, kind, split_seed=0, metal_threshold=.01, 
             metadata = {"source_url": url, "archive_sha256": source_hash, "source_index": index,
                         "source_file": source.name, "geometry_sha256": fingerprint,
                         "label_field": field, "external_reference": record.get("reference")}
-            normalized = {"schema_version": 1, "id": identifier, **atoms, "targets": targets, "metadata": metadata}
+            normalized = {"schema_version": 1, "id": identifier, **atoms, "targets": record_targets, "metadata": metadata}
             encoded = (json.dumps(normalized, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode()
             data.write(encoded)
             dataset_hash.update(encoded)
@@ -216,7 +229,7 @@ def prepare_release(source, output, *, kind, split_seed=0, metal_threshold=.01, 
                     join(current, reference_first[token])
                 reference_first[token] = current
             if kind == "bandgap":
-                class_counts[str(targets["classification"])] += 1
+                class_counts[str(record_targets["classification"])] += 1
     component_names = {}
     for index, record in enumerate(group_records):
         component = find(index)
@@ -234,12 +247,14 @@ def prepare_release(source, output, *, kind, split_seed=0, metal_threshold=.01, 
              "grouping": "union of exact Cartesian geometry and explicit shared mp-ID references; no crystallographic equivalence claim",
              "coverage": "all source records visited; no atom-count cap or first-N selection",
              "pretraining_overlap": "not yet audited; do not claim disjoint pretrained evaluation",
-             "tasks": ["bandgap", "classification"] if kind == "bandgap" else ["spectrum"],
+             "tasks": ["bandgap", "classification"] if kind == "bandgap" else
+                      ["dielectric"] if kind == "dielectric" else ["spectrum"],
              "channels": channels, "vector_transform": "none; upstream vector order/scale retained" if channels > 1 else None,
              "metal_threshold_eV": metal_threshold if kind == "bandgap" else None,
              "class_convention": {"0": "bandgap<=threshold", "1": "bandgap>threshold"} if kind == "bandgap" else None,
              "class_counts": dict(class_counts) if kind == "bandgap" else None,
              "elapsed_seconds": time.perf_counter() - started,
              "execution": {"preparation_source_sha256": file_sha256(__file__), **(execution or {})}}
+    audit.update(audit_details or {})
     (output / "audit.json").write_text(json.dumps(audit, indent=2, allow_nan=False), encoding="utf-8")
     return audit

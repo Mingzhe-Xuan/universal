@@ -42,3 +42,25 @@ The split seed is independent of model/training seeds. Geometry/label validation
 the fixed group protocol must complete before the audit is written; a partial directory
 without a successful audit is not a complete dataset. Full archive counts and timings
 must be measured on Slurm, not inferred from tiny fixtures or the advertised release size.
+
+## GMTNet dielectric release
+
+`gmtnet.py` reads the complete author-released `jarvis_diele_piezo.pkl`, with a
+restricted collections/NumPy unpickler and a required SHA256 from the recorded
+download receipt. NumPy is needed for the actual released pickle; importing the
+metadata/writer and testing plain collection fixtures does not import NumPy or Torch.
+Use only the pinned author dataset, rather than arbitrary uploaded pickles.
+
+```bash
+UGNN_GMTNET_SHA256=<recorded-source-sha256> sbatch scripts/prepare_arxiv_gmtnet.slurm
+```
+
+Every source record is visited. The `dielectric` field is retained as a finite,
+dimensionless Cartesian 3x3 tensor in its released component order. The separate
+`dielectric_ionic` field is not added. There is no symmetrization, eigenvalue
+filter, atom-count cap or nonzero filter. Missing/malformed labels and geometry
+are audited by source index/ID. The writer shares JARVIS's JSONL, duplicate-ID,
+geometry/reference group, source/data hash and fixed split protocols. The audit
+records the tensor convention, both preparation source hashes and measured full
+counts; it does not substitute the paper's reported 4713 for a measured count.
+The complete pickle is loaded in memory inside Slurm before record-wise writing.
