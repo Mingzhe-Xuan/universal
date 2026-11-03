@@ -20,6 +20,9 @@ eV/angstrom, and tensile-positive stress in GPa. Unit/sign conversion belongs in
 
 Available examples: `formation_energy.json`, `forcefield.json`, `born_charge.json`,
 `raman.json` and `generation.json`. Change `backbone.name` and the dataset path/bindings.
+`mace_forcefield.yaml` initializes the original MACE-MP backbone with a new trainable energy head;
+provide simulation E/F/S labels as described in docs/mace_forcefield.md. Original weights initialize
+backbone.checkpoint, while --resume uses an UGNN checkpoint after task-head training.
 The real execution cohorts live on the server under `data/acceptance`; raw-source hashes,
 IDs and preprocessing are recorded in each cohort and its manifest. Downloaded data is ignored
 by Git. `scripts/run_matrix.py prepare --tasks TASKS --output runs/NAME` generates configurations

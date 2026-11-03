@@ -31,6 +31,9 @@ ugnn --mode infer --model mace --dataset data_path --resume ckpt_path --task for
 
 ## ALIGNN 训练带隙
 
+官方MACE在模拟数据上微调力场、随后预测的配置和Slurm命令见
+[MACE力场使用说明](../mace_forcefield.md)。该说明同时区分保留原能量头的直接官方预测。
+
 ```bash
 ugnn --mode train \
   --model alignn \

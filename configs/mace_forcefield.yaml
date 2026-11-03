@@ -1,0 +1,30 @@
+schema_version: 1
+seed: 123
+structures: null
+batch_size: 4
+dtype: float32
+device: cpu
+epochs: 30
+learning_rate: 0.0001
+checkpoint_every: 1
+
+backbone:
+  name: mace
+  implementation: official
+  checkpoint: models/official/mace/small.model
+
+dataset:
+  path: data/simulation/train.jsonl
+  bindings:
+    total_energy:
+      key: total_energy
+      unit: eV
+    forces:
+      key: forces
+      unit: eV/angstrom
+    stress:
+      key: stress
+      unit: GPa
+
+task:
+  kind: forcefield

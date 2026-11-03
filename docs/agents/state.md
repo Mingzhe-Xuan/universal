@@ -1,5 +1,10 @@
 # 当前状态
 
+本轮MACE力场使用说明已完成：新增configs/mace_forcefield.yaml和docs/mace_forcefield.md，核对
+原主干/随机新能量头、E/F/S标签与单位、Slurm训练/推理命令；明确原MACE头零样本预测使用
+官方MACECalculator，原始.model不是--resume。配置/CLI合并、Python/Bash语法、7个本地链接
+与格式检查通过；未连接服务器、未执行未提供用户数据的新实验。此前验收历史保留。
+
 已完成明确范围的实现与实际验收：默认全量、训练/推理mini-batch、可配置精度及JSONL索引/流式输出；六标准模型名默认官方原模型与已登记发布权重，旧变体显式legacy且旧checkpoint兼容。Slurm754/755两环境各71项完整回归，新Equiformer环境也71项。MACE743、CGCNN744、MEGNet745、ALIGNN753、NequIP758、Equiformer759均完成原生对照、10真实结构微调与自包含重载（6/6）。
 
 NequIP756确认官方计算器自身的双线程float32力重复性误差，758改用单线程后特征/能量/力差异均为0，原容差不变。Equiformer在独立PyG2.0.4环境中保留原始上游源码，特征/预测差异均为0。所有模型主干实际更新、loss下降、一/二阶导数有限；旧失败保留。Slurm760实际文档CLI由默认官方ALIGNN缓存训练2轮、完整续训至3轮、推理10条通过。编号3原文未提供，本轮按起始已声明的精度/大数据运行时范围处理；没有把未给出的其他问题记为已验收。
@@ -7,6 +12,9 @@ NequIP756确认官方计算器自身的双线程float32力重复性误差，758�
 本地证据归档33372字节/55文件，完整hash与85个原始源码hash、六模型相同数据指纹、CLI配置/轮数/条数均独立审计通过。详见official-pretrained.md。最后工作连接20801已pull7724686并核验六份validation、CLI与三环境回归；队列无当前用户作业。精确关闭自有代理43152后，同一连接确认OFFICIAL_PROXY_1080_RELEASED并正常退出；两本地HTTP资源服务已停止。所有计算仅Slurm，源码仅本地提交/push→服务器pull；docs/paper保持不动。
 
 # 当前计划
+
+本轮说明计划已完成：原生预测与框架微调两条入口、MACE力场配置、标准标签/单位、Slurm命令和
+对应检查均已交付。没有用户数据时不宣称完成该数据集训练。
 
 本轮上述明确实现范围、六官方模型十结构验收、文档/证据与网络清理均已完成，无待执行计算。
 以下保留本轮模块划分与验收范围；编号3若另有原文，作为新增明确范围处理。
@@ -220,3 +228,7 @@ NequIP756确认官方计算器自身的双线程float32力重复性误差，758�
 - 2026-11-03T01:53:53+08:00: Stage complete:6/6 original-checkpoint/native-reference/10-real-structure fine-tuning/reload; CLI760 default cache/all records/train2/resume3/infer10 independently audited. Enter final docs sync and proxy cleanup; no model code work remains.
 
 - 2026-11-03T01:58:37+08:00: Completed final stage:20801 pulled7724686, verified6 validation artifacts/CLI760/third-env regression, no user jobs in queue, terminated only identity-checked own proxy43152 and received OFFICIAL_PROXY_1080_RELEASED in same connection. Work connection exited0. No remaining computations or resources to clean.
+
+- 2026-11-03T09:13:52+08:00: Started MACE forcefield usage consultation. Inspect existing original MACE provider, ForceFieldModel, label scales and CLI; prepare docs/config only. No server access or training planned without an identified user dataset. Distinguish native-head zero-shot from random-head fine-tuning.
+
+- 2026-11-03T09:18:38+08:00: Completed MACE forcefield usage recipe/config: clarified native-head direct inference versus random-head framework fine-tuning; canonical E/F/S labels and Slurm commands documented. Parser/config merge, Python/Bash syntax,7 local links and diff formatting passed. No remote connection or new scientific run.

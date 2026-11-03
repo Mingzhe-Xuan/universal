@@ -1,0 +1,98 @@
+# 用官方MACE权重进行力场预测
+
+当前有两种不同用法。直接使用已有官方力场预测，应保留原MACE能量头，使用官方MACECalculator。
+本框架的forcefield任务则保留官方主干、新建随机能量头，再由该能量对坐标和应变求导得到力和
+应力。因此框架路径必须先训练新头；仅加载官方主干并不能直接恢复原官方力场的预测。
+
+## 在模拟数据集上微调，再预测
+
+配置 [mace_forcefield.yaml](../configs/mace_forcefield.yaml) 使用已验收的官方MACE-MP small.model，
+完整主干和新任务头一起训练。原始权重位置是backbone.checkpoint；--resume指本框架保存的
+checkpoint，用于继续训练或推理，两者不能混用。原层数、宽度、cutoff均来自官方模型。
+
+先准备 `data/simulation/train.jsonl` 与 `data/simulation/test.jsonl`；也可修改配置/CLI中的路径。
+标准JSONL每行一个完整结构，字段为schema_version:1、唯一id、numbers、positions、cell、pbc、
+targets和可选metadata。positions是angstrom下的笛卡尔坐标；cell是按行排列的3×3晶格矩阵。
+不需要自行提供邻居图，官方MACE构图器会按原规则构图。具体格式见 [standards.md](standards.md)。
+
+训练标签必须包含以下三项：
+
+| targets中的名称 | 形状 | 约定 |
+| --- | --- | --- |
+| total_energy | 标量 | 整个结构总能量，eV |
+| forces | N×3 | 每原子笛卡尔力，eV/angstrom |
+| stress | 3×3 | 拉伸为正的应力，GPa |
+
+当前训练入口要求E/F/S三类标签齐全；仅有E/F不能直接按该配方训练。将stress的loss权重设0也
+不会取消标签检查。没有应力标签时不能用全零代替真实监督。预测数据可以没有标签，targets可为空。
+该配方以周期体材料数据为例；非周期分子的包围盒应力不是体材料应力。
+
+如果原数据字段名不同，通过dataset.bindings指定key。unit字段记录约定，不自动换算。
+例如原始ASE应力为eV/angstrom³、六分量顺序xx,yy,zz,yz,xz,xy，可将stress绑定改成：
+
+```yaml
+stress:
+  key: stress_ase
+  factor: 160.21766208
+  voigt: true
+  unit: GPa
+```
+
+Guqq2仓库根目录中，先按AGENTS.md同步代码，再执行以下提交命令：
+
+```bash
+mkdir -p runs
+sbatch scripts/ugnn.slurm --mode train --model mace --task forcefield \
+  --dataset data/simulation/train.jsonl --config configs/mace_forcefield.yaml \
+  --logging logs/mace-forcefield --save checkpoints/mace-forcefield.pt
+```
+
+脚本默认使用已配置的universal-official环境。训练使用全部所选数据、batch_size=4、float32；
+上述轮数和学习率是起始配置，不表示已在你的模拟数据上确定最佳参数。更换权重时修改
+backbone.checkpoint，使用兼容的原始可训练.model及对应依赖和元素表。
+
+训练完成后，使用保存的本框架checkpoint预测新结构：
+
+```bash
+sbatch scripts/ugnn.slurm --mode infer --model mace --task forcefield \
+  --dataset data/simulation/test.jsonl --resume checkpoints/mace-forcefield.pt \
+  --logging logs/mace-forcefield-infer --results results/mace-forcefield.jsonl
+```
+
+推理从checkpoint继承模型、任务、精度和batch大小；JSONL逐结构保存total_energy、forces、stress，
+分别为eV、eV/angstrom、GPa，并保留结构ID。完整数据无需合并成一个计算batch。
+继续训练时使用原训练数据和配置，加--resume，并将--epochs设置为累计目标轮数。
+
+## 直接使用原官方力场，不重新训练
+
+此路径保留预训练能量头，不创建本框架的随机新头。对于ASE可读的模拟轨迹，例如extxyz：
+
+```python
+from ase.io import iread
+from mace.calculators import MACECalculator
+
+calc = MACECalculator(
+    model_paths="models/official/mace/small.model",
+    device="cpu",
+    default_dtype="float32",
+)
+for atoms in iread("data/simulation/test.extxyz", index=":"):
+    atoms.calc = calc
+    energy = atoms.get_potential_energy()  # eV
+    forces = atoms.get_forces()            # eV/angstrom
+    print(energy, forces)
+```
+
+周期结构还可调用atoms.get_stress(voigt=False)，ASE返回eV/angstrom³，乘160.21766208才是GPa。
+将代码保存为自己的脚本后，在Guqq2仍必须通过Slurm执行：
+
+```bash
+sbatch --partition=compute --cpus-per-task=2 --mem=12G --time=00:30:00 \
+  --output=runs/mace-native-%j.out --error=runs/mace-native-%j.err \
+  --wrap='/home/xmz/.venvs/universal-official/bin/python predict_native.py'
+```
+
+官方API见 [MACE ASE文档](https://mace-docs.readthedocs.io/en/latest/guide/ase.html)；
+本例model_paths参数另与本项目实际MACE0.3.16发行包核对。当前UGNN CLI没有直接保留原MACE头的
+零样本推理开关。上述配置与命令已核对现有接口，未在未提供的用户数据上执行新的训练；此前
+官方MACE十结构带隙验收与本力场配方的实际数据验收是两回事。
