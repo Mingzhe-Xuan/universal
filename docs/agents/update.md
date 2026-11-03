@@ -706,3 +706,5 @@
 - 2026-11-04T03:31:12 +08:00: 4595354publishedandverifiedofflinepull; fullMLearnstandardizer/author-test+groupedvalidation implementedand19Slurmfixturespassed. Data855queuedseriallyafter853; originalfullGMT4999andgap75993evidencepreserved. RecoveredstandaloneofficialNequIPpretrainarchitecture YAML, enablingexactconstructorworknext withoutguessing orrecursivepartialreset. Networkdirectexceptionrequestedwithconcretesyntaxcheckeddraft, notexecuted.
 
 - 2026-11-04T04:15:53+08:00 Perov-5准备器：固定三CSV逐文件验证，沿用作者三划分，ASE读取完整5原子晶胞，丢弃性质列，不做primitive/标签筛选，ID重复或跨分区精确几何显式拒绝。6项纯数据测试通过，实际ASE与全量待Slurm。回传并验收声子14244和MLearn1566的完整审计；尚无正式训练。CGCNN/ALIGNN初始化原型留在本地未发布，不能称所有官方scratch已支持。
+
+- 2026-11-04T04:25:38+08:00：Perov-5全量阶段完成：668b59a已发布/离线pull，Slurm858测试与859转换均成功；主体六任务数据全部准备并独立审计，正式48/144训练尚未开始。CUDA857继续，额外provider未安装，CGCNN/ALIGNN初始化原型未发布。完成数据HTTP精确清理，wheel HTTP和唯一自有代理继续工作。

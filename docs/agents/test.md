@@ -1035,3 +1035,5 @@
 - 静态：compileall、bash -n、CLI无Slurm拒绝、git diff --check、文档链接/围栏。提交前记录实际结果；源码发布后经离线pull，独立CPU Slurm执行ASE集成与全量审计。
 
 - 2026-11-04T04:15:53+08:00 Perov-5提交前实际检查：纯std数据fixture6/6、原MLearn7/7、JARVIS5/5通过；compileall、Slurm脚本bash -n、CLI无Slurm拒绝、Markdown围栏/路径及git diff --check通过。首次fixture失败源于测试ID区间相交，已修正fixture为互斥ID；同时将全原档校验前移到解析之前，损坏资源在依赖导入/输出创建前拒绝。未降低原有测试要求。真实ASE3项及全量转换未运行，提交后必须Slurm验收，不计为已通过。声子/MLearn回传审计计数、划分、数据SHA和实际4595354源码SHA核对通过。
+
+- 2026-11-04T04:25:38+08:00：实际Slurm858通过全部9项Perov-5测试（包含3项ASE3.27 CIF解析）；859再次9/9通过并完成18928/18928转换，11356/3787/3785作者划分，最大5原子。回传audit与实际668b59a两份源码SHA、三原CSV的大小/SHA/Git blob登记均核验通过。没有把该阶段当作GPU/正式训练验收。

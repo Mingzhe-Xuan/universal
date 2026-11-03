@@ -56,7 +56,7 @@ JSONL SHA256：`e06ce343c1cc4c727664255dcef8f2ad09f65b1c50546294ae44e7d90793fd58
 - [Perov-5作者划分](https://github.com/txie-93/cdvae/tree/f857f598d6f6cca5dc1ea0582d228f12dcc2c2ea/data/perov_5)：`train.csv`、`val.csv`、`test.csv`，3文件。
 
 原档与下载收据在本地忽略目录 `data/downloads/arxiv-matrix-raw/`。
-其中MLearn已完成下述Slurm全量准备；Perov-5目前仍只有原档，转换器正待Slurm实测，不能提前填写完整样本数。
+MLearn和Perov-5均已完成下述Slurm全量准备；原档下载条数与有效结构数分开核验。
 MLearn应保留作者测试文件来源，验证集仅从作者训练数据中划出；Perov-5保留作者三个划分。
 旧的 `tmp/mlearn-source.zip` 是截断ZIP，不能作为完整资源使用；新流程只下载以上12个固定Git blob。
 
@@ -88,9 +88,26 @@ JSONL SHA256：`0ca42ef08e9f627f8f851de6a75bd958bb7632ec73a7fbc09a460baba20fe417
 原档登记的12个大小/SHA/Git blob及两份准备源码SHA均已核对。
 Slurm854实际通过19项MLearn/JARVIS/GMTNet fixture；855再次通过7项MLearn测试并完成全量转换。
 
+## Perov-5 生成结构：完成三份作者CSV全量转换
+
+Slurm 858先通过全部9项纯数据/真实ASE解析fixture；859再次通过9项并完成全量转换，
+源码 `668b59a6fada25c90e6bf5f4ede43a2c8eebf07a` / node42，转换用时28.665秒。
+18,928条全部有效，无排除；作者训练/验证/测试为11,356 / 3,787 / 3,785，全部5原子。
+不按带隙或能量筛选，不做primitive reduction；ASE保留原始CIF的常规晶胞、位置和原子顺序。
+输出性质标签为空，生成条件仅为给定组成与原子数；不能称无条件生成。
+
+压缩传输包2,093,574 bytes，Slurm内校验后解压出原CSV，再按原始文件逐项核对大小、SHA256、Git blob。
+CSV没有重新编码或改变划分；作者材料ID与精确几何检查未发现跨分区冲突。
+精确Cartesian判重不代表完整晶体等价判重。
+
+JSONL SHA256：`df69edd0cec94f6768be338f85513cd34187fd7d45602f67ac7e194afdc6ae29`。
+服务器 `data/arxiv-v1/perov5/`；本地审计 `results/paper-data-20261104/perov5/audit.json`。
+已对照审计记录的668b59a提交核验公共写入器与Perov-5准备器SHA。
+数据准备不代表生成训练/独立验证选模/测试采样质量已验收；这些仍是正式实验的前置工作。
+
 ## 仍在进行
 
-五类下游任务的数据现已准备：分类、带隙、介电、声子谱、力场；生成任务仍需Perov-5全量转换和工作流验收。
+六类下游任务的主体数据现已准备：分类、带隙、介电、声子谱、力场和生成；生成工作流仍需改造与数值验收。
 CUDA依赖由857继续断点传输，尚未安装，不能据数据就绪宣布可开展完整矩阵。
 Vlab不稳定时保留分片；同时发生的大文件传输按数据优先串行调度。
 没有对不支持的元素或大结构做静默剔除，也没有把样例或测试fixture计为全量科学实验。
