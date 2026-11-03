@@ -1,15 +1,15 @@
 # 当前状态
 
-性质预测解耦A-D已通过首轮完整回归：Slurm765/766在core/MACE环境各114 passed。
-prediction.version1默认原生特征直连，4类读出、显式表示处理、组件冻结/优化器、严格续训与组件暖启动可用。
-真实链767/768在启动前被已安装scripts包遮蔽，尚无实际模型结果；已修正脚本入口，下一步重提。
-新补充默认值审计、训练时模式、adapter基底暖启动校验和4份使用配置；官方图/层保持原样。
+性质预测解耦A～E与ACC-01～13已实施并通过。最终a25095e在Slurm773/774两个环境各118 passed。
+官方CGCNN771五组、MACE772六组真实链通过；原生参考保持，冻结主干完整state不变，张量/force-only梯度与恢复通过。
+prediction.version1原生直连、4类读出、显式处理、冻结/审计、严格续训/暖启动及4份配置/标准/使用说明已完成。
+51份真实链证据独立hash/ID/标签核对通过，源码和最终日志已归档；官方图/层及依赖保持原样。
 
 # 当前计划
 
-提交已通过本地检查的入口/审计补充；复用既有环境和真实数据，通过Slurm重跑core/MACE完整回归及
-CGCNN/MACE原生linear/MLP冻结/全参、200通道谱、显式profile张量和冻结force-only真实链。
-随后修复实际失败、同步标准/usage/示例和验收映射，归档证据并清理本任务代理。
+所有科学计算与实现验证已完成。完成文档链接/命令/格式检查后提交验收记录；
+通过当前已持有的工作SSH同步最后文档，再只关闭身份确认的本任务代理47020，确认Guqq21080释放。
+不再提交额外训练或回归，保留历史失败及与本任务无关的docs/paper未跟踪文件。
 
 # 变更记录
 
@@ -246,3 +246,5 @@ CGCNN/MACE原生linear/MLP冻结/全参、200通道谱、显式profile张量和�
 - 2026-11-03T11:01:28+08:00: A-D implementation and bounded local checks complete:28 new selected passed/6 server-only deselected,20 existing passed; syntax/diff checks passed. Enter Slurm regression and real official acceptance. No remote operations yet.
 
 - 2026-11-03T11:09:43+08:00: Source ae90d7e synchronized; Slurm765/766 full regression and767/768 real official acceptance submitted. Enter actual validation; docs/examples/standards being updated while jobs run.
+
+- 2026-11-03T11:53:10+08:00: A-E and ACC01-13 COMPLETE scientifically:773/774118 each;771/77211 real cases passed and independently audited. Enter final documentation sync and SAME-connection proxy cleanup; no numerical jobs remain.

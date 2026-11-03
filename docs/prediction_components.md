@@ -103,3 +103,5 @@ sbatch scripts/ugnn.slurm --mode train --config configs/prediction_spectrum.yaml
 扩展读出在 `readouts` 注册工厂即可，不需修改 provider 和通用训练循环；接口见
 [readouts README](../src/universal_gnn/readouts/README.md)。generation 不接受 prediction/optimization，
 本次扩展范围为性质预测。
+
+已执行的118项回归及11组官方真实数据链，见 [验收记录](agents/prediction-components.md)。
