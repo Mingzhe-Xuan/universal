@@ -118,3 +118,8 @@ real matching records where available, and checks checkpoint reload/resume.
 Equiformer's registered IS2RE head has no matching labels in this cohort: only
 original prediction and gradient diagnostics run; band-gap labels are never
 substituted for relaxed-energy labels.
+
+`validate_native_transfer.py` performs real-artifact body-only warm starts in
+both head-mode directions, preserves target heads, streams all-frozen native
+inference and replays actual pre-headmode checkpoints. Run through Slurm after
+`validate_native_heads.py`; it writes bounded reports separately from weights.

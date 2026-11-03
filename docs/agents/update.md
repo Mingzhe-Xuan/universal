@@ -583,3 +583,5 @@
 - 2026-11-03T15:31:33+08:00: Implemented head_mode native/reset, strict original task contracts, original head invocation/normalizers, non-registering component ownership, independent freeze, and body-only cross-mode warm start. Reset descriptors/state layout unchanged. Preliminary local contract checks pass; production acceptance pending Slurm.
 
 - 2026-11-03T17:05:17+08:00: Native mode unit and regression acceptance passed139x3. Added documented task matrix,output-unit packaging,strict head-mode resume/warm-start rules and ALIGNN/MACE-native examples. Prepared original-model Slurm acceptance harness;production artifact checks next.
+
+- 2026-11-03T17:14:29+08:00: Completed six-official original-head parity and freeze acceptance and five real matching task training/resume. User-facing head-mode docs/configs implemented. Enter final cross-mode/inference/legacy-checkpoint integration,then evidence documentation and proxy cleanup.

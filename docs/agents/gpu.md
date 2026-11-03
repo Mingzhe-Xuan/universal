@@ -389,3 +389,11 @@
 - 2026-11-03T17:01:01+08:00: Authorized next collection connection:reuse healthy proxy38788,mandatory health/pull before bounded Slurm803-805 logs and completed802metadata. No numerical work on login.
 
 - 2026-11-03T17:05:17+08:00: Authorized next connection:reuse proxy38788,health-check/pull new committed harness first;submit six original-artifact acceptance jobs1CPU12GB through Slurm. No server tracked source edits,training/inference on login,or new dependencies.
+
+- 2026-11-03T17:08:30+08:00: Slurm806-811 six real official native jobs submitted after HTTP200/pull35a465f. Authorized bounded collection connection:health/pull first;read queue,configs/reports and logs only;archive excludes checkpoints and caps eachfile2MiB. Numerical checks remain Slurm.
+
+- 2026-11-03T17:10:49+08:00: Collection stopped at pre-pull health gate(curlSSLtimeout),no results read. Authorized network diagnostic connection:reuse owned38788 if alive,only ss1080/currentusersshd/proxy end-to-end curl until healthy;do not restart a working listener merely to switch sessions. Then mandatorypull gates normal collection.
+
+- 2026-11-03T17:12:09+08:00: Diagnostic HTTP200 restored using same38788 proxy;no restart. Authorized collection retry:health/pull first,queue+bounded six-native reports/log archive only.
+
+- 2026-11-03T17:18:40+08:00: Authorized final integration submission connection:health-check reuse38788,pull locally committed transfer script FIRST,six Slurm1CPU16GB jobs for body transfer/frozen streamed inference/old checkpoints. No server tracked source edits or numeric login work.
