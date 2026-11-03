@@ -5,6 +5,32 @@ import math
 import re
 
 
+def aggregate_native_neighbor_counts(counts, *, provider, cutoff, dtype, source_sha256,
+                                     manifest_sha256, training_fingerprint, declared_training_structures):
+    """Aggregate original graph counts; callers must independently bind their training selection."""
+    if type(declared_training_structures) is not int or declared_training_structures < 1:
+        raise ValueError("Declared training size must be a positive integer")
+    totals = dict(structures=0, atomic_nodes=0, active_receivers=0, directed_edges=0)
+    for count in counts:
+        fields = ("atomic_nodes", "active_receivers", "directed_edges")
+        if (not isinstance(count, dict) or any(type(count.get(key)) is not int for key in fields) or
+                count["atomic_nodes"] < 1 or not 0 <= count["active_receivers"] <= count["atomic_nodes"] or
+                count["directed_edges"] < count["active_receivers"] or
+                (count["directed_edges"] > 0 and count["active_receivers"] == 0)):
+            raise ValueError("Native per-structure node/receiver/edge counts are inconsistent")
+        totals["structures"] += 1
+        if totals["structures"] > declared_training_structures:
+            raise ValueError("Neighbor counts exceed the complete declared training partition")
+        for key in fields:
+            totals[key] += count[key]
+    result = dict(version=1, kind="native_neighbor_counts_v1", provider=provider, partition="train",
+                  cutoff=cutoff, dtype=dtype, source_sha256=source_sha256, manifest_sha256=manifest_sha256,
+                  training_fingerprint=training_fingerprint, declared_training_structures=declared_training_structures,
+                  **totals)
+    neighbor_normalization(result, provider=provider, cutoff=cutoff)
+    return result
+
+
 def neighbor_normalization(statistics, *, provider, cutoff):
     if provider not in ("mace", "nequip"):
         raise ValueError("Native neighbor normalization is defined for MACE and NequIP")

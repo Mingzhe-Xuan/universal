@@ -59,3 +59,14 @@ New prediction assembly reads feature_spec/irreps/feature_dim and transformation
 config backbone.feature_dim is an assertion/fallback, never a hidden-layer width override. Standard
 custom GNNs may omit irreps only for explicitly invariant scalar features, declaring feature_dim.
 All encoders still return unpooled NativeFeatures in input atom order. See contracts/components.py.
+
+## Original constructor statistics
+
+`blueprints.aggregate_native_neighbor_counts` aggregates counts supplied by the original graph
+preprocessor and requires the complete declared training partition. Its receipt records the source,
+manifest and training fingerprints, precision and native cutoff. Individual isolated structures are
+included: MACE normalizes by receivers with neighbors, whereas NequIP includes all nodes in the
+denominator. Inconsistent per-structure counts and a completely edgeless training partition fail.
+This helper does not construct graphs or establish which records were scanned; the caller must
+verify the receipt against the selected training data. Original graph scanning and automatic training
+integration require separate runtime validation before being described as supported scratch training.

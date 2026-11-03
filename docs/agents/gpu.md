@@ -1794,3 +1794,67 @@
 - 2026-11-04T05:52:21 +08:00: Approved CUDA supervisor: confirm proxy listener release after controller stops. Each connection verify published bundle and offlinepull4859cc99b5a471e30f869ea5d37dcab60fa526b0 first; no login computation or user session termination.
 
 - 2026-11-04T05:58:08+08:00：用途：前置普通SSH已pull4859cc9并核对863完成；SCP仅取回runs/provider-cache-863.json到忽略results/paper-environment-20261104，生成既有provider59缺失文件清单。此操作不执行被自动审批拒绝的新CPU wheel公网下载，不安装/修改源码或环境。
+
+- 2026-11-04T06:09:53+08:00：用途：SCP上传已发布c095dd6独立蓝图/结构评分小型bundle；成功后原子更新published-sync，后续普通连接先校验SHA/git pull再提交原已下载38个独立provider的HTTP续传/离线安装及13项CPU测试。不涉及被拒绝的7个新CPU wheel公网下载，不修改origin，不重启健康代理。
+
+- 2026-11-04T06:19:52+08:00：网络恢复诊断：64242已实际terminal，日志证实新代理47996被Vlab远端关闭（return255），健康HEAD为HTTP52非TLS；旧finally确认1080释放。本机wheel54339及provider54974均已实测200。仅检查既有Vlab跳板202.38.75.226:22的TCP/SSH banner，不登录/读服务器结果，不进行被拒绝的新CPU wheel HTTPS下载。随后恢复普通连接仍先pull c095dd6。
+
+- 2026-11-04T06:27:18+08:00：恢复唯一资源代理：CIM核实旧监督器49220/代理47996已不存在，旧finally已确认1080释放；两个已有本机只读HTTP服务54339/54974仍属本任务。新监督器先核验c095dd6 bundle并offline git pull、实际队列/端口，再建单一专用代理并做端到端私有HTTP健康检查。暂缓新CUDA作业，仅为优先提交已存在的24.2MB provider包，不取消未知作业、不下载被拒绝的新CPU资源。随后普通连接提交provider Slurm前也先pull。
+
+- 2026-11-04T06:27:18 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:27:25 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:27:25 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:28:03 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:28:39 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:28:45+08:00：普通SSH先SHA校验bundle/git pull c095dd6，再只读观察864 provider传输/安装/测试收据、ugnn-full-data/ugnn-cuda-transfer队列和有限日志尾部；不提交重复作业、不运行模型或全档哈希。864已确认回执，移除本地pause-cuda；监督器仅在data队列空闲后续传CUDA。
+
+- 2026-11-04T06:29:16 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:29:52 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:30:28 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:31:06 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:31:42 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:32:20 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:32:25+08:00：普通SSH先SHA校验bundle/git pull c095dd6，再只读观察864 provider传输/安装/测试收据、ugnn-full-data/ugnn-cuda-transfer队列和有限日志尾部；不提交重复作业、不运行模型或全档哈希。864已确认回执，移除本地pause-cuda；监督器仅在data队列空闲后续传CUDA。
+
+- 2026-11-04T06:32:56 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:33:03 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:33:03 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:33:43+08:00：普通SSH先SHA校验bundle/git pull c095dd6，再只读观察864 provider传输/安装/测试收据、ugnn-full-data/ugnn-cuda-transfer队列和有限日志尾部；不提交重复作业、不运行模型或全档哈希。864已确认回执，移除本地pause-cuda；监督器仅在data队列空闲后续传CUDA。
+
+- 2026-11-04T06:33:50 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:33:56 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:34:32+08:00：前置普通SSH已SHA校验/git pull c095dd6并实际读取864 complete和13测试OK；SCP仅回传任务自有864安装收据、pip前后版本及err测试日志到忽略results/paper-environment-20261104，不执行公网下载或远端计算。
+
+- 2026-11-04T06:34:32 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:34:39 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:34:39 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:35:17 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:35:55 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:36:01 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:36:01 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:36:39 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
+
+- 2026-11-04T06:37:16 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullc095dd6a8fbd2bb30aeb71e1f4a6527dad64366c first; no login computation or user session termination.
