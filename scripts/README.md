@@ -103,3 +103,9 @@ requires Slurm and a fully passed frozen/full assessment. It uses ordinary produ
 without the candidate factory, resumes each saved mode by one epoch and performs fully frozen
 force/stress inference. CGCNN additionally replays the real old771 bandgap checkpoint to verify
 that newly verified derivative capability metadata preserves previous predictions.
+
+`inspect_native_heads.py --model NAME --output runs/FILE.json` is a Slurm-only, bounded
+inspection of the original artifact metadata, head module paths, scalar normalizers and original
+forward sources. It runs no training and does not change model layers; tensor weights are
+summarized by shape rather than exported. This establishes native-task contracts before wiring
+the official prediction head into UGNN.

@@ -1,14 +1,15 @@
 # 当前状态
 
-五个其他官方骨干力场验收全部通过：ALIGNN、CGCNN、MEGNet、NequIP、Equiformer各冻结/全参10模式。
-788/789/790三环境各126 passed；791～795无临时能力覆盖完成普通入口4→5轮续训和全冻结推理10模式。
-CGCNN/Equiformer全参要求显式backbone_eval；保留原层和图规则，能力已开放。旧CGCNN771预测回放误差0。
-158份文件独立哈希、真实ID/坐标/晶格/force投影审计通过；MACE既有验收保留。
+按用户要求实现prediction.head_mode native/reset。reset保留官方主干并创建新头；native保留已验证官方原任务/头权重/池化/归一化。
+先检查六个原artifact的任务/normalizer/头模块边界，避免把同shape误当同任务。已有126x3/五骨干力场验收保持。
 
 # 当前计划
 
-全部完成：最终文档d36b948已通过同一工作SSH8965同步，队列为空；仅身份核验的本任务代理50456已关闭，Guqq21080释放且SSH正常退出。
-无待执行计算、源码修改、同步或网络清理。后续本地提交仅记录已观测的收尾，不再连接服务器；保留历史失败和无关docs/paper。
+contracts新增原生任务规格；official新增原头协议与物理输出包装；tasks新增native任务模型；engine新增原模块的无重复组件视图，接入冻结/优化器/严格重建/暖启动。
+旧无prediction路径不变，既有prediction默认reset且旧签名兼容；head_mode切换拒绝完整resume，显式组件暖启动。
+六官方原生前向/物理归一化对照、冻结头/主干、参数不重复、native与reset互换及旧checkpoint回放，经单元和Slurm真实链验证。
+所有计算Slurm，源码只在本地提交/服务器pull，不改上游层或图规则；未有原任务真实标签时只验证前向与梯度，不伪造训练目标。
+更新标准/README/配置/使用与证据，最后同步并清理唯一任务代理。无关docs/paper保留。
 
 # 变更记录
 
@@ -258,3 +259,8 @@ CGCNN/Equiformer全参要求显式backbone_eval；保留原层和图规则，能
 - 2026-11-03T14:10:05+08:00: Five-backbone stage COMPLETE:10candidate modes,10production full-resume/frozen-inference modes,126x3regressions,and158file/source-data audit passed. Enter finaldocs sync and owned50456 cleanup on held workSSH8965;no more numerical jobs needed.
 
 - 2026-11-03T14:13:08+08:00: Final stage COMPLETE:all5otherofficialbackbones/10candidate+10productionmodes/126x3+158fileaudit done;d36b948synced,sameSSH8965confirmedonlyowned50456closedand1080released,exit0. No remaining work/resources;docs/paper unrelated preserved.
+
+- 2026-11-03T14:18:06+08:00: Read-only scalar/classification coverage consultation started/completed:inspected PropertySpec catalog/custom definitions,readout input/output contracts,label bindings,CE/MSE and inference/metric availability. Existing forcefield implementation/evidence unchanged,no server/code work. Ordinary structure-to-scalar and graph single-label C-class tasks need property/data configuration;multilabel/heterogeneous joint targets/extra physical inputs and paper-specific metrics/splits are additional work. No implementation requested in this question.
+
+
+- 2026-11-03T14:30:06+08:00: Started native/reset head-mode implementation. Need original task/normalizer metadata audit and disjoint parameter/mode ownership without reparenting official modules. Preserve reset/legacy state keys and old capability-upgrade compatibility.
