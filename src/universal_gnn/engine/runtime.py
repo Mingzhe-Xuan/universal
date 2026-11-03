@@ -139,11 +139,14 @@ def save_training_checkpoint(path, model, optimizer, config, versions, state, *,
     devices = {parameter.device.index for parameter in model.parameters() if parameter.is_cuda}
     from universal_gnn.engine.batching import continuation_settings
 
-    state = {**state, "batching": continuation_settings(config), "version": 1, "optimizer_state_dict": optimizer.state_dict(),
-             "torch_rng_state": torch.get_rng_state(),
-             "cuda_rng_states": {device: torch.cuda.get_rng_state(device) for device in devices} or None}
+    if state is not None:
+        state = {**state, "batching": continuation_settings(config), "version": 1, "optimizer_state_dict": optimizer.state_dict(),
+                 "torch_rng_state": torch.get_rng_state(),
+                 "cuda_rng_states": {device: torch.cuda.get_rng_state(device) for device in devices} or None}
     payload = {"format_version": 2, "config": config, "state_dict": model.state_dict(),
-               "versions": versions, "training_state": state}
+               "versions": versions}
+    if state is not None:
+        payload["training_state"] = state
     payload["contract_versions"] = dict(CONTRACT_VERSIONS)
     payload["extensions"] = getattr(getattr(model, "backbone", None), "extension_provenance", {})
     artifact = getattr(getattr(model, "backbone", None), "official_artifact", None)

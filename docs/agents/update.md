@@ -589,3 +589,88 @@
 - 2026-11-03T17:32:08+08:00: Native/reset feature complete:6official profiles,originalhead task/normalization contracts,freezeindependent,strict checkpoint/warmstart;139x3 tests and all6 original-model+transfer suites pass. Added native configs/userstandards/evidence. Final docs audit then same-session sync+proxycleanup pending.
 
 - 2026-11-03T17:36:20+08:00: Task complete and synchronized4fc8796;proxy38788closed and1080release verified sameconnection. Native/reset code,standard,examples and fully audited evidence delivered. Closure records committed/pushed locally only;unrelateddocs/paper untouched.
+
+- 2026-11-03T17:52:00+08:00: Consultation:current supported properties checked directly in local code. Distinguish11catalog entries,derivedE/F/S andworkflowoutputs,custom scalar/classification specs,andnativeoriginaltaskrestrictions. No code/config changes or new computation.
+
+- 2026-11-03 18:12:27 +08:00：完成生成先例研究咨询，核对原论文s41467-025-60963-3、2504.16893/D5MH00774G、s41524-025-01901-1、2610.01898及作者simgen/chggen/DM2仓库。不将架构改造等同于直接复用官方力场checkpoint，也不把仅弛豫/筛选登记为生成网络。未修改业务代码。
+
+- 2026-11-03T19:08:59+08:00: ustc-gpu connection attempted with interactivePTY;remote closesbeforeauthentication. Confirmedfailurestage with one-vvdiagnostic and askedusercampusVPN/jump prerequisites. No source/config/serverfile changes,no computation.
+
+- 2026-11-03T19:13:48+08:00: ustc-gpuupdatedjumpconfigurationverified:successfulMFAloginhanhai22-01thenimmediatecleanexitafterbannerprohibitsCodexservices. No businesscommands,serverchangesorcredentialfilestorage. Reportresultandrestrictiontouser.
+
+- 2026-11-03T19:17:43+08:00: Added ustc-gpu.md current access note per user-confirmed updated guide permission;linked at top of gpu.md and lessons.md,updated current state/plan. Historical banner and clean-exit records retained. Documentation checks pass;no remote actions.
+
+- 2026-11-03T19:59:44+08:00: Created docs/plan/arxiv_v1_experiments.md fromstory:full-data16-cellfirststage then29-cellmatrix/seed,scalars/classes/tensors/spectrum/nonperiodicforces/plugin,optionalconditionalgeneration/Matbench. Current67.58GiB supports24-39GiBincrementbudgetwith20GiBreserve;flaggedmissingparentenvironment,train-onlyevaluationandpretraininglabeloverlap. No fulltraining/deletion/installstarted.
+
+- 2026-11-03T20:04:07+08:00: Planningcomplete:writtenandindexed arxiv_v1_experiments.md;finalcapacity67.62GiB,first16fullcells then29/seed,24-40GiBnewpeak. Addedsourcecounts/full-definition/splits/metrics/native-vs-reset/freezeandlabeloverlaprequirements,optionalconditionalgeneration andcheckpointretention. Missingparentenvironment recordedinenv/lessons. No trainingorcleanupperformed.
+
+## Guqq2 各用户磁盘排名：连接前权限阻塞
+
+- 用户请求统计 Guqq2 上最大磁盘用户及其主要占用。已记录权限、Slurm 统计范围与检查计划。
+- 默认 ssh -G Guqq2 显示 hostname guqq2、user codexsandboxoffline，未加载用户别名。显式 ssh -F C:/Users/asus/.ssh/config -G Guqq2 返回 Permission denied。
+- 受控 require_escalated 读取配置被当前 Granular 策略直接拒绝，sandbox_approval=false；不是服务器认证或网络故障，不能绕过控制或复制密钥。
+- 已查 docs/agents/lessons.md 既有 SSH 本地权限经验，停止重复同类尝试。Get-Process 仅确认既有 SSH PID 45976/47424/49080/57324 存在，没有停止任何进程或创建代理。
+- 未建立服务器连接、未执行 git pull、未提交作业；无新用户排名结果。已有 2026-11-03 20:00 左右记录只显示 xmz home 17.532 GiB、系统盘剩余67.62 GiB，不能据此判断其他用户或最大占用项。
+- 下一步须恢复当前执行环境对既有 SSH 配置/认证路径的访问，再继续已经授权的只读统计。原有其他规划/实验修改保持未提交，不覆盖或回滚。
+
+## 2026-11-03 Guqq2 可读目录存储审计完成
+
+- 用户调整权限后受控配置读取成功；普通连接均显式禁转发、先通过用户既有SOCKS端到端HTTP200，再检查仓库并git pull --ff-only。没有新建或关闭用户代理。
+- 其他10个home均750，xmz不可读；sudo -n -l要求认证。用户随后明确选择“先统计当前可读目录”，此后不再尝试管理员访问。
+- Slurm819（node42，1CPU，1GiB）20:11:27–20:11:29，COMPLETED/0:0：du同文件系统、不跟随符号链接、含隐藏目录，记录不可读项。
+- Slurm820（同资源）20:14:23–20:14:33，COMPLETED/0:0：以lstat/scandir仅扫描可访问元数据，按st_blocks×512统计实际分配量，按设备+inode去重硬链接；按UID归属并聚合目录，不读取文件内容。错误354条，包含私有目录权限拒绝；作业成功不意味着全盘覆盖。
+- 可见分配量105870802944字节（约98.60GiB），按UID：root76020502528（70.80GiB）、xmz22844665856（21.28GiB）、sgyang5404135424（5.03GiB）、zjl642748416（0.60GiB）、user416997376（0.39GiB）。这些是可见部分，不能判断全机最大用户；其他用户私有数据绝非0。
+- 最大可见顶层目录opt约37.31GiB，其中abacus20.27GiB，intel11.98GiB。ABACUS主要三个版本：3.9.0.25_gnu约6.57GiB、3.9.0.17约6.00GiB、LTS约5.68GiB，含toolchain/build编译目录与约2.02GiB zip。Intel主要oneAPI编译器/MKL/VTune/DAL等。
+- xmz家目录约17.53GiB，pip缓存11.184GiB、universal5.496GiB（runs5.054GiB）、venvs0.661GiB；其UID全可见归属21.28GiB还包括/tmp等位置。tmp可见4.407GiB，主要torch/CUDA依赖wheel和安装临时目录。
+- sgyang可见5.03GiB中，/package内两个Intel oneAPI离线安装包合计约4.63GiB；私有home未扫描，不能视为其总量。
+- 20:15:05容量复核：总1967317549056字节，已用1794723344384，可用72584384512（约67.60GiB），97%使用。可读扫描只覆盖df已用约5.90%；差额含未授权读取数据、文件系统元数据及可能已删除但打开文件等，未作归因或补差。
+- 原始JSON和作业状态在results/user-storage-20261103/audit-819.json、detail-820.json、collection-820.txt（生成物忽略）。已核验按UID求和等于可见总分配量、单位换算及作业退出状态；最后squeue为空，本任务普通SSH均已退出，无任务自有代理需清理。
+- 仅新增任务临时控制脚本和结果、追加管理记录；未修改服务器受管源码、删除数据、安装依赖、停止其他用户进程或提交Git。初次PowerShell传输末尾换行引起轻量for语法错误后改用Python传LF脚本，后续两扫描正常；既有SSH权限经验已查。
+
+- 2026-11-03T20:17:06+08:00: Answered availability of four chosen official checkpoints using actualregisteredprofiles and prior acceptance;weights remainGuqq2 models/official,environmentrestorestillneeded. No code/config/serverchanges.
+
+## 2026-11-03 Guqq 内存查询：目标 SSH 无响应
+
+- 用户指定Guqq，配置核实为xmz@211.86.155.221，经vlab；此前Guqq2为114.214.215.42，二者不能混用结果。
+- 已预先记录只读连接目的与仓库门禁。拟执行free/proc内存、PSI、短时vmstat、进程RSS及用户汇总，均为轻量诊断；没有模型计算或递归目录扫描。
+- 首次连接仅取得Vlab欢迎，最后SSH返回255，Timeout server211.86.155.221 not responding；无远程脚本stdout。没有确认完成任务仓库存在检查或pull。
+- 仅一次有界诊断重试：BatchMode=yes、ConnectTimeout15、keepalive10秒×2、总65秒上限。日志确认Vlab公钥认证成功，然后目标在banner exchange阶段超时，返回255；未进入目标认证或取得任何内存值。
+- 不据连接超时断言内存耗尽，也不将Guqq2已有RAM/显存信息当作Guqq实测。可能的目标主机/网络/sshd原因尚未确定。
+- 原始重试日志在results/guqq-memory-20261103/attempt2-ssh.txt，stdout文件无远程指标。未新建代理，未停止既有用户SSH；拟结束首个自有连接时身份检查不匹配，未执行Stop-Process，随后该连接自行返回。
+- 两个任务连接均结束；不继续盲目重试。等待目标可连接后，再执行已授权的只读内存快照。不修改其他未提交文档或Guqq2资源结论。
+
+- 2026-11-03T20:38:11+08:00: Updated arxiv_v1_experiments.md andindex to requested48cells/seed,mandatoryfour-modelgeneration,fullFTvsscratchsamearchitecture/heads andnewinitentryneeded. Addedper-taskbatch/RAMstartingranges,measuredparameter/staticmemoryestimates,separatebounded144runstoragebudget. Sharedforcebenchmark nowMLearnperiodic;optionalrMDonlyeligibleproviders. Resourceassessmentcomplete;no implementation/trainingstarted.
+
+## 2026-11-03 Guqq 内存重试成功
+
+- 用户再次要求重试后，Guqq211.86.155.221恢复公钥登录；不是此前Guqq2。初次恢复连接HOME/universal不存在且1080拒绝，未越过门禁查业务指标。
+- 专用隐藏holder53440被Vlab关闭并确认本地消失；此前ss无监听和curl拒绝后，仅替换一个受控holder3052（UTC约12:39:28.966659）。后续端到端HTTP200，从已确认remote浅clone到HOME/universal，跳过LFS自动下载；clone成功后才读轻量系统指标。
+- 实测时间2026-11-03T20:40:25+08:00，主机node221。RAM总270309412864字节=251.745GiB，可用247585054720=230.582GiB（91.59%），free显示已用16190951424=15.079GiB，空闲1.127GiB，buff/cache235.539GiB。低MemFree主要伴随大量缓存，不能解释为RAM耗尽。
+- Swap总2147479552字节约2GiB，已用1836236800=1.710GiB；vmstat两个1秒间隔si/so均0，memory PSI some/full avg10/60/300均0。本次短时采样无明显内存压力，Swap占用本身不足以证明当前正在缺内存。
+- 最大进程RSS：xmz python PID1840005，4944708KiB=4.716GiB；父python1840002约0.460GiB。按RSS简单汇总xmz5664696KiB=5.402GiB、user约3.808GiB、wgh约0.715GiB；共享页可重复计数，不当作唯一物理内存归属。
+- RTX5090 GPU总32607MiB，已用13008MiB，空闲19113MiB；显存与RAM分开解释。
+- 原始stdout/stderr保存results/guqq-memory-20261103/snapshot-final.txt及对应stderr；连接/代理失败诊断也保留。内存查询均为free/proc/vmstat/ps/nvidia元数据，未运行模型或目录扫描，无需Slurm。
+- 收尾：控制器核对3052进程名/命令/启动UTC后仅停止自有代理。Windows文本管道的CLOSE末尾CRLF导致初次严格token不匹配（cleanup退出2），没有影响代理已成功停止的事实；随后独立仅ss诊断确认GUQQ_MEMORY_PROXY_1080_RELEASED且exit0，所有任务连接结束，原Guqq2用户代理未动。
+- 无缓存清理、用户进程终止、服务器重启、模型运行或Git提交；其他任务已有未提交改动保留。
+
+- 2026-11-03T20:44:20+08:00: Appended section11 actionable preparation/training/evidence checklist to arxiv_v1_experiments.md per explicit documentation request;preserved existing design. Includes48-cell matrix,fullscratch definition,shared datasets included in disk budget and three-seed reporting. Documentation checks pass;no code/git/remote changes.
+
+- 2026-11-03T20:52:35+08:00: Corrected previousperiodic-only wording:CGCNN/ALIGNNnetworkweights can be retained withpropernonperiodicgraphinputadaptation;currentUGNNproviderrestrictionsareimplementationboundary. AddedCGneighbor/RBF/padding,ALIGNNlinegraph/angles,livegeometry/forceandregressiontests. FourmodelrMD17comparisonpossibleafterimplementation;MLearnremainscurrentperiodicbaseline. No sourcecodeorserverchanges.
+
+- 2026-11-03 20:52:50 +08:00：核对Equiformer现行provider、ForceFieldModel、训练模式策略与forcefield-backbones验收记录，答复周期半径图/预计算拓扑/可微几何、新能量头求导以及eval模式保留参数梯度。使用最新能力开放证据，不沿用早期仅MACE可用的旧状态。仅只读咨询。
+
+- 2026-11-03T21:02:44+08:00: Recorded agreednonofficialgraphdefault6Aradius forcrystals/molecules withPBCflags,fullradius(nohiddenKNNcap),livegeometry,andoriginalofficialfeaturecompatibility. Updatedstandards/arxivplan/dataREADME;currentdefaultknn/4A remainsuntilimplemented,explicitradius6alreadyworksstandardGNNs. OfficialpreprocessingandexplicitKNNexamplepreserved.
+
+- 2026-11-03 21:03:56 +08:00：按用户要求在arxiv_v1_experiments.md末尾追加全量训练/推理前清理小规模测试配置的强制要求。区分structures/输入文件/推理limit与报告限量，覆盖设备、Slurm、训练预算、批次、精度/梯度、末尾评估采样、流式输出、checkpoint及初始化。明确单改all或epochs不足，配置覆盖和代码缺口分别验收；仅文档修改。
+
+- 2026-11-03T21:15:55+08:00: Reported48-cellmatrixnotreadyforformalfulllaunch;hardwarebudgetfeasiblebutenvrestore,fullsourcepreparation/splits,scratchinit,molecular6Ainput,independentevaluation,propergenerationprotocol,andCUDAresourcequalificationremain. Existingofficialload/derivatives/mini-batch/native-reset testsremainhistoricalsmall-dataevidence. No serveractions.
+
+- 2026-11-03T21:39:18+08:00: Clarified batch isnumberofstructures,notatoms;default32 applieswithouttask-specificautotuning,configs override. Currentforcefield.json andgeneration still32. Flagforce-mixedgrads,ALIGNNlinegraphanddensegeneratedcells asprioritymemorycases;responseauxderivativesdifferfromforce-through-backbone. No code/config/SSH changes.
+
+- 2026-11-03T21:45:48+08:00: Recorded userapproved OOM precheck backoff inplan12.5 andlongjobgate:halvebatchuntilsuccessor1,cleanretryprocess,fullstep+worstcase,samplingseparate,recordfailures/finalconfig/peaks/effectivebatch;matchedinitcomparisonsusecommonsafeB. Documentationonly,notimplementedorclaimedtestedonGPU.
+
+- 2026-11-03T22:13:59 +08:00: Arxiv execution preparation: add isolated CUDA batch-preflight controller/worker with typed-OOM halving and persisted failures/resolved success config; add immutable group split manifests and bounded regression/binary metric primitives. 12 local control/metadata/metric tests pass; GPU worker and training integration remain pending. Goal stays full48/seed,3seed144; no formal training submitted. Restore-owned-base install failed; remote diagnosis blocked by approval timeouts. Experimental plan now records implemented control vs unverified GPU/full-data stages.
+
+- 2026-11-03T22:19:02 +08:00: Automatic approval timed out for git add and its one permitted retry before command creation. No commit or push completed; new modules remain local. Remote log-inspection retry also timed out. No task-owned proxy/SSH holder remains; existing user proxy was not changed. Goal remains active; pending user guidance/execution channel recovery for remote checks and publication.
+
+- 2026-11-03T22:40:23 +08:00: Prepare commit for source-bound JSONL partitions in training/inference, validation-only true-best selection/optional early stop, train-only scales, optimizer-free best + strict resumed selection and crash recovery, streamed test metrics/predictions. Add Slurm full regression and actual-CUDA allocation OOM harness. 17 local protocol tests and static/doc/shell checks pass; model tests unexecuted. Approval read-only retry recovered; remote diagnosis confirms missing PySocks in base, bootstrap underway. Full48/144 remains active; no long training launched.

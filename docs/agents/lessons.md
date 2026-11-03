@@ -1,3 +1,9 @@
+# ustc-gpu 接入许可更新
+
+2026-11-03 用户确认最新用户指南已允许 Codex 通过 SSH 接入，旧登录公告已经过时。
+据旧横幅得出的“不能继续接入”判断已由此次用户说明更新；今后参考
+[当前接入约定](ustc-gpu.md)，不要将下方历史退出记录当作现行禁止规则。
+
 # 经验记录
 
 ## 2026-11-02：任务覆盖与模型前提优先
@@ -179,3 +185,27 @@
 - 2026-11-03T14:10:05+08:00: Five-backbone forcefield evidence:BN training and parameter training are separate controls. CGCNN rawtrain repeat is deterministic but mixes graphs;Equiformer alpha_drop.2 changes same-batch repeat. Explicit trainable-eval mode preserves original layers/parameters while fixing deterministic per-structure energy derivatives. OCP cell-repeat bounds are discrete;only topology selection belongs in no_grad,live continuous pos/cell must reach original distance code. FD h convergence identified ALIGNN truncation error without changing tolerance. Upgrading derivative verification metadata must be recorded without invalidating unchanged old tensor architectures;actual oldCGCNN replay error0 verifies the exception.
 
 - 2026-11-03T16:56:51+08:00: Two local Git schannel TLS handshakes failed; git -c http.sslBackend=openssl push succeeded with normal certificate verification. Task proxy46820 disappeared locally and remote1080 was free; only then started replacement. Native NequIP energy must use original energy network before ForceStressOutput so head-only force training retains mixed gradients; derivative wrapper consumes graph in eval.
+
+- 2026-11-03 18:12:27 +08:00：生成先例应分为改造架构训练score/denoiser、预训练表示驱动生成、生成系统中的编码器、以及力场弛豫/筛选四类。架构生成先例不自动证明现成官方力场checkpoint无需结构/目标调整即可用作生成器；SiMGen才是明确的预训练MACE特征复用实例。
+
+- 2026-11-03T19:13:48+08:00: ustc-gpu(Hanhai22)canauthenticateviaProxyJumpvlabwithkeyboard-interactivepasswordthenOTP,butloginbanner explicitlyprohibitsCodexandrelatedservicesconnectinglogin/computenodesandanyproxyprogram. Do not reuseGuqq2proxy/workflowsorcontinueagentSSHbusinessworkonthissystem. On discoveringrestrictionduringauthenticationtest,exitonly;credentialsneverinprojectlogs.
+
+- 2026-11-03T19:17:43+08:00: Update to earlier ustc-gpu conclusion: user confirms newer user guide permits Codex SSH access and supersedes old login banner. Use current ustc-gpu.md note rather than treating the historical banner-based exit as an ongoing prohibition. Attribute the guide permission to user clarification; no guide URL/version supplied or independently verified.
+# 2026-11-03 全量任务规划经验
+
+只读引用其他项目site-packages的子venv会在父目录移走或删除后失效，子venv自身仍存在并不代表Torch/CUDA和科学包可用。
+本次Guqq2四环境的共享父目录不存在，环境恢复必须纳入存储/就绪预算；pip缓存应先检查能否复用再考虑清理。
+工具论文还须区分完整数据与完整评测：mini-batch及structures=all不会自动提供独立验证/测试、val选模或预训练标签重叠审计。
+`head_mode: reset`只换头，不能消除主干已见测试标签的问题。峰值预算要包含内嵌官方artifact、优化器和原子保存临时文件。
+
+## 2026-11-03：Windows 控制消息与 SSH 清理协议
+
+- Windows subprocess text=True 写入远端stdin时可能将换行转为CRLF，Bash read得到的严格token会多出CR。跨SSH控制消息优先发送二进制LF，或在远端明确去除末尾CR；代理实际关闭与端口释放分别取证，不能用控制器退出码代替二者。
+
+## 2026-11-03：小规模验收与全量实验配置边界
+
+全量适配应分别核对数据覆盖、训练预算、设备资源和执行路径。structures=null/all不代表输入文件不是十条子集；report_structure_limit只限制报告内容，不能当成训练/推理样本上限。固定扰动、训练集evaluate和末尾全量采样等执行逻辑不能仅靠增加epochs修复。模型cutoff、邻居及特征协议应按实验定义保持一致，不能作为隐式缩减数据成本的开关。
+
+- 2026-11-03T21:58:03 +08:00: Git HTTPS smart protocol may return 405 to HEAD while PyPI proxy works. Do not infer proxy failure from unsupported HEAD method; use bounded GET of repository info/refs before pull. Preserve existing live user-owned proxy.
+
+- 2026-11-03T22:13:59 +08:00: Automatic approval deadlines can expire before a remote command is created. Treat this separately from SSH login/network rejection; after one retry, ask user for guidance and continue independent local work. Preserve existing user-owned proxy and do not infer remote installation success from a started SSH command. capacity probe success is not full-training coverage certification; fixed split helpers and metrics alone do not implement val-best evaluation.

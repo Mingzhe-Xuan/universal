@@ -1,13 +1,16 @@
 # 当前状态
 
-prediction.head_mode native/reset 已实现并写入标准与配置。native 保留六个已登记官方原头/任务/归一化；reset 保留主干并随机初始化新头，冻结策略独立。
-Slurm 三环境各139项通过；六模型原头预测/冻结检查通过；五个匹配任务各10条真实记录微调、精确重载、续训通过。Equiformer IS2RE 只做预测与梯度诊断，没有伪造训练标签。
-最终实现与验收文档4fc8796已推送并同步服务器；唯一任务代理38788已按PID/启动时间核对后关闭，同一SSH连接确认1080释放、队列为空。
+Active goal：按照docs/plan/arxiv_v1_experiments.md开展实验；目标四模型×六任务×预训练微调/完整从头训练，48格/seed、三seed144。尚未提交正式全量训练。
+已实现孤立子进程OOM预检控制器/worker、固定组划分manifest、流式回归/二分类指标；17项本地纯控制/元数据/指标/选模协议测试通过；新增训练/推理分区及validation-best/test接入和Slurm验收脚本，数值集成仍未运行。本地代码准备提交，审批通道只读检查现已恢复。真实GPU worker、全量图规模扫描、训练验证/测试选模接入、官方scratch和全数据准备仍待完成。
+Guqq2代理Git协议GET200且pull通过；任务自有universal-base已建立。已读取安装失败日志：目标base缺少PySocks；正在经curl校验wheel离线引导后重试二进制依赖，未确认Torch恢复。已向用户请求后续执行指导；不干预现有用户SSH代理。
 
 # 当前计划
 
-本次native/reset开关任务已完成，无待运行作业或待关闭代理。只做本地收尾记录提交，不为同步操作历史重开服务器连接。
-无关docs/paper保持原状；数据、模型、checkpoint与批量结果保存在忽略目录。
+1. 在执行通道可用且用户指导到达后，读取安装日志、修复仅任务自有环境并记录版本；模型/全量处理/测试均经Slurm。
+2. 提交已通过本地检查的基础模块；真实GPU完整训练步/力场混合梯度/生成采样及现有回归测试经Slurm验收。预检仅typedCUDA OOM减半，B1失败如实记录；不因探针通过宣称全量就绪。
+3. 接入manifest分区、train-only统计、独立validation选best/test指标、有界checkpoint；补齐官方骨干完整scratch、非官方radius6/PBC分子输入和生成训练噪声/独立质量评测。
+4. 准备全数据与来源/有效N/过滤/分区/预训练重叠审计；按最坏结构预检并写回两初始化共同batch，逐任务完成一seed48格，再补齐三seed144及论文证据。
+源码本地提交后服务器pull；不删除无关数据、不修改用户SSH会话；生成物忽略；docs/paper为用户文件，不批量提交。
 
 # 变更记录
 
@@ -268,3 +271,89 @@ Slurm 三环境各139项通过；六模型原头预测/冻结检查通过；五�
 - 2026-11-03T17:32:08+08:00: Completed original-artifact acceptance and final integration;812-817allpass,86-file source/hash/geometry audit passed. Enter final documentation/sync/owned-proxy cleanup;next close38788 and confirm1080released in same connection.
 
 - 2026-11-03T17:36:20+08:00: Completed native/reset task and closure:allrequired tests/evidence pass,4fc8796syncedserver,own38788closed,1080released,queueempty. No remainingrequired work;onlylocalclosurelogcommit,do not reopenSSH.
+
+- 2026-11-03T17:52:00+08:00: Read-only property-support consultation started and completed:inspected catalog11builtins,registeredreadouts,forcefieldlabelselection,workflows,spectralpostprocess andnative6artifacttaskmatrix. Next answer supported properties versus customspec/native limitations;no implementation or remote work.
+
+- 2026-11-03 18:10:53 +08:00：进入MACE/NequIP生成任务先例核查；区分生成网络、预训练特征驱动生成与力场后处理，核对原论文/作者代码。仅研究咨询，不改已有native/reset任务状态或运行实验。
+
+- 2026-11-03 18:12:27 +08:00：完成MACE/NequIP生成任务先例核查。确认SiMGen论文包含时间条件MACE能量扩散及预训练MACE特征核生成；CHGGen与DM2使用NequIP派生去噪网络；GEODE在模板VAE中使用MACE编码器。下一步向用户交付有来源的角色区分，不启动实验。
+
+- 2026-11-03T19:06:43+08:00: Entered ustc-gpu interactive authentication task,userexpects password/OTP requests. Plan inspect effectivehost config/existingtaskconnection then maintaininteractiveSSH andrequestcredentials atprompts. No serverworkloads.
+
+- 2026-11-03T19:07:44+08:00: ustc-gpu initialconnectionclosed beforeauthenticationprompt. Enter handshake diagnostic stage;next inspect ssh-vv tolocate close andrequest userinput onlyif external access/VPN prerequisite established.
+
+- 2026-11-03T19:08:59+08:00: Handshake diagnostic complete:TCPavailable but server closes beforeSSHversion/auth. Waitingusernetwork/accesspath information;no credentials requested because no actualcredentialprompt.
+
+- 2026-11-03T19:10:41+08:00: Userprovidednewjumppath,configurationconfirmedProxyJumpvlab. Resume interactiveauthentication usingnewpath;waitforactualcredentialprompt.
+
+- 2026-11-03T19:11:17+08:00: Jump-pathhandshake succeeded;interactiveSSH2054 waiting at targetPasswordprompt. NextfeeduserprovidedpassworddirectlytosessionthenrequestOTPifprompted.
+
+- 2026-11-03T19:13:09+08:00: ustc-gpujumppathandMFAverifiedsuccessful;remotehosthanhai22-01. Newlyseenloginbanner explicitlyprohibitsCodexserviceconnections;exitedinsteadofcontinuingbusinesscommands. NextverifyownedSSHclosed,recordresultandreportrestriction.
+
+- 2026-11-03T19:13:48+08:00: Completedconnectionverificationandcleanexit:jumphostworks,MFApassed,targethanhai22-01;sitebannerprohibitsCodexconnections,sessionclosedexit0withoutbusinesscommands. Nextreportresult,nofurtherremoteactions.
+
+- 2026-11-03T19:16:20+08:00: Entered documentation correction: user explicitly states the login banner is obsolete and the latest user guide permits Codex access. Record permission as user-confirmed, retain prior observations and exit history, update current connection guidance. No new SSH connection requested for this documentation unit.
+
+- 2026-11-03T19:17:43+08:00: Completed access-record correction:current documentation accepts user-confirmed newer guide permission;older banner observations remain historical. Five relative links/SSH syntax/format/source attribution/history preservation checks passed. No new connection;next future connection follows current ustc-gpu note.
+
+- 2026-11-03T19:38:48+08:00: Entered first-arXiv full-dataset experiment planning basedon docs/paper/story.md. Need current Guqq2 storage/resource facts and actualavailable data,then publishedcandidate sizes/splits plus codegap audit;next produce bounded experiment plan,not runtraining.
+
+- 2026-11-03T19:59:44+08:00: Storage audit phasecomplete:Slurm818passed,67.58GiB available at19:40,root97%,RTX5090~32GiB/48CPU. Inventorytask5.496GiB(data0.0115,runs5.054),pipcache11.184. Fourvenvsreference missingoldparentandlackTorch/NumPy/ASE metadata;no restoration done. Draft29-cell/seed experimentplan written;next verify budgets/sources/linksandfinalcapacity.
+
+- 2026-11-03T20:04:07+08:00: Completed Guqq2 full-dataset experiment design phase afterfresh20:00capacity andstdlibimport-discovery verification. Planchecks/budgets/historypass;alltaskSSHclosed,no taskproxy. Deliverplan;futureimplementationneedsenvrestore/independentevaluationbeforefulltraining.
+
+- 2026-11-03T20:04:49+08:00：进入 Guqq2 各用户占用排名与最大项明细检查；本地默认 ssh -G 未加载 Guqq2 别名，需先确认配置访问。原有实验/规划记录保留，扫描仅通过 Slurm。
+
+- 2026-11-03T20:05:56+08:00：用户磁盘排名阶段因本地配置权限及禁用提权阻塞，未获得服务器排名；已记录证据并保留既有会话，下一步恢复当前执行环境SSH访问后继续只读Slurm清点。
+
+- 2026-11-03T20:07:23+08:00：用户调整权限后受控 SSH -G 成功解析 Guqq2，恢复只读存储排名；下一步健康检查与pull后确认目录权限及Slurm扫描范围。
+
+- 2026-11-03T20:16:22+08:00：完成用户选定的可读范围磁盘审计，归属排名与大目录/文件证据已验证，保留10个home权限限制；下一步交付结果，无待运行作业或待关闭任务代理。
+
+- 2026-11-03T20:17:06+08:00: Read-only checkpoint availability consultation completed alongside existing resource work:profiles.py registers CGCNN bandgap,ALIGNN2 radiusbandgap,MACE-MPsmall,NequIP-OAM-S0.2;previous strictload/parity/native&resetfinetune evidenceexists and818retains officialcache. No newSSH/modelexecution;existing currentresource state remains.
+
+- 2026-11-03T20:26:23+08:00: Entered user-requested matrix revision:4models*6tasks*2initializations=48perseed,144for3. Assess hostRAM/GPUVRAM/disk separately from recentresource evidence,updatecurrentplan. Needsharedperiodicforcebenchmark because CGCNN/ALIGNN officialprovidersrejectnonperiodicmolecules;newstrictscratchinit policy notexistinghead reset.
+
+- 2026-11-03T20:28:46+08:00：进入Guqq内存占用只读查询，显式配置核实目标211.86.155.221而非Guqq2；下一步仓库/健康门禁后读取RAM和进程快照。
+
+- 2026-11-03T20:33:34+08:00：Guqq内存查询因SSH目标横幅超时停止，Vlab跳板认证正常；两次任务连接均255结束，无内存实测值，下一步目标连接恢复后再继续，既有用户会话未动。
+
+- 2026-11-03T20:35:56+08:00：用户要求再次尝试Guqq内存查询，恢复有界连接诊断；下一步根据实际连通结果采集指标或记录失败。
+
+- 2026-11-03T20:38:11+08:00: Completed48-cell scope revision andmemoryassessment. PlanexplicitlydistinguishesRAM/VRAM/disk,measuredhardwarefromestimates,fullscratchfromresethead;allstatic/docchecks pass. Futureblockingworkisdependencyrestore/freshinit/CUDAprofiling/evaluation,not currentresources being48timesloadedatonce.
+
+- 2026-11-03T20:43:27+08:00: Documentation-only task entered on explicit user request: append actionable checklist for the agreed four-model/six-task/two-initialization matrix and dataset disk accounting to the existing experiment plan. Preserve main experiment design and history; no remote work or implementation.
+
+- 2026-11-03T20:43:46+08:00：完成Guqq内存查询与代理收尾，SSH恢复后按门禁采集20:40:25快照，可用230.58GiB；原始结果/归一单位已验证，自有代理关闭且1080释放，下一步交付结果，无待执行工作。
+
+- 2026-11-03T20:44:20+08:00: Completed requested documentation supplement: experimentplan section11 contains48-cell checklist and dataset disk accounting. Tests verified counts/links/format. Existing main experiment/resource history retained;no training or remote action performed.
+
+- 2026-11-03T20:49:37+08:00: Entered molecular-input clarification. Local CGCNN/ALIGNN native_input enforce pbc.all(),factory rejects alternategraph;upstreamCGCNNconvolution consumes feature/neighbor tensors with dynamicM,notcrystalobjects. Architecture can accept proper nonperiodicinputadaptation while keepingweights. Correctpriorperiodic-onlyplanning limitation;no implementation orremoteconnection.
+
+- 2026-11-03T20:52:35+08:00: Completed designclarification andplan correction. Userisright thatmolecular graphinputadaptation ismainchange;originalweights/layersneednotchange. Currentmolecularentrynotimplementedandno newnumericvalidationclaimed. Futureinputadaptationmustpreservefeaturespec/linegraph/livegeometryandperiodicregression;48matrixcountunchanged.
+
+- 2026-11-03 20:52:50 +08:00：完成Equiformer力场构图只读咨询核查。当前官方V1 OC20保留radius_graph_pbc/cutoff/max_neighbors，离散拓扑no_grad后由原模型从live几何算距离；512维节点接reset原子能量头并求F/S。786/795已通过真实验收，全参须显式backbone_eval；native IS2RE头不是瞬时势能。无新增实验或服务器操作。
+
+- 2026-11-03 21:00:07 +08:00：进入arxiv_v1_experiments全量参数清理要求追加；用户明确只追加文档，核查当前configs与training/inference/Slurm默认值后补充正式训练推理门禁，下一步检查追加内容及前文保留。
+
+- 2026-11-03T21:00:35+08:00: Entered graph-default designupdate peruser:nonofficialgraphs default6angstromradius;per-structure/axisPBC forcrystals,noimagesformolecules. Existinggeometry.radius_graph alreadyrespectsPBCmask;commonfactorycurrentlydefaultsknn andRadiusGraphBuilderdefault4. Recordnewplanneddefaultwithoutclaimingimplementation;no code orremote work.
+
+- 2026-11-03T21:02:44+08:00: Completed6Aradius/PBC designrequirement recordinganddocchecks. Futureimplementationrequiresversioneddefaulttransition,oldcheckpointreconstructionandmolecularinputvalidation;no codeorremotechanges thisunit.
+
+- 2026-11-03 21:03:56 +08:00：完成全量参数清理文档追加，第12节含10类配置和6项提交门槛。原正文逐行保留，核验期间发现同期另有4行6Å构图说明新增，已完整保留；未覆盖其他变更。下一步按计划实施配置/执行路径适配，本轮不改代码或连接服务器。
+
+- 2026-11-03T21:15:55+08:00: Readiness audit entered/completed for userquerycanstartfull:localHEAD7c85479sourceunchanged;newrequirementslargelydocs. Sourcefactoryalwaysofficialpretrained,no unifiedscratch;standardgraphdefaultknn/radius4;CG/ALIGNNPBCguards;train-evaluateclosureusestrainingstructures;generationfixedperstructurecorruption andtrainingdataset sampling;Cohortsrequires10. LastGuqq2modulecheckmissingcoredeps. Nextreportgapsandimplementationorder,nolongjobsubmitted.
+
+- 2026-11-03T21:39:18+08:00: Completed read-only batch/OOM audit:batching.py defaults32structures/max_atomsNone;8actualconfigs parsed show32,16,5,4 andCPU/f32. ForceFieldModel create_graph training differentiatesenergythroughwholebackbone;ResponseReadoutaux-JacobianafterpoolingisnotcoordinateHessianofentirebackbone;generationsample no_grad withstepwisegraphsbutdense/smallcells canexplodeedges/triplets. Nextanswerriskestimates,currentdefaultsandprofilingrequirement;no sourcechanges.
+
+- 2026-11-03T21:43:50+08:00: Entered requestedOOMprecheckplanupdate:reducebatchonrealVRAMOOMuntilsuccessfulorminimum1;recordattempts/resolvedbatch,fulltrainingstepandworstcasecoverage. Documentationonly,no jobs or codechanges.
+
+- 2026-11-03T21:45:48+08:00: Completed OOM backoff requirement recording anddocverification. Futureprechecksapplypolicy;no model/serverexecution thisturn.
+
+- 2026-11-03T21:48:37+08:00: Started active execution goal for complete planned48/144experiment scope. Baseline repository inspected; next restore shared dependencies and implement verified units; no completion claimed.
+
+- 2026-11-03T22:13:59 +08:00: 阶段进展：完成三个基础模块及12项本地测试；服务器base已创建但安装失败未定位，自动审批超时阻止后续连接。保持完整目标active，等待执行通道/用户指导时继续本地可独立工作；下一步提交基础模块并准备Slurm真实验收。
+
+- 2026-11-03T22:19:02 +08:00: Automatic approval timed out for git add and its one permitted retry before command creation. No commit or push completed; new modules remain local. Remote log-inspection retry also timed out. No task-owned proxy/SSH holder remains; existing user proxy was not changed. Goal remains active; pending user guidance/execution channel recovery for remote checks and publication.
+
+- 2026-11-03T22:21:33 +08:00: Continue active goal; previous turn made code/test progress despite remote/publication approval timeout. Revalidate channel read-only; progress next opt-in manifest partition and validation-best/held-out evaluation integration locally. Existing legacy paths must remain compatible; real numerical verification still required on Slurm.

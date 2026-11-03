@@ -1,0 +1,53 @@
+# Experiment resource preflight
+
+Run inside a Slurm GPU allocation, using the same environment and configuration as
+the intended training run:
+
+```bash
+python -m universal_gnn.benchmarks.preflight configs/experiment.json \
+  --probe data/experiment/train-probe.json --output runs/preflight/experiment
+```
+
+The probe is JSON, for example:
+
+```json
+{
+  "indices": [0, 2, 7],
+  "worst_indices": [7],
+  "warmup_batches": 2,
+  "measure_batches": 100,
+  "coverage": {"verified_full_training_scan": false}
+}
+```
+
+Indices refer to the selected, bound **training** dataset. Construct the probe from
+a full training-set graph-size scan: include largest atom/edge/triplet cases and
+ordinary structures; retain scan counts, source fingerprints and IDs in `coverage`.
+The controller does not certify caller-supplied coverage. An unchecked small probe
+passing is not sufficient to launch a full experiment. Worst cases are repeated to
+fill the first batch, explicitly recorded; no training samples are dropped.
+
+Each attempt creates a new Python process and reconstructs the configured model
+from its original initialization. The worker performs forward, loss, backward and
+Adam step, including force/response derivative paths. Preflight weights and optimizer
+updates are discarded. Only a typed CUDA OOM with the dedicated worker result/exit
+code halves batch size (`32,16,8,...,1`, or `5,2,1`). Host RAM kills, timeouts,
+incompatible CUDA extensions, invalid labels and numerical errors stop the check.
+At batch 1, CUDA OOM fails the check. The controller never changes graph, precision,
+trainable components, dataset or device. `max_atoms` must be unset for this check.
+
+Output must be a fresh empty directory. `report.json` and each attempt directory
+retain configs, stage, error, stdout/stderr and metrics. A successful check writes
+`config.resolved.json` with the tested batch; formal training must use it and start
+again from its specified initialization. Compare pretrained and scratch separately,
+then recheck both at their common smaller batch. No gradient accumulation is implied.
+
+Generation needs a separate `--phase sample` check with the full intended `task.sampling`
+settings. Sampling batch can differ from training; the requested sample count and
+number of denoising steps must not be reduced. The current worker supports configured
+initialization, not resuming a partially trained optimizer; precheck resumed training
+requires a dedicated continuation probe before changing any checkpoint settings.
+
+Peak CUDA memory and measured throughput cover the supplied probe after warmup.
+Capacity alone does not establish scientific accuracy, held-out evaluation, full-data
+coverage or checkpoint compatibility. See [the experiment plan](../../../docs/plan/arxiv_v1_experiments.md).

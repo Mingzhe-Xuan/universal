@@ -34,7 +34,22 @@ def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None,
         configure_optimization(model, config)
         model.eval()
         config = resolved_model_config(config, model)
-    structures = open_structures(dataset_path, dtype=model_dtype(config), options=config["dataset"].get("options"))
+    from universal_gnn.data.splits.loading import load_partition
+
+    settings = config["dataset"]
+    configured_path = str(settings["path"])
+    same_source = (str(dataset_path) == configured_path if str(dataset_path).startswith("plugin:") or
+                   configured_path.startswith("plugin:") else Path(dataset_path).resolve() == Path(configured_path).resolve())
+    if not same_source:
+        # A training-source partition cannot select records in a new prediction source.
+        settings.pop("split_manifest", None)
+        settings.pop("partition", None)
+        settings.pop("sha256", None)
+    settings["path"] = str(dataset_path)
+    structures = open_structures(dataset_path, dtype=model_dtype(config), options=settings.get("options"))
+    indices, _, _ = load_partition(structures, settings)
+    if settings.get("split_manifest") is not None:
+        structures = SelectedStructures(structures, indices)
     if limit is not None:
         if not isinstance(limit, int) or isinstance(limit, bool) or limit < 1:
             raise ValueError("Inference limit must be positive")

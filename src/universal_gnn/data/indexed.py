@@ -14,6 +14,7 @@ class JSONLStructures(Sequence):
     def __init__(self, path, *, dtype=torch.float32):
         self.path, self.dtype = Path(path), dtype
         self.offsets = []
+        self.identifiers = []
         digest, identifiers = hashlib.sha256(), set()
         standard, duplicate = False, False
         with self.path.open("rb") as stream:
@@ -32,6 +33,7 @@ class JSONLStructures(Sequence):
                 identifier = str(record.get("id", record.get("jid", len(self.offsets))))
                 duplicate = duplicate or identifier in identifiers
                 identifiers.add(identifier)
+                self.identifiers.append(identifier)
                 self.offsets.append(offset)
         if standard and duplicate:
             raise ValueError("Standard datasets require unique ids")

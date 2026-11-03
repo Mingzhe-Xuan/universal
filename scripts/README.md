@@ -3,6 +3,19 @@
 This directory contains Slurm, dependency and dataset preparation entry points. Source changes are
 made and committed locally, then pulled on Guqq2. Downloaded datasets and generated job outputs
 remain ignored. Each remote session is recorded in docs/agents/gpu.md before connection.
+
+## Arxiv experiment preparation regression
+
+After restoring and recording the task-owned environment, submit
+`sbatch scripts/validate_arxiv_preparation.slurm`. It requests a GPU, runs the existing
+suite plus held-out integration tests, then runs scalar/classification/spectrum/
+tensor-response/force/generation complete-step preflight checks and separate sampling.
+Disposable fixture plugins request allocations larger than physical GPU memory to
+verify actual CUDA OOM halving and batch-one failure. All fixture data and results
+remain under ignored `runs/`. These are synthetic integration checks, not full-data
+capacity certification. Use `--export=ALL,UGNN_TEST_ENV=universal-mace` or
+`universal-official` for the isolated model environments. The job records the commit,
+package inventory, JUnit result and explicit acceptance JSON; failures stop the job.
 # Real small-data matrix
 
 Download the named author archives listed in `prepare_acceptance_data.py` to `data/downloads`.

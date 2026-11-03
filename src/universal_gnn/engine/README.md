@@ -61,8 +61,23 @@ Epoch loss describes minibatch predictions before their respective updates. Init
 use complete dataset evaluation. Ordinary training does not require monotonic loss decrease;
 real-data fine-tuning acceptance additionally checks decrease and backbone updates externally.
 
+An explicit source-bound split manifest opts supervised/force-field training into
+[independent validation/test scoring](evaluation/README.md). Training requires the
+train partition; validation selects a weights-only best checkpoint and optional early
+stopping, then the best model scores the complete test partition. Reports keep these
+held-out results separate from training loss. This new path awaits numerical Slurm
+validation; no-manifest runs retain the training-only interpretation above.
+
 New training defaults to `dtype: float32`; `float64` remains available for derivative accuracy.
 Checkpoint reload/inference uses its saved dtype. Legacy checkpoints lacking dtype retain float64.
+
+## CUDA capacity preflight
+
+The isolated [benchmark preflight](../benchmarks/README.md) tests the complete training
+step and reduces batch size only after confirmed CUDA OOM. Each attempt starts in a new
+process, and its updates never enter formal training. A successful candidate writes its
+batch size into a resolved config; dataset-wide coverage and generation sampling need
+their own checks. Ordinary training does not silently retry OOM or change batch size.
 Full resume requires the same batch size, atom budget, shuffle, dtype and selected labelled data;
 ordering is derived from seed and completed epoch, while Torch stochastic state and Adam are saved.
 Derivative inference keeps autograd enabled. Fixed-corruption generation uses per-structure seeds

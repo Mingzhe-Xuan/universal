@@ -85,3 +85,18 @@
 - 2026-11-03T11:30:56+08:00: Prediction component validation reuses existing universal(core),universal-mace,universal-official venvs unchanged; no package or vendor source modifications. All units use2CPU; real official cases use1CPU with OMP/MKL/OPENBLAS1 for stable float32 derivative/reference parity. Source0cc5a98, jobs769-772; original environments/versions as prior official and force-only records.
 
 - 2026-11-03T14:06:10+08:00: Other forcefield validation reused all prior task venvs unchanged:no installs or upstream vendor edits. Official(ALIGNN/CGCNN/MEGNet),core(NequIP),equiformer(originalPyG2.0.4) each singleCPU for actualnumeric tests,OMP/MKL/OPENBLAS1;fullregressions2CPU126each. All recorded versions/source hashes remain in actualreport. Temporary dataset/ckpt/results taskscoped andignored.
+# 2026-11-03 全量实验前环境复查
+
+本轮只读检查发现，之前四个任务venv共同引用的
+`/home/xmz/generate_md/.venv-smoacs-blackwell/lib/python3.10/site-packages` 已不存在。
+四个环境的distribution元数据均查不到Torch、NumPy、ASE、pytest，部分任务专属包仍在。
+旧环境通过139项测试的历史记录保留，但不能当作当前环境完整可运行的证明。
+后续先建立并记录任务自有共同基础环境，再验证e3nn/PyG隔离和RTX5090 CUDA执行；本轮没有安装或修改依赖。
+详细证据在忽略目录 `results/paper-storage-20261103/environment-check.json`，预算见
+[arXiv v1实验计划](../plan/arxiv_v1_experiments.md)。
+
+- 2026-11-03T21:49:41+08:00: BEFORE restoration:create task-owned /home/xmz/.venvs/universal-base using python3 -m venv --without-pip;reuse existing core pip only to manage newprefix. Planned sharedbase pinnedTorch2.7.1+cu128/NumPy1.26.4/ASE3.27.0/PyYAML6.0.3/pytest9.1.1 and prior compatible scientificdeps. Preserve model-specific e3nn and originalsource profiles;addreadonly commonbase pathonlyafter metadata checks. No installation into system/otherprojects. Savepackageversions/locations and build-only viaSlurm.
+
+- 2026-11-03T22:13:59 +08:00: universal-base creation verified empty after successful pull. Binary Torch install command exited1; later log read did not execute because automatic approval timed out, including one retry. Do not record Torch/scientific packages as restored until logs and installed metadata are checked. Existing user proxy unchanged; latest measured available69190582272B before install.
+
+- 2026-11-03T22:39:33 +08:00: Diagnosed first Torch install: pip targetbase lacked PySocks (Missing dependencies for SOCKS support). Plan curl universal PySocks1.7.1 wheel+PyPI digest, no-index bootstrap into universal-base, then pinned binary-only retry. This modifies only task-ownedbase; package presence still pending confirmation.

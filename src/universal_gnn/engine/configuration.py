@@ -57,6 +57,8 @@ def resolve_config(file_config, *, base=None, model=None, dataset=None, task=Non
         # A file-specific checksum from the configuration cannot describe an overridden file.
         if dataset != file_config.get("dataset", {}).get("path", (base or {}).get("dataset", {}).get("path")):
             config["dataset"].pop("sha256", None)
+            config["dataset"].pop("split_manifest", None)
+            config["dataset"].pop("partition", None)
     if task is not None:
         previous = config.get("task", {})
         kind = task if task in {"forcefield", "generation"} else "supervised"

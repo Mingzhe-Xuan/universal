@@ -1,3 +1,8 @@
+# ustc-gpu 当前接入约定
+
+2026-11-03 用户明确补充：旧登录公告已过时，最新用户指南允许 Codex 通过 SSH 接入。
+当前按此用户确认的许可执行，详见 [ustc-gpu.md](ustc-gpu.md)。下方此前因旧公告退出的条目保留为历史。
+
 # Guqq2 连接记录
 
 ## 2026-11-02：存储容量检查（连接前记录）
@@ -403,3 +408,95 @@
 - 2026-11-03T17:29:40+08:00: Collection SSH closed by Vlab remote before health/pull output,no results read. Authorized persistent final collection/sync/cleanup connection:health+pull before alltask operations;reuse owned38788,collect bounded final reports/data,verify812-817,wait for local docs push then pullsameconnection,identity-check stop only38788 and confirm remote1080released. If initialTLSgatefails,stop task operations and diagnose only.
 
 - 2026-11-03T17:36:20+08:00: CLOSED:heldSSH84765 finalHTTP200,pulled4fc8796,queueempty. Identitychecked own38788(name/startUTC2026-11-03T08:56:49.4544046Z),stopped onlythatprocess,sameSSHconfirmed NATIVE_PROXY_1080_RELEASED,controllerexit0. No newserverconnections needed;closurelog-only commit remains local/GitHub.
+
+- 2026-11-03T19:06:43+08:00: Authorized by user:connect SSH alias ustc-gpu interactively;request password/OTP only upon real prompt. Inspect local effectiveSSH config and prior task connection state first. No compute,serverfile edits,or Guqq2 proxy startup;do not stop unknown existingSSH sessions. After login,follow repository-existence/pull gate before repository work;currentrequest is authenticationonly.
+
+- 2026-11-03T19:07:44+08:00: ustc-gpu attempt1 interactive session90195 closed by211.86.151.113:22 before any password/OTPprompt. Authorized next diagnosticconnection:ssh-vv with same alias,forwardingsdisabled,connecttimeout15;inspect handshake stage only,no servercommands/files/compute.
+
+- 2026-11-03T19:08:59+08:00: Diagnostic session63159 endedexit1:kex_exchange_identification remoteclosed after localSSHversion,before any remoteversion/authenticationprompt. TCPconnect succeeded. No password/OTPreceived orsent,no remotecommands. Existing45976/49080 are Guqq/Vlab unrelated;untouched. Asked userfor campus/VPN/jumphost requirements;no taskSSHleft running.
+
+- 2026-11-03T19:10:41+08:00: Useraddedjumphostandrequestsretry. Local ssh-G confirms ustc-gpu xuanmingzhe@211.86.151.113:22 ProxyJumpvlab. AuthorizednextSSH:interactivePTY,ClearAllForwardingsyes,keepalive30,connecttimeout20. Requestpassword/OTPonlywhenprompted;credentialsnotprojectfiles. NoGuqq2proxy/noexisting45976or49080changes/noheavycompute. Repositoryworkrequirespostloginexistence/pullgate;currentrequestconnectiononly.
+
+- 2026-11-03T19:11:17+08:00: Newjumpconnection session2054 reached targetserver keyboard-interactive Passwordprompt. Jumphostpathnowworks. Requestedtargetaccountpasswordviauserinput;awaitingreply,nochallengevaluecollectedorsaved.
+
+- 2026-11-03T19:13:09+08:00: ViaProxyJumpvlab,session2054 password+OTPauthentication succeeded and displayed xuanmingzhe@hanhai22-01 shell. Loginbanner explicitly prohibits codex/relatedservices connecting loginorcomputenodes and anyproxyprogram. On discoveringthisrestriction,stoppedallremote workandsentexit;no businesscommands/repositorychecks/pull/jobs/files/transfers/proxiesexecuted. Credentialsnotrecordedinprojectfiles.
+
+- 2026-11-03T19:13:48+08:00: CLOSED:exitreturnedlogout/Connectionto211.86.151.113closed andexitcode0. No taskSSH/proxyremains;existingunrelatedsessionsuntouched. No furtherustc-gpuconnectionbecauseexplicitloginbannerrestriction.
+
+- 2026-11-03T19:17:43+08:00: Access-guidance update, documentation only: user explicitly confirms old login banner is obsolete and latest user guide permits Codex SSH access. Current guide docs/agents/ustc-gpu.md records user-confirmed permission and verified ProxyJump/MFA route; prior banner/exit observations retained as history. No new server connection or expanded proxy permission in this turn.
+
+- 2026-11-03T19:38:48+08:00: Authorized new Guqq2 storage/planning task: read current capacity/quota,Slurm resources and task-scoped dataset/model/env/result sizes;heavy recursive accounting through Slurm1CPU. Before any connection inspect existing proxy ownership/config;record diagnostic exception ifneeded. Mandatory remote repository existence+gitpull before business operations;network via one dedicated loopbackSOCKS proxy with health check. No fulltraining/deletion/ustc-gpuconnection or unrelatedprocess changes.
+
+- 2026-11-03T19:39:32+08:00: Localinspectionfinds existing userSSHGuqq2 PID47424 andjump57324(start19:35:17),not owned by this task;do not terminate/restart. Authorized pre-pull network diagnostic connection may inspect ONLY loopback1080/current-userSSH processes/end-to-endproxyhealth; if healthy reuse existingproxy and immediatelygitpull before storage/resource business queries. If proxy unavailable stop before business;do not bindduplicate1080.
+
+- 2026-11-03T19:41:58+08:00: InitialconnectionhealthyexistingproxyHTTP200,reused withoutrestart;pulledupstream7c85479. dfavailable72560627712bytes(~67.58GiB),root97%,inodes5%,quota-commandunavailable;node42computeidle48CPU257787MBgpu1. Slurm8181CPU1GBstorageinventorysubmitted. Authorized nextcollectionconnection:health/pullfirst,readbounded818inventory/log/status,lightGPUhardwaremetadata;no modelruns/deletion/newproxy.
+
+- 2026-11-03T19:44:11+08:00: Slurm818inventorypassed:universal5.496GiB,runs5.054GiB,data0.0115GiB,officialmodels0.1267GiB,venvs0.6606GiB,pipcache11.1839GiB;oldgenerate_mdparentandfullsourcearchivesnotseen. Authorized nextlightdiagnosticconnection:health/pullfirst,stdlib-only venvpath/distribution metadata checks (no torch/modelimports),listdatasetarchiveheaders ifpresent. Importantverifyactualenvironmentreadiness beforeproposing fullruns;no installs/deletions.
+
+- 2026-11-03T19:59:44+08:00: Authorized final lightweightverificationconnection:reuse existinguserproxy,health/pull first;freshdf/squeue,stdlibfind_spec forTorch/NumPy/ASE andmissingparents;write bounded JSONfacts locally. No model imports/workload,envrestore/deletion or newproxy. ExistinguserSSH/proxy nottaskowned and mustremain.
+
+- 2026-11-03T20:04:07+08:00: CLOSED finalcheck20:00:44:HTTP200/pull7c85479,squeueempty,available72602255360bytes(67.616GiB). All4venvs find_spec(torch/numpy/ase/pytest)=False confirmsmissingdependencies. Ordinarytaskconnectionsclosed;no newproxycreated,existinguserproxy/sessionuntouched. No environmentinstalls/deletions/modeltraining or additionalSlurmjobs beyondstorage818.
+
+- 2026-11-03T20:04:49+08:00：用户授权 Guqq2 各用户磁盘排名与最大项明细的只读审计。计划先检查配置/已有代理；普通工作连接禁转发，先健康检查及仓库存在/pull，再查 df/mount/权限并以 Slurm node42 单CPU扫描。不得访问不可读目录绕过权限、删除文件或停止既有用户代理。当前默认 ssh -G 未解析别名；若诊断连接发生在 pull 前，只允许回环/当前用户SSH和代理健康诊断。
+
+- 2026-11-03T20:05:56+08:00：本次用户磁盘排名连接前即停止：默认SSH未加载别名，显式-F读取用户config被拒，提权通道sandbox_approval=false拒绝。无实际服务器连接/代理/作业，既有45976/47424/49080/57324未动；已查lessons，等待当前执行环境访问恢复。
+
+- 2026-11-03T20:07:23+08:00：用户要求继续；受控配置读取已成功（xmz@114.214.215.42，ProxyJump vlab，1080回环SOCKS）。授权首次普通连接禁转发，复用既有用户代理健康检查，然后检查/home/xmz/universal存在并git pull，之后仅查看df/findmnt/id/用户目录/Slurm，递归统计另经Slurm。既有用户SSH不操作。
+
+- 2026-11-03T20:08:22+08:00：首次连接HTTP200/pull成功，node42，xmz1010；所有其他home权限750，当前用户未列组访问。下一普通只读连接仍健康检查/pull优先，执行sudo -n -l查询现有只读审计权限，并检查quota/Slurm工具；不索取密码、不绕过目录权限，递归扫描仅Slurm。复用用户既有代理，不新建。
+
+- 2026-11-03T20:10:15+08:00：HTTP200/pull通过，sudo -n -l要求密码，其他用户750目录不可读；已向用户询问管理员统计途径。下一普通连接健康/pull后，只通过Slurm统计当前可读根目录及home目录并标注不可访问项；不得以该可见排名判定全机最大用户。通过本地Python向SSH传LF脚本，避免PowerShell末尾CRLF导致for循环语法错误；不修改服务器受管源码。
+
+- 2026-11-03T20:12:00+08:00：HTTP200/pull后已提交只读Slurm819（node42，1CPU，1GiB，15分钟），仅可读目录，其他用户home不可访问。下一普通连接健康/pull后读取819状态及有界JSON/错误日志并保存本地；不新建代理、不改变其他用户文件或权限。
+
+- 2026-11-03T20:14:01+08:00：用户明确选择仅统计当前可读目录。Slurm819完成0:0，10个其他home不可读，根可见约105.87GB，opt40.07GB/abacus21.76GB/intel12.86GB/xmz18.82GB。下一普通连接健康/pull后提交单CPU深层只读元数据扫描，按文件UID聚合实际blocks、硬链接去重、同设备且不跟随符号链接，输出最大目录与大文件；不读文件内容，不尝试sudo。
+
+- 2026-11-03T20:14:44+08:00：Slurm820已提交（node42，1CPU，1GiB），按用户限定只扫描可读元数据。授权下一普通连接健康/pull后读取820状态、JSON/错误与df/squeue；保存有界结果本地并结束本任务SSH。既有用户代理保持，不进行进一步任务或清理。
+
+- 2026-11-03T20:16:22+08:00：CLOSED，可读范围Slurm819/820均0:0，20:15复核df可用72584384512字节，squeue为空。820原始JSON/状态已保存本地；最后普通SSH退出0，无任务新代理，原有用户SSH/1080代理未动。用户已明确限制可读范围，其他10个home未访问，不再计划连接或sudo。
+
+- 2026-11-03T20:28:46+08:00：用户明确授权Guqq内存检查，目标xmz@211.86.155.221经vlab，与Guqq2不同。计划普通连接禁转发，先检查HOME/universal仓库并按规则通过现有1080代理健康检查后pull；若仓库不存在，从已确认origin https://github.com/Mingzhe-Xuan/universal.git浅clone。随后仅free/proc/vmstat短时/ps及GPU元数据，无模型计算/目录扫描/清理/新代理。若代理失败，pull门禁前只允许回环/当前用户SSH和端到端代理诊断。保留所有用户既有会话。
+
+- 2026-11-03T20:31:59+08:00：Guqq首次普通连接最终自行返回255：Timeout server211.86.155.221 not responding，仅见Vlab欢迎，未见远程脚本/仓库检查输出。未确认执行过业务命令；身份校验时PID已不匹配，未结束任何进程。授权一次BatchMode=yes/ConnectTimeout15/keepalive10×2/总65秒上限的同目标诊断重试，保留认证阶段日志；若能执行则仍先仓库/健康门禁，之后仅内存快照。无新代理或既有会话操作。
+
+- 2026-11-03T20:33:34+08:00：CLOSED Guqq内存查询诊断。首次SSH255/目标keepalive超时；第二次BatchMode=yes有界重试Vlab公钥认证成功，目标211.86.155.221在banner exchange阶段超时返回255，stdout无远程指标。未取得RAM/Swap/进程值，未启动新代理/Slurm/模型或确认执行任何任务仓库操作。曾计划仅终止首个自有SSH，但身份检查不匹配（其已自行退出）故未Stop任何PID。保留用户原有45976/49080/47424/57324会话；无需继续连接，等待目标恢复。
+
+- 2026-11-03T20:33:47+08:00：末次本地Get-Process仅见原Guqq2 PID47424/57324；原Guqq45976/49080已不在列表。任务未执行任何Stop-Process（身份条件未匹配），不将原会话消失归因于本任务。两个新建任务SSH均已返回，无残留任务连接。
+
+- 2026-11-03T20:35:56+08:00：用户明确要求再试Guqq内存查询，授权一次有界只读连接，目标211.86.155.221；禁转发/BatchMode，仓库存在与健康/pull门禁后读取free/proc/vmstat/ps及GPU元数据。若代理不可用，仅允许回环/当前用户SSH/端到端健康诊断，确认1080释放后才可建一个专用持有会话。无重启服务器、终止用户进程或模型计算。
+
+- 2026-11-03T20:36:54+08:00：Guqq重试已恢复SSH公钥登录；HOME/universal不存在，现有1080代理curl退出7，门禁前未执行业务指标。授权仅诊断连接检查ss1080和端到端健康；确认无监听后启动且仅启动一个本任务Guqq专用隐藏-N-T代理持有会话，再普通连接禁转发health/从已确认remote浅clone优先，之后内存轻量快照。记录本地PID/启动时间，任务末只关闭自有持有会话并确认Guqq1080释放，不影响Guqq2用户代理。
+
+- 2026-11-03T20:37:44+08:00：诊断确认Guqq1080无监听且curl refused；已启动唯一隐藏专用代理PID=53440，startUTC=2026-11-03T12:37:42.8591450Z。授权下一普通连接禁转发，端到端HTTP检查通过后浅clone已确认remote到HOME/universal（此前不存在），再读取内存/PSI/进程快照；不跑训练。最后同一连接等待CLOSE，核对本地代理身份后关闭自有PID，并确认Guqq1080释放。
+
+- 2026-11-03T20:39:22+08:00：Guqq当前SSH可登录；首次专用holder53440启动时被Vlab关闭（本地stderr证据），PID已不存在；随后普通连接curl明确refused，未clone或查内存。此前ss确认1080无监听。授权替换这一个失败持有会话，以前台受控exec持有-N-T（仍仅一个），确认进程存活后再健康/pull/clone门禁。若再次链路失败停止代理重连并记录原因，不终止用户代理。
+
+- 2026-11-03T20:40:02+08:00：替代唯一holder3052由受控exec93382持有，创建UTC约2026-11-03T12:39:28.966659Z，已见Vlab欢迎。下一连接禁转发/HTTP健康，再HOME/universal浅clone（如仍不存在，跳过LFS自动下载），随后短时RAM/Swap/PSI/ps/nvidia元数据并结束。收尾仅关闭该身份匹配PID，另行诊断确认1080释放。
+
+- 2026-11-03T20:41:25+08:00：Guqq node221内存快照20:40:25成功，代理HTTP200，HOME/universal浅clone完成；仅free/proc/vmstat/ps/GPU元数据。最后采集连接已结束。授权仅网络清理诊断连接（门禁前只执行就绪握手和ss1080），持有该连接期间本地核对专用3052命令/启动UTC约12:39:28.966659后仅停止3052，再同连接确认Guqq1080释放；无repo/实验操作，不触碰用户Guqq2代理。
+
+- 2026-11-03T20:42:17+08:00：清理控制器已匹配身份并仅停止自有3052，受控holder会话退出；但text=True在Windows写CLOSE产生CRLF导致远程严格token比较退出2，尚未确认端口。授权一次仅ss1080的清理诊断连接，不执行仓库/实验命令；确认释放后结束。无需新建代理。
+
+- 2026-11-03T20:43:46+08:00：CLOSED本轮Guqq重试：20:40:25 node221快照成功，总270309412864/可用247585054720字节，Swap已用1836236800字节，短时PSI/si/so均零；无模型计算或Slurm。Guqq原无repo，按规则经唯一SOCKS HTTP200浅clone已确认remote成功后查询；首holder53440遭Vlab关闭已退出，替代3052已核对命令/启动时间后仅关闭该PID。最终独立诊断GUQQ_MEMORY_PROXY_1080_RELEASED/exit0，3052/53440均本地不存在，所有任务连接结束，既有用户Guqq2代理未动。
+
+- 2026-11-03T21:48:37+08:00: Authorized execution connection purpose: Guqq2 current capacity/env/proxy diagnosis, mandatory pull before business actions, restore task-owned sharedvenv using python-venv and install pinned deps;downloads/install lightweight login allowed, builds/tests/model/data processing Slurm only. Inspect existingSSHproxy ownership and reuse healthy1080;do not end unknown sessions. No ustc-gpu/Guqq connection or unrelateddata cleanup.
+
+- 2026-11-03T21:54:41 +08:00: Goal execution: previous bootstrap process has exited; reconnect to verify shared-base environment, proxy health and git pull, then restore only task-owned dependencies. No login-node model computation.
+
+- 2026-11-03T21:55:28 +08:00: Proxy diagnostic exception: existing 1080 listener timed out reaching GitHub before pull. Diagnostic connection is limited to loopback listener, current-user SSH processes and end-to-end HTTPS health; inspect local dedicated holder/public network too. Do not terminate user-owned SSH session.
+
+- 2026-11-03T21:57:05 +08:00: Existing proxy reaches PyPI (200), GitHub homepage returned 403. Check repository Git HTTPS endpoint as targeted network diagnostic; only if successful pass pull gate and inspect/create task base venv. Preserve user proxy.
+
+- 2026-11-03T21:58:03 +08:00: Targeted GET proxy health (Git smart HTTP endpoint rejects HEAD with405), then pull and task-only environment setup if200. No model execution on login.
+
+- 2026-11-03T21:59:34 +08:00: Proxy repository GET200 and pull succeeded; basevenv createdempty,69190582272Bavailable. Connect to pull then install pinned binary-only TorchCUDA128/common scientific packages into universal-base, logs under runs/arxiv-v1-setup. No compilation or model execution; leave existing user proxy untouched.
+
+- 2026-11-03T22:02:47 +08:00: Open ordinary persistent work shell with ClearAllForwardings for setup-log inspection, task-only binary installs and later Slurm submission/status. First verify existing proxy and pull; all model work through Slurm. No source edits on server.
+
+- 2026-11-03T22:06:07 +08:00: Persistent-shell/process-inspection auto-review timed out before execution. Use one ordinary non-PTY retry for the authorized setup-log inspection; same proxy-health/pull gates. No changes to user-owned SSH holders.
+
+- 2026-11-03T22:19:02 +08:00: Automatic approval timed out for git add and its one permitted retry before command creation. No commit or push completed; new modules remain local. Remote log-inspection retry also timed out. No task-owned proxy/SSH holder remains; existing user proxy was not changed. Goal remains active; pending user guidance/execution channel recovery for remote checks and publication.
+
+- 2026-11-03T22:37:48 +08:00: Read-only elevated git check now succeeded after permitted retry; active goal explicitly continues. Connect ordinary non-forwarding SSH to verify existing proxy via bounded GitGET and pull, then inspect task-owned base installation logs/disk. No login-node model computation; no user-owned proxy changes.
+
+- 2026-11-03T22:39:33 +08:00: Install log confirms missing SOCKS support in empty targetbase. Connect, proxyhealth/pull, fetch PySocks1.7.1 universalwheel via curl and verify PyPI SHA256, install offline into task-ownedbase then retry binary-only CUDA/common dependencies. No compilation/modelwork on login.

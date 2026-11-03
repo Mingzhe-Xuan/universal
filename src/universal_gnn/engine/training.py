@@ -71,23 +71,26 @@ def dataset(config, limit=None):
 
     settings = config["dataset"]
     structures = open_structures(settings["path"], dtype=model_dtype(config), options=settings.get("options"))
+    from universal_gnn.data.splits.loading import load_partition
+
+    indices, _, _ = load_partition(structures, settings)
     limit = config.get("structures") if limit is None else limit
     if limit == "all":
         limit = None
     if limit is not None and (not isinstance(limit, int) or isinstance(limit, bool) or limit < 1):
         raise ValueError("structures must be a positive integer, null or all")
-    if limit is not None and len(structures) < limit:
-        raise ValueError(f"Requested {limit} structures, found {len(structures)}")
-    indices = range(len(structures))
+    if limit is not None and len(indices) < limit:
+        raise ValueError(f"Requested {limit} structures, found {len(indices)} in the selected partition")
     selection = settings.get("selection", "first")
     if selection not in {"first", "random"}:
         raise ValueError("dataset.selection must be first or random")
     if limit is not None:
         if selection == "random":
             generator = torch.Generator().manual_seed(settings.get("selection_seed", config.get("seed", 123)))
-            indices = torch.randperm(len(structures), generator=generator)[:limit].tolist()
+            permutation = torch.randperm(len(indices), generator=generator)[:limit].tolist()
+            indices = [indices[i] for i in permutation]
         else:
-            indices = range(limit)
+            indices = indices[:limit]
     if not len(indices):
         raise ValueError("Dataset must not be empty")
     bindings = settings.get("bindings")
@@ -172,7 +175,11 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     validate_config(config)
     if resume is not None and warm_start is not None:
         raise ValueError("resume and warm_start are mutually exclusive")
+    if config["dataset"].get("split_manifest") is not None and config["dataset"].get("partition") != "train":
+        raise ValueError("Training with a split manifest requires dataset.partition=train")
     if config["task"]["kind"] == "generation":
+        if config["dataset"].get("split_manifest") is not None or "evaluation" in config:
+            raise ValueError("Generation held-out evaluation requires its dedicated denoising/sampling workflow")
         if warm_start is not None:
             raise ValueError("Explicit component warm-start is not supported for generation")
         from universal_gnn.engine.generation import run_generation_training
@@ -242,11 +249,14 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     checkpoint = Path(checkpoint_path) if checkpoint_path is not None else output / "checkpoint.pt"
     versions = version_record()
     scales = saved["scales"] if state is not None else dataset_scales(structures, config)
+    from universal_gnn.engine.evaluation.heldout import make_holdout
 
-    def evaluate(current, *, compare=None, collect=False):
+    holdout = make_holdout(config, structures, checkpoint, state=state)
+
+    def evaluate(current, *, compare=None, collect=False, evaluation_data=None):
         totals, collected = LossTotals(), {}
         current.eval()
-        for batch in batches(structures, config):
+        for batch in batches(structures if evaluation_data is None else evaluation_data, config):
             values = predict(current, batch, config)
             totals.add(loss_parts(values, batch, config, scales))
             if compare is not None:
@@ -269,12 +279,18 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     training_components = None
 
     def save_progress(epoch):
+        continuation = {"completed_epochs": epoch, "data_fingerprint": fingerprint,
+                        "initial_loss": initial_loss, "history": history,
+                        "gradient_norms": gradient_norms,
+                        "backbone_gradient_norms": backbone_gradient_norms}
+        if holdout is not None:
+            continuation["evaluation"] = holdout.snapshot()
         save_training_checkpoint(checkpoint, model, optimizer, config, versions,
-                                 {"completed_epochs": epoch, "data_fingerprint": fingerprint,
-                                  "initial_loss": initial_loss, "history": history,
-                                  "gradient_norms": gradient_norms,
-                                  "backbone_gradient_norms": backbone_gradient_norms}, scales=scales)
+                                 continuation, scales=scales)
+        if holdout is not None:
+            holdout.finalize_best()
 
+    completed_epochs = completed
     for epoch in range(completed, epochs):
         model.train()
         if training_components is None:
@@ -308,18 +324,30 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
         history.append(totals.loss(config))
         gradient_norms.append(math.sqrt(gradient_squared))
         backbone_gradient_norms.append(math.sqrt(backbone_squared))
+        completed_epochs = epoch + 1
+        if holdout is not None:
+            validation_loss, _ = evaluate(model, evaluation_data=holdout.validation)
+            improved = holdout.update(completed_epochs, validation_loss, model, optimizer, config, versions, scales)
+            frozen_state.verify()
+            if event_callback is not None:
+                event_callback("validation", epoch=completed_epochs, loss=validation_loss, best_updated=improved,
+                               structures=len(holdout.validation), best_epoch=holdout.tracker.state["best_epoch"])
         interval = config.get("checkpoint_every", 0)
         if interval and (epoch + 1) % interval == 0:
             save_progress(epoch + 1)
         if event_callback is not None:
             event_callback("epoch", epoch=epoch + 1, loss=history[-1], minibatches=steps,
                            structures=len(structures))
+        if holdout is not None and holdout.tracker.should_stop:
+            if event_callback is not None:
+                event_callback("early_stopping", epoch=completed_epochs, best_epoch=holdout.tracker.state["best_epoch"])
+            break
     model.eval()
     final_loss, _ = evaluate(model)
     frozen_state.verify()
     delta = math.sqrt(sum(float((value.detach().cpu() - starting[key]).square().sum())
                           for key, value in model.named_parameters()))
-    save_progress(epochs)
+    save_progress(completed_epochs)
     reloaded = load_checkpoint(checkpoint, device=device)
     collect = config.get("report_predictions", len(structures) <= 1000)
     _, predictions = evaluate(reloaded, compare=model, collect=collect)
@@ -337,7 +365,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
               "structures": records, "selected_structures": len(structures),
               "available_structures": len(structures.source), "data_fingerprint": fingerprint,
               "structure_records_truncated": len(records) != len(structures),
-              "checkpoint": str(checkpoint), "completed_epochs": epochs,
+              "checkpoint": str(checkpoint), "completed_epochs": completed_epochs, "requested_epochs": epochs,
               "segment_initial_loss": segment_initial_loss,
               "resume": {"path": str(resume) if resume else None,
                          "kind": "full" if state is not None else "weights_only" if saved is not None else "none",
@@ -352,6 +380,12 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     from universal_gnn.engine.derived import derived_outputs
 
     report["derived"] = derived_outputs(predictions, config["task"]) if collect else {}
+    if holdout is not None:
+        report["heldout"] = holdout.score_test(reloaded, config, scales,
+                                              output / "evaluation" / f"epoch-{completed_epochs}")
+        report["best_checkpoint"] = str(holdout.best_checkpoint)
+        report["early_stopped"] = completed_epochs < epochs
+        report["interpretation"] = "training metrics above; independent test metrics under heldout, selected by validation"
     (output / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     if not report["passed"]:
         raise RuntimeError(f"Training failed; inspect {output / 'report.json'}")

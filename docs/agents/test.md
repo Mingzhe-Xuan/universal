@@ -856,3 +856,133 @@
 - 2026-11-03T17:33:42+08:00: Final documentation precommit PASSED:29relative links,3new YAML/Bash blocks,2native configs schema checks,archiveSHA/bytes/86-file count match,and git diff --check. State history prefix preserved. PersistentSSH84765 remains open at NATIVE_VALIDATION_READY;same-session synchronization and proxy cleanup next.
 
 - 2026-11-03T17:36:20+08:00: Closurechecks PASSED:sameconnection finalHTTP200/gitpull4fc8796/queueempty,ownproxyidentity match,remote1080released,controllerexit0. No production/source changes after passed139x3/sixnative/sixtransfer suites. Final statehistory-preservation and whitespace checks apply to closure records only.
+
+- 2026-11-03T17:52:00+08:00: Read-only consultation check:catalog.py has11entries;forcefield outputs total_energy/forces/stress;customspec supports graph/node regression/classification with explicitshape;CEsinglelabel;postprocess includesfinitewindowKK. Nativeprofilelimits checked against docs/native_heads andprovidercontracts. No numerical rerun warranted for answering current capabilities.
+
+## 2026-11-03 18:10:53 +08:00：MACE/NequIP生成任务先例核查
+
+- 检查论文方法与作者代码，预期给出可核实直接先例并明确模型承担角色；区分架构改造训练与原预训练权重复用，避免将弛豫/筛选误记为生成主干。仅文献核查，无模型执行。
+
+- 实际结果：直接核对MACE扩散时间编码/坐标与元素去噪、SiMGen预训练节点特征及相似核；CHGGen作者声明和论文score网络、DM2方法中的定制NequIP及条件嵌入；GEODE附录C的MACE模板编码器。来源限定原论文/作者代码，部分出版站访问失败时使用作者托管PDF和已检索正文，未用二手综述替代。未运行数值测试。
+
+- 2026-11-03T19:06:43+08:00: Connection-only check plan:local effectiveSSH hostname/user/port/forwarding;actual interactive auth prompts;confirm final remote shell/login without recording credentials in projectfiles. No numerical tests needed.
+
+- 2026-11-03T19:08:59+08:00: Connectioncheck result:effectivealias xuanmingzhe@211.86.151.113:22,no proxyjump;attempt90195 anddiagnostic63159 bothremoteclose pre-auth,secondconfirmed kex_exchange_identification. Bothprocesses exited1,no password/OTPprompt reached,no credentials stored. Existing unrelatedSSHuntouched.
+
+- 2026-11-03T19:10:41+08:00: Updatedconnectionplan:verifyeffectiveProxyJumpvlab thenactualSSHauthenticationpath/password/OTP/login. ExistingunrelatedSSHidentifiedanduntouched;no numericaltests.
+
+- 2026-11-03T19:13:09+08:00: Connectiontestsuccessful:updatedProxyJumpvlab reachedtargetpasswordthenOTPthenhanhai22-01shell. No credentialvaluespersistedinproject. Accessrestrictiondiscoveredinloginbanner;onlyexitissued,no repositorywork/heavywork. Sessionterminationchecknext.
+
+- 2026-11-03T19:13:48+08:00: Finalconnectioncheck:interactiveSSH2054 exited0;outputlogoutandtargetconnectionclosed. Jump/MFApathworks,post-loginusageblockedbyexplicitsitebannerrestriction. No unit/numericaltestsapplicable.
+
+- 2026-11-03T19:16:20+08:00: Documentation-only plan: verify new access note links/paths, SSH example parsing and host alias, source attribution to this user clarification, absence of credential values, and unchanged historical state prefix. No numerical tests or server connection required.
+
+- 2026-11-03T19:17:43+08:00: Documentation checks PASSED:5 relative links,Markdown fences,SSH example bash syntax,user-source attribution,and complete preexisting state-history prefix preservation. Trailing blank lines corrected. No secrets added to documentation;no source/config changes,unit tests or new SSH session.
+
+- 2026-11-03T19:38:48+08:00: Planning/check scope:SSH proxyhealth and mandatorypull;df/inode/quota and Slurm top-levelresource query;Slurm1CPU recursive taskusage inventory crosschecked against df. Local static train/split/metric/config audit;officialdataset counts/splits/download sizes via primarysources. Planfile links,unit conversions,additive storage budgets and sourceattribution checked;no new modelnumerics.
+
+- 2026-11-03T19:59:44+08:00: Planning evidence verified:818archive2636B SHA386cf01f6379441791b9b0a431e2d59696ffdd09f8910fcd833aff3ba89b13ff;allinventorycomplete,checkpoint count actual190. LocalZIPdirectoryheaders read only:no bulkconversion. Draft budgets add24-39GiB,29cells/seed87for3seeds. Next final docschecks+freshcapacityfind_spec diagnostics. Publisheddatasetcounts distinguishedfromactualcleanedN.
+
+- 2026-11-03T20:04:07+08:00: Final planningchecksPASSED:12relative links,Markdownfences,4bashscripts bash-n,818archiveSHA/length/count190,localZIPheaders,final67.616GiBcapacity/find_spec facts. P1data upperbounds sum7GiB;corrected aggregatebudget24-40GiB so conservative67.577-40=27.577GiB>20reserve. 16main+13extension=29cells,3seeds87. OriginalHEADstatehistoryprefixpreserved. No numericaltests required for documentation-onlyplan.
+
+## Guqq2 用户磁盘排名检查计划
+
+- 验证本地 SSH 确实加载用户 Guqq2 别名；若配置权限阻塞，不将其误报为服务器故障。
+- 通过健康检查与 git pull 门禁后方可进行业务查询；递归磁盘统计通过 Slurm，限制单 CPU，统计含隐藏目录且不跟随符号链接、不跨文件系统。
+- 区分按家目录和按文件 UID 归属；记录无权读取、共享目录和系统占用，避免不完整排名误判全机最大用户。
+- 结果报告时间、节点、单位、主要目录/文件及扫描覆盖限制。仅只读审计，不清理数据或操作其他用户进程。
+
+## Guqq2 用户排名实际检查结果
+
+- SSH 配置预检未通过：默认别名未解析，显式 -F 文件访问 Permission denied；受控提权被策略拒绝。
+- 已确认不具备继续连接条件，未将本地访问问题误报服务器故障；未生成用户排名或宣称扫描完成。
+- 既有 SSH 进程只读查看，未清理、重启代理或发起 Slurm 作业；经验记录已查。
+- 本轮仅更新记录，未提交或改动科学源码。静态核对相关记录严格 UTF-8、无替换字符且新增状态/历史存在。
+
+## 2026-11-03 Guqq2 可读范围存储审计实际验收
+
+- SSH访问恢复后每次连接健康HTTP200和git pull均通过，复用用户既有代理；没有改动其他会话。
+- Slurm819、820通过scontrol确认为COMPLETED、ExitCode0:0、node42、单CPU；末次squeue无作业。递归工作不在登录进程执行。
+- 819明确10个home不可读；820仅可见文件按UID统计，记录354条访问/文件状态错误，不将作业成功视为全盘成功。
+- 本地验证sum(owner.allocated_bytes)==visible_total_bytes通过；GiB、总目录和独立安装包大小换算通过；JSON可解析，含节点、时间、UID、统计口径与错误。
+- 临时本地控制脚本及其内嵌Python语法检查通过；扫描不跟随符号链接、不跨设备、硬链接去重，只读取stat/目录元数据。
+- 结果保存于忽略目录；无清理、模型计算或Git提交，既有其他未提交文档改动保留。
+
+- 2026-11-03T20:17:06+08:00: Checkpoint consultation staticcheck:verified four officialprofile filenames/sourceURLs/hashentries against official-pretrained.md/native-head evidence andcurrent818 officialcachedirectory. Distinguish original task head from newdownstream readout andretainedweights fromcurrentlymissingTorch dependencies. No numerical rerun warranted.
+
+- 2026-11-03T20:26:23+08:00: Documentation/staticcheckplan for48matrix:verify count48/144,per-model parametercount fromactualofficialmetadata and16byte/P FP32Adam estimate (notactivationVRAM),resourcehardware evidence,matching FT/scratchtaskheads/data/graph,cross-providerPBCcompatibility,andbounded disk retention math. No GPUprofilingpossible until missing shareddeps restored;do not label estimatesasmeasurements.
+
+## Guqq 内存快照检查计划
+
+- 核对SSH目标Guqq为211.86.155.221，不能沿用Guqq2的RAM/显存或磁盘快照。
+- 读取MemTotal/MemAvailable、SwapTotal/SwapFree、缓存和短时swap活动/PSI，不把空闲少或可回收缓存视为内存耗尽。
+- ps按RSS列进程与用户，标注共享页重复计数及权限限制，不以RSS简单求和等同物理RAM实际总占用。
+- 轻量只读诊断不运行模型；主机、时间与原始结果保存本地，既有代理保持。
+
+## Guqq 内存查询实际检查结果
+
+- 目标身份通过：Guqq211.86.155.221，Guqq2不同。
+- 连通诊断未通过：首连接255目标无响应；重试证据包含Vlab认证成功和目标banner exchange超时，stdout没有MemTotal或free/ps结果。
+- 业务查询未完成，故不提供虚构的内存利用率/最大进程；未重启任何用户代理、清理缓存或终止旧会话。
+- 原始日志与记录本地严格UTF-8检查；只读结果未提交Git，没有模型测试。
+
+## Guqq内存再次重试检查计划
+
+- 核对仍为Guqq211.86.155.221，连接/命令有超时；成功后只读检查MemAvailable/Swap/进程RSS并记录主机时间。
+- 失败记录具体阶段，不将网络超时解释为内存不足；若达到三次失败查询lessons。
+- 仓库与代理门禁通过后才执行业务指标；不碰旧会话、缓存或服务器设置。
+
+- 2026-11-03T20:38:11+08:00: 48matrix documentation/static checks PASSED:4*6*2=48,3seeds144;actualofficialmetadata parametercounts96641/15909761/3847696/616360,FP32Adam16P estimate tablevalid (activationnotincluded). HostconfiguredRAM257787MiB=251.745GiB;singlebudget24-40,3seedbounded26-44GiB leaves23.577GiB atconservativefree67.577.10relative links/fences/whitespace pass. Scratchisnotheadreset;sharedforcePBCcompatibilitychecked. NoGPUpeakmeasurementsclaimed,no modelrun or newSSH.
+
+- 2026-11-03T20:43:27+08:00: Documentation check plan: appended matrix must contain48 training checkboxes (4*6*2),144 runs for3seeds; verify relative links,shared dataset2-7GiB budget and separation of temporary peak,consistent FT/scratch definitions. No numerical or server checks needed.
+
+## Guqq 内存重试实际检查结果
+
+- 实际SSH/代理HTTP200和仓库浅clone成功；原始快照包含node221、20:40:25、MemTotal/MemAvailable、Swap、PSI、vmstat、ps与GPU元数据。
+- 本地逐项换算字节/GiB、RSS KiB/GiB及可用比例：251.745/230.582/15.079GiB，91.59%可用；Swap1.710GiB；最大python4.716GiB。短时si/so和PSI0已核对，不夸大为长期监测结果。
+- 收尾证据：身份匹配停止3052，最终cleanup-confirm.txt包含1080释放标记，诊断连接exit0；本地3052和53440不存在。初次清理token CRLF错误已如实保留，不将该退出2冒充成功。
+- 本轮为短时管理操作，未运行模型/测试作业；生成物保存忽略目录，记录严格UTF-8且保留历史。
+
+- 2026-11-03T20:44:20+08:00: Documentation checks passed: section11 has48 training checkboxes,12 per model across6tasks/twoinitializations;three seeds144. Relative links,Markdown fences/table shape/trailing whitespace valid. Dataset2-7GiB and temporary3-4GiB accounting retained from existing plan. No source/model/server tests needed.
+
+- 2026-11-03T20:49:37+08:00: Doc/staticcheckscope:verifyproviderPBCguards/nativeinputboundaries,CGCNN originalforwarddynamicneighboraxis andpaddingmessages,ALIGNNgraph+linegraph requirements,geometryautogradandcheckpointcompatibility. Updateplan/48checklist to distinguish currentunsupportedinputfromarchitecturalimpossibility;futuremolecularnumeric/parity/forcechecks remainunrun.
+
+- 2026-11-03T20:52:35+08:00: Molecular-input clarification checks PASSED:localbothnative_input PBCguards found;upstreamCGCNNmodel confirms tensorinput/dynamicM and unmaskedneighboraggregation (paddingnotinert);ALIGNNlocalprovider needsatom+linegraphs. Planlinks/fences/whitespaceand48/144count checked. ConditionalrMD17dataupperbounds~7.5GiB rounded8=>single41/three45GiBmax,67.58-45=22.58GiBreserve. No molecularmodelnumericsrun,newinputprofileunimplemented.
+
+- 2026-11-03 20:52:50 +08:00：Equiformer力场静态核查：native_input的原OCP拓扑、attach_periodic_topology、live pos/cell与ForceFieldModel求导、backbone_eval模式和native IS2RE限制均与现有786/795记录核对；本轮未重跑模型，历史十结构执行不视为泛化/MD稳定性。任务记录diff检查通过后交付。
+
+## 2026-11-03 21:00:07 +08:00：全量参数清理追加检查计划
+
+- 纯文档变更：保存追加前内容指纹/前缀，检查既有正文完全保留；核对源码引用、相对链接、围栏/空白和diff。内容须区分默认全量已实现与十结构数据源、预测limit与report_structure_limit等不同语义，不将smoke参数或生成固定噪声当正式全量配置。未授权本轮修改源码或运行训练。
+
+- 2026-11-03T21:00:35+08:00: Doc-onlychecks planned:new6A configuration parses,cutoffunit/strictdistance/PBCaxis/image conventions agreewithgeometry.py;noimplicitneighborcap;officialoriginalpreprocessingandRBFwidth preserved;newplanneddefaultsclearlyseparatefromcurrentcode andexplicitKNNexample. Checkrelative links/fences/whitespace;no newnumericaltestneeded.
+
+- 2026-11-03T21:02:44+08:00: Graph-default docschecks PASSED:graph radius/cutoff6.0 YAML;18relative links/fences;source confirmsper-axisPBCimagebounds,strictdistance<cutoff/nozeroself,livepos/cellgeometry. Currentknn assembly/radiusclass4A verifiedandexplicitlymarkedpendingtransition. gitdiffwhitespacepasses. No defaultcodechange,numericaltestorserverconnection.
+
+- 2026-11-03 21:03:56 +08:00：追加文档检查通过：第12节唯一、4个子节、10行配置表、6个准入项及6个源码相对链接有效，围栏配对/新增空白检查和git diff --check通过。首次严格前缀校验发现同期新增4行6Å构图说明；差异核查确认旧正文无删除或替换，改用逐行保留校验通过，未覆盖同期变更。源代码默认值核查完成；纯文档未运行模型/单元测试。
+
+- 2026-11-03T21:15:55+08:00: Readiness staticchecks:rg/sourceinspection of backbonefactory/officialproviders,graphs.py,training.evaluate,metrics/generation andprepare_acceptanceCohorts. Confirm6Atargetnotimplemented,entirebackbonescratchnotheadreset,independentval/test/bestselectionmissing,generationseedfixedbyindex andsamplingdefaulttrue. LastresourceevidenceusedwithoutclaimingfreshSSH/GPUmeasurement. No codechange/numericaltestneeded forstatusanswer.
+
+- 2026-11-03T21:39:18+08:00: Static/configchecks PASSED:parsedbandgap,spectrum,response,forcefield,mace-forcefield,prediction-force-only,generation,native-bandgap;batch32/32/5/32/4/5/32/16respectively,allmax_atomsNone. Verifiedbatchingdefault32 andForceField/ResponseReadout/sampleautogradpaths. NoGPU peakmeasurementsornewtestsrun.
+
+- 2026-11-03T21:43:50+08:00: Doccheckplan:validatebackoffexamples32->16->8->4->2->1 andoddstart5->2->1;positiveintegertermination,minbatch1failurehonest,commonFT/scratchsafevalue;links/fences/whitespace. CheckOOM-onlyclassification,restartafterfailureandfinalconfig/metadatarequirements;no GPUOOMexperimentrun.
+
+- 2026-11-03T21:45:48+08:00: OOMplan docchecks PASSED:12.5unique,fences,11relative links,32/5/1backoffexamplesandall1..100startsterminateat1,whitespace. Confirmedfulltrainingstep/worstcase/samplingcoverage,trainlabelonlyandfreshformalstart,commonFT/scratchsafeB,realOOMclassificationandbatch1failurelogging. No actualOOMsimulation/GPUrunorcodechange.
+
+- 2026-11-03T21:48:37+08:00: Pre-unit execution plan: environment metadata/path/disk verification, task-ownedvenv packageversions, then Slurm139-test baseline in core/MACE profiles and CUDA basic/high-order probes. Subsequent split/evaluation unit: deterministicgroup-disjoint splits,train-onlyfit/valbest/testisolation,streamingtailmetrics/classification/tensor/force,strictresume. Preserve baseline compatibility; no tests executed yet for newunit.
+
+- 2026-11-03T21:57:43 +08:00: Implementation unit: isolated CUDA batch preflight. Planned checks: 32->16->8 and odd5->2->1; B=1 OOM fails; typed CUDA OOM only, host kill/invalid-result/nonfinite errors never halve; every attempt fresh process and persisted attempt/report; resolved config only on success; real GPU full optimizer step, force mixed derivative and sampling covered through Slurm after environment repair. Local pure-stdlib control tests do not execute models.
+
+- 2026-11-03T22:07:46 +08:00: Implementation unit: immutable group-disjoint split manifests. Plan pure-stdlib fixtures for deterministic seed assignment independent of input order/training seed, exact once-only coverage, group leakage/duplicate ID/out-of-range/source-hash rejection, official fixed partitions, corrupt manifest rejection and roundtrip. No local dataset preprocessing or model execution.
+
+- 2026-11-03T22:12:17 +08:00: Implementation unit: streaming held-out evaluation primitives. Plan pure-stdlib tests for uneven update boundaries, masked targets, tensor Frobenius/zero-target policy, binary confusion/accuracy/F1 and exact tie-aware AUROC using disk-backed SQLite; reject invalid predictions/labels and stale spool files. Training/val-best integration and real model evaluation remain later Slurm checks.
+
+- 2026-11-03T22:13:59 +08:00: Local checks PASSED for implementation units: 4 preflight-control tests (fresh child PIDs, halving32/5, batch1 failure, non-OOM/kill/timeout/malformed identity rejection); 4 split-manifest tests (deterministic groups/official partitions/hash/full coverage/counts); 4 streaming metric tests (masked/zero tensors, element weights, exact tied AUROC/single-class policy). compileall passed for new modules/tests. No model executed locally. Real Slurm worker/CUDA tests NOT run; base binary installation failed, diagnosis blocked by automatic approval timeout, not a scientific test failure.
+
+- 2026-11-03T22:13:59 +08:00: Documentation checks PASSED: 5 affected/new Markdown files, paired fences and 15 relative links; previous state change history preserved verbatim. git diff whitespace and new-source compile checks rerun before commit.
+
+- 2026-11-03T22:21:33 +08:00: Implementation unit: source-bound dataset partition selection and supervised/force held-out training integration. Plan deterministic partition/limited/random selection tests; train-only scales unaffected by held-out labels; validation-only best checkpoint/early stop; test visited once after training; streamed scalar/tensor/force/classification metrics include tail batches; resume retains best history and rejects split changes/missing prior-best; no-split legacy behavior preserved. Pure protocol checks may run locally; numerical integration and existing regression suite through Slurm after environment restoration.
+
+- 2026-11-03T22:35:01 +08:00: Pre-test harness unit: prepare Slurm-only restored-env regression and CUDA full-step preflight acceptance. Scope scalar/classification/spectrum/response/force/generation train+sample, actual CUDA allocation OOM5->2 and always-OOM5->2->1 via disposable fixture plugin; every smoke report explicitly not full-data resource certification. Static source/shell checks locally; actual execution pending approval channel and restored environment.
+
+- 2026-11-03T22:40:23 +08:00: Preparation local checks PASSED: 17 pure control/protocol/metric tests (4preflight+4split+4metric+5selection), including interrupted best/last commit recovery; compileall of edited engine/data and new Slurm helper/tests; bash-n Slurm entry; 14 relative links/fences. Initial inline doc checker failed because PowerShell interpreted backticks; reran from a source file with actual triple-backtick counting, passed without weakening checks. Numerical held-out integrations and actual CUDA allocation OOM remain NOT RUN pending Slurm.

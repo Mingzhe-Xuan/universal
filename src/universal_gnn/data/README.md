@@ -33,6 +33,14 @@ indices/shifts and optional node/edge features. `graphs.py` independently select
 or a BaseGraphBuilder directory plugin; stored graphs are offset without changing atom order.
 The authoritative input/output and file specification is [docs/standards.md](../../../docs/standards.md).
 
+The newly agreed default for non-official graph profiles is a 6-angstrom radius
+graph, with periodic images determined per structure and axis by its PBC flags.
+Molecules use all-false PBC and zero shifts; no neighbor cap or KNN fallback is
+implicit. Official preprocessing retains its original defaults. This is a planned
+default change: current omitted-graph assembly still selects KNN, and the radius
+class default remains 4 angstrom. Set `graph: {name: radius, cutoff: 6.0}` explicitly
+for standard wrapped GNNs until the versioned default transition is implemented.
+
 ## Indexed large inputs
 
 `indexed.open_structures` selects `JSONLStructures` for JSONL files. It scans bytes for offsets,

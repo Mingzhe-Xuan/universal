@@ -112,12 +112,35 @@ class MyGraph(BaseGraphBuilder):
 
 - `knn`：非周期、逐分子 KNN，默认 k=3，对称并去重；每个原子的候选数取 min(k,N-1)。
   孤立点无边。等距邻居按原子序号稳定截断，重排等距原子时不能据此承诺严格置换等变。
-- `radius`：cutoff 内完整周期镜像图，支持晶体；明确设置 `cutoff`。
+- `radius`：cutoff 内完整邻居图，按每个结构/方向的 `pbc` 处理周期镜像，支持晶体、分子及混合batch；当前请显式设置 `cutoff`。
 - `stored`：导入每个 Structure.graph，拼批时给局部索引加 ptr 偏移，保留特征对应关系。
 - `plugin:/folder`：加载该目录 `plugin.py:build_graph_builder(**options)`，必须返回 BaseGraphBuilder。
 
 内置 KNN/radius 可传递节点属性，重建边时拒绝沿用未重排的静态 edge_features；这类输入须选 stored
 或由自定义构图器重新计算/映射边属性。不得静默错配。
+
+### 已确认、待实施的非官方构图默认值
+
+非官方构图的统一默认策略为 **radius graph，cutoff=6.0 Å**：
+
+```yaml
+graph:
+  name: radius
+  cutoff: 6.0
+```
+
+适用于框架通用构图、自定义模型以及新增CGCNN/ALIGNN分子输入profile。
+晶体使用输入声明的逐轴PBC，只在周期轴枚举镜像；分子须声明 `pbc: [false, false, false]`，所有image为零。
+小晶胞保留截断内所有有效镜像，包括非零image的自身镜像；排除零image自身边，不仅取minimum image。
+默认不加KNN/邻居数上限，也不因邻居不足自动扩大cutoff；空邻居、变长邻居由模型输入适配器明确处理。
+距离、位移及需要的角度从live坐标/晶胞计算，拓扑选择与连续几何求导分开。
+
+官方原始预处理默认仍按checkpoint的原图规则及截断执行；更换为此通用构图须显式标记新输入profile。
+6Å是构图截断，不自动改变官方模型的RBF中心、特征维数或已固定的内部径向参数；有模型内部额外截断时须记录有效范围。
+
+本段记录新默认约定，尚未改变代码的省略配置行为：当前标准包装器省略graph仍使用KNN，RadiusGraphBuilder类自身默认cutoff仍为4Å。
+上述显式6Å配置已适用于标准包装GNN；官方CGCNN/ALIGNN的新增分子profile仍待实现。
+实施新默认时须保留旧checkpoint的构图重建语义，不得静默把旧KNN/4Å模型改为6Å模型。显式KNN插件测试示例继续保留。
 
 ## 4. 标准 GNN 与统一包装类
 
