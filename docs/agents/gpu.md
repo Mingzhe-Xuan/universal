@@ -512,3 +512,7 @@
 - 2026-11-03T22:51:22 +08:00: Diagnostics confirmed local no SSH processes and remote1080 free; task dedicated proxy started exec73725. Next ordinary connection verifies end-to-end GitGET, then pull and read failed install logs. Do not treat listener alone as healthy. Record and close this ownedproxy at work end.
 
 - 2026-11-03T22:53:36 +08:00: New dedicated proxy end-to-end GitGET/pull succeeded. Failure log shows previous user proxy disappeared during NVRTC88MB download, not a package incompatibility. Reconnect gated to inspect bounded package/cache lines and retry under stable owned proxy; keep only one holder PID25840/exec73725.
+
+- 2026-11-03T22:56:07 +08:00: Owned proxy GitGEThealth succeeded and prior failure identified as lost old listener. Now connect/pull caccdf7 and retry the stopped binary install under stable dedicated proxy; pip cache retained, no compilation/model imports. Keep holder73725 alive while downloading.
+
+- 2026-11-03T22:59:32 +08:00: Live install12487 and dedicated proxy73725 last confirmed running; connect for GitGEThealth/pull and bounded install progress/metadata inspection only, do not restart active install. No model import or tests on login.

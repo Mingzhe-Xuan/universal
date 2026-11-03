@@ -680,3 +680,5 @@
 - 2026-11-03T22:48:45 +08:00: Correction to preceding live-install note: latest poll of session25239 returned terminal exit1, so installation is stopped, not a verified wait. PySocks1.7.1 import was verified before that failure; Torch success remains unproven. Next inspect logs before any install retry.
 
 - 2026-11-03T22:54:23 +08:00: Owned dedicated proxy PID25840(exec73725) started only after local old holder absent/remote1080 free, verified end-to-end GitGET and pull. Previous pip failure traced to proxy disappearing mid NVRTC88MB download (2.5MB received); no Torch restore claimed. PySocks remains verified. Inspect cache/precise URLs before retry.
+
+- 2026-11-03T23:02:01 +08:00: Add independent CPU Slurm17-protocol regression entry while scientific binaries download. Source-cache scratch audit found MACE extract-config copies learned references and NequIP public config is checkpoint-indirect; recorded required fresh-constructor checks instead of partial reset. Owned proxy is healthy for Git; active pip12487 shows NVRTC partial download/resume8.4MB, not completion.

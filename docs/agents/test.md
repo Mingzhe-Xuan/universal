@@ -988,3 +988,7 @@
 - 2026-11-03T22:40:23 +08:00: Preparation local checks PASSED: 17 pure control/protocol/metric tests (4preflight+4split+4metric+5selection), including interrupted best/last commit recovery; compileall of edited engine/data and new Slurm helper/tests; bash-n Slurm entry; 14 relative links/fences. Initial inline doc checker failed because PowerShell interpreted backticks; reran from a source file with actual triple-backtick counting, passed without weakening checks. Numerical held-out integrations and actual CUDA allocation OOM remain NOT RUN pending Slurm.
 
 - 2026-11-03T22:48:04 +08:00: Follow-up artifact/protocol check PASSED: 5 selection/crash-recovery tests, edited-source compileall,14doclinks/fences and bash syntax. Holdout metrics.json now retains selection/sourceSHA/commit/environment provenance, matching report.heldout; new numerical assertion prepared but not executed. Normative dataset/checkpoint documentation updated.
+
+- 2026-11-03T23:00:40 +08:00: Operational unit: CPU Slurm protocol regression using system Python while Torch downloads. Plan bash syntax + existing17 pure tests; job must gate all four test modules with check=True and emit commit/Slurm/result JSON only on complete success. Separate artifact from pending numerical/CUDA/model acceptance.
+
+- 2026-11-03T23:02:01 +08:00: CPU-protocol Slurm entry static bash-n and documentation checks PASSED; four pure modules previously17tests pass locally. Scientific/CUDA acceptance remains pending, not folded into protocol success.
