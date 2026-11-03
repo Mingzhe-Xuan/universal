@@ -39,6 +39,12 @@ visited with audited exclusions and no atom-count/first-N cap. The job runs the 
 preparation fixture tests before full conversion and writes actual counts/hashes.
 See [the preparation module](../src/universal_gnn/data/preparation/README.md).
 
+`prepare_arxiv_mlearn.slurm` verifies and streams the twelve pinned MLearn E/F
+sources. It retains the released test frames and makes validation groups only
+from released training, with no structure-size cap. It audits shared AIMD families
+between the author's train/test files rather than claiming trajectory independence.
+All twelve JSON files and their download receipt must be prepared before submission.
+
 After a successful common-resource transfer, `restore_common_base.slurm` verifies
 all chunks, the complete archive and each listed wheel, then installs the pinned
 foundation packages into the task-owned base with `--no-index`. It preserves a

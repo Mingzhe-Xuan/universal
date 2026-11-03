@@ -64,3 +64,41 @@ geometry/reference group, source/data hash and fixed split protocols. The audit
 records the tensor convention, both preparation source hashes and measured full
 counts; it does not substitute the paper's reported 4713 for a measured count.
 The complete pickle is loaded in memory inside Slurm before record-wise writing.
+
+## MLearn energy/force release
+
+`mlearn.py` streams all twelve author JSON files for Cu/Ge/Li/Mo/Ni/Si from a
+pinned download receipt. Each entry requires `repo`, `commit`, `upstream_path`,
+`filename`, `bytes`, `sha256` and `git_blob_sha1`; the receipt uses the same schema
+as `data/downloads/arxiv-matrix-raw/download-receipt.json`. Put the twelve raw
+files in its sibling `mlearn/` directory using their receipt filenames.
+All raw sizes, SHA256 and Git blob hashes are verified before reading their records.
+
+```bash
+sbatch scripts/prepare_arxiv_mlearn.slurm
+```
+
+The writer preserves ordered Cartesian sites, row-vector angstrom cells, 3D PBC,
+total structure energy in eV and ordered N-by-3 forces in eV/angstrom. Zero forces
+and energies are valid. Disordered/malformed sites or nonfinite/misaligned labels
+are audited by a stable `mlearn:<element>:<released-role>:<source-index>` ID.
+No first-N or atom-count cap is applied. Raw `virial_stress` is not supervised.
+The [author data protocol](https://github.com/materialyzeai/mlearn/blob/10c427a5480c6281c15c64efaf869b03be04818f/mlearn/data.py)
+specifies total energy and the N-by-3 force array; its
+[LAMMPS E/F protocol](https://github.com/materialyzeai/mlearn/blob/10c427a5480c6281c15c64efaf869b03be04818f/mlearn/potentials/lammps/templates/efs/in.efs)
+uses metal units. Energy/atom scaling is not silently introduced.
+
+All valid released test records remain test. Only released training groups are
+split into train/validation, by deterministic seed/hash order within each element
+(default 10% of groups for validation, with both nonempty). Training snapshots
+sharing their `Snapshot N of M of ...` description family are joined, transitively
+with exact-geometry groups. There is no random-frame fallback for insufficient groups.
+An exact geometry crossing released training/test stops preparation for review.
+
+The released train/test files **already share AIMD description families**. This
+is disclosed in the audit; only train-versus-validation family separation is
+enforced. These results must be described as evaluation on the author's released
+test frames, rather than trajectory-independent generalization. Description
+families can merge distinct simulations with identical descriptions; they are not
+a claim of uniquely identified trajectories. Exclusion and full source/partition
+counts, per-file hashes and actual element coverage remain mandatory evidence.

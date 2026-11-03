@@ -1,15 +1,17 @@
 # 当前状态
 
 Active goal：四模型×六任务×微调/完整scratch，48格/seed、三seed144。尚无正式全量训练结果，不能以协议测试/小样本替代。
-本地/GitHub/服务器已同步f13ed7b：OOM隔离预检、固定分区/val-best/test评测、配对checkpoint恢复、离线Git同步、定向wheel缓存恢复、全量JARVIS准备器和离线安装模板。Slurm822通过18协议测试；823通过4缓存测试并恢复官方SHA匹配Torch1,039,365,846B；829通过9项数据准备/归档fixture测试。以上均不是正式科学任务结果。
-Slurm830已续传完成101,263,360B通用归档并核验25分片；832完成49项通用依赖离线安装，pip check通过。base现在包含NumPy1.26.4/SciPy1.15.3/ASE3.27.0/PyG2.7.0等，Torch/CUDA尚未安装。15CUDA wheels2.799GB已本地完整下载并核对官方SHA；服务器保留NVRTC26,265,026B partial。用户明确批准离线Git bundle和私有HTTP Range续传。
-HTTP服务6866/PID52372/127.0.0.1:54339仅提供固定公开资源白名单；node42资源HTTP路径已实测。831因代理断开失败，JSON中的running是异常退出前旧状态，以日志/队列为准；已核对用户/名称/PENDING并取消833/834失效依赖。42080代理已终止，远端1080已确认释放。仅续传CUDA的本地监督器已启动(exec52877)，持久记录于tmp/arxiv-linux-base/transfer-supervisor.json；不会接管未知端口或结束用户SSH。
+本地/GitHub/服务器已同步b6e83d5：OOM隔离预检、固定分区/val-best/test评测、配对checkpoint恢复、离线Git同步、定向wheel缓存恢复、全量JARVIS/GMTNet准备器和离线安装模板。Slurm822通过18协议测试；823通过4缓存测试并恢复官方SHA匹配Torch1,039,365,846B；829通过9项准备/归档fixture；847通过全部12项JARVIS/GMTNet测试，包含真实NumPy标量/数组pickle。以上均不是正式科学任务结果。
+Slurm830已续传完成101,263,360B通用归档并核验25分片；832完成49项通用依赖离线安装，pip check通过。base包含NumPy1.26.4/SciPy1.15.3/ASE3.27.0/PyG2.7.0等，Torch/CUDA尚未安装。15CUDA wheels2.799GB已本地完整下载并核对官方SHA；服务器NVRTC/runtime/CUPTI完整SHA已通过，cuDNN partial持续增加，最新native依赖字节154,559,827B（不含已恢复Torch）。用户明确批准离线Git bundle和私有HTTP Range续传。
+HTTP wheel服务6866/PID52372/127.0.0.1:54339；固定公开数据服务69961/PID49084/127.0.0.1:50820。监督器exec59920/PID17164管理唯一自有代理和数据优先串行传输；最新853全数据任务RUNNING，852已在853提交成功后精确取消，pause-cuda已移除，完成数据后自动续传CUDA。当前精确状态/代理PID见tmp/arxiv-linux-base/transfer-supervisor.json。禁止接管未知端口或结束用户Guqq57180/jump53864。
+GMTNet全原档在851中实际转换完成：5000遍历、4999有效，train3998/val502/test499，最大88原子，排除JVASP-192一条格式/非有限标签。853完成JARVIS带隙/分类全75993有效记录，train60823/val7590/test7580，最大140原子，class0/1=53202/22791。两份审计已下载到忽略results/paper-data-20261104。853当前继续声子谱原档，仅对精确SOCKS greeting EOF(curl97)有限重试，不忽略其他97拒绝。MLearn12原档+Perov5三划分已本地固定Git blob校验，总41,310,943B，服务器转换未完成。细节见arxiv-data.md。
+已按元数据缺失列表本地准备59项provider wheels62,873,601B（官方PyPI SHA）及DGL1.1.3+cu121/Torchvision0.22.1+cu128两wheel88,600,553B；合计151,474,154B尚未上传安装。DGL源官方索引未发布hash，记录完整下载后的本地SHA及来源；Torchvision匹配官方索引SHA。新调度器须在CUDA16齐备后仅排base安装，GPU回归另等provider安装和child pipcheck，避免已知缺包时过早排GPU。
 真实模型/CUDA回归、provider额外依赖、全部官方scratch、radius6/PBC分子输入、生成训练/质量评测、完整六任务数据和48/144矩阵均待完成。
 
 # 当前计划
 
 1. 源代码始终本地修改、提交、发布后只经gitpull更新；保留用户docs/paper及ustc-gpu未跟踪文件。
-2. 监督CUDA续传作业和唯一代理，仅在实际断开且1080释放后恢复；保留分片/SHA，不重复下载已完成common，不重复提交活动作业。监督器遇无进展/未知端口/新代理健康失败即停止诊断。结束时精确关闭并确认1080释放。
+2. 监督853续传/全量转换及独立audit结果。监督器观察两个任务名及两类字节进展，数据任务运行期间不提交CUDA，之后自动续传CUDA；保留分片/SHA，不重复common或活动任务。无进展/未知端口/新代理健康失败即停止诊断；只读SSH255有限重试，sbatch未知回执不自动重试。结束时精确关闭并确认1080释放。已异步询问Vlab限流/替代路径，未获答复，不影响现有授权路径继续。
 3. CUDA16资源齐备后CPU Slurm精确离线安装、pipcheck、链接仅任务ownedvenv，再运行完整Slurm模型/GPU回归和实际OOM减batch训练步检查。providerextras按实际缺失恢复，不把pipcheck当模型就绪。
 4. 通过Slurm准备/清点固定JARVIS全量数据；继续GMT介电、MLearn/rMD17、Perov-5；审计元素覆盖/组分区/预训练重叠。补齐官方fresh构造、分子图与生成独立评测，最坏真实图预检后逐任务跑48格并补齐三seed144。始终保留20GiB磁盘余量。
 
@@ -378,3 +380,7 @@ HTTP服务6866/PID52372/127.0.0.1:54339仅提供固定公开资源白名单；no
 - 2026-11-04T01:00:52 +08:00: Reconciled snapshot to completed822/823,publicresources verifiedlocal,HTTP40MBprogress and terminal827/828/proxy,local9newtests andpendingfullscope; nextpublishthenrecovertransfer.
 
 - 2026-11-04T01:43:44 +08:00: GMTNet全量介电准备器已实现并通过6项本地纯数据fixture，原5项JARVIS测试保持通过；新增NumPy二进制fixture仅Slurm执行。CUDA监督续传持续获得字节进展，尚未完整。下一步发布/离线同步后实跑NumPy fixture与完整数据准备；上一条历史01:40为手工时间误填，实际该状态更新在01:34左右。
+
+- 2026-11-04T02:52:50 +08:00: 阶段完成：全量GMT介电4999与JARVIS带隙/分类75993的实际审计已下载并核对代码/数据哈希；声子原档仍由853续传。供应商依赖151,474,154B已本地准备但未安装。必要调度器升级已正常关闭旧9393/自有代理并确认1080释放，新监督器exec94158/pid57832已启动；只排CUDAbase安装，GPU回归另等provider就绪。当前snapshot supervising，资源和任务目标均未标complete；下一步声子全量、provider传输安装、真实CUDA测试及官方fresh/生成/分子适配。
+
+- 2026-11-04T02:57:52 +08:00: 进入MLearn力场全量准备单元。上一目标turn为实质progress：完成两份全量审计和依赖资源准备；本turn已用session94158确认续传监督器live。计划补齐作者test保留、训练来源分组验证和E/F标签标准化；发现作者train/test同AIMD族，必须披露边界而不能假称轨迹独立。

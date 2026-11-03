@@ -158,7 +158,8 @@ def prepare_release(source, output, *, kind, split_seed=0, metal_threshold=.01, 
 
 
 def prepare_records(source, output, records, *, kind, field, channels, url, targets,
-                    split_seed=0, metal_threshold=None, execution=None, audit_details=None):
+                    split_seed=0, metal_threshold=None, execution=None, audit_details=None,
+                    group_key=None, split_builder=None):
     """Write validated source records using one immutable group and audit protocol."""
     started = time.perf_counter()
     source, output = Path(source), Path(output)
@@ -169,7 +170,7 @@ def prepare_records(source, output, records, *, kind, field, channels, url, targ
     counts, group_records, known_ids = Counter(), [], {}
     dataset_hash, max_atoms, group_counts, class_counts = hashlib.sha256(), 0, Counter(), Counter()
     species_counts = Counter()
-    parents, geometry_first, reference_first = [], {}, {}
+    parents, geometry_first, reference_first, explicit_first = [], {}, {}, {}
 
     def find(index):
         while parents[index] != index:
@@ -209,6 +210,8 @@ def prepare_records(source, output, records, *, kind, field, channels, url, targ
             metadata = {"source_url": url, "archive_sha256": source_hash, "source_index": index,
                         "source_file": source.name, "geometry_sha256": fingerprint,
                         "label_field": field, "external_reference": record.get("reference")}
+            if "source_details" in record:
+                metadata["source_details"] = record["source_details"]
             normalized = {"schema_version": 1, "id": identifier, **atoms, "targets": record_targets, "metadata": metadata}
             encoded = (json.dumps(normalized, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode()
             data.write(encoded)
@@ -223,6 +226,14 @@ def prepare_records(source, output, records, *, kind, field, channels, url, targ
             if fingerprint in geometry_first:
                 join(current, geometry_first[fingerprint])
             geometry_first[fingerprint] = current
+            if group_key is not None:
+                explicit = group_key(record)
+                if explicit is not None:
+                    if not isinstance(explicit, str) or not explicit:
+                        raise ValueError("Explicit preparation group must be a nonempty string")
+                    if explicit in explicit_first:
+                        join(current, explicit_first[explicit])
+                    explicit_first[explicit] = current
             reference = record.get("reference")
             for token in re.findall(r"\bmp-\d+\b", reference if isinstance(reference, str) else ""):
                 if token in reference_first:
@@ -236,7 +247,7 @@ def prepare_records(source, output, records, *, kind, field, channels, url, targ
         component_names[component] = min(component_names.get(component, record["id"]), record["id"])
     for index, record in enumerate(group_records):
         record["group"] = "material:" + component_names[find(index)]
-    split = create_manifest(group_records, source_sha256=dataset_hash.hexdigest(), seed=split_seed)
+    split = ((split_builder or create_manifest)(group_records, source_sha256=dataset_hash.hexdigest(), seed=split_seed))
     (output / "split.json").write_text(json.dumps(split, indent=2), encoding="utf-8")
     audit = {"version": 1, "kind": kind, "source": {"file": source.name, "url": url, "sha256": source_hash,
               "bytes": source.stat().st_size}, "dataset_sha256": dataset_hash.hexdigest(), "counts": dict(counts),
