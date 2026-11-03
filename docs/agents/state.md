@@ -1,6 +1,6 @@
 # 当前状态
 
-Force-only supervision implemented and verified: task.supervised_outputs selects real labels, defaults remain E/F/S; official GNN and energy-derived forces unchanged. Slurm762/763 each80 passed,764 original MACE10 real force-only structures passed optimization,1->4 full resume and inference10. Exact source geometry/force-label audit passed. Final documentation sync and own proxy33236 cleanup remain.
+Force-only support COMPLETE: only selected labels/scales/losses required; official GNN and energy-derived forces unchanged.762/763 each80 passed,764 MACE10 original real-force labels passed optimization/full resume/reloaded inference and exact geometry/label audit. Final server sync ef360c4 and identity-checked own proxy33236 cleanup completed; remote1080 release confirmed.
 
 本轮MACE力场使用说明已完成：新增configs/mace_forcefield.yaml和docs/mace_forcefield.md，核对
 原主干/随机新能量头、E/F/S标签与单位、Slurm训练/推理命令；明确原MACE头零样本预测使用
@@ -15,7 +15,7 @@ NequIP756确认官方计算器自身的双线程float32力重复性误差，758�
 
 # 当前计划
 
-Force-only current plan: implementation, real-data validation and local evidence audit complete. Finish proof documentation sync and identity-checked dedicated-proxy shutdown; no further experiments planned.
+Force-only current plan COMPLETE: implementation, real-data validation, evidence/doc synchronization and dedicated-proxy cleanup finished. No remaining force-only work; parallel static-review task records preserved.
 
 本轮说明计划已完成：原生预测与框架微调两条入口、MACE力场配置、标准标签/单位、Slurm命令和
 对应检查均已交付。没有用户数据时不宣称完成该数据集训练。
@@ -240,3 +240,5 @@ Force-only current plan: implementation, real-data validation and local evidence
 - 2026-11-03T09:26:26+08:00: Started explicit force-only supervision support. Preserve official backbone and energy-derived forces; task.supervised_outputs selects labels/scales/losses, default E/F/S. No fake energy/stress labels. Plan actual original MACE fine-tuning using force-only projections of existing real cohorts, with all computations in Slurm.
 
 - 2026-11-03T09:47:14+08:00: Force-only implementation/Slurm validation stage COMPLETE.762/763 each80 passed;764 original MACE10 real force-only labels trained1.13103690514->0.59997976743, trunkdelta0.40074819677, resumed1->4 and reloaded inference10. Local audit verifies original labels/geometry exactly and all13 manifest hashes. Next final docs sync/proxy33236 cleanup; preserve parallel static-evaluation changes.
+
+- 2026-11-03T09:50:23+08:00: Force-only final stage COMPLETE: same final work connection synced ef360c4, verified762/76380-test logs and764 real-force-only artifact, queue empty, terminated identity-checked own proxy33236 and received FORCE_ONLY_PROXY_1080_RELEASED, SSH exit0. No remaining computations or task proxy. Parallel static-assessment edits retained.
