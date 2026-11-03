@@ -85,3 +85,12 @@ frozen-backbone force-only training/resume/all-frozen inference. It checks compo
 first-layer F, mode/parameter audits, rotation and force/strain finite differences. Native float32
 finite differences use step.002,rtol.02,atol.002; analytic float64 units use stricter tolerances.
 This is bounded execution acceptance, not held-out accuracy evaluation.
+
+`sbatch scripts/validate_other_forcefields.slurm` assesses the other five original official
+providers on the same ten-real-force-label cohort, frozen/full modes, with at most two array jobs
+running concurrently. The script routes NequIP and Equiformer to their existing isolated envs.
+`validate_other_forcefields.py` scopes provisional capability metadata to test-only factory instances;
+production guards/default declarations remain unchanged until actual results justify enabling them.
+It records original reference parity, force/strain finite differences, mixed gradients, eval/train
+batch independence, frozen states, force-only optimization and checkpoint inference independently,
+including failed stages. No original backbone layer/graph is changed and no DFT is executed.

@@ -1,15 +1,14 @@
 # 当前状态
 
-性质预测解耦A～E与ACC-01～13已实施并通过。最终a25095e在Slurm773/774两个环境各118 passed。
-官方CGCNN771五组、MACE772六组真实链通过；原生参考保持，冻结主干完整state不变，张量/force-only梯度与恢复通过。
-prediction.version1原生直连、4类读出、显式处理、冻结/审计、严格续训/暖启动及4份配置/标准/使用说明已完成。
-51份真实链证据独立hash/ID/标签核对通过，源码和最终日志已归档；官方图/层及依赖保持原样。
+按用户要求测试其余五个官方骨干的新式能量求导力场：ALIGNN、CGCNN、MEGNet、NequIP、Equiformer。
+之前MACE/组件验收保留。当前其他provider能力仍未开放；先在隔离验收脚本中试验，不将未验证标记写成生产能力。
 
 # 当前计划
 
-全部完成：最终文档3019c8a已同步服务器，任务队列为空；同一工作SSH确认仅本任务代理47020关闭、Guqq21080释放并正常退出。
-无待执行计算、源码改动或网络清理。后续本地提交只记录已经观测到的收尾，不新增服务器连接。
-保留历史失败及与本任务无关的docs/paper未跟踪文件。
+scripts新增独立验收及Slurm入口，复用官方原权重、真实10结构forces投影、node_mlp+sum与既有训练器。
+各模型测试原生前向对照、位置/应变差分、混合梯度、冻结参数/buffer、eval与train批次独立、force-only冻结/全参训练、重载/推理。
+计算均通过Slurm，按既有环境分流，不修改官方图/网络层；仅有证据的能力开放，失败留存具体原因并修复常规适配问题。
+通过后补回归、文档与证据审计并关闭唯一任务代理；无关docs/paper保留。
 
 # 变更记录
 
@@ -250,3 +249,8 @@ prediction.version1原生直连、4类读出、显式处理、冻结/审计、�
 - 2026-11-03T11:53:10+08:00: A-E and ACC01-13 COMPLETE scientifically:773/774118 each;771/77211 real cases passed and independently audited. Enter final documentation sync and SAME-connection proxy cleanup; no numerical jobs remain.
 
 - 2026-11-03T11:58:30+08:00: Final stage COMPLETE:same work SSH synchronized3019c8a,queue empty,only identity-checked own47020 stopped,remote1080 release confirmed,SSH exit0. All requested implementation/docs/tests/evidence complete; unrelated docs/paper preserved.
+
+- 2026-11-03T12:42:13+08:00: Read-only consultation started/completed:checked new ForceFieldModel and provider capability metadata for whether other backbones can use the energy-derived forcefield setup. No implementation change/server connection. Architecture is generic; officialMACE alone has all verified capability flags enabled, other five official providers currently fail the strain/mixed gate. GCN/legacy flags are distinct from actual official-provider validation. No new work planned.
+
+
+- 2026-11-03T13:14:49+08:00: Started five-other-official-backbone forcefield assessment. Modules:scripts acceptance/Slurm,provider capability metadata only after evidence,optional minimal training-mode fix if actual BN coupling is found. Preserve original layers/preprocessing. Prior consultation notes retained.

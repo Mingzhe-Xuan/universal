@@ -559,3 +559,7 @@
 - 2026-11-03T11:53:10+08:00: Final source complete:773/774 each118 passed;11 actual official real cases already audited. Added per-ACC evidence summary, requirements/index implementation status, four configs, version/migration/freeze/warm-start standard and usage links. Only final docs synchronization and proxy cleanup remain; same work SSH8180 held at UNITS_READY, healthy owned proxy47020 unchanged.
 
 - 2026-11-03T11:58:30+08:00: Closed prediction-decoupling task:allA-E/ACC01-13 implemented,final773/774118 each,771/77211 official real cases and local independent evidence audit. Final docs3019c8a synced and dedicated proxy closed with explicit remote1080-release confirmation. No remaining work or task resources.
+
+- 2026-11-03T12:42:13+08:00: Clarified forcefield portability from current source:per-node invariant energy plus sum and geometry/mixed derivatives are generic; other official providers require derivative/batch-independence acceptance before enabling their current false capability flags. Existing118/118 and11real-case evidence unchanged. Read-only source consultation, no code changes.
+
+- 2026-11-03T13:14:49+08:00: Started requested actual other-backbone forcefield tests; previous118x2/11case evidence preserved. Plan dedicated Slurm harness for all five original providers, frozen/full strategies and geometry/mixed-gradient/batch-mode diagnostics. No new packages or data needed; production capability flags stay unverified until actual evidence.
