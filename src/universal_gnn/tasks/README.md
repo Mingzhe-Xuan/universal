@@ -5,6 +5,15 @@
 live Cartesian positions and a common affine strain of positions/cell. Stress is tensile-positive
 `dE/dstrain / volume`, returned in GPa; source labels must be converted explicitly by data bindings.
 Inference must retain input autograd for derivative tasks, even in evaluation mode.
+
+`supervision.py` separates training labels from computed outputs. Set
+`task.supervised_outputs: [forces]` for force-only supervision, or select any nonempty subset of
+total_energy/forces/stress. Omission retains the old E/F/S default. Only selected bindings, scales
+and losses require labels; unknown/duplicate/empty selections fail configuration validation.
+The model still derives forces from scalar energy, with mixed coordinate/parameter gradients.
+Force-only labels do not determine energy constants or elemental reference energies; predicted
+stress has no direct supervision. Inference still returns computed E/F/S. A complete optimizer
+resume requires the same selected supervision, with list order ignored.
 # Fixed-composition generation
 
 `PeriodicDenoiser` accepts a backbone with `context_dim=22`: sixteen time channels plus six

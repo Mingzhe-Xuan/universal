@@ -209,6 +209,11 @@ task:
     unit: eV
 ```
 
+forcefield任务可设置 `task.supervised_outputs: [forces]`，或选择total_energy/forces/stress的
+任意非空无重复子集。省略保持E/F/S默认值。仅选中的绑定、标签、归一化尺度和损失参与训练；
+loss_weights用于选中项加权。模型的预测输出仍为E/F/S。完整续训校验监督集合（顺序不影响语义）；
+仅力监督不能校准绝对能量及元素参考能。配置示例见configs/mace_force_only.yaml。
+
 `backbone.name` 也可为 gcn，或现有六个内置模型。graph 仅用于标准包装模型。
 `dataset.path` 可为标准文件或旧格式，也可为 `plugin:/folder`（工厂 build_dataset，参数在
 `dataset.options`）；可选 bindings 显式声明原字段、单位与转换。

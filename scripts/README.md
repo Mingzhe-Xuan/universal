@@ -72,3 +72,8 @@ then records independent calculator and adapter force repeatability with JIT opt
 The JSON report is diagnostic evidence, not a relaxed acceptance test or a training benchmark.
 The historical run_matrix uses explicit legacy variants; validate_official is the separate original
 checkpoint/reference/ten-structure acceptance path.
+
+`validate_force_only.py --output runs/NAME` runs on Slurm. It retains only original force labels
+from ten real acceptance structures, initializes the official MACE backbone, trains the energy-derived
+force predictor, checks trunk updates/loss decrease, full continuation and streamed reloaded inference.
+No energy/stress labels are fabricated; reports keep geometry/source IDs and the force-only label set.

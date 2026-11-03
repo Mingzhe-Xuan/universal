@@ -15,7 +15,7 @@ checkpoint，用于继续训练或推理，两者不能混用。原层数、宽�
 targets和可选metadata。positions是angstrom下的笛卡尔坐标；cell是按行排列的3×3晶格矩阵。
 不需要自行提供邻居图，官方MACE构图器会按原规则构图。具体格式见 [standards.md](standards.md)。
 
-训练标签必须包含以下三项：
+训练标签由task.supervised_outputs选择；省略时保持原来的E/F/S三项默认值：
 
 | targets中的名称 | 形状 | 约定 |
 | --- | --- | --- |
@@ -23,9 +23,20 @@ targets和可选metadata。positions是angstrom下的笛卡尔坐标；cell是�
 | forces | N×3 | 每原子笛卡尔力，eV/angstrom |
 | stress | 3×3 | 拉伸为正的应力，GPa |
 
-当前训练入口要求E/F/S三类标签齐全；仅有E/F不能直接按该配方训练。将stress的loss权重设0也
-不会取消标签检查。没有应力标签时不能用全零代替真实监督。预测数据可以没有标签，targets可为空。
-该配方以周期体材料数据为例；非周期分子的包围盒应力不是体材料应力。
+只有力标签时，使用 [mace_force_only.yaml](../configs/mace_force_only.yaml)，或在原配置中加：
+
+```yaml
+task:
+  kind: forcefield
+  supervised_outputs: [forces]
+```
+
+这时只需真实forces标签；未选择的能量/应力绑定、尺度统计和损失均跳过，不需要伪造标签。
+也可选择[total_energy, forces]等非空子集。loss_weights仅加权，不替代监督项选择。
+能量头仍用于F=-dE/dR，力损失通过坐标/参数混合导数更新主干和新头；能量的常数偏移及元素参考能
+无法由力标签确定。推理仍可计算E/F/S，但绝对能量未校准，应力也未直接监督。
+完整续训要求监督项相同；旧配置/旧checkpoint未声明该字段时仍按E/F/S解释。
+预测数据可以没有标签，targets可为空。非周期分子的包围盒应力不是体材料应力。
 
 如果原数据字段名不同，通过dataset.bindings指定key。unit字段记录约定，不自动换算。
 例如原始ASE应力为eV/angstrom³、六分量顺序xx,yy,zz,yz,xz,xy，可将stress绑定改成：
@@ -50,6 +61,9 @@ sbatch scripts/ugnn.slurm --mode train --model mace --task forcefield \
 脚本默认使用已配置的universal-official环境。训练使用全部所选数据、batch_size=4、float32；
 上述轮数和学习率是起始配置，不表示已在你的模拟数据上确定最佳参数。更换权重时修改
 backbone.checkpoint，使用兼容的原始可训练.model及对应依赖和元素表。
+
+力标签单独训练时，将--config改为configs/mace_force_only.yaml，并指定实际force-only训练文件；
+训练与推理的其他CLI参数相同，--resume仍使用训练后保存的本框架checkpoint。
 
 训练完成后，使用保存的本框架checkpoint预测新结构：
 

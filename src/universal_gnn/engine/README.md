@@ -75,3 +75,8 @@ loader, so convert large datasets to standard JSONL for bounded tensor memory. J
 (`--results predictions.jsonl`) writes metadata, per-structure prediction/generation records and a
 completion record incrementally to an atomic output file. Ordinary JSON output retains CPU results
 for compatibility but still evaluates geometry/model graphs one minibatch at a time.
+
+Force-field `task.supervised_outputs` selects labels and losses independently of prediction keys.
+Only selected data bindings/scales/labels are required; missing selected labels remain errors.
+The default is E/F/S for old configurations/checkpoints. Changing supervision is rejected for full
+continuation; reports record supervised_outputs and checkpoints persist the selected scales/config.

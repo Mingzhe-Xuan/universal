@@ -23,6 +23,9 @@ Available examples: `formation_energy.json`, `forcefield.json`, `born_charge.jso
 `mace_forcefield.yaml` initializes the original MACE-MP backbone with a new trainable energy head;
 provide simulation E/F/S labels as described in docs/mace_forcefield.md. Original weights initialize
 backbone.checkpoint, while --resume uses an UGNN checkpoint after task-head training.
+`mace_force_only.yaml` sets task.supervised_outputs:[forces]; only original force labels are
+required. Any nonempty E/F/S subset is supported; omitted selection keeps the old E/F/S default.
+Predictions still include computed E/F/S, with uncalibrated energy offsets when only force-trained.
 The real execution cohorts live on the server under `data/acceptance`; raw-source hashes,
 IDs and preprocessing are recorded in each cohort and its manifest. Downloaded data is ignored
 by Git. `scripts/run_matrix.py prepare --tasks TASKS --output runs/NAME` generates configurations

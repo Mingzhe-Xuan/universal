@@ -50,6 +50,11 @@ def check_model_config(expected, actual):
     for key in fields:
         if expected["task"].get(key) != actual["task"].get(key):
             raise ValueError(f"Task setting {key!r} does not match the checkpoint")
+    if expected["task"]["kind"] == "forcefield":
+        from universal_gnn.tasks.supervision import supervised_outputs
+
+        if supervised_outputs(expected) != supervised_outputs(actual):
+            raise ValueError("Supervised outputs do not match the checkpoint; full resume requires the same loss targets")
     if expected["task"].get("adapter_version", 2) != actual["task"].get("adapter_version", 2):
         raise ValueError("Adapter version does not match the checkpoint")
 

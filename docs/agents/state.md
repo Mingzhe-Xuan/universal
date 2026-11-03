@@ -1,5 +1,9 @@
 # 当前状态
 
+进入force-only监督支持：用户希望只训练forces，现有训练器将E/F/S固定为必需标签，属于实现限制。
+计划新增task.supervised_outputs选择监督项，默认仍E/F/S；仅按选定项绑定标签、统计尺度与计算损失，
+能量表示与F=-dE/dR保持不变，不改官方GNN主干。新增单元和Slurm真实MACE力标签微调验收。
+
 本轮MACE力场使用说明已完成：新增configs/mace_forcefield.yaml和docs/mace_forcefield.md，核对
 原主干/随机新能量头、E/F/S标签与单位、Slurm训练/推理命令；明确原MACE头零样本预测使用
 官方MACECalculator，原始.model不是--resume。配置/CLI合并、Python/Bash语法、7个本地链接
@@ -12,6 +16,9 @@ NequIP756确认官方计算器自身的双线程float32力重复性误差，758�
 本地证据归档33372字节/55文件，完整hash与85个原始源码hash、六模型相同数据指纹、CLI配置/轮数/条数均独立审计通过。详见official-pretrained.md。最后工作连接20801已pull7724686并核验六份validation、CLI与三环境回归；队列无当前用户作业。精确关闭自有代理43152后，同一连接确认OFFICIAL_PROXY_1080_RELEASED并正常退出；两本地HTTP资源服务已停止。所有计算仅Slurm，源码仅本地提交/push→服务器pull；docs/paper保持不动。
 
 # 当前计划
+
+当前force-only单元：共享监督项校验/选择接口；接入数据绑定、损失及续训兼容；新增纯forces配置、
+文档和缺标签/梯度/默认EFS回归；本地只做解析/解析梯度检查，实际训练/推理和全回归通过Slurm。
 
 本轮说明计划已完成：原生预测与框架微调两条入口、MACE力场配置、标准标签/单位、Slurm命令和
 对应检查均已交付。没有用户数据时不宣称完成该数据集训练。
@@ -232,3 +239,5 @@ NequIP756确认官方计算器自身的双线程float32力重复性误差，758�
 - 2026-11-03T09:13:52+08:00: Started MACE forcefield usage consultation. Inspect existing original MACE provider, ForceFieldModel, label scales and CLI; prepare docs/config only. No server access or training planned without an identified user dataset. Distinguish native-head zero-shot from random-head fine-tuning.
 
 - 2026-11-03T09:18:38+08:00: Completed MACE forcefield usage recipe/config: clarified native-head direct inference versus random-head framework fine-tuning; canonical E/F/S labels and Slurm commands documented. Parser/config merge, Python/Bash syntax,7 local links and diff formatting passed. No remote connection or new scientific run.
+
+- 2026-11-03T09:26:26+08:00: Started explicit force-only supervision support. Preserve official backbone and energy-derived forces; task.supervised_outputs selects labels/scales/losses, default E/F/S. No fake energy/stress labels. Plan actual original MACE fine-tuning using force-only projections of existing real cohorts, with all computations in Slurm.

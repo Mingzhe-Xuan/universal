@@ -16,6 +16,7 @@ from universal_gnn.contracts import StructureBatch
 from universal_gnn.data.structures import bind_targets, load_structures
 from universal_gnn.properties import property_spec
 from universal_gnn.tasks import ForceFieldModel, SupervisedModel
+from universal_gnn.tasks.supervision import supervised_outputs, supervised_predictions
 
 
 def build_model(config, *, official_artifact=None):
@@ -72,7 +73,11 @@ def dataset(config, limit=None):
             indices = range(limit)
     if not len(indices):
         raise ValueError("Dataset must not be empty")
-    return SelectedStructures(structures, indices, settings.get("bindings"))
+    bindings = settings.get("bindings")
+    if config.get("task", {}).get("kind") == "forcefield" and bindings is not None:
+        selected = supervised_outputs(config)
+        bindings = {name: value for name, value in bindings.items() if name in selected}
+    return SelectedStructures(structures, indices, bindings)
 
 
 def label(batch, name, prediction, *, classification=False):
@@ -98,7 +103,7 @@ def loss_for(predictions, batch, config, scales=None):
     task = config["task"]
     classification = (task["kind"] == "supervised" and
                       property_spec(task["property"], definition=task.get("spec")).kind == "classification")
-    for name, prediction in predictions.items():
+    for name, prediction in supervised_predictions(predictions, config).items():
         target = label(batch, name, prediction, classification=classification)
         if classification:
             losses.append(torch.nn.functional.cross_entropy(prediction, target))
@@ -268,6 +273,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
         records.append({"id": structure.identifier, "geometry_sha256": hashlib.sha256(raw).hexdigest(),
                         "provenance": structure.metadata, "role": "train_and_reloaded_inference"})
     report = {"config": config, "versions": version_record(), "execution": execution,
+              "supervised_outputs": list(supervised_outputs(config)),
               "structures": records, "selected_structures": len(structures),
               "available_structures": len(structures.source), "data_fingerprint": fingerprint,
               "structure_records_truncated": len(records) != len(structures),

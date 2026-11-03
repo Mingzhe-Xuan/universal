@@ -107,3 +107,35 @@ def test_global_scales_and_loss_ignore_batch_boundaries_and_missing_values(tmp_p
             totals.add(loss_parts(values, batch, config, scales))
         losses.append(totals.loss(config))
     assert losses[0] == pytest.approx(losses[1], rel=1e-6)
+
+
+def test_force_only_minibatches_full_resume_and_inference(tmp_path):
+    from universal_gnn.engine.inference import run_inference
+
+    config = config_for(tmp_path, 5)
+    config.pop("graph")
+    config.update(epochs=2, batch_size=2, dtype="float64",
+                  backbone={"name": "cgcnn", "implementation": "legacy", "width": 8, "layers": 1, "cutoff": 2.},
+                  task={"kind": "forcefield", "supervised_outputs": ["forces"]})
+    path = tmp_path / "structures.jsonl"
+    records = [json.loads(line) for line in path.read_text().splitlines()]
+    for record in records:
+        vector = record["positions"][1]
+        record["targets"] = {"forces": [[.1*x for x in vector], [-.1*x for x in vector]]}
+    path.write_text("\n".join(json.dumps(record) for record in records))
+    report = run_training(config, tmp_path / "force-continuous")
+    assert report["supervised_outputs"] == ["forces"] and report["backbone_gradient_norms"][-1] > 0
+    run_training({**config, "epochs": 1}, tmp_path / "force-first")
+    run_training(config, tmp_path / "force-resumed", resume=tmp_path / "force-first/checkpoint.pt")
+    expected = torch.load(tmp_path / "force-continuous/checkpoint.pt", weights_only=True)
+    actual = torch.load(tmp_path / "force-resumed/checkpoint.pt", weights_only=True)
+    assert set(actual["scales"]) == {"forces"}
+    for name in expected["state_dict"]:
+        torch.testing.assert_close(actual["state_dict"][name], expected["state_dict"][name], rtol=0, atol=0)
+    with pytest.raises(ValueError, match="Supervised outputs"):
+        run_training({**config, "task": {"kind": "forcefield"}}, tmp_path / "force-bad-resume",
+                     resume=tmp_path / "force-first/checkpoint.pt")
+    prediction = run_inference(tmp_path / "force-resumed/checkpoint.pt", str(path), tmp_path / "force-predictions.json")
+    assert prediction["structure_count"] == 5
+    assert set(prediction["predictions"]) == {"total_energy", "forces", "stress"}
+    assert len(prediction["predictions"]["forces"]) == 10

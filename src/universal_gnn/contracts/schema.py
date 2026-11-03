@@ -13,3 +13,7 @@ def validate_config(config):
         validate_version(config["schema_version"], "config")
     if "graph" in config and not isinstance(config["graph"], dict):
         raise ValueError("Configuration graph must be a mapping")
+    if isinstance(config.get("task"), dict) and "supervised_outputs" in config["task"]:
+        from universal_gnn.tasks.supervision import supervised_outputs
+
+        supervised_outputs(config)

@@ -535,3 +535,5 @@
 - 2026-11-03T01:58:37+08:00: Completed final server sync7724686 and same-connection proxy cleanup, confirmed1080 release. All authorized runtime/original-model fine-tuning work and evidence complete under the previously stated scope; final local documentation records actual cleanup only. No dataset/weights/results added to Git.
 
 - 2026-11-03T09:18:38+08:00: Added configs/mace_forcefield.yaml and docs/mace_forcefield.md, linked from usage/config docs; corrected obsolete full-batch/no-mini-batch statement in standards. Existing backend behavior unchanged. Explain official initialization vs UGNN resume, mandatory E/F/S training labels, stress conversion, and original MACECalculator direct prediction retaining its pretrained head.
+
+- 2026-11-03T09:33:51+08:00: Added canonical task.supervised_outputs selection with old EFS default; data binding/scale/loss paths require only selected labels, report records supervision, full resume checks same set. Added original MACE force-only config and real-force acceptance harness, analytic gradient/selection and optimizer-resume tests. Original GNN modules and energy-derived force/stress computation unchanged.

@@ -5,6 +5,7 @@ import math
 import torch
 
 from universal_gnn.properties import property_spec
+from universal_gnn.tasks.supervision import supervised_outputs, supervised_predictions
 
 
 def is_classification(config):
@@ -16,7 +17,7 @@ def is_classification(config):
 def dataset_scales(structures, config):
     if is_classification(config):
         return {config["task"]["property"]: 1.}
-    names = ("total_energy", "forces", "stress") if config["task"]["kind"] == "forcefield" else (config["task"]["property"],)
+    names = supervised_outputs(config)
     statistics = {name: [0, 0., 0., 0.] for name in names}
     for structure in structures:
         for name in names:
@@ -45,7 +46,7 @@ def loss_parts(predictions, batch, config, scales):
 
     classification = is_classification(config)
     result = {}
-    for name, prediction in predictions.items():
+    for name, prediction in supervised_predictions(predictions, config).items():
         if not bool(torch.isfinite(prediction).all()):
             raise FloatingPointError(f"Nonfinite predictions: {name}")
         target = label(batch, name, prediction, classification=classification)
