@@ -5,6 +5,18 @@ from pathlib import Path
 import sqlite3
 
 
+def balanced_accuracy(confusion):
+    if (not isinstance(confusion, (list, tuple)) or len(confusion) != 2 or
+            any(not isinstance(row, (list, tuple)) or len(row) != 2 for row in confusion) or
+            any(type(value) is not int or value < 0 for row in confusion for value in row)):
+        raise ValueError("Binary confusion matrix requires 2x2 nonnegative integer counts")
+    tn, fp = confusion[0]
+    fn, tp = confusion[1]
+    if not (tn + fp) or not (tp + fn):
+        return None
+    return .5 * (tn / (tn + fp) + tp / (tp + fn))
+
+
 def flatten(value):
     if isinstance(value, (list, tuple)):
         for item in value:
@@ -115,6 +127,8 @@ class BinaryClassificationMetrics:
         return {"structures": self.count, "confusion_matrix_true_by_predicted": self.confusion,
                 "accuracy": (tp + tn) / self.count, "precision": precision, "recall": recall,
                 "f1": 2 * precision * recall / (precision + recall) if precision + recall else 0.,
+                "balanced_accuracy": balanced_accuracy(self.confusion),
+                "balanced_accuracy_policy": "mean of both true-class recalls; single-class null",
                 "roc_auc": favourable / (positives * negatives) if positives and negatives else None,
                 "roc_auc_policy": "exact Mann-Whitney probability; tied scores count as one half; single-class null"}
 

@@ -7,6 +7,21 @@ from universal_gnn.engine.evaluation import BinaryClassificationMetrics, Regress
 
 
 class EvaluationMetricTests(unittest.TestCase):
+    def test_balanced_accuracy_uses_both_classes_despite_majority_predictions(self):
+        from universal_gnn.engine.evaluation.metrics import balanced_accuracy
+        with tempfile.TemporaryDirectory() as directory:
+            with BinaryClassificationMetrics(Path(directory) / "scores.sqlite") as metrics:
+                for target in [0] * 13 + [1] * 3:
+                    metrics.update(.1, target)
+                result = metrics.result()
+                self.assertEqual(result["accuracy"], .8125)
+                self.assertEqual(result["balanced_accuracy"], .5)
+                self.assertEqual(result["roc_auc"], .5)
+        self.assertAlmostEqual(balanced_accuracy([[8, 2], [1, 1]]), .65)
+        for invalid in (None, [], [[1, 2, 3], [1, 2, 3]], [[1, -1], [0, 1]], [[True, 0], [0, 1]], [[1., 0], [0, 1]]):
+            with self.subTest(invalid=invalid), self.assertRaises(ValueError):
+                balanced_accuracy(invalid)
+
     def test_element_weights_tensor_norms_missing_and_zero_targets(self):
         metrics = RegressionMetrics()
         metrics.update([[1., 2.], [3., 4.]], [[0., 0.], [0., 0.]])
@@ -52,6 +67,7 @@ class EvaluationMetricTests(unittest.TestCase):
                 result = metrics.result()
                 self.assertEqual(result["accuracy"], 1)
                 self.assertIsNone(result["roc_auc"])
+                self.assertIsNone(result["balanced_accuracy"])
                 for score, target in [(float("nan"), 1), (1.1, 0), (.2, 2), (.2, True)]:
                     with self.assertRaises(ValueError):
                         metrics.update(score, target)

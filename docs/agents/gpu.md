@@ -3346,3 +3346,13 @@
 - 2026-11-04T21:40:23+08:00: Ordinary read-only SSH verify/pull unchanged532e8c6 then inspect exact eight job IDs from second-wave claim and their own stage/scan/capacity reports and bounded log tails. No restarts/submissions/source updates or numerical login operations. Save observation locally before summarizing live states.
 
 - 2026-11-04T21:47:52+08:00: Ordinary SSH verify/pull532e8c6, collect completed917–924 own scalar/spectrum reports,64-graph probes,4x100batch worker results, frozen manifests and16-row predictions only. No weights, scientific imports, numerical login work or job changes. Local verification checks count/IDs/config/source fields using stdlib.
+
+- 2026-11-04T21:58:31+08:00：SCP上传已推送eda97a7的34826B小型离线bundle，SHA 132366697d2631fe82fb9ff4eb8b41566d40f85b94b590f8b042b3d08b6ae7a4，先决532e8c6；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T22:00:24+08:00: All917–924 are terminal with passed reports and16 runs independently verified. Ordinary SSH verifies/pullseda97a7, then unique claim submits CPU Slurm40-case actual generation/quality/continuation/route regression (1CPU6GiB20min) and32 pure Linux controls (1CPU1GiB10min). No numerical login execution, new environment installs, original-model scientific claims or source edits.
+
+- 2026-11-04T22:08:21+08:00: Ordinary SSH verify/pulleda97a7 then inspect925/926 existing Slurm states, own JUnit/acceptance receipts and bounded log tails. Save local evidence; no scientific login operations, new jobs or source changes.
+
+- 2026-11-04T22:13:40+08:00: User requests installation completion notice. Ordinary SSH verifies and pulls already-published offline bundle first, then reads existing installation897/GPU899 receipts and checks task environment interpreter paths. No installs, numerical imports, new jobs, downloads or source edits; reuse existing completed numerical acceptance.
+
+- 2026-11-04T22:15:54+08:00: Ordinary SSH verify/pulleda97a7 then inspect925/926 existing Slurm states, own JUnit/acceptance receipts and bounded log tails. Save local evidence; no scientific login operations, new jobs or source changes.

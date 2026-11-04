@@ -10,9 +10,11 @@ must already use the configured Cartesian/component and unit conventions.
 
 `BinaryClassificationMetrics(path)` owns a new SQLite score spool. Call
 `update(positive_probability, integer_target)` and `result()`, then `close()`, or use
-a context manager. It reports accuracy, precision, recall, F1 and **exact** AUROC
+a context manager. It reports accuracy, balanced accuracy, precision, recall, F1 and **exact** AUROC
 with ties handled as half a correct ordering. A single-class evaluation has null
-AUROC. Python memory is bounded; sorting scores uses SQLite disk storage. The
+AUROC and balanced accuracy. Balanced accuracy is the mean of the two true-class
+recalls; it is null when either true class is absent. Python memory is bounded;
+sorting scores uses SQLite disk storage. The
 default threshold is 0.5; pass `predicted_class` to preserve the model's actual
 argmax/tie convention. Keep these spools with ignored experiment results, not Git.
 
@@ -51,6 +53,6 @@ apply no symmetry projection.
 Numerical integration tests cover training-only scales, true best selection,
 continuation, early stopping, missing/corrupt artifacts, force mixed derivatives,
 tensor response and classification. They must run through Slurm; only protocol
-tests have been executed locally so far. Generation held-out denoising selection
-and separate quality scoring remain pending and currently fail explicitly on this
-training path. No full experiment is considered ready from these unit checks alone.
+tests can run without numerical dependencies locally. Generation uses its separate
+[held-out and quality evaluators](../generative/README.md). No full experiment is
+considered ready from these unit checks alone.
