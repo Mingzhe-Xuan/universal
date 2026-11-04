@@ -24,8 +24,12 @@ Indices refer to the selected, bound **training** dataset. Construct the probe f
 a full training-set graph-size scan: include largest atom/edge/triplet cases and
 ordinary structures; retain scan counts, source fingerprints and IDs in `coverage`.
 The controller does not certify caller-supplied coverage. An unchecked small probe
-passing is not sufficient to launch a full experiment. Worst cases are repeated to
-fill the first batch, explicitly recorded; no training samples are dropped.
+passing is not sufficient to launch a full experiment. The worker uses
+[the probe scheduler](probes/README.md) to test each declared worst case separately in a full
+homogeneous batch after warmup, before ordinary measurements. If there are more worst cases
+than requested measurements, the actual count grows to include every case. No training samples
+may be dropped. Pure scheduling checks do not establish actual GPU coverage; numerical acceptance
+in the restored provider environment remains required.
 
 Each attempt creates a new Python process and reconstructs the configured model
 from its original initialization. The worker performs forward, loss, backward and

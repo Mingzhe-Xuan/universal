@@ -1099,3 +1099,7 @@
 - 2026-11-04T11:01:44+08:00：Slurm875/node42实际通过成对容量编排10/10控制测试（1.671秒），收据/日志已回传，按执行a7b127c的capacity.py、当时preflight.py与测试三个Git blob核对SHA通过。没有实际GPU/模型计算。运维归属5项检查通过，直接在stub OS/ps/Path/健康/signal下执行实际远端清理程序，覆盖成功、健康、boot/UID改变、start_ticks/PID复用、命令改变、缺pidfd七场景；除唯一对应的已终止且不健康代理外全部0信号。实际监督器故障注入证明SSH255保留健康连接、已记录孤立恢复、歧义不清理不重开。AST、bash-n、--plan通过；下载体SHA 572340444abe338dc9311ecdc7b04304a21a990ec71b4e9097cbfdcd58ec661d不变。
 
 - 2026-11-04T11:01:44+08:00：本次实际875/安全续传记录文档提交前，相关链接/路径/围栏、state全部既有变更记录逐字保留和git diff --check通过；仅提交已核验阶段记录，不发布待Torch数值验收的运行时。
+
+- 2026-11-04T11:09:24+08:00：实现前计划：原GPU容量worker只在两个step使用worst池，小batch/5次采样时可能未测全部worst。新增纯std调度模块，warmup后每个worst以同质满batch单独测至少一次，剩余测量轮转普通probe；测量次数不足时增至worst数量，明确requested/actual，不能丢worst或减采样步数。测试batch1与多个worst、batch大于worst数、100次训练预算和5次采样预算、完整phase分离、普通循环、确定性/调用方不变及重复/非法index/计数拒绝。GPU worker接入调度与元数据静态检查；实际模型/导数/峰值验收仍待恢复，不本机跑GNN。纯模块发布后CPU Slurm验证全部控制测试，实际worker仍保留待数值验收的运行时发布单元。
+
+- 2026-11-04T11:19:18+08:00：worst覆盖单元提交前实际检查：6项纯std调度测试通过，覆盖batch1且7个worst/只请求5次、每个worst同质满batch、100次预算/普通循环、默认与确定性/输入不变、非法集合/计数拒绝及-S导入scheduler和worker不加载Torch。另将已发布HEAD全部src展开，仅加入本单元scheduler和从HEAD提取的worker调度改动，独立运行同6项全通过；compileall、相关链接/围栏、state历史保留和git diff --check通过。两次文档补丁因匹配行换行不符未应用，读取实际上下文后已正确应用，最终检查通过；未降低测试。没有实际GPU/模型或导数执行。

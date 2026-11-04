@@ -474,6 +474,9 @@ Slurm配置257787MiB，即约251.75GiB主机RAM。单GPU逐任务执行时，48/
    训练步使用训练集标签；预检更新仅作诊断，正式训练从规定的初始化/合法checkpoint重新开始。
 5. 用最大原子数/最多邻居或line graph的真实样本，以及代表性普通batch验证最终候选；
    记录热身后的显存峰值和100–500个batch的吞吐，保留资源余量。
+   [预检调度器](../../src/universal_gnn/benchmarks/probes/README.md)在热身后将每个声明的最坏结构
+   各自重复至满batch并单独测量，随后轮转普通probe样本；请求测量次数不足时增加实际次数，
+   报告同时保留requested/actual以及逐个完成的worst索引，不能仅因worst出现在列表中就认为已测。
    生成训练与采样分别验证；采样OOM可减采样batch，但采样总数/步数和评测定义保持不变。
 6. 最终通过的micro-batch写入正式配置和config.resolved.json。相同模型/任务的微调与scratch使用两者共同通过的安全batch，
    避免初始化对照混入不同batch的影响。需要固定有效batch时，先实现并验证梯度累积；没有累积时明确记录有效batch随之改变。

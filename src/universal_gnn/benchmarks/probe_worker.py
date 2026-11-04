@@ -5,9 +5,11 @@ import sys
 import time
 
 from .preflight import write_json
+from .probes.schedule import iter_probe_batches, schedule_settings
 
 
 def execute(request, result, result_path):
+    schedule = schedule_settings(request["probe"], request["config"]["batch_size"])
     import torch
 
     from universal_gnn.contracts import StructureBatch
@@ -33,8 +35,6 @@ def execute(request, result, result_path):
     if max(indices) >= len(structures):
         raise ValueError("Probe index exceeds selected training dataset")
     worst = probe.get("worst_indices", indices)
-    if not worst or any(index not in indices for index in worst):
-        raise ValueError("worst_indices must be a nonempty subset of probe.indices")
     result["samples"] = [{"index": i, "id": structures[i].identifier, "atoms": len(structures[i].numbers)}
                          for i in indices]
     result["coverage"] = probe.get("coverage", {"verified_full_training_scan": False})
@@ -45,20 +45,21 @@ def execute(request, result, result_path):
     if request["phase"] == "sample" and not generation:
         raise ValueError("Sampling capacity applies only to generation")
     batch_size = config["batch_size"]
-    warmup, measured = probe.get("warmup_batches", 2), probe.get("measure_batches", 100)
+    warmup, measured = schedule["warmup_batches"], schedule["measure_batches"]
+    result.update(requested_measured_batches=schedule["requested_measure_batches"],
+                  planned_measured_batches=measured, worst_stress_batches=schedule["worst_stress_batches"],
+                  completed_worst_indices=[], worst_case_policy="homogeneous_full_batch_v1")
     measured_structures = 0
     model.train(request["phase"] == "train")
     start = None
-    for step in range(warmup + measured):
+    for step, planned in enumerate(iter_probe_batches(probe, batch_size)):
         if step == warmup:
             torch.cuda.synchronize(device)
             torch.cuda.reset_peak_memory_stats(device)
             start = time.perf_counter()
-        # The first batch stresses the supplied worst cases, repeating when B exceeds
-        # their count. Remaining batches cycle real training records without labels from val/test.
-        pool = worst if step in (0, warmup) else indices
-        selected = [pool[(step * batch_size + offset) % len(pool)] for offset in range(batch_size)]
-        result.update(stage="batch", step=step, batch_indices=selected)
+        selected = planned["indices"]
+        result.update(stage="batch", step=step, batch_indices=selected,
+                      batch_phase=planned["phase"], batch_kind=planned["kind"])
         write_json(result_path, result)
         if generation and request["phase"] == "train":
             from universal_gnn.engine.generation import generation_batches, score_loss
@@ -102,9 +103,14 @@ def execute(request, result, result_path):
         torch.cuda.synchronize(device)
         if step >= warmup:
             measured_structures += batch.num_graphs
+            if planned["kind"] == "worst":
+                result["completed_worst_indices"].append(selected[0])
         del batch
     elapsed = time.perf_counter() - start
+    if result["completed_worst_indices"] != worst:
+        raise RuntimeError("Capacity worker did not complete every declared worst case")
     result.update(status="passed", stage="complete", measured_batches=measured,
+                  all_declared_worst_cases_completed=True,
                   measured_structures=measured_structures, elapsed_seconds=elapsed,
                   structures_per_second=measured_structures / elapsed,
                   peak_allocated_bytes=torch.cuda.max_memory_allocated(device),
