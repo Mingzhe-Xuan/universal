@@ -15,6 +15,7 @@ def main():
     parser.add_argument('--id-prefix',required=True)
     parser.add_argument('--reference-target',required=True)
     parser.add_argument('--relation',required=True,choices=('same_target','derived_target','different_target','unknown'))
+    parser.add_argument('--reference-policy',choices=('strict','report_ambiguity'),default='strict')
     parser.add_argument('--output',required=True,type=Path)
     args=parser.parse_args()
     if not os.environ.get('SLURM_JOB_ID'):
@@ -24,7 +25,7 @@ def main():
     commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
     result=audit_id_overlap(json.loads(args.config.read_text(encoding='utf8')),args.output,
         reference_archive=args.reference,reference_sha256=args.reference_sha256,id_prefix=args.id_prefix,
-        reference_label_field=args.reference_target,target_relation=args.relation)
+        reference_label_field=args.reference_target,target_relation=args.relation,reference_policy=args.reference_policy)
     if subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()!=commit:
         (args.output/'report.json').unlink();raise RuntimeError('Source checkout changed during ID audit')
     paths=['src/universal_gnn/benchmarks/audits/overlap.py','src/universal_gnn/data/splits/manifest.py',

@@ -280,7 +280,9 @@ JARVIS/GMTNet若没有可获取的固定官方split，就发布本工具的固�
 四份实际权重的[来源与审计说明](../agents/pretraining-overlap.md)已单列。
 固定ALIGNN ZIP包含44569/5572/5572发布train/validation/test ID；新增
 `scripts/audit_pretraining_ids.py`独立核验源／划分SHA及ID交集，区分参数训练、选模验证、原测试与未列出。
-6主stdlib控制已通过，完整数据Slurm交集待验收；未知交集不写为0，`not_listed`不等于几何／标签未见。
+1008的严格清单门禁拒绝后，1009独立诊断确认原train/test共享两个ID、角色内无重复。
+7主stdlib控制已通过，默认strict拒绝保留；显式report_ambiguity模式单列多角色并保留全部成员关系，
+标记参考非互斥，训练曝光含共享ID。完整数据Slurm交集待新验收；未知交集不写为0，`not_listed`不等于几何／标签未见。
 数据与144定义不因此修改，结果呈现明确区分材料曝光和同／派生／不同目标关系。
 
 ALIGNN原带隙头、CGCNN原带隙头、MEGNet原形成能头可能已看过候选数据库的目标标签。

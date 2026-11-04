@@ -76,6 +76,9 @@ class PretrainingIDOverlapTests(unittest.TestCase):
                         zipped.writestr('ids_train_val_test.json',json.dumps(ids))
                     options['reference_sha256']=hashlib.sha256(options['reference_archive'].read_bytes()).hexdigest()
                 with self.assertRaises(ValueError):read_reference_splits(options['reference_archive'],options['reference_sha256'])
+                if change!='cross_role':
+                    with self.assertRaises(ValueError):
+                        read_reference_splits(options['reference_archive'],options['reference_sha256'],policy='report_ambiguity')
 
     def test_current_source_fingerprint_order_and_manifest(self):
         for change in ['bytes','manifest','order','truncation']:
@@ -119,6 +122,29 @@ class PretrainingIDOverlapTests(unittest.TestCase):
             config['dataset'].update(sha256=sha,split_manifest_sha256=canonical_digest(manifest))
             with self.assertRaisesRegex(ValueError,'namespaces'):audit_id_overlap(config,root/'out',**options)
             self.assertFalse((root/'out/report.json').exists())
+
+    def test_explicit_ambiguity_reporting_preserves_all_roles_and_training_exposure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);config,options,ids=fixture(root)
+            ids['id_val'][0]='JVASP-1';ids['id_test'][0]='JVASP-5'
+            with zipfile.ZipFile(options['reference_archive'],'w') as zipped:
+                zipped.writestr('config.json',json.dumps(dict(n_train=3,n_val=2,n_test=2)))
+                zipped.writestr('ids_train_val_test.json',json.dumps(ids))
+            options['reference_sha256']=hashlib.sha256(options['reference_archive'].read_bytes()).hexdigest()
+            with self.assertRaisesRegex(ValueError,'disjoint'):
+                audit_id_overlap(config,root/'strict',**options)
+            self.assertFalse((root/'strict/report.json').exists())
+            result=audit_id_overlap(config,root/'report',reference_policy='report_ambiguity',**options)
+            self.assertFalse(result['reference']['mutually_disjoint'])
+            self.assertEqual(result['reference']['cross_partition_ids'],['JVASP-1','JVASP-5'])
+            self.assertEqual(result['counts']['train'],dict(train=0,validation=0,test=0,not_listed=2,multiple_roles=1))
+            self.assertEqual(result['parameter_training_id_matches'],dict(train=1,validation=1,test=1))
+            self.assertEqual(result['model_selection_id_matches'],dict(train=1,validation=1,test=0))
+            rows=[json.loads(line) for line in (root/'report/id-overlap.jsonl').read_text().splitlines()]
+            self.assertEqual(rows[0]['reference_memberships'],['train','validation'])
+            self.assertEqual(rows[4]['reference_memberships'],['train','test'])
+            self.assertEqual(rows[4]['reference_partition'],'multiple_roles')
+            self.assertEqual(result['label_disjointness'],'not established by ID membership alone')
 
 
 if __name__=='__main__':unittest.main()

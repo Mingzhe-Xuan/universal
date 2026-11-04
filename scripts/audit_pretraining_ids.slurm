@@ -17,4 +17,5 @@ task_python="${UGNN_VENV:-/home/xmz/.venvs/universal-official}/bin/python"
   --reference models/official/alignn/optb88vdw_bandgap_radius.zip \
   --reference-sha256 f59fb168f64a67f0d191f6b8f0d5402373275a5c9e4ff22a1b551b497b622369 \
   --id-prefix JVASP- --reference-target optb88vdw_bandgap \
-  --relation "$UGNN_REFERENCE_RELATION" --output "$UGNN_AUDIT_OUTPUT"
+  --relation "$UGNN_REFERENCE_RELATION" --reference-policy "${UGNN_REFERENCE_POLICY:-strict}" \
+  --output "$UGNN_AUDIT_OUTPUT"

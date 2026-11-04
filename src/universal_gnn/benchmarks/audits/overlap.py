@@ -21,7 +21,9 @@ def file_digest(path):
     return digest.hexdigest()
 
 
-def read_reference_splits(archive, expected_sha256):
+def read_reference_splits(archive, expected_sha256, *, policy='strict'):
+    if policy not in {'strict', 'report_ambiguity'}:
+        raise ValueError('Unknown published-reference integrity policy')
     if (not isinstance(expected_sha256, str) or not re.fullmatch('[0-9a-f]{64}', expected_sha256) or
             file_digest(archive) != expected_sha256):
         raise ValueError('Published reference archive fingerprint changed')
@@ -35,13 +37,17 @@ def read_reference_splits(archive, expected_sha256):
     ids, config = json.loads(raw_ids), json.loads(raw_config)
     if not isinstance(ids, dict) or set(ids) != set(REFERENCE_KEYS.values()):
         raise ValueError('Published reference must explicitly identify all three partitions')
-    seen, splits = set(), {}
+    seen, splits, ambiguous = set(), {}, set()
     for role, key in REFERENCE_KEYS.items():
         values = ids[key]
         if (not isinstance(values, list) or not values or
-                any(not isinstance(value, str) or not value or value in seen for value in values) or
+                any(not isinstance(value, str) or not value for value in values) or
                 len(set(values)) != len(values)):
-            raise ValueError('Published reference IDs must be unique and disjoint across partitions')
+            raise ValueError('Published reference IDs must be unique within each partition')
+        overlap = seen.intersection(values)
+        if overlap and policy == 'strict':
+            raise ValueError('Published reference IDs must be disjoint across partitions')
+        ambiguous.update(overlap)
         declared = config.get({'train': 'n_train', 'validation': 'n_val', 'test': 'n_test'}[role])
         if type(declared) is not int or declared != len(values):
             raise ValueError('Published reference config/ID partition counts disagree')
@@ -49,11 +55,13 @@ def read_reference_splits(archive, expected_sha256):
     return dict(splits=splits, archive_sha256=expected_sha256,
                 ids_sha256=hashlib.sha256(raw_ids).hexdigest(),
                 config_sha256=hashlib.sha256(raw_config).hexdigest(),
-                counts={role: len(values) for role, values in splits.items()})
+                counts={role: len(values) for role, values in splits.items()},
+                integrity_policy=policy, mutually_disjoint=not ambiguous,
+                cross_partition_ids=sorted(ambiguous), unique_reference_ids=len(seen))
 
 
 def audit_id_overlap(config, output, *, reference_archive, reference_sha256,
-                     id_prefix, reference_label_field, target_relation):
+                     id_prefix, reference_label_field, target_relation, reference_policy='strict'):
     """Inspect every frozen source ID; missing ID membership is not a no-leakage claim."""
     output = Path(output)
     if output.exists() or output.is_symlink():
@@ -64,8 +72,11 @@ def audit_id_overlap(config, output, *, reference_archive, reference_sha256,
     if (target_relation not in RELATIONS or not isinstance(id_prefix, str) or not id_prefix or
             not isinstance(reference_label_field, str) or not reference_label_field):
         raise ValueError('Declare a reference label field, ID namespace prefix and target relation')
-    reference = read_reference_splits(reference_archive, reference_sha256)
-    lookup = {identifier: role for role, values in reference['splits'].items() for identifier in values}
+    reference = read_reference_splits(reference_archive, reference_sha256, policy=reference_policy)
+    lookup = {}
+    for role, values in reference['splits'].items():
+        for identifier in values:
+            lookup.setdefault(identifier, []).append(role)
     if any(not identifier.startswith(id_prefix) for identifier in lookup):
         raise ValueError('Published IDs do not share the declared namespace')
     settings = config['dataset']
@@ -78,7 +89,10 @@ def audit_id_overlap(config, output, *, reference_archive, reference_sha256,
     for role, indices in manifest['partitions'].items():
         for index in indices:
             roles[index] = role
-    bins = {role: {key: 0 for key in (*ROLES, 'not_listed')} for role in ROLES}
+    categories = (*ROLES, 'not_listed', 'multiple_roles') if reference_policy == 'report_ambiguity' else (*ROLES, 'not_listed')
+    bins = {role: {key: 0 for key in categories} for role in ROLES}
+    training_exposure = {role: 0 for role in ROLES}
+    selection_exposure = {role: 0 for role in ROLES}
     output.mkdir(parents=True)
     partial = output / 'id-overlap.jsonl.partial'
     digest, count = hashlib.sha256(), 0
@@ -99,9 +113,14 @@ def audit_id_overlap(config, output, *, reference_archive, reference_sha256,
                 same = field == reference_label_field
                 if same != (target_relation in {'same_target', 'derived_target'}):
                     raise ValueError('Declared target relation disagrees with the current raw label field')
-            published = lookup.get(identifier, 'not_listed');role = roles[count]
+            memberships = lookup.get(identifier, [])
+            published = ('multiple_roles' if len(memberships) > 1 else memberships[0]) if memberships else 'not_listed'
+            role = roles[count]
             bins[role][published] += 1
-            results.write(json.dumps(dict(id=identifier, partition=role, reference_partition=published)) + '\n')
+            training_exposure[role] += 'train' in memberships
+            selection_exposure[role] += 'validation' in memberships
+            results.write(json.dumps(dict(id=identifier, partition=role, reference_partition=published,
+                                          reference_memberships=memberships)) + '\n')
             count += 1
     if count != manifest['source_count'] or digest.hexdigest() != settings['sha256']:
         raise ValueError('Current source fingerprint/count changed')
@@ -113,6 +132,7 @@ def audit_id_overlap(config, output, *, reference_archive, reference_sha256,
                   config_sha256=canonical_digest(config), reference={key: value for key, value in reference.items() if key != 'splits'},
                   id_prefix=id_prefix, reference_label_field=reference_label_field, target_relation=target_relation,
                   counts=bins, current_partition_counts=manifest['counts'], formal_training_runs=0,
+                  parameter_training_id_matches=training_exposure, model_selection_id_matches=selection_exposure,
                   label_disjointness='not established by ID membership alone',
                   reference_validation_policy='selection exposure recorded separately from parameter-training exposure',
                   not_listed_policy='absent from this published ID roster; not proof of unseen geometry or labels',

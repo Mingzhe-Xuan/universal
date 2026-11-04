@@ -9,6 +9,9 @@ never interpreted as proof of unseen geometry or labels. Run through Slurm
 using `audit_pretraining_ids.slurm`; configure `UGNN_AUDIT_CONFIG`,
 `UGNN_AUDIT_OUTPUT` and the explicit `UGNN_REFERENCE_RELATION`.
 See the [audit contract](../src/universal_gnn/benchmarks/audits/README.md).
+The selected ALIGNN archive has two published train/test material-ID overlaps.
+To report these explicitly, set `UGNN_REFERENCE_POLICY=report_ambiguity`;
+the default strict policy rejects them. Neither mode certifies unseen geometry.
 
 ## Saved tensor groups
 

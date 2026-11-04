@@ -19,7 +19,7 @@
 ## ALIGNN已发布ID的比较方法
 
 [独立审计模块](../../src/universal_gnn/benchmarks/audits/README.md)只读取固定ZIP中的JSON文本，
-不加载模型或反序列化权重。确认ZIP SHA、ID文件SHA、三划分互斥且与config计数一致后，
+不加载模型或反序列化权重。确认ZIP SHA、ID文件SHA、各清单内部唯一且与config计数一致，并登记跨清单冲突后，
 对完整标准数据逐行验证源SHA、有序ID和冻结划分SHA。
 
 本轮比较JARVIS带隙／派生分类、GMTNet介电、JARVIS声子DOS；它们使用相同JVASP命名空间。
@@ -27,6 +27,17 @@
 不把原验证曝光并入训练，也不忽略其选模作用。不对MLearn或Perov-5的其他命名空间假算“0交集”。
 
 带隙属于同目标字段，分类由相同带隙派生；介电和声子DOS属于不同目标字段。
+1008的6主/17子控制实际通过，但严格参考清单完整性门禁拒绝继续；失败报告/JUnit/日志保留。
+独立Slurm1009核验固定包后确认各清单内部无重复，原train/test共有两个ID：
+`JVASP-113961`、`JVASP-116461`，原train/validation及validation/test无交集。
+原清单合计55713个条目，对应55711个唯一ID；这只是发布清单证据，不单独证明实际训练加载器如何处理这两个条目。
+
+默认strict模式仍拒绝跨角色ID，原拒绝测试不变。显式`--reference-policy report_ambiguity`
+允许继续**报告**这个事实：增加`multiple_roles`组，逐ID保留全部发布角色，标记
+`mutually_disjoint=false`。训练/选模验证曝光合计按原角色成员关系统计，含多角色ID，
+不选择一个角色覆盖另一个、不删除样本，也不把原测试清单解释为干净材料留出。
+坏SHA、角色内重复、缺少清单、配置计数不符、命名空间不符仍拒绝。
+
 各行`metadata.label_field`必须与声明关系一致。三份JARVIS派生完整数据的实际Slurm交集仍待验收，
 结果发布前不填写推测数量。
 

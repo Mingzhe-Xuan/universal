@@ -4,6 +4,12 @@
 then reads its `ids_train_val_test.json` and `config.json` without deserializing
 weights. It requires unique/disjoint published partitions and matching counts.
 
+The default `policy='strict'` still rejects cross-partition IDs. For an audited
+published roster with known overlaps, explicit `policy='report_ambiguity'` retains
+the conflicting memberships and marks `mutually_disjoint=false`; it does not
+certify the roster as disjoint. Duplicate IDs within a partition, bad hashes,
+invalid IDs and config/count mismatches remain errors under both policies.
+
 `audit_id_overlap(config, output, reference_archive=..., reference_sha256=...,
 id_prefix='JVASP-', reference_label_field='optb88vdw_bandgap',
 target_relation='same_target')` verifies the entire current source SHA, source
@@ -19,6 +25,13 @@ is reported separately because its labels may have influenced model selection.
 `not_listed` never means unseen geometry: this ID audit does not reconstruct
 pretraining geometries, compare equivalent crystals or prove no target leakage.
 Cross-namespace IDs are refused rather than reported as zero overlap.
+
+The audit's explicit `reference_policy='report_ambiguity'` (CLI
+`--reference-policy report_ambiguity`) adds a `multiple_roles` bin and records
+every published role for each ID. Independent `parameter_training_id_matches`
+and `model_selection_id_matches` include overlapping memberships, so an ID in
+both published train/test remains training-exposed. No role is silently chosen,
+removed or reassigned. This mode reports ambiguity, not a clean held-out set.
 
 Use `scripts/audit_pretraining_ids.py` inside Slurm for complete-data work.
 Outputs are a new directory with `id-overlap.jsonl` and `report.json`, retaining
