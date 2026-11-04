@@ -290,6 +290,13 @@ ALIGNN原带隙头、CGCNN原带隙头、MEGNet原形成能头可能已看过候
 | 力场 | E/atom与F的MAE/RMSE；force-only不保证绝对能量常数；有真实应力标签才评应力 |
 | 工具成本 | 训练/推理耗时、峰值显存、可训练参数、磁盘峰值、实际完整样本数、额外任务代码量 |
 
+张量分组后评测现有独立[assessment模块](../../src/universal_gnn/benchmarks/assessment/README.md)和
+`scripts/evaluate_tensor_groups.py --report PASSED_REPORT --shape 3 3 --output NEW_DIRECTORY`，须在Slurm运行。
+同时报告整张量范数零/非零和逐分量标签零/非零，保留全部绝对误差与逐分量MAE/RMSE；
+缺失标签mask、空组null，精确零不拟合阈值，不做对称投影。源/划分SHA、全部test ID、
+原dtype标签和原overall指标必须核对。7主stdlib控制已通过，八版真实介电诊断/4999完整源的Slurm验收尚待；
+仅对已存预测后评测，不计新训练，诊断结果也不计完整任务完成。
+
 同时做数值单元：力/应力有限差分、冻结状态不变、checkpoint精确重载、resume一致、非法配置早报错。
 随机扰动只用于数值检查，不生成“DFT标签”。所有归一化、统计量、阈值和early stopping只由train/val决定。
 

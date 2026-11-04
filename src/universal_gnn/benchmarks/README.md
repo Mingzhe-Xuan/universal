@@ -1,5 +1,10 @@
 # Experiment resource preflight
 
+Saved predictions have a separate [tensor assessment module](assessment/README.md).
+It independently verifies original labels, frozen test IDs and overall metrics,
+then adds zero/nonzero target groups and component errors without modifying the
+training or resource-preflight paths.
+
 `resolution.py` accepts only actual worker-derived generation priors and original
 scratch neighbor statistics. It preserves every explicit setting and verifies
 fresh zero source-weight coverage, source/graph identity, precision and training

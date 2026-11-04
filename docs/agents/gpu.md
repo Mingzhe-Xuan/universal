@@ -3524,3 +3524,9 @@
 - 2026-11-05T04:13:50+08:00: Ordinary SSH first verify/pull current published root, validate fixed dfea7b0 and exact own993 RUNNING or passed receipt; submit one1CPU2GiB10min stdlib full-inference validator with afterok993 if still running. Only reads task-owned full source/predictions and writes a new receipt, no model imports/training or source/env edits.
 
 - 2026-11-05T04:14:48+08:00: Ordinary SSH first verify/pull current published root, collect only completed968 formal report/config/events/164 predictions/split, last973 scratch diagnostic and split,976/978/984 gate receipts,992/993 CPU post-evaluation receipts/bounded logs and current-user queue. No checkpoints copied, model computation, jobs or remote edits. Local verification metadata/IDs/config/provenance only.
+
+- 2026-11-05T04:17:52+08:00：SCP上传已推送76c5f1c的3348B小型离线bundle，SHA a40464dea372d3db4163fe7178fbdc198e8560f9dd802ddf2c88d3a566994879，先决81b77a5；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T04:18:16+08:00: Ordinary SSH verifies/pulls current published 76c5f1c root, then reads exact own known965-991 claims/receipts, eight formal status/events,984/985 replacement preparations and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T04:19:13+08:00: Ordinary SSH verifies/pulls current published 76c5f1c root, then reads exact own known965-991 claims/receipts, eight formal status/events,984/985 replacement preparations and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.

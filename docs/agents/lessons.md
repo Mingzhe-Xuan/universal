@@ -280,3 +280,5 @@
 - 2026-11-05 03:08 +08:00：多层JS工具字符串写入Python正则时，括号转义在生成过程中丢失，UserId检查因此报unterminated subpattern。精确固定Slurm字段直接比较UserId=xmz(令牌，避免不必要正则；AST检查不能发现正则语义错误。新增完整控制器check-only/owner正反例与全部请求bash检查，动作前置门禁保证错误未进入hold/cancel/submit。已查既有PowerShell/转义经验，不盲目重连或重提。
 
 - 2026-11-05T04:08:23+08:00：原包数据读取对照可能要求训练目标之外的CSV标量字段（CGCNN CIFData）。只对独立reference输入副本提供读取器槽，不改真实下游标签、任务或官方头；必须同时检查原特征和原预测等价。带Tensor的targets字典不能直接用==检查不变性（992收尾断言失败），应逐字段torch.testing.assert_close(rtol=0,atol=0)；994通过。失败请求/日志保留，修复仅任务请求适配，不因此更改官方骨干。
+
+- 2026-11-05T04:30:53+08:00：张量零/非零需要明确分组对象：介电张量整体范数可能全部非零，但非对角分量有大量精确零标签。只报整张量分组会漏掉这些分量误差；后评测同时提供whole-tensor groups和component-label groups，精确零不拟合阈值，空组null，完全缺失不误判零。具体长期接口和输出定义放assessment/README。

@@ -1,5 +1,14 @@
 # Scripts
 
+## Saved tensor groups
+
+`evaluate_tensor_groups.py --report runs/CASE/report.json --shape 3 3 --output NEW`
+independently verifies saved complete test predictions and their source labels,
+then reports absolute/component errors for zero and nonzero target groups.
+Use `evaluate_tensor_groups.slurm` with `UGNN_TENSOR_REPORT` and
+`UGNN_TENSOR_OUTPUT`. It does not train or run inference. See the
+[assessment contract](../src/universal_gnn/benchmarks/assessment/README.md).
+
 ## Scalar training-mean baseline
 
 `evaluate_scalar_baseline.slurm` uses `UGNN_BASELINE_CONFIG` to fit the entire
