@@ -286,3 +286,5 @@
 - 2026-11-05T04:51:13+08:00：检查缓存源码的Git身份前必须先确认目录自身有.git；git -C在非仓库子目录会向上找到本任务根仓库，不能用其HEAD/remote冒充该第三方快照版本。此次ALIGNN静态源码目录没有独立.git，仅以文件内容/hash及官方在线登记说明身份；权重包的发布ID清单以固定ZIP SHA和内部文件SHA为准。
 
 - 2026-11-05T05:13:02+08:00：发布的train/test材料ID清单不能假定互斥：固定ALIGNN包存在两个跨角色ID。默认完整性拒绝要保留；需要继续审计时，显式报告多角色成员关系和互斥=false，训练/选模曝光按原成员关系计算，不能按最后出现角色覆盖、静默去重分配、删除样本或声称干净留出。原始清单、固定SHA、独立诊断和失败门禁均保留。
+
+- 2026-11-05T05:57:04+08:00: Generation capacity has two independent batch contracts: training config must retain its paired training batch while sampling exports its own paired batch. A clean graph scan cannot bound evolving diffusion graphs; actual corrupted-training and full-step sampling probes are required. Current scientific quality streams one sample at a time, so throughput measured at sampling batch4 is not an observed1000-sample evaluation cost. Long-term interface is documented in benchmarks/generation/README.md.

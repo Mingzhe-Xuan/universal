@@ -1,37 +1,20 @@
 # 当前状态
 
-2026-11-05T05:43:39+08:00: Enter full generation preparation stage for four official backbones. Preserve144 formal trainings and all frozen947 inputs. Observe exact current Slurm handles; prepare full11356 native graphs and independent train/sample paired capacity with train-only prior, retaining100x2 sampling steps and1000x5 formal quality requirements.
+Original goal remains active: four official backbones x six tasks x two whole-backbone initializations x three seeds =144 formal trainings, plus the original native/frozen, rank3/4, molecular/plugin and cost deliverables. Independently completed1/144; unique formal cases submitted8/144. Diagnostics48/48 and64 diagnostic generation attempts are separate.
 
-2026-11-05T05:42:27+08:00: Installation follow-up: verify existing Slurm897 installation and898/899 GPU acceptance receipts before reporting completion; preserve running experiments and existing environments.
+968 MACE full forcefield FT is independently accepted (174 epochs, validation best144; test164).969 whole-backbone scratch was confirmed RUNNING at2:26:20 in the latest queue observation.988/989 ALIGNN,990/991 NequIP and996/997 CGCNN remain queued;995 is CGCNN's repaired full preparation. Existing immutable source caches/environments/data and scientific configurations remain unchanged.
 
-原目标active：CGCNN/ALIGNN/MACE/NequIP × 六任务 × 两初始化 × 三seed共144次正式训练及既定扩展；目前1/144独立验收完成、8/144唯一case已提交。CUDA及四原模型依赖已完成安装与实际GPU验收。
+Full spectrum998-1001, dielectric1004-1007, bandgap1011-1014 and classification1015-1018 preparations remain queued. New full generation preparations1020-1023 were submitted serially after1018, with afterok1019. All five full-data sources/splits and original947/144 matrix remain fixed. These preparations add zero formal trainings.
 
-968 MACE预训练微调完整1309/93/164、初始共同batch4、float32，300epoch/patience30预算下在174epoch正常提前停止，best144。全部174轮每轮1309条/328 minibatch、93验证和164独立测试ID、固定配置/源/划分、正骨干梯度、checkpoint逐项状态与确定性重载均核验。test MAE：能量0.0132882435eV/atom、力0.0308030417eV/angstrom。证据results/paper-completed-20261105/{verified,gates-verified}.json。
-969整个骨干scratch正在运行；988/989 ALIGNN和990/991 NequIP正式两模式等待969结束。984 ALIGNN完整图/两模式容量/物理验收通过，共同batch4；976物理GPU24主+6子（30JUnit）及源码SHA、978 NequIP两模式最坏输入CUDA物理复查已独立核验。
-48/48小规模诊断已独立验收，含64个独立诊断生成样本；973完成最后CGCNN力场scratch，仍为64/16/16、三epoch，复用959实际容量/图证据。诊断不计144正式结果。
-CGCNN985预检在训练前因原包CIFData要求CSV property字段失败；994 CPU精确原头/读出前特征对照通过（误差0），仅对读取器提供临时占位字段，正式配置及真实标签逐元素不变。995完整CGCNN预检排队，996/997替代未运行986/987；旧请求与状态保留在各case attempts/001，新请求attempts/002，当前launch指针原子更新，不重复计算case。
-993 CPU独立重评已核对全部164源标签/指标，best checkpoint训练后物理验收通过，完整1566源流式推理已完成；1002另行逐条核对全部有序ID、原子数对应形状、所有预测标量有限性、源/输出SHA及完成标记通过。CPU后评/推理总墙钟789.89秒、RSS3.47GiB，与GPU训练计时分开；不新增训练数，stress无监督精度标签。
-998/999/1000/1001四原骨干完整声子谱预检已串行排队在现有力场任务之后，保持11394/1424/1426、200原始通道，完整图与成对至少100batch容量门禁；仅准备，尚未提交正式谱训练。
-1003张量分组独立评测已实际Slurm验收：7主/22子共29JUnit零失败/错误/skip，八执行源SHA按Git blob核对；八版真实介电诊断（16唯一测试ID、128条预测）原overall不变，且标签逐项匹配完整源。完整4999/3998train/502val/499test源与划分、全部有序ID核验：所有整张量范数非零，test4491分量中2611零/1880非零。整张量和逐分量分组均保留，空组null，不加对称约束；没有新增训练。证据results/paper-tensor-assessment-20261105/1003/verified.json。
-1004/1005/1006/1007四原骨干完整介电预检已串行排在1001之后：覆盖3998完整训练原图/额外响应图、两模式至少4x100容量和最坏输入导数/几何。仅准备，尚未提交正式张量训练；与现有声子谱准备一样，不增加8个正式case。
-1010预训练ID审计已通过7主/17子24JUnit、七源Git SHA和三份完整源/四任务全行核验。原参考互斥=false、两个train/test ID冲突保留；本次bandgap/classification test7580有4405原训练/586原验证曝光，介电test499有385/66，谱test1426有1147/148。只称迁移适配／跨目标迁移，不称无泄漏泛化；其他权重精确交集unknown。失败1008与诊断1009保留，严格默认不变。
-1011–1014四骨干带隙、1015–1018四骨干分类完整60823/7590/7580图/容量预检已排在1007之后，原配置不变，仅准备不新增正式训练。source仍固定dfea7b0，曝光审计来源b51a781；两个缓存分别保留。
-947完整144配置revision2、945重载25项、957生成43主+16子、983容量metadata6主+8子及源SHA均保留通过。981完整JARVIS训练均值基线已核验75,993源及全部15,170留出ID/标签/预测，test MAE0.9069491665eV；供24个带隙配置共享，计0神经训练。
-长作业固定源码缓存不更新：MACE正式8dba196，其他当前请求dfea7b0；每次普通连接仍先pull根仓库，模型/训练/数据相关Python源与环境兼容由门禁验证。没有新增包或改变运行作业的源码。
+Public generation preparation commit47a208f is pushed and materialized in a clean immutable Git checkout.1019 actual SlurmCPU acceptance passed8 main/24 sub32 JUnit, zero failures/errors/skips, five new execution-source hashes and unchanged957/945/983 numerical source hashes. Full11356 training prior/graphs and independent trainB16/sampleB4 paired capacity will be measured by1020-1023; actual full GPU acceptance is still pending.100x2 denoising and formal1000 attempts/five draws per condition remain fixed. Reports/verification: results/paper-generation-preparation-20261105/1019/.
+
+Previous accepted independent work remains:993/1002 all1566-source MACE FT inference and raw164-test re-evaluation;1003 dielectric tensor/component grouping;1010 exact published-ID exposure with explicit ambiguity and other providers unknown;981 full scalar mean baseline. None changes the formal completion count.
 
 # 当前计划
 
-2026-11-05T05:43:39+08:00: Enter full generation preparation stage for four official backbones. Preserve144 formal trainings and all frozen947 inputs. Observe exact current Slurm handles; prepare full11356 native graphs and independent train/sample paired capacity with train-only prior, retaining100x2 sampling steps and1000x5 formal quality requirements.
-
-2026-11-05T05:42:27+08:00: Installation follow-up: verify existing Slurm897 installation and898/899 GPU acceptance receipts before reporting completion; preserve running experiments and existing environments.
-
-本轮1010全源曝光审计已验收，1011–1018完整带隙／分类预检排队。继续原正式句柄和其他完整门禁；下一步生成完整预检及统一复现入口，原947划分/144范围不变。
-
-本轮1003张量分组及全源审计已验收；下一阶段把独立评测应用到完整张量结果，完成1004–1007模型门禁。模型/训练/现有指标与运行作业不变。
-
-1. 继续观察969/988–991/995–997确切当前句柄；993/1002已归档完成。其他作业完成后收集完整配置、划分、事件、测试预测、资源与checkpoint证据。源配置与科学门禁不降低，typed OOM只允许共同batch回退。
-2. 完成998–1001声子谱及1004–1007介电完整图/容量/物理门禁后，按实测吞吐与资源预算提交四模型两初始化的正式谱训练；依次扩展其他任务与三个seed，不以诊断替代全量。
-3. 将已验收分组工具用于完整张量结果，沿用已披露ID曝光/其他unknown说明，补齐各模型完整推理和工具成本；native/frozen、rank3/4、分子和目录插件等计划扩展仍保留。原144及扩展范围没有缩减。
+1. Observe exact existing formal handles; collect each terminal case's configs/events/all heldout predictions, source/split/checkpoint identities, early stopping and resource evidence. After969 completes, separately re-evaluate scratch best and run/verify full-source inference without touching968 artifacts.
+2. Complete queued full-data preparation gates. Launch remaining full formal task/model/initialization/seed cases from actual paired configs and measured budgets, retaining typedOOM-only fallback and complete data. Formal generation additionally requires validation-best1000-attempt quality; diagnostic or capacity samples do not substitute.
+3. Extend the public reproducible execution path beyond generation preparation; preserve native/frozen, higher tensor ranks, molecular/plugin and inference/cost work. Keep explicit pretrained exposure limitations. Do not shrink144 or mark complete while any required evidence is absent.
 
 # 变更记录
 
@@ -579,3 +562,5 @@ CGCNN985预检在训练前因原包CIFData要求CSV property字段失败；994 C
 - 2026-11-05T05:43:39+08:00: Enter full generation preparation stage for four official backbones. Preserve144 formal trainings and all frozen947 inputs. Observe exact current Slurm handles; prepare full11356 native graphs and independent train/sample paired capacity with train-only prior, retaining100x2 sampling steps and1000x5 formal quality requirements.
 
 - 2026-11-05T05:47:43+08:00: Generation execution design: add benchmarks/generation/{preparation.py,__init__.py,README.md} for frozen recipe checks/full train-only prior/native graph and two-phase paired capacity; scripts/prepare_generation_pair.{py,slurm} expose a reusable public fixed-checkout entry. Tests cover recipe/quality corruption, phase separation, complete calibration provenance and login-node guard before any runtime import. Existing training/model implementations unchanged.
+
+- 2026-11-05T05:57:04+08:00: Completed public generation preparation controls and source-compatible server acceptance1019; queued four complete generation pair preparations1020-1023. Independent train/sample configurations prevent overwriting training batch; formal1000/5 quality remains pending. Next observe969 and existing complete-data gates; original144 and supplementary scope unchanged.
