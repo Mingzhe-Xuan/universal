@@ -10,6 +10,15 @@ from universal_gnn.contracts import Structure
 from universal_gnn.engine.training import build_model
 
 
+class OffsetReadout(torch.nn.Module):
+    def __init__(self, base):
+        super().__init__()
+        self.base = base
+
+    def forward(self, *args, **kwargs):
+        return self.base(*args, **kwargs) * 1000 + 2**24
+
+
 def configured(task):
     torch.manual_seed(123)
     config = {'dtype': 'float32', 'device': os.environ.get('UGNN_PHYSICAL_DEVICE', 'cpu'),
@@ -47,8 +56,11 @@ def test_derivative_geometry_and_mixed_gradients_on_live_model(task):
         assert result['checks']['train_batch_forces']['passed']
 
 
-def test_wrong_force_offset_is_rejected_by_independent_energy_difference(monkeypatch):
+@pytest.mark.parametrize('large_energy_offset', [False, True])
+def test_wrong_force_offset_is_rejected_by_independent_energy_difference(monkeypatch, large_energy_offset):
     model, structures, config = configured('forcefield')
+    if large_energy_offset:
+        model.energy_model.readout = OffsetReadout(model.energy_model.readout)
     original = model.forward
     def incorrect(*args, **kwargs):
         values = original(*args, **kwargs)
@@ -57,6 +69,22 @@ def test_wrong_force_offset_is_rejected_by_independent_energy_difference(monkeyp
     result = validate_derivatives(model, structures, config)
     assert not result['passed']
     assert not result['checks']['forces_finite_difference']['passed']
+
+
+@pytest.mark.parametrize('dtype', [torch.float32, torch.float64])
+def test_energy_difference_precision_preserves_live_state_and_detects_derivatives(dtype):
+    model, structures, config = configured('forcefield')
+    model.energy_model.readout = OffsetReadout(model.energy_model.readout)
+    model.to(dtype=dtype).eval()
+    state = {key: value.detach().clone() for key, value in model.state_dict().items()}
+    result = validate_derivatives(model, structures, config)
+    assert result['passed'], result
+    assert result['finite_difference']['analytic_dtype'] == str(dtype)
+    assert result['finite_difference']['energy_reference_dtype'] == 'torch.float64'
+    assert max(abs(value) for value in result['finite_difference']['forces_analytic']) > .002
+    assert next(model.parameters()).dtype == dtype
+    assert state.keys() == model.state_dict().keys()
+    assert all(torch.equal(value, model.state_dict()[key]) for key, value in state.items())
 
 
 def test_original_assessment_helper_accepts_float64_geometry_and_zero_reference(monkeypatch):

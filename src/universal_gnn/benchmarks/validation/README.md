@@ -17,7 +17,14 @@ the analytic result and each other at the original rtol0.02/atol0.002; the large
 convergent pair is retained, with all attempts recorded. This tests local behavior
 when large steps can cross a discrete neighbor-selection boundary; a single
 accidental agreement is rejected. Force and strain can require different steps. Nothing
-changes the original graph, weights or training precision. The pure control is
+changes the original graph, weights or training precision. Analytic/mixed derivatives
+and all geometry/batch checks use the live model's dtype. Independent force/strain
+energy differences use a float64 deep copy with the exact same parameter values
+and the already selected input coordinates promoted to float64; existing float64
+models need no copy. This prevents cancellation of small energy increments while
+still checking the actual float32 analytic forces/stress against the original
+tolerances and adjacent-step convergence. Both dtypes are recorded. The live
+model's parameters, buffers and dtype are preserved. The pure control is
 in `finite_difference.py`. These checks do not replace all-training-graph scans
 or CUDA capacity preflights.
 

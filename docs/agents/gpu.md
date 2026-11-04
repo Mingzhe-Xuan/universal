@@ -3406,3 +3406,21 @@
 - 2026-11-04T23:29:18+08:00: Ordinary SSH verify/pull unchanged29d0d99, inspect exact955 convergence/topology diagnostic handle and own report/logs. No new jobs, restarts, source edits, numerical login work or tolerance changes.
 
 - 2026-11-04T23:42:05+08:00: Ordinary SSH verifies/pulls unchanged29d0d99 before observing exact948–954 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.
+
+- 2026-11-05T00:08:32+08:00：SCP上传已推送8dba196的13581B小型离线bundle，SHA 4f94975d2a7e1c93399175e5bba5cb1470843bffbf8ce9414ee49958d8c80f90，先决29d0d99；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T00:10:44+08:00: All948–955 terminal. Ordinary SSH verify/pull published8dba196, unique claim submits19-main physical GPU regression,43-main generation CPU regression and only955 previously blocked copied-float64 CGCNN diagnostic after typed-zero fix. No retraining completed runs, original graph changes, tolerance relaxation, source edits or login numerics.
+
+- 2026-11-05T00:25:47+08:00: Ordinary SSH verify/pull unchanged8dba196, observe exact956–958 claim handles and own receipts/JUnit/float64 topology report and bounded logs. No new jobs, restarts, source or environment changes.
+
+- 2026-11-05T00:28:40+08:00：Ordinary SSH verifies/pulls published8dba196 first, then Git clone --shared from this confirmed task repository into new task-owned ignored runs/source-checkouts/8dba196... . No server code editor/patch/source mutation; only Git materializes already-pushed source. Verify fixedHEAD/clean tracked source, symlink only untracked data/models/runs to their exact existing task paths, cache-only Git excludes/provenance metadata. Existing paths not overwritten, no neural imports, package installs or numerical login execution. Root origin remains unchanged; future normal connections still pull root first, immutable cache is verified rather than updated.
+
+- 2026-11-05T00:33:09+08:00：Ordinary SSH first verifies/pulls current8dba196 root; validates immutable source cache8dHEAD/clean, then unique claim submits3 GPU pairs (CGCNN/ALIGNN FF,MACE generation) CPU2/24GiB/GPU1/2h, working inside fixed Git cache with explicit project-package origin assertion.956/957 actually passed and source-bound. Full64 graph/4x100capacity/actual convergence FD/full16test/8independent samples per mode remain required. Root source future updates cannot alter cache. No login numerics, source edits, model/data changes or tolerance relaxation.
+
+- 2026-11-05T00:52:17+08:00: Ordinary SSH verifies/pulls root plus immutable8dba196 source cache before observing exact959–961 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.
+
+- 2026-11-05T00:57:05+08:00：Ordinary SSH first verifies/pulls current8dba196 root and verifies fixed clean source cache. Unique claim submits2 complete MLearn preparation jobs (MACE,NequIP),CPU2/32GiB/GPU1/6h each, no formal training. Each uses immutable947 full configs and all1309 train records, independent native parity, full original graph scan,4x100paired capacity at initialB4 with typed-OOM fallback, then actual worst-input convergence derivatives for both modes and exact source/config/1309stat checks.956/957 gates passed,950/951 full pilot pairs passed. Root/source cache remain separate, no source editing, dataset changes or login numerics.
+
+- 2026-11-05T01:12:50+08:00: Ordinary SSH first verify/pull current8d root, read exact962/963 full-data prep handles and own reports/bounded logs, then unique claim submits GPU1/CPU2/24GiB/20min same-parameter deterministic f32/f64 diagnosis of actual959 CGCNN scratch inside immutable8d source. No training, tolerance changes, graph changes, package installs or login numerics.
+
+- 2026-11-05T01:20:25+08:00: Ordinary SSH verifies and pulls current published offline bundle before read-only exact962/963 full-data preparation and existing CGCNN precision claim/report observation; bounded logs and current-user Slurm queue. No new jobs, source edits, packages or numerical login work.

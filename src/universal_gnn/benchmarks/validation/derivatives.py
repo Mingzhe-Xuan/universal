@@ -1,4 +1,5 @@
 """Independent finite differences and geometry checks; no training or metadata patches."""
+import copy
 import math
 
 import torch
@@ -59,6 +60,14 @@ def validate_derivatives(model, structures, config):
     value = {key:item.detach() for key,item in value.items()} if field else value.detach()
     model.zero_grad(set_to_none=True)
     if field:
+        # Promote identical parameter values only for independent energy differences:
+        # float32 subtraction can erase small force increments on extensive energies.
+        energy_reference = (copy.deepcopy(model.energy_model).double().eval()
+                            if parameter.dtype != torch.float64 else model.energy_model)
+        reference_batch = batch.to(parameter.device, torch.float64)
+        result['finite_difference']['analytic_dtype'] = str(parameter.dtype)
+        result['finite_difference']['energy_reference_dtype'] = 'torch.float64'
+        result['finite_difference']['reference'] = 'same parameter values; promoted geometry; no training'
         force_indices = [(atom, axis) for atom in range(min(2, len(batch.numbers))) for axis in range(3)]
         stress_indices = [(0, 0), (1, 1), (0, 1)]
         force_a = torch.stack([value['forces'][atom, axis] for atom, axis in force_indices])
@@ -67,21 +76,21 @@ def validate_derivatives(model, structures, config):
         def force_estimate(step):
             estimates = []
             for atom, axis in force_indices:
-                change = torch.zeros_like(batch.positions)
+                change = torch.zeros_like(reference_batch.positions)
                 change[atom, axis] = step
-                plus = model.energy_model(batch.with_geometry(batch.positions + change, batch.cell)).detach()
-                minus = model.energy_model(batch.with_geometry(batch.positions - change, batch.cell)).detach()
+                plus = energy_reference(reference_batch.with_geometry(reference_batch.positions + change, reference_batch.cell)).detach()
+                minus = energy_reference(reference_batch.with_geometry(reference_batch.positions - change, reference_batch.cell)).detach()
                 estimates.append((-(plus - minus) / (2 * step)).reshape(()))
             return torch.stack(estimates).tolist()
 
         def stress_estimate(step):
             estimates = []
             for i, j in stress_indices:
-                strain = torch.zeros_like(batch.cell)
+                strain = torch.zeros_like(reference_batch.cell)
                 strain[0, i, j] = step
-                plus = model.energy_model(strain_batch(batch, strain)).detach()
-                minus = model.energy_model(strain_batch(batch, -strain)).detach()
-                estimates.append(((plus - minus) / (2 * step * torch.linalg.det(batch.cell[0]).abs()) * 160.21766208).reshape(()))
+                plus = energy_reference(strain_batch(reference_batch, strain)).detach()
+                minus = energy_reference(strain_batch(reference_batch, -strain)).detach()
+                estimates.append(((plus - minus) / (2 * step * torch.linalg.det(reference_batch.cell[0]).abs()) * 160.21766208).reshape(()))
             return torch.stack(estimates).tolist()
 
         for name, analytic, estimate in [('forces', force_a, force_estimate), ('stress', stress_a, stress_estimate)]:
@@ -94,6 +103,7 @@ def validate_derivatives(model, structures, config):
             result['finite_difference'][name+'_analytic'] = analytic.tolist()
             result['finite_difference'][name+'_numeric'] = convergence['numeric']
             result['finite_difference'][name+'_convergence'] = convergence
+        del energy_reference
         compare('net_force', value['forces'].sum(0), torch.zeros_like(value['forces'][0]), rtol=0, atol=2e-5)
     else:
         features = model.backbone.encode(batch)
