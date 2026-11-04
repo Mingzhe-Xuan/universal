@@ -24,3 +24,24 @@ identity checks and configuration preparation cannot substitute for original-mod
 full-graph coverage, paired capacity and storage gates. No training or Slurm submission occurs here.
 Use `scripts/prepare_arxiv_matrix.slurm`; runtime readout normalization still requires separate
 acceptance in the restored provider environments.
+
+## Diagnostic pilots
+
+`pilots.prepare_pilots(parent_matrix, output)` derives five 96-record diagnostic datasets and
+48 configurations from seed123 of the frozen full matrix. Each original role contributes
+64 train, 16 validation and 16 test records, chosen by deterministic ID hash and retained in
+source order. Selection uses no labels, atom-count filter or first-N truncation. Classification
+and bandgap share the same selected source. The full parent source is hashed and every ID
+checked before the new JSONL/split is published. Source or manifest changes prevent publication.
+
+Pilot configs retain original backbones, both entire-model initializations, readouts, precision,
+optimizer settings and task semantics. Their declared budget is three epochs at batch two,
+with independent validation/test and no early stopping. Sampling step counts stay unchanged;
+eight generated structures are declared only as a shape/path diagnostic. Whole-model scratch
+and original-model derivative acceptance remain gates, and OOM may still require a smaller
+common batch for each pair. Fitted full-data neighbor statistics/priors cannot be reused.
+
+Run `scripts/prepare_arxiv_pilot.py --matrix runs/arxiv-v1/definition-872/matrix.json --output NEW_DIRECTORY`
+through Slurm with `PYTHONPATH=src`. It writes `data/`, `configs/` and a manifest whose kind is
+`arxiv_v1_diagnostic_pilots`. Status is `prepared_not_launched`; no model or training is executed.
+Pilot definitions/results do not count toward the separate 144 formal full-data runs.

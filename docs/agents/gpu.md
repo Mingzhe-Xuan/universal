@@ -3214,3 +3214,13 @@
 - 2026-11-04T15:55:10+08:00：889计算节点直连4MiB/18.16秒、HTTP206/TLS校验0且与固定源offset SHA一致。普通SSH先pull dbb0dab并拒绝任何活跃旧writer，独占claim提交单CPU Slurm原partial直连剩余16固定官方资源；每个curl操作显式--noproxy *、HTTPS-only、禁用curlrc且清理代理环境，保留锁/20GiB/SHA/CR/原断点。只暂存，报告明确暂停、不安装、不训练，无专用SSH代理。
 
 - 2026-11-04T15:56:42+08:00: Ordinary read-only SSH verify/pull dbb0dab then read known CUDA job890 small receipt, own queue,1080 listener and filesystem free bytes. Actual31436 is terminal/proxy255/released; no new proxy, job, installation or unknown-session signal.
+
+- 2026-11-04T16:01:53+08:00: Ordinary read-only SSH verify/pull dbb0dab then read known CUDA job890 small receipt, own queue,1080 listener and filesystem free bytes. Actual31436 is terminal/proxy255/released; no new proxy, job, installation or unknown-session signal.
+
+- 2026-11-04T16:02:50+08:00：SCP上传已推送bc9ea6c的7388B小型离线bundle，SHA 3ef08a8e75b04fad5c8572ff355f52349c16d0f5e1624d3396cb873fd12749fb，先决dbb0dab；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T16:03:48+08:00: Ordinary read-only SSH verify/pull bc9ea6c then read known CUDA job890 small receipt, own queue,1080 listener and filesystem free bytes. Actual31436 is terminal/proxy255/released; no new proxy, job, installation or unknown-session signal.
+
+- 2026-11-04T16:07:12+08:00: Ordinary read-only SSH verify/pull bc9ea6c then read known CUDA job890 small receipt, own queue,1080 listener and filesystem free bytes. Actual31436 is terminal/proxy255/released; no new proxy, job, installation or unknown-session signal.
+
+- 2026-11-04T16:18:54+08:00：用户明确恢复实验后，普通SSH先核验/pull bc9ea6c，独占claim串联DGL1.1.3cu121官方直连/SHA资源作业、afterok890的已有base安装、afterok(base+DGL)的official extras及afterok(extras)的单GPU最小图/训练求导/断点/流式推理和六输出/OOM诊断。CUDA/DGL未完成不启动安装，任一步失败阻断后续；不直接排144长训练，不把合成诊断冒充原模型pilot。源码未远端编辑，现有venv保留。

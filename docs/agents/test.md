@@ -1147,3 +1147,7 @@
 - 2026-11-04T15:55:10+08:00：889实际完成4194304B，offset165498715，与本机已有固定CuBLAS片段SHA一致；18.16s/231150Bps，HTTP206、ssl_verify_result0。直连续传wrapper AST/bash-n及真实函数隔离注入检查通过：每个--next段单独带noproxy/HTTPS约束、清理代理env并拒绝显式proxy；使用已发布续传器/原SHA/20GiB/单writer锁，等待实际下载与完整SHA结果，不宣称完成安装。
 
 - 2026-11-04T16:00:46+08:00：直连切换本阶段实际验收：889四MiB官方Range与已有原文件偏移SHA一致；直接runner对每个--next段明确noproxy/HTTPS-only，curlrc禁用，代理环境清除，注入拒绝proxy与AST/bash-n通过。890首个只读观察RUNNING，资源partial191086427>165498715，1080无监听，environment_installed=false/experiment_goal_status=paused。旧HTTP工具句柄live、CIM52372命令/54339 OwningProcess一致后仅Kill自身服务，监听释放已确认。仅文档提交前检查state历史逐字保留、相关路径和git diff --check。
+
+- 2026-11-04T16:16:33+08:00：小规模准备实现前计划：DGL下载固定79870014B/SHA f32a1907431544ee1085b11deb373fa277534e41a46e5d5d0188c447fa9bae07，直连HTTPS/noproxy，最终SHA后仅资源complete；安装afterok依赖890与DGL，不跳过pipcheck和隔离Torch/e3nn来源。GPU诊断使用已有graph_scan五项、batching/checkpoint/geometry/heldout定向回归及validate_preflight_cuda六类完整训练步/OOM，失败阻断后续。真实pilot数据纯std准备逐一验证冻结matrix/source/split摘要，确定性ID哈希从每个原分区取64/16/16，输出新JSONL/manifest/audit及48配置，不改原全量定义；测试选择不漏/不串分区、分类共享split、无原子数裁剪、尾batch/初始化成对设置、数据变更拒绝、结果诊断标注及不启动训练。
+
+- 2026-11-04T16:50:12+08:00：pilot准备单元提交前七项纯std通过，已发布HEAD加本单元三文件的隔离目录同七项通过，证明不依赖未发布original scratch/生成运行时。覆盖固定分区内ID哈希、不以原子数/标签筛选、完整父source/source-ordered ID及canonical split绑定、来源变更不发布、不可覆盖、同一数据/头/优化下两初始化pair与3epoch/batch2预算、禁止旧统计和CLI Slurm先行。AST/py_compile、计划及模块README全部本地链接/锚点/围栏、state历史保留与git diff --check通过。完整真实数据48配置生成需发布后Slurm，仍无NN或正式训练验收。

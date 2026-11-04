@@ -273,3 +273,5 @@ Slurm868已核验并暂存五个原本就在本机的wheel到 `models/official-i
 - 2026-11-04T10:32:01+08:00：补充既有资源只读核对：本机早先下载的Torch2.6.0+cpu wheel为178630806B，官方HTML索引SHA256 35a9e78b7e4096968b54c1a198687b981569c50ae93e661aa430f9fd208da102；本次只读431099B索引metadata并核对既有字节，没有下载新CPU二进制。Slurm873按四个固定URL缓存键检查，结果missing；没有安装、建新CPU环境或改变正式Torch2.7.1cu128/GPU验收要求。新7个CPU wheel下载许可仍待既有问题回答。
 
 - 2026-11-04T16:00:46+08:00：资源传输路径变更：用户明确授权本次16个固定官方Torch/CUDA wheel从服务器HTTPS直连，curl --noproxy *且清除ALL/HTTP/HTTPS代理，HTTPS验证保持启用。889实测通过，890只向既有models/official-install/arxiv-linux-base暂存并做完整SHA。没有修改任何venv/.pth或安装包，没有新增CPU环境/CPU二进制；后续安装与数值门禁仍待实验目标恢复。
+
+- 2026-11-04T16:16:33+08:00：恢复执行前环境计划：复用已创建并记录的universal-base及universal/universal-mace/universal-official，不重新创建/覆盖venv。890全部16资源成功后运行既有install_offline_cuda_base.slurm；固定DGL1.1.3cu121官方wheel独立Slurm直连并SHA后，与base共同afterok触发install_official_extras.slurm，保留MACE e3nn0.4.4/NequIP与official0.5.8。之后单GPU最小训练/导数/checkpoint与通用CUDA/OOM验收。所有数值计算在Slurm，当前未宣称安装或验收成功。
