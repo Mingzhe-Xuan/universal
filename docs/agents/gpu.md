@@ -3356,3 +3356,9 @@
 - 2026-11-04T22:13:40+08:00: User requests installation completion notice. Ordinary SSH verifies and pulls already-published offline bundle first, then reads existing installation897/GPU899 receipts and checks task environment interpreter paths. No installs, numerical imports, new jobs, downloads or source edits; reuse existing completed numerical acceptance.
 
 - 2026-11-04T22:15:54+08:00: Ordinary SSH verify/pulleda97a7 then inspect925/926 existing Slurm states, own JUnit/acceptance receipts and bounded log tails. Save local evidence; no scientific login operations, new jobs or source changes.
+
+- 2026-11-04T22:19:58+08:00：SCP上传已推送1afa6d4的8585B小型离线bundle，SHA 40fb1e6eddfec24b45456e67372316b293a7be53134fd9a338d1aab02c2af72a，先决eda97a7；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T22:21:04+08:00: Ordinary SSH verify/pull published1afa6d4 first.925 has terminal post-test assertion failure (40 main+16 subtests actually passed);92632controls passed and handle absent. Unique claim submits corrected complete generation regression CPU1/6GiB/20min and eight immutable classification report-count augmentations plus5 stdlib metric tests CPU1/1GiB/10min. No training, numerical login work, environment edits or overwrite of925/original reports.
+
+- 2026-11-04T22:23:45+08:00: Ordinary SSH verifies/pulls current published bundle first, then reads exact927/928 handles from existing claim and their own reports/JUnit/bounded logs. No new jobs, restarts, scientific imports or source edits.

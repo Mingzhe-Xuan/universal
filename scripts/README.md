@@ -1,5 +1,14 @@
 # Scripts
 
+## Physical-task acceptance
+
+`validate_task_derivatives.py --config CONFIG --output NEW_JSON` requires Slurm
+and checks the actual configured force-field or graph-level rank2 response model.
+See [the numerical contract](../src/universal_gnn/benchmarks/validation/README.md).
+`validate_physical_tasks.slurm` runs the independent finite-difference validator
+fixtures on CUDA plus energy-per-atom and held-out/resume regression cases.
+Original model acceptance and full-data capacity are separate gates.
+
 ## Generation protocol acceptance and quality
 
 `validate_generation_protocol.slurm` runs40 numerical/control main cases with zero allowed skips,

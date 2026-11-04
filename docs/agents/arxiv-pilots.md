@@ -59,3 +59,7 @@ NequIP用官方全局初始化并保留逐元素中性shift形状。未知状态
 每模型两版均为seed123、64/16/16、三epoch、batch2。各自原包对照、完整64图、四次100batch容量、validation-best、重载及完整16条测试ID已回传独立核验；谱每版计3200个标量标签。
 证据在忽略目录results/paper-pilots-20261104/scalar-spectrum/；所有显式冻结配置保持不变，仅补既有解析默认及训练绑定统计。累计24/48次诊断已核验，正式0/144。
 分类原始报告含confusion matrix、F1、ROC-AUC，尚缺计划要求的balanced accuracy字段，正式评测前补齐并从原始计数回补，不能把已有字段当完整指标交付。
+
+## 生成运行时和分类指标补充
+
+927通过40个主测试与16个子测试的真实Slurm数值回归；925此前全部测试通过但旧JUnit计数收据失败，原失败保留。926的32项控制通过。928已从原始八版分类测试混淆计数补齐balanced accuracy，原报告/预测/权重不变。回传后按八个原报告SHA和原计数独立验证；缺少真实类别时指标为null。证据在忽略目录results/paper-environment-20261104/generation-protocol/。这不增加训练次数，仍24/48诊断、0/144正式。

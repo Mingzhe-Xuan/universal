@@ -50,6 +50,12 @@ classification evaluator supports binary tasks; existing no-manifest multiclass
 training is unchanged. Tensor errors use the supplied component order/units and
 apply no symmetry projection.
 
+Force-field scoring with supervised `total_energy` additionally reports
+`metrics.energy_per_atom` in eV/atom. It divides each structure's predicted/true
+total energy by that structure's atom count before accumulating MAE/RMSE; it does
+not change training loss, total-energy metrics or selection. JSONL records retain
+`natoms`. Force-only runs do not fabricate an energy metric.
+
 Numerical integration tests cover training-only scales, true best selection,
 continuation, early stopping, missing/corrupt artifacts, force mixed derivatives,
 tensor response and classification. They must run through Slurm; only protocol

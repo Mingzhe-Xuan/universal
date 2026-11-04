@@ -165,8 +165,13 @@ def score_partition(model, structures, config, scales, output, *, metadata=None)
                         accumulators[name] = stack.enter_context(BinaryClassificationMetrics(output / "scores.sqlite"))
                     else:
                         accumulators[name] = RegressionMetrics()
+            if config['task']['kind'] == 'forcefield' and 'total_energy' in selected:
+                accumulators.setdefault('energy_per_atom', RegressionMetrics())
             for i, identifier in enumerate(batch.identifiers):
                 record = {"id": identifier, "predictions": {}, "targets": {}}
+                atoms = int(batch.natoms[i])
+                if config['task']['kind'] == 'forcefield':
+                    record['natoms'] = atoms
                 for name, value in detached.items():
                     atomic = name == "forces" or (config["task"]["kind"] == "supervised" and model.spec.scope == "node")
                     start, end = (int(batch.ptr[i]), int(batch.ptr[i + 1])) if atomic else (i, i + 1)
@@ -176,6 +181,9 @@ def score_partition(model, structures, config, scales, output, *, metadata=None)
                                                   int(target[0]), predicted_class=int(prediction.argmax(-1)[0]))
                     else:
                         accumulators[name].update(prediction.tolist(), target.tolist())
+                        if config['task']['kind'] == 'forcefield' and name == 'total_energy':
+                            accumulators['energy_per_atom'].update((prediction / atoms).tolist(),
+                                                                   (target / atoms).tolist())
                     record["predictions"][name] = prediction.tolist()
                     record["targets"][name] = finite_json(target.tolist())
                 stream.write(json.dumps(record, allow_nan=False) + "\n")
@@ -185,6 +193,8 @@ def score_partition(model, structures, config, scales, output, *, metadata=None)
         result = {"structures": count, "normalized_loss": totals.loss(config),
                   "metrics": {name: accumulator.result() for name, accumulator in accumulators.items()},
                   "predictions": str(output / "predictions.jsonl"), "train_scales": copy.deepcopy(scales)}
+        if 'energy_per_atom' in result['metrics']:
+            result['metrics']['energy_per_atom']['unit'] = 'eV/atom'
         result.update(metadata or {})
         (output / "metrics.json").write_text(json.dumps(result, indent=2, allow_nan=False), encoding="utf-8")
     return result
