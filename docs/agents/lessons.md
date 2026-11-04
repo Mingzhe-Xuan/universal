@@ -249,3 +249,5 @@
 - 2026-11-04T12:31:02+08:00：879表明HEAD与GET分别重开curl时，成功HEAD不能证明下一条SOCKS连接可建立；880同一curl后两次num_connects=0，两组5MiB约22s完整，第三组部分也为正确prefix，且一次初始connect10.27s超过原5s。用-C -配合显式有限Range头与--next可以连续append同一partial并复用HTTP/SOCKS连接，--fail-early防止中间片失败后跳过缺口；仍需验证CR/长度和完整SHA。Windows curl JSON含UTF-8路径，subprocess text须显式UTF-8，不能依赖默认GBK。
 
 - 2026-11-04T12:56:51+08:00：纠正早先概括：response的额外图来自EquivariantAdapter；生成实际走tasks/generation.py的DirectionReadout，仅native_polar为false时才建额外radius graph。完整扫描应检查实际模型模块和启用分支，不对所有带cutoff的模块一律重复计数。882的CLI资源报告compute_node_proxy_health_exit为0不保证整个后续长传输持续可用；应关联具体curl错误、实际断点增长和对应代理SSH日志，不能把它判成SHA/协议故障。
+
+- 2026-11-04T15:09:33+08:00：不能从NequIP作者num_features列表直接推断逐层width。本任务原package的type_embed32、layer0.feature_irreps_hidden=128x0e+64x1e、layer1=128x0e，readout输入128x0e；0.14以及官方0.15的简化builder仅单一整数且自己传type_embed，直接传作者recipe将失败。应从原包模块读取明确layout，使用同包FullNequIPGNNModel完整builder并严格比较state/布局及数值；不能猜[128,64]为128→64，不能放宽state检查或换架构。

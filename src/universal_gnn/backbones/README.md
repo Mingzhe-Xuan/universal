@@ -70,3 +70,16 @@ denominator. Inconsistent per-structure counts and a completely edgeless trainin
 This helper does not construct graphs or establish which records were scanned; the caller must
 verify the receipt against the selected training data. Original graph scanning and automatic training
 integration require separate runtime validation before being described as supported scratch training.
+
+`blueprints.nequip_full_constructor_config` prepares parameters for the original
+`nequip.model.FullNequIPGNNModel` using the author recipe and a layout extracted from the original
+package modules. OAM-S's `[128, 64]` specifies angular-order multiplicities: its type embedding is
+32 even scalars, its first hidden layer is `128x0e + 64x1e`, and its final layer is `128x0e`.
+The installed 0.14 simplified builder cannot accept that list and separate embedding width;
+the [official 0.15 simplified builder](https://github.com/mir-group/nequip/blob/v0.15.0/nequip/model/nequip_models.py)
+has the same restriction. Use the original full builder with explicit irreps and radial settings.
+The converter rejects disagreement between the package layout and recipe rather than guessing
+successive layer widths. It resets seed, energy shift/scale and training-fitted neighbor statistics
+according to the existing scratch policy, retaining species, cutoff, ZBL and trainability flags.
+Five stdlib conversion tests pass locally; constructor integration, strict state-layout and numerical
+acceptance still await Slurm. Metadata conversion alone does not establish usable scratch training.

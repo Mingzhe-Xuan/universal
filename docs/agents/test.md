@@ -1133,3 +1133,7 @@
 - 2026-11-04T14:56:17+08:00：Slurm886七项扫描控制全部通过、零skip；收据与stderr回传后按6072d4c实际native_scan/selection/两CLI/测试共五Git blob核验。无Torch数值或真实provider图执行。文档提交前检查计划新增链接、命令路径、围栏及state历史逐字保留、git diff --check通过。
 
 - 2026-11-04T14:56:49+08:00：文档检查器首次将既有standards.md#anchor整体当文件路径，检查失败；已按Markdown链接语义分别核验目标文件和标题锚点，并对计划、扫描README及scripts README全部本地链接重新检查通过。此处修正检查器，不降低文件/锚点要求；886实际验收不受影响。
+
+- 2026-11-04T15:03:37+08:00：实现前计划：作者NequIP YAML shorthand与0.14/0.15简化builder不兼容，新增纯元数据explicit-full构造参数准备，输入必须来自原package层级/irreps和作者冻结recipe；测试独立type embed32、第一层128x0e+64x1e/末层128x0e，不把[128,64]当逐层width；保持rmax/type/MLP/Bessel/ZBL/trainable flags，仅seed和训练统计重置，拒绝缺失/冲突布局/未知recipe/层数/irreps；原helper行为兼容。cached wheel和pickle opcode只读、不反序列化/不执行Tensor或GNN；实际FullNequIPGNNModel/state/输出和导数对照须Slurm单独验证，不能凭元数据宣称通过。
+
+- 2026-11-04T15:09:33+08:00：NequIP full blueprint五项与既有七项纯std在本地、仅已发布HEAD加本单元两文件的隔离目录均通过；实际author checkpoint以不执行GLOBAL/REDUCE的pickletools opcode数据解释确认type_embed32、hidden128x0e+64x1e/128x0e。AST、README路径/围栏和state历史保留、git diff --check通过。仅发布metadata参数转换；official/nequip runtime改动和native_neighbors数值断言暂不发布，真实构造/键形状/前向导数仍未执行。

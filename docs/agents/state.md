@@ -11,8 +11,8 @@ Torch/CUDA/DGL尚未齐备。Slurm881的9项新续传器检查实际通过，收
 # 当前计划
 
 1. 完整144配置与身份绑定已通过Slurm872真实输入准备、15项纯std和本地实际Git blob核验；保留原定义，后续以通过的容量解析配置训练，不覆盖原始定义，不将配置准备当训练。
-2. 优先恢复环境：879零payload不能比较8/30秒；880两组约5MiB/22秒且连接复用，第三组部分前缀也匹配。新的curl同连接续片工具本地及Slurm881各9项通过，882正从旧partial接续，保持SHA与20GiB余量。完整16资源后运行既有base离线安装，再补DGL/official extras和各环境pipcheck。
-3. 真实原包scratch、native邻居统计自动集成、生成新噪声/val-best/heldout质量数值验收；补分子6Å/PBC与插件对照。源码本地修改/提交/推送后仅git pull同步，不提交用户docs/paper或ustc记录。
+2. 优先恢复环境：879零payload不能比较8/30秒；880两组约5MiB/22秒且连接复用，第三组部分前缀也匹配。新的curl同连接续片工具本地及Slurm881各9项通过，885正从旧partial接续，保持SHA与20GiB余量。完整16资源后运行既有base离线安装，再补DGL/official extras和各环境pipcheck。
+3. NequIP真实package元数据已确认type_embed32、首层128x0e+64x1e/末层128x0e；新增FullNequIPGNNModel纯参数展开五项与旧七项本地/已发布源码隔离通过，runtime接入尚未发布/数值验收。继续真实原包scratch、native邻居统计自动集成、生成新噪声/val-best/heldout质量数值验收；补分子6Å/PBC与插件对照。源码本地修改/提交/推送后仅git pull同步，不提交用户docs/paper或ustc记录。
 4. 成对容量控制a7b127c已发布，Slurm875通过10项纯std子进程测试并按执行的三个Git blob核验；8fdea11另修复每个worst在热身后独立满batch测量，Slurm878六项纯调度通过并按三Git blob核验，仍待真实GPU；完整图流的selection纯聚合与普通batch修复dd0fcb0已发布，本地12项及Slurm883/884共12项通过并核验实际Git blob；原生+适配层native_scan及CLI/五项数值检查脚本已实现，6072d4c已发布，本地七项纯控制、隔离七项及Slurm886七项通过并核验五执行Git blob；实际四provider全扫描/五数值检查未运行；全训练图最坏规模与导数训练步预检，仅OOM逐级减batch至1，两种初始化共同有效batch双侧复验；正式训练、独立完整测试及质量采样，保留20GiB磁盘余量和失败记录。
 
 # 变更记录
@@ -464,3 +464,7 @@ Torch/CUDA/DGL尚未齐备。Slurm881的9项新续传器检查实际通过，收
 - 2026-11-04T14:51:38+08:00：完整原图扫描本地实现单元完成：native_scan.py/CLI按完整源顺序调用四原生建图入口并统计实际启用的额外图，禁止模块forward，保留逐行/失败证据，绑定源/划分/精度/设备/artifact/加载源码与依赖，末尾复核源/划分/Git后才发布probe。七项控制及已发布源码隔离七项通过，另选择/调度12项回归通过；CUDA五项与真实provider全扫描未执行，不冒充数值验收。73597本回合句柄持续live，882离队后确认队列空再885接原断点，最新实际RUNNING/增长。下一步独立发布和CPU Slurm，再在依赖恢复后实际CUDA/全图/成对容量。正式0/144。
 
 - 2026-11-04T14:56:17+08:00：完成扫描控制的Linux兼容阶段：6072d4c服务器pull，886七项通过；收据和stderr已回传，五个实际执行Git blob摘要一致。计划12.5与模块README同步当前边界，五项CUDA和四provider全图未运行，正式0/144。73597句柄本回合已真实poll仍live；885 RUNNING且资源字节增长。继续依赖恢复、原包scratch/生成数值、全图与成对容量，再正式144训练和独立评测。
+
+- 2026-11-04T15:03:37+08:00：进入NequIP作者blueprint与安装API兼容核对阶段。上一回合6072d4c/7d572c9、886七项及五Git blob核验属实际进展；73597本回合句柄仍live/885 RUNNING。已从本地0.14 wheel及官方0.15源码确认简化NequIPGNNModel不接受作者num_features列表/独立type_embed组合；checkpoint pickletools元数据还显示128scalar+64vector而非按层128→64，不能猜译。下一步只读无执行的结构元数据审计，从原包构造布局解析FullNequIPGNNModel参数，并保持严格state/模块/irreps验收；不更换网络或降低比较标准，数值仍待Slurm。
+
+- 2026-11-04T15:09:33+08:00：NequIP元数据修复本地单元完成。无执行pickle opcode审计确认真实package布局；0.14 wheel和官方0.15简化builder都不支持作者独立type embed与每角动量width。新增原生FullNequIPGNNModel显式参数转换，五项及旧七项在工作树/已发布源码隔离均通过；临时runtime接入从真实model模块读取layout并保留state keys/shapes与布局双检查，尚未发布也未数值验收，不改变原宽度。下一步发布纯metadata helper并CPU Slurm，待Torch到位后真实fresh/输出/导数检查；885仍续传，正式0/144。

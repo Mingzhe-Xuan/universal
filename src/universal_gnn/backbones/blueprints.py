@@ -120,3 +120,67 @@ def nequip_constructor_config(blueprint, statistics, *, seed):
     result.update(seed=seed, compile_mode="eager", per_type_energy_shifts=0., per_type_energy_scales=1.)
     return result, {"skipped_nonpersistent_modifiers_for_eager": skipped,
                     "source_constructor": "nequip.model.NequIPGNNModel"}
+
+
+def _irrep_blocks(value):
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError("Original layout requires explicit nonempty irrep strings")
+    blocks = []
+    for part in value.split("+"):
+        match = re.fullmatch(r"\s*([1-9][0-9]*)x([0-9]+)([eo])\s*", part)
+        if match is None:
+            raise ValueError("Original layout contains an unsupported irrep string")
+        blocks.append((int(match[1]), int(match[2]), 1 if match[3] == "e" else -1))
+    return blocks
+
+
+def nequip_full_constructor_config(blueprint, statistics, *, seed, layout):
+    """Expand the registered author's per-angular-order widths for the original full builder.
+
+    The caller must extract and later compare this layout against the actual packaged model.
+    In OAM-S, [128, 64] means scalar/vector multiplicities, not successive layer widths.
+    """
+    result, report = nequip_constructor_config(blueprint, statistics, seed=seed)
+    keys = {"irreps_edge_sh", "type_embed_num_features", "feature_irreps_hidden"}
+    if not isinstance(layout, dict) or set(layout) != keys:
+        raise ValueError("Require the original package's complete explicit layout")
+    layers, ell_max = result.get("num_layers", 4), result.get("l_max", 1)
+    parity = result.get("parity", True)
+    if (type(layers) is not int or layers < 1 or type(ell_max) is not int or ell_max < 0 or
+            type(parity) is not bool):
+        raise ValueError("Invalid original NequIP layer/angular-order configuration")
+    widths = result.get("num_features", 32)
+    if type(widths) is int:
+        widths = [widths] * (ell_max + 1)
+    if (not isinstance(widths, list) or len(widths) != ell_max + 1 or
+            any(type(width) is not int or width < 1 for width in widths)):
+        raise ValueError("Source feature widths must specify each angular order")
+    expected_edge = [(1, ell, (-1) ** ell if parity else 1) for ell in range(ell_max + 1)]
+    if _irrep_blocks(layout["irreps_edge_sh"]) != expected_edge:
+        raise ValueError("Packaged spherical-harmonic irreps differ from the author blueprint")
+    hidden = layout["feature_irreps_hidden"]
+    if not isinstance(hidden, list) or len(hidden) != layers:
+        raise ValueError("Packaged layer count differs from the author blueprint")
+    expected_hidden = [(widths[ell], ell, p) for p in ((1, -1) if parity else (1,))
+                       for ell in range(ell_max + 1)]
+    for index, irreps in enumerate(hidden):
+        expected = [(widths[0], 0, 1)] if index == layers - 1 else expected_hidden
+        if _irrep_blocks(irreps) != expected:
+            raise ValueError("Packaged hidden irreps differ from the author's angular-order widths")
+    embed = layout["type_embed_num_features"]
+    if (type(embed) is not int or embed < 1 or
+            result.get("type_embed_num_features", embed) != embed):
+        raise ValueError("Packaged type embedding differs from the author blueprint")
+    for key in ("num_layers", "l_max", "parity", "num_features", "type_embed_num_features"):
+        result.pop(key, None)
+    for key, default in (("radial_mlp_depth", 2), ("radial_mlp_width", 64)):
+        value = result.get(key, default)
+        value = [value] * layers if type(value) is int else value
+        if (not isinstance(value, list) or len(value) != layers or
+                any(type(item) is not int or item < 1 for item in value)):
+            raise ValueError("Radial MLP settings must specify every original layer")
+        result[key] = copy.deepcopy(value)
+    result.update(copy.deepcopy(layout))
+    report.update(constructor="nequip.model.FullNequIPGNNModel", original_layout=copy.deepcopy(layout),
+                  width_interpretation="per_angular_order", layout_source="original_packaged_modules")
+    return result, report
