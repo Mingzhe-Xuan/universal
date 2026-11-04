@@ -278,3 +278,5 @@
 - 2026-11-05 02:40 +08:00：外层验收不可假设rglob(result.json)恰好四文件：paired controller有两次独立+两次共同检查，但typed-OOM尝试和共同batch再缩小都会合法增加文件/成功轮次。应沿capacity.trials和preflight.attempts的SHA/身份链验收，要求只有exit42+cuda_out_of_memory才减半、所有最坏输入及完整测量完成、末轮两模式确实在相同batch复验。不要为了满足固定计数丢弃OOM失败记录，也不能把其他错误放宽为重试。
 - 2026-11-05 03:02 +08:00：pytest部署环境不能依赖无包标识的tests目录通过tests.xxx导入共享fixture；982在Linux虚拟环境收集阶段报ModuleNotFoundError，而本地python -S unittest未暴露。同目录测试资源用__file__解析并明确加载，或放入正式可导入fixture包；增加已占用tests命名空间的隔离控制，保留全部原断言。失败控制门禁必须先于hold/cancel/提交，982确实挡住后续动作，避免未验收代码进入全量作业。
 - 2026-11-05 03:08 +08:00：多层JS工具字符串写入Python正则时，括号转义在生成过程中丢失，UserId检查因此报unterminated subpattern。精确固定Slurm字段直接比较UserId=xmz(令牌，避免不必要正则；AST检查不能发现正则语义错误。新增完整控制器check-only/owner正反例与全部请求bash检查，动作前置门禁保证错误未进入hold/cancel/submit。已查既有PowerShell/转义经验，不盲目重连或重提。
+
+- 2026-11-05T04:08:23+08:00：原包数据读取对照可能要求训练目标之外的CSV标量字段（CGCNN CIFData）。只对独立reference输入副本提供读取器槽，不改真实下游标签、任务或官方头；必须同时检查原特征和原预测等价。带Tensor的targets字典不能直接用==检查不变性（992收尾断言失败），应逐字段torch.testing.assert_close(rtol=0,atol=0)；994通过。失败请求/日志保留，修复仅任务请求适配，不因此更改官方骨干。
