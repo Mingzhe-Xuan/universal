@@ -179,6 +179,26 @@ Configurations pin both source bytes and canonical split SHA values. Initial bat
 derivative and paired CUDA capacity acceptance must still precede formal runs. See
 [experiment definitions](../src/universal_gnn/benchmarks/experiments/README.md).
 
+`download_offline_cuda_resources.py` resumes the fixed sixteen-resource CUDA catalog through
+the approved loopback HTTP/SOCKS endpoint. Run inside Slurm after checking proxy health:
+
+```bash
+python scripts/download_offline_cuda_resources.py \
+  --report "runs/cuda-transfer-${SLURM_JOB_ID}.json"
+```
+
+Stop any older writer to the same partial files before starting this replacement. It retains the
+existing filenames, partial positions, official SHA values and 20GiB disk reserve. One curl process
+appends up to eight bounded 1MiB ranges, reusing its connection; only the first operation generally
+needs a new SOCKS handshake. Each operation has a 20-second connection and 30-second total budget.
+Response Content-Range and received-byte accounting are checked; invalid appended suffixes roll
+back to that group's prior prefix. Expected network interruptions retain contiguous received bytes.
+Final SHA verification precedes atomic publication. A POSIX cache lock prevents two new writers;
+the older downloader does not hold that lock and must be stopped separately. Rule rejections and
+unknown errors stop the job. This stages resources only and performs no environment installation
+or model computation. The complete verification receipt remains compatible with the existing
+offline base installer, which independently hashes all sixteen wheels again.
+
 # Original head acceptance
 
 `validate_native_heads.py --model MODEL --output runs/native-heads/MODEL` must run

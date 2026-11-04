@@ -243,3 +243,7 @@
 - 2026-11-04T11:01:44+08:00：不能只在SSH断开后按时间猜归属。新增专用-N前保存1080空闲及当前用户无notty的sshd集合，健康后绑定唯一新增者的PID/UID/boot_id/start_ticks/命令。后续必须先有自己Popen实际terminal，并在失败健康检查前后两次比对完整身份，通过pidfd固定目标再发TERM，防止PID复用；健康、歧义、boot/UID变化和缺pidfd均不结束进程。sshd非dumpable时/proc目录owner可能为root，实际UID应从ps euid取得，不能用proc目录属主代替。远端保护用显式异常而非可被优化禁用的assert；归属观察失败不能为记录元数据而终止健康代理。
 
 - 2026-11-04T11:34:02+08:00：原包native_input的图不是完整任务的全部图：现有EquivariantAdapter还为response/generation建radius graph，native边数和其max_neighbors不足以估计完整下游开销。CGCNN dense neighbor slots含padding，应按分配槽位报告，不能标成物理键；ALIGNN还需line-graph三体数。生成clean训练图的全量扫描也不能证明所有噪声状态/随机采样轨迹的显存，预检需标记实际状态覆盖。该长期扫描接口约定写入benchmarks/probes/README，不混入业务数学注释。
+
+- 2026-11-04T12:04:42+08:00：PowerShell调用rg时，不要把未展开的readouts/*.py等glob作为路径；用真实目录加-g "*.py"。也应先rg --files确认generation是generation.py还是子包，避免凭习惯猜model.py。此类路径经验只记运维文档，不加到GNN业务数学里。
+
+- 2026-11-04T12:31:02+08:00：879表明HEAD与GET分别重开curl时，成功HEAD不能证明下一条SOCKS连接可建立；880同一curl后两次num_connects=0，两组5MiB约22s完整，第三组部分也为正确prefix，且一次初始connect10.27s超过原5s。用-C -配合显式有限Range头与--next可以连续append同一partial并复用HTTP/SOCKS连接，--fail-early防止中间片失败后跳过缺口；仍需验证CR/长度和完整SHA。Windows curl JSON含UTF-8路径，subprocess text须显式UTF-8，不能依赖默认GBK。

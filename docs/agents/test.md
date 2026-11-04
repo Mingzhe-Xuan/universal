@@ -1107,3 +1107,15 @@
 - 2026-11-04T11:34:02+08:00：Slurm878实际通过调度6/6，JSON和日志已SCP回传，按实际8fdea11的schedule.py、仅调度修改的probe_worker.py及测试三Git blob SHA核对通过；没有以工作树中未发布native/生成改动代替执行源码。只验证纯调度、输入检查和无Torch导入；实际GPU/导数/完整训练图仍未验证。监督器真实预绑定孤立释放3429696/3432817/3435302均有返回released和新身份记录，未人工重启健康代理；工作SSH超时已回收并重试，早先“疑似僵住”被实际回执排除。
 
 - 2026-11-04T11:34:02+08:00：本次878及扫描范围的文档提交前检查：相关链接/路径/围栏、全部既有state历史逐字保留及git diff --check通过；只提交真实阶段证据和扫描要求，不混入未验收运行时。
+
+- 2026-11-04T11:45:38+08:00：资源传输诊断前计划：单CPU Slurm从现有固定CuDNN wheel私有HTTP端点只读Range，1MiB/4MiB×max-time8/30秒×两次，最多请求20MiB；每次先做同路径HEAD健康检查，失败留档且不把它当吞吐样本。记录curl返回码/HTTP206/连接/首字节/总耗时/字节/速度及收到前缀SHA；完成后本地与已有固定wheel前缀逐项比对。并发主续传不取消、不重启健康代理，因此比较应标注真实背景负载及链路波动，不凭单样本断言优化有效。没有新CPU二进制/公网下载或模型计算；AST/bash-n后才提交，正式训练不计。
+
+- 2026-11-04T11:58:25+08:00：续传连接复用验证前计划：879无有效payload，不能断言8/30秒吞吐差异。先用既有本机只读CuDNN端点验证同一个curl进程以--next、--continue-at -及显式有限Range头连续append两个8B片，核对本机固定wheel前16B及HTTP206/num_connects。只是16B本地协议fixture，不运行GNN/安装包/公网下载。若成功再单CPU Slurm做有界同连接分片实验，核对固定源完整/部分前缀；证据充分后才考虑替换原8秒源，不改健康SSH代理、官方wheel或SHA/断点/空间门禁。
+
+- 2026-11-04T12:01:38+08:00：本机16B协议fixture实际通过：同一curl的两个-C -加有限Range操作append结果逐字节匹配固定wheel，HTTP206/206、num_connects1/0；未执行模型。接下来Slurm三组同连接64KiB/1MiB/4MiB，合计上限15925248B，20秒connect/30秒operation，fail-early遇错停止后续片段，记录每operation连接数/状态和整体前缀SHA。本机与服务器curl版本不同，因此仍须Linux真实结果；与879同时改变连接预算，不据此单独归因timeout效应。源码AST/bash-n后提交；失败或零字节如实记不可用，不以HTTP HEAD成功代替数据传输。
+
+- 2026-11-04T12:04:42+08:00：实现前计划：probes/selection.py纯std单遍聚合全train图规模，逐项比对源顺序train的index/source_index/ID，绑定source/canonical split/dtype/graph definition摘要；只保留每维top-k和固定ID哈希普通样本，区分native边、line triplets、额外readout边与最大度，不把CGCNNpadding槽位当物理边。覆盖不漏全train/重复或缺行拒绝、非连续source indices与selected index区别、各指标极值覆盖/稳定tie、样本不受标签影响、候选数量有界、非法计数/身份/binding拒绝、固定行摘要；聚合只声明完整计数，verified_full_training_scan保持false，真实native_scan另验。同步补调度边界：worst数占满请求测量预算时仍至少执行一个普通batch，以满足计划12.5的worst+普通要求；更新6项纯调度测试的边界预期，100次常规预算不变。没有Torch/本机GNN执行。
+
+- 2026-11-04T12:22:50+08:00：实现前计划：新离线CUDA资源续传器复用已验证curl -C -+有限Range+--next/--fail-early协议，连接预算20秒、操作30秒、每连接最多8个1MiB片，保持固定catalog/SHA/原URL与20GiB余量。Linux880两组5.06MiB约22秒完整、第三组部分前缀正确；connect实际10.27秒超过原5秒，连接num_connects1/0/0证明复用；不将其当严格8/30因果对照。单测覆盖尾片/从非对齐断点续、部分网络失败后无丢失续片、真实loopback curl连接复用、Content-Range/字节计数异常回滚本次未验证追加、最终SHA失败不发布、已验证文件跳过/冲突不覆盖、无进展超时及SOCKS规则拒绝不绕过、CLI先Slurm门禁。旧资源作业只在新工具本地及CPU Slurm通过后，持有健康代理不变、暂停旧模板重交、确认旧作业终止后从原partial接续；不修改模型、数据或官方版本。
+
+- 2026-11-04T12:31:02+08:00：同连接续传器提交前实际9/9通过，含真实loopback curl连续四片仅一个连接、非对齐旧断点、网络半片后正确续、CR/字节/JSON异常回滚新追加而保留旧prefix、最终SHA拒绝、已有冲突不覆盖/验证缓存跳过、20GiB门禁、无进展时间预算与ruleset不重试、CLI Slurm先于catalog/posix导入。首次真实curl测试暴露Windows默认GBK解码UTF-8 metrics失败，现显式UTF-8并重新完整9项通过；未降低断言。compileall、README链接/围栏、state旧历史保留与git diff --check通过。仅发布资源工具及对应测试，不混入selection/调度或模型运行时待发布改动；Linux真实9测试需发布后Slurm。
