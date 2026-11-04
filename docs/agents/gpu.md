@@ -3380,3 +3380,9 @@
 - 2026-11-04T22:52:03+08:00: Ordinary SSH verify/pull unchangedcf58fc4 then unique claim submits GPU1/CPU2/16GiB/20min read-only diagnosis of actual931 scratch checkpoint. Compare every saved/reloaded parameter/buffer exactly and both same-model repeat versus double-load predictions over64 train records, with deterministic algorithms false/true separately. Original strict1e-5/1e-6 acceptance unchanged. No training, source edits or new packages; queued8 live pilots retain their checkout.
 
 - 2026-11-04T22:54:09+08:00: Ordinary SSH verifies/pulls unchangedcf58fc4 before observing exact930–941 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.
+
+- 2026-11-04T22:57:11+08:00: Ordinary SSH verify/pull unchangedcf58fc4 then observe exact942 read-only reload diagnostic handle and its own reports/logs. No restarts, training, source edits or tolerance changes.
+
+- 2026-11-04T23:00:42+08:00: All930–941 now terminal;942 actual state_exact true and deterministicTrue gives zero repeated/reloaded differences on all64 ALIGNN records without tolerance changes. Ordinary SSH verify/pull unchangedcf58fc4 then unique claim submits2 GPU read-only CGCNN938/MACE940 generation checkpoint fixed-noise repeat/reload diagnostics (CPU2/16GiB/GPU1/20min each) in their own environments. No training, source updates, new packages or standard relaxation.
+
+- 2026-11-04T23:02:52+08:00: Ordinary SSH verify/pull unchangedcf58fc4, observe943/944 exact diagnosis claim handles and own reports/logs. No new jobs, restarts, training, source edits or tolerance changes.

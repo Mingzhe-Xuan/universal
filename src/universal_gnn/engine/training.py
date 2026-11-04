@@ -171,6 +171,7 @@ def execution_record(model):
 
 def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_path=None, event_callback=None,
                  warm_start=None, warm_start_components=("backbone",)) -> dict:
+    os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')
     from universal_gnn.contracts.schema import validate_config
 
     validate_config(config)
@@ -364,7 +365,10 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     save_progress(completed_epochs)
     reloaded = load_checkpoint(checkpoint, device=device)
     collect = config.get("report_predictions", len(structures) <= 1000)
-    _, predictions = evaluate(reloaded, compare=model, collect=collect)
+    from universal_gnn.engine.verification import checkpoint_verification
+
+    with checkpoint_verification(model, reloaded) as reload_verification:
+        _, predictions = evaluate(reloaded, compare=model, collect=collect)
     records = []
     for structure in structures[:config.get("report_structure_limit", 1000)]:
         raw = json.dumps({"z": structure.numbers.tolist(), "r": structure.positions.tolist(),
@@ -387,6 +391,7 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
               "initial_loss": initial_loss, "final_loss": final_loss, "history": history,
               "gradient_norms": gradient_norms, "backbone_gradient_norms": backbone_gradient_norms,
               "parameter_delta_norm": delta, "checkpoint_reload": True,
+              "reload_verification": reload_verification,
               "predictions_included": bool(collect),
               "predictions": {name: value.tolist() for name, value in predictions.items()},
               "interpretation": "training metrics; no held-out generalization claim",

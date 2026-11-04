@@ -3,6 +3,7 @@
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 
 import torch
@@ -85,6 +86,7 @@ def generation_batches(structures, config, *, epoch=None, phase="train", draw=0)
 
 
 def run_generation_training(config, output, *, resume=None, checkpoint_path=None, event_callback=None):
+    os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')
     import copy
 
     from universal_gnn.engine.runtime import (check_model_config, checkpoint_config, data_fingerprint,
@@ -229,7 +231,9 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
     collected, generated_values, valid = {}, {}, True
     digest = hashlib.sha256()
     collect = config.get("report_predictions", len(structures) <= 1000)
-    with torch.no_grad():
+    from universal_gnn.engine.verification import checkpoint_verification
+
+    with torch.no_grad(), checkpoint_verification(model, reloaded) as reload_verification:
         for clean, noisy, time, targets in generation_batches(structures, config):
             prediction, again = model(noisy, time), reloaded(noisy, time)
             for key in prediction:
@@ -258,6 +262,7 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
                          "completed_epochs_before": completed},
               "final_loss": final, "history": history, "backbone_gradient_norms": gradient_norms,
               "parameter_delta_norm": delta, "checkpoint_reload": True,
+              "reload_verification": reload_verification,
               "structures": [{"id": structure.identifier, "provenance": structure.metadata,
                               "role": "fixed_evaluation_noise_train_and_reloaded_inference"}
                              for structure in structures[:config.get("report_structure_limit", 1000)]],

@@ -39,7 +39,8 @@ assert counts['tests']>=len(cases),counts
 sources=['src/universal_gnn/engine/generation.py','src/universal_gnn/engine/training.py',
  'src/universal_gnn/engine/generative/protocol.py','src/universal_gnn/engine/generative/evaluation.py',
  'src/universal_gnn/engine/generative/quality.py','tests/test_generation_heldout_runtime.py',
- 'tests/test_generation_quality_runtime.py','tests/test_initialization_routes.py']
+ 'tests/test_generation_quality_runtime.py','tests/test_initialization_routes.py',
+ 'src/universal_gnn/engine/verification.py']
 report=dict(status='passed',slurm_job_id=os.environ['SLURM_JOB_ID'],tests=counts,main_test_cases=len(cases),
  git_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
  source_sha256={name:hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in sources},

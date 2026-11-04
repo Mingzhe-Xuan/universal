@@ -129,3 +129,12 @@ gradients remain enabled.
 Full resume requires the same head mode. Explicit backbone warm-start between
 native/reset modes transfers only the body, preserving the target's head. Original
 head tensors and the transfer boundary are listed in the warm-start report.
+
+Checkpoint reload acceptance compares every persistent state tensor exactly
+(including shapes/dtypes), then compares predictions under a strict deterministic
+algorithm scope. Existing numerical tolerances are unchanged. The previous
+deterministic/warn-only settings are restored even on exceptions; training updates
+remain outside this scope. `reload_verification` records this distinction.
+`run_training` defaults `CUBLAS_WORKSPACE_CONFIG=:4096:8` before its CUDA work;
+set that environment variable at process startup when calling from an application
+that already initializes CUDA. Explicit caller settings are preserved.

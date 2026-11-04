@@ -9,6 +9,11 @@ See [the numerical contract](../src/universal_gnn/benchmarks/validation/README.m
 fixtures on CUDA plus energy-per-atom and held-out/resume regression cases.
 Original model acceptance and full-data capacity are separate gates.
 
+`validate_checkpoint_verification.slurm` checks exact tensor state, corrupted
+states, deterministic/warn-only restoration, real CUDA comparison and supervised,
+force-field, generation and continuation integration. Prediction tolerances stay
+unchanged; training updates remain outside the deterministic verification scope.
+
 ## Generation protocol acceptance and quality
 
 `validate_generation_protocol.slurm` runs40 numerical/control main cases with zero allowed skips,
