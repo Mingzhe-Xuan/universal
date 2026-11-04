@@ -1085,3 +1085,7 @@
 - 2026-11-04T09:36:13+08:00：实现前计划：正式144配置准备单元。data/identity.py与splits/loading.py可选强制source SHA和canonical manifest SHA，覆盖缺/错/格式变化、无manifest/插件误用及复用indexed source hash，不导入Torch。benchmarks/experiments/registry.py按五份完整已发布source SHA/实际计数扫描JSONL ID并验证manifest和官方资源，输出冻结身份；recipes.py生成四骨干×六任务×两初始化×三seed144配置，所有structures=all/float32/CUDA，reset头/全骨干训练，生成不混入prediction/optimization，保留相同成对任务设置和待验收门禁。只生成配置不提交训练。纯std测试覆盖完整笛卡尔积、固定seed/划分/单位/导数路径、无native graph或宽度覆写、构造/微调成对设置一致、污染或不完整registry拒绝和已有输出不可覆盖。完整数据读取/哈希和实际144生成在Slurm执行；运行时读出规范验证待Torch，不能把配置生成当训练或GPU通过。
 
 - 2026-11-04T10:17:11+08:00：全量配置单元提交前实际检查：144配置/成对一致性6项、新source/canonical split身份4项、既有manifest5项纯std测试均通过，共15项；compileall、Slurm bash-n、README/计划相对链接和围栏、state历史逐字保留通过。初次将全API配置解析放入-S测试因contracts包导入Torch失败，现将真正生产使用的metadata合并函数独立为resolve_dataset_settings并实际测试；完整resolve_config和外部推理绑定保留真实Torch测试待Slurm，未作依赖mock或降低数值断言。初次本地历史检查的PowerShell管道编码导致分隔符查找失败，已改为UTF-8文件脚本重查通过。
+
+- 2026-11-04T10:32:01+08:00：Slurm872实际通过source身份4、manifest5、144配置6，共15项；真实完整输入生成144配置/72对完成。matrix及日志已SCP回传；本地按执行be3d579的三个Git blob SHA、五source/manifest摘要及计数、所有config摘要重建通过，matrix SHA256 6bc44462768be3c3a9aaebd8819d97c0fb29f4e94f4f62c7a89c9c6550bedeb5。首次跨平台重建只因Windows运行目录元数据使用反斜线不同，核对器仅统一该路径分隔符，其余case/配置/摘要保持严格一致。没有运行Torch/API/数值或GPU验收。873定向四键缓存检查实际missing，无下载/安装/新环境。
+
+- 2026-11-04T10:32:01+08:00：本次仅记录实际872/873与代理诊断的文档提交前检查：相关相对链接、路径、围栏和state原变更历史逐字保留通过；数据计数、摘要与源码对应验证依上述本地verification-872.json，相关真实Slurm检查全通过。未提交待Torch验收的运行时代码或用户未跟踪文档。

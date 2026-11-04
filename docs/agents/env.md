@@ -269,3 +269,5 @@ Slurm868已核验并暂存五个原本就在本机的wheel到 `models/official-i
 新增[官方补充环境安装入口](../../scripts/install_official_extras.slurm)接在现有CUDA base安装完成之后，并要求DGL1.1.3cu121、已缓存的Torchvision0.22.1cu128和上述五轮全部就绪。全部七轮固定大小/SHA及共享Torch来源通过之前不会安装；仅向universal-official离线安装，检查三个环境的pip依赖、共享Torch路径和各自e3nn路径/版本。MACE保持0.4.4，其余两环境为0.5.8，不复制三份Torch。当前未提交该安装作业：CUDA未齐，DGL的服务器暂存仍待完成。安装报告显式numerical_acceptance=false，之后仍须原包、CUDA和导数验收。
 
 - 2026-11-04T09:19:00+08:00：Slurm869实际通过离线installer全部3项纯std测试；收据/日志已回传，按ed2a646的Git blob核对脚本SHA 6e91bb1f328ed84eb8fad4d69dadffcb61707d24329d36f7d42c3bf6f876bd8a。这验证Linux/Python3.10门禁兼容，不代表实际pip安装或模型/CUDA验收。NequIP作者YAML已在服务器模型缓存通过11565B/SHA轻量核验，未改源码。
+
+- 2026-11-04T10:32:01+08:00：补充既有资源只读核对：本机早先下载的Torch2.6.0+cpu wheel为178630806B，官方HTML索引SHA256 35a9e78b7e4096968b54c1a198687b981569c50ae93e661aa430f9fd208da102；本次只读431099B索引metadata并核对既有字节，没有下载新CPU二进制。Slurm873按四个固定URL缓存键检查，结果missing；没有安装、建新CPU环境或改变正式Torch2.7.1cu128/GPU验收要求。新7个CPU wheel下载许可仍待既有问题回答。

@@ -2304,3 +2304,65 @@
 - 2026-11-04T10:16:50 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulled2a6465547dc9d52d7e7613fcf52dfc27620e98 first; no login computation or user session termination.
 
 - 2026-11-04T10:17:27 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulled2a6465547dc9d52d7e7613fcf52dfc27620e98 first; no login computation or user session termination.
+
+- 2026-11-04T10:18:04 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulled2a6465547dc9d52d7e7613fcf52dfc27620e98 first; no login computation or user session termination.
+
+- 2026-11-04T10:18:10 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepulled2a6465547dc9d52d7e7613fcf52dfc27620e98 first; no login computation or user session termination.
+
+- 2026-11-04T10:18:10 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepulled2a6465547dc9d52d7e7613fcf52dfc27620e98 first; no login computation or user session termination.
+
+- 2026-11-04T10:18:48 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulled2a6465547dc9d52d7e7613fcf52dfc27620e98 first; no login computation or user session termination.
+
+- 2026-11-04T10:18:54+08:00：SCP上传已推送be3d579的26691B小型离线bundle，SHA 24863ee33715a77c54ef1f7a3d7768848f1fd02abd76c43dc72b427ee8e12eba，先决ed2a646；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T10:19:24 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:19:30 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:19:30 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:20:07+08:00：普通SSH首先SHA校验/pull已发布be3d579离线bundle；通过唯一claim目录提交单CPU/4GiB/15分钟Slurm，执行15项纯std测试、完整五数据/划分和四原始模型资源的流式校验并生成144配置。只是CPU配置准备，不构造GNN、不训练、不安装或联网下载；若回执丢失先查claim/队列，禁止重复提交。保留健康续传代理。
+
+- 2026-11-04T10:20:08 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:21:06 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:21:51 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:22:28 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+-2026-11-04T10:22:54+08:00：上传固定小型既有资源缓存catalog（仅Torch2.6CPU，已存在本机178630806B并与官方HTML索引SHA匹配，绝不请求新wheel），普通SSH首先pull be3d579，再读取872准备结果/队列，提交单CPU Slurm仅定向检查pip缓存四个已知URL键并复用已有字节。目录为本任务models/official-install/existing-cpu-wheelhouse；不安装/创建环境、不改变正式Torch2.7cu128验收要求。没有CPU二进制公网下载，也不改服务器源码。
+
+- 2026-11-04T10:23:05 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:23:05+08:00：上述catalog SCP已成功；此次普通SSH执行已记录的pull、872日志和唯一claim缓存作业提交。丢失回执需先查队列/claim，不重复提交。
+
+- 2026-11-04T10:23:11 +08:00: Approved CUDA supervisor: recheck asynchronous1080release after owned proxy actually exited; no process termination. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:23:17 +08:00: Approved CUDA supervisor: confirm proxy listener release after controller stops. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:24:02+08:00：监督器47249报告其自建36560终止255而1080未释放，不重开代理；先CIM核验36016/36560实际终止，再普通SSH先pull be3d579，检查1080精确listener PID与当前用户sshd启动时间，仅诊断，不kill。同步查看873已有缓存和871队列/尾日志，872结果后续SCP本地核验；不读无关结果、不重复提交作业。
+
+- 2026-11-04T10:25:27+08:00：872成功结果与873定向缓存缺失已从先pull连接确认；SCP回传本任务matrix.json及872测试日志、873缓存收据到ignored results/paper-experiments-20261104，源为已核对作业路径。仅下载已有结果，不接触其他实验、无需代理、不重新执行任务。
+
+- 2026-11-04T10:26:49+08:00：孤立专用代理精确清理：本机CIM再次确认36016/36560均不存在，47249 terminal输出proxy255/未释放；远端唯一sshd:xmz（无notty）3420794始于10:19:34，与本任务唯一专用代理10:19:30相隔握手4秒，其他工作会话均@notty且启动时间不同。普通SSH先pull be3d579，重新核对该精确PID的UID/完整启动时间/命令及唯一性，并实际4秒端到端健康确认失败后才TERM该PID；已释放则不kill，任何不匹配或健康则拒绝。只处理本任务断开的代理，不批量清理、不触碰来源未知会话。之后核验1080释放及871队列，未自动创建新代理或重复作业。
+
+- 2026-11-04T10:29:28+08:00：精确孤立代理清理实际成功：3420794 UID1010/启动10:19:34/唯一sshd:xmz均匹配本任务10:19:30代理，端到端curl28失败后仅TERM该PID，OWNED_PROXY_LISTENER_RELEASED确认1080释放，871仍实际RUNNING。现在先再检查本机固定CuDNN 8B Range/Vlab banner和本机公网已获官方metadata响应证据，再恢复唯一监督器；仍先pull/端到端健康/真实队列，活动871不重交。记录断开sshd可能比本地终止晚释放，不得盲重绑或批量kill。
+
+- 2026-11-04T10:29:29 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:29:37 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:29:38 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:29:46 +08:00: Approved CUDA supervisor: no CUDA jobs active; resume only stopped transfer from persistent partials. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:30:23 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:31:00 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:31:37 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
+
+- 2026-11-04T10:32:01+08:00：补记UTF-8可读说明：10:14:19与10:15:19两条本机PowerShell管道记录中的中文被替换为问号，保留原历史。其实际操作为870诊断先pull ed2a646，确认54702/20404/20192终止、1080释放、作业failed且保留CuDNN669759859B；随后仅检查同源8B Range/Vlab banner并恢复唯一监督器。此说明补充原记录，不删除或覆盖历史；后续采用UTF-8文件脚本记录。
+
+- 2026-11-04T10:32:13 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepullbe3d579b3c0f8279ddcd40ff3942b473e9f35581 first; no login computation or user session termination.
