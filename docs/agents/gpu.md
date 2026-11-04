@@ -3542,3 +3542,9 @@
 - 2026-11-05T04:36:30+08:00: Ordinary SSH verify/pull current published root first, read exact own tensor assessment1003 reports/JUnit/ID groups and bounded logs plus current-user queue. No numerical processing, new jobs, source/env/data edits or restarts on login.
 
 - 2026-11-05T04:40:29+08:00: Ordinary SSH first verify/pull current published root, validate clean fixed dfea7b0,983 and1003 passed, unused eight full dielectric case claims and exact own1001 PENDING. Submit four serial full tensor preparations1GPU2CPU64GiB8h afterany1001 then each prior prep. Full3998 graph/response/capacity/physics only, no formal tensor training yet; no modification/cancellation of existing jobs, source, environments or data, no numerical login work.
+
+- 2026-11-05T04:44:43+08:00：SCP上传已推送4d4ce7d的5189B小型离线bundle，SHA 14f207b78572f7cad49cf0f8925212a8d05ce8059939ce7506e7f6e9eca3dcfc，先决376b00a；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T04:45:16+08:00: Ordinary SSH verifies/pulls current published 4d4ce7d root, then reads exact own known965-1007 claims/receipts, eight current formal status/events, replacement forcefield and four spectrum/four tensor preparations plus completed CPU post-evaluation, and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T04:47:11+08:00: Ordinary SSH verifies/pulls current published 4d4ce7d root, then reads exact own known965-1007 claims/receipts, eight current formal status/events, replacement forcefield and four spectrum/four tensor preparations plus completed CPU post-evaluation, and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.

@@ -1,5 +1,9 @@
 # Experiment resource preflight
 
+[Published-ID audits](audits/README.md) compare frozen data with published
+pretraining rosters without running a model or changing any split. They preserve
+unknown label/geometry overlap rather than inferring no leakage from absent IDs.
+
 Saved predictions have a separate [tensor assessment module](assessment/README.md).
 It independently verifies original labels, frozen test IDs and overall metrics,
 then adds zero/nonzero target groups and component errors without modifying the

@@ -277,6 +277,12 @@ JARVIS/GMTNet若没有可获取的固定官方split，就发布本工具的固�
 
 ### 预训练标签重叠必须单列
 
+四份实际权重的[来源与审计说明](../agents/pretraining-overlap.md)已单列。
+固定ALIGNN ZIP包含44569/5572/5572发布train/validation/test ID；新增
+`scripts/audit_pretraining_ids.py`独立核验源／划分SHA及ID交集，区分参数训练、选模验证、原测试与未列出。
+6主stdlib控制已通过，完整数据Slurm交集待验收；未知交集不写为0，`not_listed`不等于几何／标签未见。
+数据与144定义不因此修改，结果呈现明确区分材料曝光和同／派生／不同目标关系。
+
 ALIGNN原带隙头、CGCNN原带隙头、MEGNet原形成能头可能已看过候选数据库的目标标签。
 `head_mode: reset`只重置头，不能消除主干预训练中已见的测试标签。
 每个checkpoint需登记预训练数据和目标、可获取的训练ID以及与本实验测试集的交集。

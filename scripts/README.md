@@ -1,5 +1,15 @@
 # Scripts
 
+## Published pretraining IDs
+
+`audit_pretraining_ids.py` compares complete frozen material IDs with a
+SHA-bound published checkpoint's train/validation/test roster. It records
+parameter-training and model-selection exposure separately; a missing ID is
+never interpreted as proof of unseen geometry or labels. Run through Slurm
+using `audit_pretraining_ids.slurm`; configure `UGNN_AUDIT_CONFIG`,
+`UGNN_AUDIT_OUTPUT` and the explicit `UGNN_REFERENCE_RELATION`.
+See the [audit contract](../src/universal_gnn/benchmarks/audits/README.md).
+
 ## Saved tensor groups
 
 `evaluate_tensor_groups.py --report runs/CASE/report.json --shape 3 3 --output NEW`
