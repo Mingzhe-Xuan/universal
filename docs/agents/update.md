@@ -758,3 +758,5 @@
 - 2026-11-04T16:50:12+08:00：用户继续目标后已实际提交891 DGL、892 base(after890)、893 extras(after892+891)、894 GPU最小图/训练求导/checkpoint及六输出/OOM诊断(after893)，未执行任何登录节点数值。新增真实pilot准备器：五源64/16/16、48原模型/两初始化配置、3epoch/batch2，保留原144定义，七项控制本地及隔离通过，待Slurm实际生成；original scratch等数值仍待，正式0/144。
 
 - 2026-11-04T17:38:10+08:00: Repair official dependency installer after actual893 conflict: preserve documented official MACE/e3nn0.4.4 parent, universal NequIP0.5.8 and shared Torch2.7.1cu128; remove only known own0.5.8 overlay, six pinned offline wheels, five control tests passed. Actual892 installed CUDA/base successfully. Real pilot preparation895 was collected: seven tests,48 configs/24 pairs, full-parent source verification, prepared_not_launched; zero pilot/formal training.
+
+- 2026-11-04T17:48:05+08:00：本批依赖安装完成并通过GPU基础验收：共享Torch2.7.1+cu128/CUDA12.8，三个环境pip check正常，官方包及DGL/PyG扩展在RTX5090可执行；修复official e3nn覆盖冲突并保留各模型原版本。实际作业896/897/898/899通过，18回归零skip、五项图检查、六任务合成训练及OOM策略全部通过，完整收据已回传。准备好的48真实pilot配置尚未训练，正式0/144；本次按用户要求交付安装完成状态。

@@ -3266,3 +3266,21 @@
 - 2026-11-04T17:33:19+08:00: Installation893 failed at universal-official pip check; ordinary SSH first verifies/pulls published bundle, then lightweight pip metadata/check diagnosis only. No Torch imports, numerical work, source edits or network downloads.
 
 - 2026-11-04T17:34:30+08:00: Ordinary SSH verify/pull first; stdlib-only distribution roots and requirements for four task envs to locate MACE/e3nn conflict before choosing fix. No numerical imports or environment changes.
+
+- 2026-11-04T17:39:38+08:00：SCP上传已推送640da1d的5868B小型离线bundle，SHA fa13264ad26a32228f76ce5487e13d5aa12aa8872da54d6b7b9f906bb7b77611，先决6100fe9；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T17:40:18+08:00：普通SSH先SHA核验/pull已发布640da1d；唯一claim runs/control-official-restore-fix-640da1d-claim提交单CPU/1GiB/10分钟Slurm，执行test_official_environment_restore.py预期5项无skip纯std控制检查并记录实际Git blob SHA。不运行GNN/CUDA或正式训练，不安装或下载；回执丢失先查claim/queue，保留现有代理。
+
+- 2026-11-04T17:41:28+08:00: Ordinary SSH verifies/pulls640da1d then unique claim queues repaired offline extras after control tests and GPU readiness after extras. Only cancel exact own blocked894 after validating name/user/PENDING/DependencyNeverSatisfied; retain failed893 logs. No numerical login execution, downloads, or source edits.
+
+- 2026-11-04T17:42:18+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/897 install states/package receipts and898 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:44:08+08:00: Ordinary SSH first verify/pull640da1d, unique claim queues provider CUDA binary/import smoke after successful extras897 on GPU/2CPU/8GiB/10min. Scientific operations only in Slurm, no network downloads, package changes or tracked source edits.
+
+- 2026-11-04T17:44:35+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/897 install states/package receipts and898 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:44:57+08:00：已确认提交回执896，此次SCP仅取本任务runs/official-restore-fix-control-896.json及.err到ignored results/paper-environment-20261104；按实际执行commit三源Git blob和5项无skip日志核验。上次普通工作连接已先pull 640da1d，不提交新作业、不接触其他实验、不更改源码。
+
+- 2026-11-04T17:45:46+08:00: Ordinary read-only SSH first verify/pull published bundle then collect fixed installation890/891/892/897 and GPU898/provider899 receipts and bounded log tails. Save ignored local evidence; no numerical login execution or job changes.
+
+- 2026-11-04T17:46:42+08:00: Ordinary read-only SSH first verify/pull published bundle then collect fixed installation890/891/892/897 and GPU898/provider899 receipts and bounded log tails. Save ignored local evidence; no numerical login execution or job changes.

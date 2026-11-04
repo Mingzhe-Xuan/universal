@@ -277,3 +277,15 @@ Slurm868已核验并暂存五个原本就在本机的wheel到 `models/official-i
 - 2026-11-04T16:16:33+08:00：恢复执行前环境计划：复用已创建并记录的universal-base及universal/universal-mace/universal-official，不重新创建/覆盖venv。890全部16资源成功后运行既有install_offline_cuda_base.slurm；固定DGL1.1.3cu121官方wheel独立Slurm直连并SHA后，与base共同afterok触发install_official_extras.slurm，保留MACE e3nn0.4.4/NequIP与official0.5.8。之后单GPU最小训练/导数/checkpoint与通用CUDA/OOM验收。所有数值计算在Slurm，当前未宣称安装或验收成功。
 
 - 2026-11-04T17:36:31+08:00: Dependency repair planned after actual892 base success and893 failure: official originally inherits MACE site-packages and e3nn0.4.4 (documented2026-11-02); installing an own e3nn0.5.8 exposes a mace-torch metadata conflict. Restore only that exact task-owned overlay and preserve inherited0.4.4; NequIP universal keeps own0.5.8. Reuse existing envs, no new venv, binary download, or parent modification.
+
+- 2026-11-04T17:48:05+08:00：本批依赖已安装并通过实际GPU基础验收。Slurm890核验全部16个Torch/CUDA资源，891核验DGL，892安装共享Torch2.7.1+cu128、cuBLAS12.8.3.14、cuDNN9.7.1.26等并通过base pip check。893因official自有e3nn0.5.8覆盖旧MACE父环境而失败；640da1d修复后896五项控制通过、897完成六轮离线安装和三个环境pip check，报告保留一次精确overlay迁移。未改父MACE包或其他项目环境，未新建环境。
+
+| 用途 | 服务器Python | e3nn来源/版本 |
+|---|---|---|
+| NequIP | `/home/xmz/.venvs/universal/bin/python` | 本环境0.5.8 |
+| MACE | `/home/xmz/.venvs/universal-mace/bin/python` | 本环境0.4.4 |
+| ALIGNN、CGCNN | `/home/xmz/.venvs/universal-official/bin/python` | 原MACE父环境0.4.4 |
+
+以上均读取 `/home/xmz/.venvs/universal-base/lib/python3.10/site-packages` 的同一Torch2.7.1+cu128。Slurm899在RTX5090实测三个环境的Torch/e3nn前反向、四原包导入，official的DGL CUDA消息传递/梯度及torch_cluster、torch_scatter、torch_sparse CUDA算子全部通过；Torchvision可导入。MACE可选cuequivariance加速未安装，不影响已测基础路径。Slurm898通过五项图检查、18项零skip回归、六任务合成完整训练步、生成采样和真实OOM降batch/单样本仍OOM拒绝场景。后两者是基础运行验收，不是四原模型真实训练或全量任务结果。
+
+结构化收据已保存于忽略目录 `results/paper-environment-20261104/cuda-install/`，服务器对应 `runs/official-extras-897.json`、`runs/pilot-gpu-readiness-898/`、`runs/provider-cuda-smoke-899/`；实际代码640da1d，相关图检查源码SHA按Git blob核验。

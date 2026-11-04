@@ -1,12 +1,14 @@
 # 当前状态
 
-Torch2.7.1+cu128 and all pinned CUDA resources installed by Slurm892; base pip check passed. Official extras893 failed on an e3nn parent conflict, under repair. GPU readiness not yet accepted. Real diagnostic dataset/config preparation895 passed (48 configs, seven controls); formal training0/144, pilot training0/48.
+Guqq2 本批实验依赖安装与 GPU 基础验收已完成。共享 Torch2.7.1+cu128/CUDA12.8 安装成功；三个任务环境 pip check 通过。官方环境 e3nn 覆盖冲突已修复：NequIP 使用0.5.8，MACE及ALIGNN/CGCNN环境使用原有0.4.4。Slurm898通过五项图检查、18项零跳过回归及六任务合成训练步/生成采样/真实OOM检查；899通过RTX5090上三个环境的官方包导入与CUDA运算。
+
+真实诊断数据准备895已通过七项控制及来源核验，生成48配置/24对；尚未开始原模型诊断训练（0/48）和正式训练（0/144）。安装/合成验收不替代原模型全量图扫描、原始scratch构造、导数、真实数据任务与成对显存验收。
 
 # 当前计划
 
-1. Repair official e3nn overlay while preserving original provider pins; verify offline installer controls and republish.
-2. Rerun actual installation and targeted GPU readiness through Slurm; collect receipts before declaring installation complete.
-3. Original model pilot/runtime gates remain separate from dependency readiness; preserve the complete paper experiment plan.
+1. 本次“继续安装，安装好了通知”已完成，向用户交付版本及实际验收结果。
+2. 后续实验从四个原模型的小规模真实数据验收继续，保留全部144正式配置和原计划门禁；未验收运行时代码不冒充可用结果。
+3. 三个任务环境继续共享同一Torch基础环境，按各自固定e3nn运行；源码遵循本地提交、服务器pull规则，数值计算仅走Slurm。
 
 # 变更记录
 
@@ -475,3 +477,5 @@ Torch2.7.1+cu128 and all pinned CUDA resources installed by Slurm892; base pip c
 - 2026-11-04T16:50:12+08:00：完成小规模准备本地阶段：新增pilots.py/CLI/七控制测试，源与划分完整校验、每原role固定64/16/16，48配置准备不训练；本地与已发布源码隔离均七项通过。依赖流水线891–894已有实际回执，等待890/DGL完成后才安装和GPU验收。下一步独立发布并Slurm生成真实pilot数据/配置和复核，正式0/144。
 
 - 2026-11-04T17:36:31+08:00: Entered dependency repair:890 all16 CUDA resources verified,891 DGL verified,892 shared Torch2.7.1cu128/base pip check completed.893 failed because an own official e3nn0.5.8 overrides its documented MACE0.4.4 parent;894 remains dependency-blocked and is not GPU success. Restore official original compatible0.4.4 and rerun Slurm install/acceptance.895 actually prepared48 real diagnostic configurations with seven controls and verified source blobs; zero training runs.
+
+- 2026-11-04T17:48:05+08:00：完成本批依赖安装与GPU基础验收：890/891资源、892共享base、修复后896五项控制、897离线extras、898图/18回归/九CUDA预检场景、899三环境扩展检查均有实际通过证据。保留893失败日志，精确取消失效894；没有代理持有会话或后台下载需要续传。下一步通知安装完成，原模型pilot及正式144仍为零。
