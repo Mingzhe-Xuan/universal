@@ -3456,3 +3456,13 @@
 - 2026-11-05T01:56:55+08:00: Ordinary SSH verifies/pulls current published3b root then reads exact965 unit receipt,966/967 and corrected970-973 own rechecks and968/969 own formal claims/status/events plus current-user Slurm queue. Fixed source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
 
 - 2026-11-05T02:01:06+08:00: Ordinary SSH verifies/pulls current published3b root then reads exact965 unit receipt,966/967 and corrected970-973 own rechecks and968/969 own formal claims/status/events plus current-user Slurm queue. Fixed source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T02:08:10+08:00：SCP上传已推送da3ba0e的11559B小型离线bundle，SHA 30c73b0ecd58a3271a028946e7a440d1c002c84aec2fa7c0420c911d0cd7d060，先决7b3f872；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T02:09:38+08:00：Ordinary SSH verifies/pulls publishedda3ba0e first, then Git clone --shared from this confirmed task repository into new task-owned ignored runs/source-checkouts/da3ba0e... . No server code editor/patch/source mutation; only Git materializes already-pushed source. Verify fixedHEAD/clean tracked source, symlink only untracked data/models/runs to their exact existing task paths, cache-only Git excludes/provenance metadata. Existing paths not overwritten, no neural imports, package installs or numerical login execution. Root origin remains unchanged; future normal connections still pull root first, immutable cache is verified rather than updated.
+
+- 2026-11-05T02:11:13+08:00: Ordinary SSH verify/pull published baseline commit first, verify fixed clean source cache. Unique claim submit complete scalar baseline CPU1/4GiB/20min,6 fixture tests plus full75,993 frozen JARVIS labels and independent train-only/15,170 heldout verification. No GPU requested, formal jobs and older caches remain unchanged; no source edits, environment installs, network downloads or login numerics.
+
+- 2026-11-05T02:13:25+08:00: Ordinary SSH verify/pull current published root then observe exact981 complete scalar baseline claim/report/JUnit/predictions and current-user queue. Only own result files read/transferred; no source edits, new jobs, environment changes or numerical login work. Local independent provenance/ID-count/config verification, not scientific rescoring.
+
+- 2026-11-05T02:18:05+08:00: Ordinary SSH verifies/pulls current published da3ba0e root, then reads exact own965-980 claims/receipts,968/969 formal status/events and current-user Slurm queue. Fixed8d/3b/7b source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
