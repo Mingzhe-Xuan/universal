@@ -121,3 +121,11 @@ Vlab不稳定时保留分片；同时发生的大文件传输按数据优先串�
 服务器 `data/arxiv-v1/perov5/training-cell-prior.json`，本地忽略证据目录保留同名收据，
 实际脚本与协议源码哈希均按4859cc9提交核验。训练器按其实际输入精度重新拟合时使用训练几何指纹，
 与独立准备器的原档/划分身份指纹定义不同；不直接互换。该先验不代表模型已训练或采样有效。
+
+## 2026-11-04T08:51:23+08:00：完整主体数据的静态元素词表核对
+
+对上述已校验数据审计的 `atomic_numbers_present` 比较固定官方资源词表：GMT介电86种元素、JARVIS带隙/分类89种、声子86种、MLearn6种、Perov-5 56种，均落在MACE small与NequIP-OAM-S的89元素词表，以及CGCNN原atom_init词表中；三者超词表元素均为0。因此当前主体矩阵无需因这三份词表删数据或扩展embedding。ALIGNN完整元素特征查询仍须原包运行验收。
+
+MACE通过已固定SHA的 `.model` ZIP中pickle opcode描述定位LongStorage，仅读取89个整数的底层存储，没有反序列化对象、导入Torch或实例化GNN；NequIP使用已校验作者YAML，CGCNN使用已校验atom_init。结果保存在忽略目录 `results/paper-environment-20261104/static-vocabulary-coverage.json`。这项静态核对不证明原包建图、特征提取、数值精度或GPU可运行，相关门禁仍未通过。
+
+- 2026-11-04T09:03:48+08:00：补充ALIGNN静态核对：固定checkpoint配置为cgcnn元素特征、92维；已核验的Jarvis2026.6.12 wheel中原始atom_init覆盖100种元素且每项92个有限分量。五份主体数据也都在此表内，四个模型静态超词表元素均为0；没有借用Jarvis超词表时的回退向量。报告已补齐ALIGNN来源SHA和特征表摘要。真实原包元素属性查询/特征提取与数值仍待Slurm，不把静态表覆盖当作模型运行验收。

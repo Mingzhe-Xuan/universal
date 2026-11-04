@@ -246,3 +246,24 @@ yarl==1.25.1
 - `provider-after-864.json`：`344e374d5e56d0c20edd7a057da064996ea65cd66fac2698aa71bae0b8bfab8e`
 
 provider只读HTTP进程50152/54974已按CIM精确核对所有权后关闭，监听释放已确认；主wheel54339与唯一SSH代理继续服务CUDA865。新的7个CPU验证wheel本机HTTPS下载仍待明确许可，没有执行被拒绝的下载。
+
+## 2026-11-04T09:07:22+08:00：子环境元数据与官方环境补充资源
+
+使用各任务Python的stdlib distribution元数据，按“本环境site-packages优先、universal-base其次”检查预期共享路径；未导入Torch/GNN、未创建新环境、未改写当前pth。这不是当前子环境已正确继承base或已经能运行的证明。结果在忽略目录 `results/paper-environment-20261104/child-environment-metadata.json`。
+
+| 环境 | 合并可见distribution数 | 元数据发现的缺口 |
+|---|---:|---|
+| universal | 144 | torch |
+| universal-mace | 124 | torch |
+| universal-official | 115 | dgl, lightning-utilities, torch, torchmetrics, torchvision |
+| universal-equiformer | 108 | 仅108共同依赖，未据此确认原模型/扩展已恢复 |
+
+Slurm868已核验并暂存五个原本就在本机的wheel到 `models/official-install/official-extra-wheelhouse/`，没有安装。归档1,553,197B，SHA256 `4f5261b75f7f065c6b966d44b942b6aecaf7aaa230da1371ed53c4067bf06bbf`。
+
+- `e3nn==0.5.8`，450056B，SHA256 `551b886a0761bce8022df242271c0397bcf5ee689834ddcb402c99ab985cbc58`
+- `opt_einsum==3.4.0`，71932B，SHA256 `69bb92469f86a1565195ece4ac0323943e83477171b91d24c35afe028a90d7cd`
+- `opt-einsum-fx==0.1.4`，13213B，SHA256 `85f489f4c7c31fd88d5faf9669c09e61ec37a30098809fdcfe2a08a9e42f23c9`
+- `torchmetrics==1.9.0`，983384B，SHA256 `bfdcbff3dd1d96b3374bb2496eb39f23c4b28b8a845b6a18c313688e0d2d9ca1`
+- `lightning-utilities==0.15.3`，31906B，SHA256 `6c55f1bee70084a1cbeaa41ada96e4b3a0fea5909e844dd335bd80f5a73c5f91`
+
+新增[官方补充环境安装入口](../../scripts/install_official_extras.slurm)接在现有CUDA base安装完成之后，并要求DGL1.1.3cu121、已缓存的Torchvision0.22.1cu128和上述五轮全部就绪。全部七轮固定大小/SHA及共享Torch来源通过之前不会安装；仅向universal-official离线安装，检查三个环境的pip依赖、共享Torch路径和各自e3nn路径/版本。MACE保持0.4.4，其余两环境为0.5.8，不复制三份Torch。当前未提交该安装作业：CUDA未齐，DGL的服务器暂存仍待完成。安装报告显式numerical_acceptance=false，之后仍须原包、CUDA和导数验收。

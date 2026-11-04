@@ -1061,3 +1061,21 @@
 - 2026-11-04T06:36:39+08:00：本地native邻居计数聚合3/3纯std测试通过，原蓝图7/7回归通过，覆盖全train计数、两种零度分母、顺序不变和逐图畸形计数拒绝；原预检控制与生成解析8/8再次通过，compileall及git diff --check通过。未运行原包真实建图/模型数值，未宣称自动scratch入口完成。
 
 - 2026-11-04T06:37:52+08:00：本次提交前最终检查通过：新邻居聚合3项及原蓝图7项纯std验收、compileall、文档链接/围栏、既有state历史逐字前缀保留、git diff --check；864的59项实际版本与13项Slurm测试日志收据核验完成。仅发布计数聚合与已完成阶段记录，未发布待数值验收的四模型/生成运行时。
+
+- 2026-11-04T06:41:38+08:00：进入原包邻居统计扫描实现单元：输入必须完整indexed JSONL train分区，使用各原包native_input，不运行网络forward；CPU逐结构累计原始edge_index，不受batch/训练seed影响。缓存统计必须绑定数据/manifest/实际输入精度指纹、cutoff、原artifact和建图源码/包版本，任何不一致拒绝。纯std覆盖身份/分区/完整覆盖策略及缓存篡改拒绝，CLI验证Slurm门禁和不提前导入Torch；真实MACE/NequIP原图扫描、零度结构、RNG保留和复用验收需Torch环境后的Slurm。运行时原型不因静态检查而宣称已验收。
+
+- 2026-11-04T06:51:20+08:00：native扫描原型的纯身份/缓存绑定3项测试通过，包含全train选择、数据/精度/图版本变化拒绝、CLI无Slurm和已有输出在Torch导入前拒绝；compileall和两个Slurm脚本bash-n通过。已从本地官方wheel源码核对MACE统计edge_index[1]的非零度receiver，NequIP统计edge_index[0]并为零度节点补零。真实原包图/RNG/无forward/缓存复用测试为每provider3项，共6项，尚未运行，位于scripts/validation_cases，由独立Slurm入口使用各自环境。未运行本地GNN、未发布此扫描/CLI/运行时集成。
+
+- 2026-11-04T06:51:50+08:00：Slurm866实际通过计数聚合全部3项，收据/测试日志已回传并核对c8128af；Linux/Python3.10兼容验收完成。865实际RUNNING，磁盘可用64,806,625,280B，约60.36GiB，高于20GiB预留；这是快照而非独占配额。仍无正式训练，原图扫描6测试未运行。
+
+- 2026-11-04T06:53:59+08:00：实现前计划：训练/生成/容量worker在MACE/NequIP官方scratch构造前自动完成完整train原图统计；预训练和其他骨干路径不触发校准。完整resume只在调用方省略统计时继承保存值，显式变更仍拒绝且需按当前数据重新绑定验证。成功容量worker仅可返回与实际模型load_report一致的零权重覆盖统计，控制器只能补该字段，dtype/任务/图/显式统计不变；畸形结果不当OOM减batch。纯std测试选择/继承/回执策略与真实子进程controller，Torch集成测试通过Slurm另验。此前goal回合为progress：864安装+13测试、866三测试及c8128af发布/同步均有实际收据；本回合已poll3780确认监督器live，865续传继续。
+
+- 2026-11-04T08:45:50+08:00：五个既有补充wheel仅暂存验收：Slurm验证1,553,197B ZIP的固定SHA、精确六member白名单、各轮大小/SHA和name/version；冲突文件不覆盖，输出staged收据且明确environment_installed=false。不安装Torch依赖未齐的包，不以暂存或元数据满足当作runtime通过；worker AST/完整Bash脚本静态检查后才提交。
+
+- 2026-11-04T08:58:10+08:00：实现前计划：补充官方子环境离线安装入口，复用现有CUDA base installer建立的ugnn-common-base.pth，不重建父子环境、不复制Torch、不改MACE e3nn0.4.4。先验证七个固定wheel（868五个+DGL+Torchvision）的全部大小/SHA和路径，再验证共享Torch2.7.1cu128来源；任何缺失/冲突在pip install之前失败。仅向universal-official安装七个原已准备wheel，no-index/no-deps，三环境pipcheck及Torch来源/e3nn版本再验；报告明确尚非GPU/模型验收。纯std假runner测试覆盖缺资源、错误父环境/链接拒绝及正确离线目标、不发生本机安装或Torch导入；静态CLI Slurm门禁及bash-n。实际安装需等CUDA和DGL资源就绪，当前不提交必失败安装作业。
+
+- 2026-11-04T09:07:22+08:00：本次独立环境安装入口提交前检查：3项纯std假runner测试通过，覆盖缺失/损坏资源、冲突共享pth、错误Torch及外来e3nn路径在install前拒绝、仅official环境执行no-index/no-deps安装、MACE版本隔离、CLI Slurm门禁；compileall、bash-n通过。实际环境安装未运行，不能将假runner或metadata检查当CUDA/模型通过。868真实完成五轮大小/SHA暂存，收据回传核验通过；四模型静态词表覆盖五份完整审计，超词表0，没有本机模型执行。
+
+- 2026-11-04T09:07:22+08:00：未发布的native校准运行时更新：监督/生成训练与容量worker已本地自动接完整train统计，resume仅继承省略字段；native成功回执控制4项、原生成解析4项和原容量控制4项纯std共12/12通过，身份/缓存3/3通过。新增原包图/构造10项（每provider5项）和训练路由5项待Slurm；新增推理重建图来源校验，并修正校准加载源包时不混用保存的fresh类来源，原artifact不变。Torch/生成实际数值尚未验收，运行时不在本次提交范围。
+
+- 2026-11-04T09:08:43+08:00：环境流水线提交前最终检查：3/3纯std安装门禁测试通过（含已有report拒绝、防外来e3nn来源），compileall、Slurm bash-n、相关Markdown链接/围栏、state变更历史逐字保留及git diff --check通过。提交范围仅独立环境脚本/测试与实际868/元数据/词表记录；未发布尚无Torch数值验收的backbone、生成或校准运行时。实际pip安装未运行，正式训练0/144。
