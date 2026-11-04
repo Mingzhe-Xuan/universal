@@ -51,3 +51,9 @@ requires a dedicated continuation probe before changing any checkpoint settings.
 Peak CUDA memory and measured throughput cover the supplied probe after warmup.
 Capacity alone does not establish scientific accuracy, held-out evaluation, full-data
 coverage or checkpoint compatibility. See [the experiment plan](../../../docs/plan/arxiv_v1_experiments.md).
+
+For the original-pretrained versus whole-backbone-scratch comparison, use
+[paired capacity](pairing/README.md). It checks both modes independently, then checks both again
+at their common smaller batch. If another OOM lowers this common size, both are rechecked again.
+Only the final shared size is exported; the original full-matrix definitions remain unchanged.
+This orchestration retains the supplied-probe scope above and launches no formal training.

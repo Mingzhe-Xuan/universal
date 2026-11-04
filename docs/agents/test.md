@@ -1089,3 +1089,7 @@
 - 2026-11-04T10:32:01+08:00：Slurm872实际通过source身份4、manifest5、144配置6，共15项；真实完整输入生成144配置/72对完成。matrix及日志已SCP回传；本地按执行be3d579的三个Git blob SHA、五source/manifest摘要及计数、所有config摘要重建通过，matrix SHA256 6bc44462768be3c3a9aaebd8819d97c0fb29f4e94f4f62c7a89c9c6550bedeb5。首次跨平台重建只因Windows运行目录元数据使用反斜线不同，核对器仅统一该路径分隔符，其余case/配置/摘要保持严格一致。没有运行Torch/API/数值或GPU验收。873定向四键缓存检查实际missing，无下载/安装/新环境。
 
 - 2026-11-04T10:32:01+08:00：本次仅记录实际872/873与代理诊断的文档提交前检查：相关相对链接、路径、围栏和state原变更历史逐字保留通过；数据计数、摘要与源码对应验证依上述本地verification-872.json，相关真实Slurm检查全通过。未提交待Torch验收的运行时代码或用户未跟踪文档。
+
+- 2026-11-04T10:36:58+08:00：实现前计划：benchmarks/pairing成对容量控制器以同seed/任务/数据/精度/读出/冻结设置的pretrained与scratch配置为输入，先各自干净进程减batch，再取共同较小值重新验证双方；复验若再次OOM则共同下调并再次双侧复验，其他错误立即失败。只使用既有run_preflight，不改physics/样本/图/步数/学习率；不重用预检权重。纯std子进程fixture验证不等上限、复验容量波动、多轮共同batch、batch1失败、未知错误不回退、输入/输出拒绝、调用者对象不变、进程独立和matrix case摘要/配对身份。CLI先检查Slurm，再读矩阵/启动worker；运行时真实GPU仍待环境，fixture不计显存或科学验收。发布后CPU Slurm复跑控制检查，不提交正式训练。
+
+- 2026-11-04T10:46:17+08:00：成对容量提交前：10项纯std真实子进程控制测试通过，包含不同初始/可容纳batch、共同复验再次OOM并双侧重验、batch1失败、未知错误不回退、任务/seed/源/精度/非train分区拒绝、scratch统计边界、矩阵摘要/歧义拒绝、日志/输入/最终配置摘要、独立PID及CLI Slurm/无Torch门禁。另从已发布HEAD完整源码临时展开，仅覆盖本次pairing新文件，以同10项检查验证无需未发布preflight/resolution/运行时代码，全通过。compileall、相关文档链接/围栏/历史和git diff --check通过；没有本机模型执行。真实GPU/全图/导数/吞吐仍未验收。

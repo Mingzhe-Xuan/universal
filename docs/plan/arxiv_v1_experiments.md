@@ -456,6 +456,10 @@ Slurm配置257787MiB，即约251.75GiB主机RAM。单GPU逐任务执行时，48/
 用户确认：**预检阶段如果batch太大导致显存OOM，自动减小batch_size重试，直到能够容纳。**
 已开始落实：`universal_gnn.benchmarks.preflight` 提供干净子进程、OOM专用错误协议、batch减半、失败留档及成功配置输出；
 控制流程的本地测试已通过。真实GPU训练步、全量最坏图规模扫描及两种初始化共同batch仍需Slurm验收，尚未据此启动全量训练。
+成对编排入口为 `python -m universal_gnn.benchmarks.pairing.capacity`，可从冻结矩阵选择一个pair，
+分别预检后用共同较小batch双侧复验；若复验又OOM，继续共同下调再双侧重验。
+输入任务/seed/数据划分/精度/图/读出/优化设置不一致则拒绝；仅保存双方最终共同通过的配置，
+不改原矩阵或复用预检更新后的权重。详见[成对容量说明](../../src/universal_gnn/benchmarks/pairing/README.md)。
 训练器的batch默认值保持不变；正式配置必须采用通过预检的值。入口及边界见[预检模块说明](../../src/universal_gnn/benchmarks/README.md)。
 
 1. 每个模型/任务/初始化先确认设备与计算正确，再从该正式配置的初始batch开始试跑。
