@@ -1,5 +1,14 @@
 # Scripts
 
+## Scalar training-mean baseline
+
+`evaluate_scalar_baseline.slurm` uses `UGNN_BASELINE_CONFIG` to fit the entire
+frozen training partition's scalar mean and independently score every validation
+and test record. `UGNN_BASELINE_OUTPUT` must be new. The CLI refuses execution
+outside Slurm; it writes original-unit MAE/RMSE, complete prediction JSONL and
+source/split/config/execution provenance. No GNN or GPU is used. See
+[the baseline module](../src/universal_gnn/benchmarks/baselines/README.md).
+
 ## Physical-task acceptance
 
 `validate_task_derivatives.py --config CONFIG --output NEW_JSON` requires Slurm
