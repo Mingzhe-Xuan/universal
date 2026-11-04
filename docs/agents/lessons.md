@@ -241,3 +241,5 @@
 - 2026-11-04T10:32:01+08:00：本次Vlab超时后，本地专用SSH已终止而远端1080监听仍在；不能据此重建第二代理。先核实本地精确PID不存在，再核对当前用户sshd启动：唯一无notty的3420794始于10:19:34，与已记录本任务唯一代理10:19:30握手对应，其他工作会话均@notty；端到端健康失败后再复核UID/完整启动时间/命令/唯一性，仅TERM该PID并确认端口释放。若归属不唯一或健康，则不清理。该经验属运维流程，不改业务代码。
 
 - 2026-11-04T11:01:44+08:00：不能只在SSH断开后按时间猜归属。新增专用-N前保存1080空闲及当前用户无notty的sshd集合，健康后绑定唯一新增者的PID/UID/boot_id/start_ticks/命令。后续必须先有自己Popen实际terminal，并在失败健康检查前后两次比对完整身份，通过pidfd固定目标再发TERM，防止PID复用；健康、歧义、boot/UID变化和缺pidfd均不结束进程。sshd非dumpable时/proc目录owner可能为root，实际UID应从ps euid取得，不能用proc目录属主代替。远端保护用显式异常而非可被优化禁用的assert；归属观察失败不能为记录元数据而终止健康代理。
+
+- 2026-11-04T11:34:02+08:00：原包native_input的图不是完整任务的全部图：现有EquivariantAdapter还为response/generation建radius graph，native边数和其max_neighbors不足以估计完整下游开销。CGCNN dense neighbor slots含padding，应按分配槽位报告，不能标成物理键；ALIGNN还需line-graph三体数。生成clean训练图的全量扫描也不能证明所有噪声状态/随机采样轨迹的显存，预检需标记实际状态覆盖。该长期扫描接口约定写入benchmarks/probes/README，不混入业务数学注释。

@@ -2510,3 +2510,107 @@
 - 2026-11-04T11:19:09 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
 
 - 2026-11-04T11:19:45 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:20:22 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:20:59 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:21:05 +08:00: Approved CUDA supervisor: recheck asynchronous1080release after owned proxy actually exited; no process termination. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:21:12 +08:00: Approved CUDA supervisor: revalidate exact previously recorded task sshd UID/boot/start/command via PID handle and unhealthy endpoint; clean only that disconnected proxy. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:21:21 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:21:28 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:21:28 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:21:31+08:00：SCP上传已推送8fdea11的8274B小型离线bundle，SHA 771c1a94ab1563b6281b067c9de5d07e75dc22b31d3322664e30033567741dd1，先决a17b24d；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T11:21:37 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepulla17b24d32983ca28259098ccf126410b60ccf8df first; no login computation or unknown session termination.
+
+- 2026-11-04T11:22:14 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:22:51 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:23:24+08:00：普通SSH先SHA核验/pull已发布8fdea11；唯一claim runs/control-probe-schedule-8fdea11-claim提交单CPU/1GiB/10分钟Slurm，执行test_probe_schedule.py预期6项无skip纯std控制检查并记录实际Git blob SHA。不运行GNN/CUDA或正式训练，不安装或下载；回执丢失先查claim/queue，保留现有代理。
+
+- 2026-11-04T11:23:32 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:24:09 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:24:54 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:25:30 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:26:07 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:26:14 +08:00: Approved CUDA supervisor: recheck asynchronous1080release after owned proxy actually exited; no process termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:26:22 +08:00: Approved CUDA supervisor: revalidate exact previously recorded task sshd UID/boot/start/command via PID handle and unhealthy endpoint; clean only that disconnected proxy. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:26:33 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:26:39 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:26:39 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:26:48 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:27:26 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:28:03 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:28:09+08:00：已确认提交回执878，此次SCP仅取本任务runs/probe-schedule-control-878.json及.err到ignored results/paper-environment-20261104；按实际执行commit三源Git blob和6项无skip日志核验。上次普通工作连接已先pull 8fdea11，不提交新作业、不接触其他实验、不更改源码。
+
+- 2026-11-04T11:28:40 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:29:17 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:29:24 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:29:31 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:29:31 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:29:39 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:30:16 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:30:53 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:31:30 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:32:07 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:32:42 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:33:12 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:33:42 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:33:49 +08:00: Approved CUDA supervisor: recheck asynchronous1080release after owned proxy actually exited; no process termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:33:56 +08:00: Approved CUDA supervisor: revalidate exact previously recorded task sshd UID/boot/start/command via PID handle and unhealthy endpoint; clean only that disconnected proxy. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:34:06 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:34:13 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:34:13 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:34:21 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:34:59 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:35:36 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:35:42 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:35:49 +08:00: Approved CUDA supervisor: confirmed prior owned proxy terminal/1080free; start ONE dedicated resource proxy. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:35:49 +08:00: Approved CUDA supervisor: verify fresh owned proxy end-to-end HTTP resource health, no public Internet. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:35:57 +08:00: Approved CUDA supervisor: record current-user dedicated sshd identities and1080 ownership; no termination. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.
+
+- 2026-11-04T11:36:34 +08:00: Approved CUDA supervisor: poll actual CUDA queue/completion/bytes and1080 listener. Each connection verify published bundle and offlinepull8fdea11f5253be8979e5e74fab2fac8e4b455ce8 first; no login computation or unknown session termination.

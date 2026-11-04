@@ -18,3 +18,22 @@ This scheduler covers the caller's declared set. It does not itself prove that a
 graph scan selected every relevant extreme. The original-model graph scanner and real GPU training
 or sampling acceptance remain separate requirements. Current worker integration awaits numerical
 acceptance in the restored provider environments.
+
+## Full graph scan still to implement
+
+`selection.py` is planned for bounded streaming selection of graph extremes and deterministic
+ordinary examples; `native_scan.py` is planned for Slurm-only construction with the original
+providers. Neither file is implemented yet. Receipts must bind the complete source-ordered train
+partition, input precision, native artifacts, actual graph implementations and active cutoffs.
+
+The scan must count auxiliary readout graphs too. The existing
+[equivariant adapter](../../adapters/features.py) adds a radius graph for geometric response and
+generation features, including when native features contain only scalars. Original backbone edge
+counts alone therefore do not describe all allocated graph work. CGCNN's dense padded neighbor
+slots must be identified as allocated slots, rather than mislabeled as physical bonds; ALIGNN
+requires its line-graph counts as well. Preserve separate counts for these different allocations.
+
+For generation, a complete scan of clean training graphs still does not cover every perturbed
+training state or sampling trajectory. Validate the actual corruption/sampling path separately
+and state which input states were measured. No finite capacity probe guarantees every possible
+stochastic trajectory.
