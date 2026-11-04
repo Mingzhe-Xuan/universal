@@ -16,6 +16,12 @@ and the exact angular-order layout extracted from the original package. Both req
 neighbor normalization fitted on the complete declared training partition using the
 original graph builder; see [preparation](../../engine/initialization/README.md).
 No learned source parameters or fitted source normalization are copied into scratch.
+Legacy CGCNN BatchNorm counters are canonicalized by the original strict loader in
+an isolated copy, leaving the fresh instance untouched. MACE's six newly registered
+nonempty-contraction flags are structural boolean constants absent from the old
+artifact; only known false flags with matching original weights are migrated for
+layout comparison. Unknown entries, empty/changed paths and wrong shapes still fail.
+NequIP's required official global setup runs inside RNG/default-dtype isolation.
 
 **Numerical acceptance pending:** run `scripts/validate_official_scratch.slurm`
 and `scripts/validate_native_neighbors.slurm` before using fresh paths in the paper

@@ -2,6 +2,7 @@
 
 import io
 from pathlib import Path
+import copy
 import tempfile
 
 import numpy as np
@@ -32,7 +33,13 @@ class OfficialCGCNN(OfficialBackbone):
         model = CrystalGraphConvNet(feature_width, edge_width, atom_fea_len=atom_width, n_conv=count,
                                     h_fea_len=hidden, n_h=depth,
                                     classification=arguments.get("task", "regression") == "classification")
-        initialization_report = initialize_original(model, state, mode=initialization)
+        blueprint = state
+        if initialization == "scratch":
+            # The original strict loader migrates legacy BatchNorm counters in old releases.
+            reference = copy.deepcopy(model)
+            reference.load_state_dict(state, strict=True)
+            blueprint = reference.state_dict()
+        initialization_report = initialize_original(model, blueprint, mode=initialization)
         settings = artifact.get("preprocessing", preprocessing or {})
         settings = {"radius": 8., "max_num_nbr": 12, "dmin": 0., "step": .2, **settings}
         artifact["preprocessing"] = settings

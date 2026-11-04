@@ -3284,3 +3284,21 @@
 - 2026-11-04T17:45:46+08:00: Ordinary read-only SSH first verify/pull published bundle then collect fixed installation890/891/892/897 and GPU898/provider899 receipts and bounded log tails. Save ignored local evidence; no numerical login execution or job changes.
 
 - 2026-11-04T17:46:42+08:00: Ordinary read-only SSH first verify/pull published bundle then collect fixed installation890/891/892/897 and GPU898/provider899 receipts and bounded log tails. Save ignored local evidence; no numerical login execution or job changes.
+
+- 2026-11-04T18:17:58+08:00：SCP上传已推送c3f1787的32055B小型离线bundle，SHA 966cf2192f7d9148974fd02802c7c22e40ebaca3e9d6410be5780c0ae767cb0f，先决640da1d；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T18:18:49+08:00: Goal resumed active. Ordinary SSH verifies/pulls c3f1787 bundle before any work; unique claim queues original CGCNN/ALIGNN constructor and MACE/NequIP native calibration acceptance as two CPU Slurm jobs (1CPU/8GiB/20min each). Query df afterwards, no scientific computation on login, source edits, binary downloads or official training. Existing completed898/899 remain dependency evidence only.
+
+- 2026-11-04T18:20:00+08:00: Ordinary read-only SSH first verify/pull published bundle then inspect specific live900/901 Slurm states and their own fixed reports/log tails, save local ignored evidence. No package/model computation or job restarts on observation failures.
+
+- 2026-11-04T18:21:58+08:00: After actual900/901 strict state-layout failures, ordinary SSH verify/pull first then unique claim submits CPU Slurm CGCNN/MACE exact state key/shape and original strict-loader diagnostics, plus independent NequIP five-case runtime acceptance not reached by901. Diagnostic wrappers only operate on ignored outputs and temporary in-process hooks, no tracked remote source edits or relaxed training acceptance.
+
+- 2026-11-04T18:23:09+08:00: Ordinary read-only SSH first verify/pull published bundle then inspect specific live900/901 Slurm states and their own fixed reports/log tails, save local ignored evidence. No package/model computation or job restarts on observation failures.
+
+- 2026-11-04T18:25:04+08:00: After actual900/901 strict state-layout failures, ordinary SSH verify/pull first then unique claim submits CPU Slurm CGCNN/MACE exact state key/shape and original strict-loader diagnostics, using a four-record nonempty train/validation/test diagnostic manifest (902 correctly rejected an incomplete fixture); no repeat of already-failed903. Diagnostic wrappers only operate on ignored outputs and temporary in-process hooks, no tracked remote source edits or relaxed training acceptance.
+
+- 2026-11-04T18:27:04+08:00: Ordinary read-only SSH first verify/pull published bundle then inspect specific live900/901 Slurm states and their own fixed reports/log tails, save local ignored evidence. No package/model computation or job restarts on observation failures.
+
+- 2026-11-04T18:28:20+08:00: Ordinary SSH verify/pull first then read task MACE installed symmetric_contraction source around zeroed flags. Source inspection only to explain six missing boolean buffers from904; no numerical imports, edits or job submission.
+
+- 2026-11-04T18:29:15+08:00: Previous source read found rg unavailable on Guqq2; ordinary SSH again verifies/pulls then uses stdlib bounded source-line read for same exact MACE file, no numerical imports or edits.

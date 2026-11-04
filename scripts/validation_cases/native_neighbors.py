@@ -5,14 +5,17 @@ import copy
 import hashlib
 import json
 import os
+import random
 from unittest.mock import patch
 
 import pytest
 import torch
+import numpy as np
 
 from universal_gnn.backbones.factory import make_backbone
 from universal_gnn.data.splits.manifest import create_manifest
 from universal_gnn.engine.initialization.neighbors import prepare_native_neighbors
+from universal_gnn.engine.training import build_model
 
 
 @pytest.fixture
@@ -106,13 +109,28 @@ def test_calibration_keeps_saved_fresh_provenance_intact(config):
 
 
 def test_fresh_constructor_consumes_receipt_and_inference_rejects_changed_graph(config):
-    from universal_gnn.engine.training import build_model
-
     resolved = prepare_native_neighbors(config)
-    model = build_model(resolved)
+    def audited_factory(*args, **kwargs):
+        torch_rng, python_rng, numpy_rng = torch.get_rng_state().clone(), random.getstate(), np.random.get_state()
+        dtype = torch.get_default_dtype()
+        backbone = make_backbone(*args, **kwargs)
+        assert torch.equal(torch_rng, torch.get_rng_state())
+        assert python_rng == random.getstate()
+        current_numpy_rng = np.random.get_state()
+        assert numpy_rng[0] == current_numpy_rng[0] and np.array_equal(numpy_rng[1], current_numpy_rng[1])
+        assert numpy_rng[2:] == current_numpy_rng[2:]
+        assert torch.get_default_dtype() == dtype
+        return backbone
+    with patch("universal_gnn.engine.training.make_backbone", side_effect=audited_factory):
+        model = build_model(resolved)
     assert model.backbone.load_report["neighbor_statistics"] == resolved["backbone"]["neighbor_statistics"]
     assert model.backbone.load_report["parameter_coverage"] == model.backbone.load_report["buffer_coverage"] == 0.
     assert model.backbone.load_report["state_layout_verified"]
+    if config["backbone"]["name"] == "mace":
+        assert len(model.backbone.load_report["structural_state_migrations"]) == 6
+        assert model.backbone.model.atomic_energies_fn.atomic_energies.eq(0).all()
+        assert model.backbone.model.scale_shift.scale.eq(1).all()
+        assert model.backbone.model.scale_shift.shift.eq(0).all()
     if config["backbone"]["name"] == "nequip":
         assert model.backbone.load_report["constructor"] == "nequip.model.FullNequIPGNNModel"
         assert model.backbone.load_report["original_layout"] == dict(

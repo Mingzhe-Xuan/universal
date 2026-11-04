@@ -2,11 +2,34 @@
 
 from importlib.metadata import version
 import io
+import re
 
 import torch
 
 from .base import OfficialBackbone, artifact_files
 from universal_gnn.backbones.initialization import initialize_original, validate_initialization
+
+
+def canonical_scratch_blueprint(model, reference):
+    """Account for structural contraction flags absent from older complete-module artifacts."""
+    state, actual = reference.state_dict(), model.state_dict()
+    migrated = []
+    parameters = dict(reference.named_parameters())
+    for key in sorted(set(actual) - set(state)):
+        match = re.fullmatch(r"(products\.[0-9]+\.symmetric_contractions\.contractions\.[0-9]+\.)weights_(max|[0-9]+)_zeroed", key)
+        if match is None:
+            raise ValueError(f"Unknown fresh MACE state entry absent from original artifact: {key}")
+        parameter_key = match[1] + ("weights_max" if match[2] == "max" else "weights." + match[2])
+        flag = actual[key]
+        # These flags describe empty contraction paths, never fitted values. The registered
+        # legacy artifact has only nonempty paths; any different migration is unsupported.
+        if (flag.dtype != torch.bool or flag.shape != torch.Size([]) or bool(flag) or
+                parameter_key not in parameters or parameters[parameter_key].numel() == 0 or
+                parameter_key not in actual or actual[parameter_key].shape != parameters[parameter_key].shape):
+            raise ValueError(f"Unsupported legacy MACE contraction flag migration: {key}")
+        state[key] = flag.detach().clone()
+        migrated.append(key)
+    return state, migrated
 
 
 class OfficialMACE(OfficialBackbone):
@@ -29,7 +52,9 @@ class OfficialMACE(OfficialBackbone):
             config = mace_constructor_config(extract_config_mace_model(reference), neighbor_statistics)
             with torch.random.fork_rng(devices=[]):
                 model = type(reference)(**config)
-            report = initialize_original(model, reference.state_dict(), mode="scratch")
+            blueprint, migrations = canonical_scratch_blueprint(model, reference)
+            report = initialize_original(model, blueprint, mode="scratch")
+            report["structural_state_migrations"] = migrations
             report["neighbor_statistics"] = neighbor_statistics
         from universal_gnn.contracts.e3nn_compat import load_o3
 

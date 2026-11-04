@@ -57,6 +57,8 @@ class OfficialNequIP(OfficialBackbone):
         if initialization == "scratch":
             import yaml
             from nequip.model import FullNequIPGNNModel
+            from nequip.utils.global_state import set_global_state
+            from lightning.pytorch.utilities.seed import isolate_rng
             from universal_gnn.backbones.blueprints import nequip_full_constructor_config
 
             if "blueprint" not in artifact["files"]:
@@ -65,7 +67,8 @@ class OfficialNequIP(OfficialBackbone):
             layout = packaged_constructor_layout(reference)
             config, recipe_report = nequip_full_constructor_config(yaml.safe_load(artifact["files"]["blueprint"]),
                                                                    neighbor_statistics, seed=torch.initial_seed(), layout=layout)
-            with torch.random.fork_rng(devices=[]):
+            with default_dtype(torch.get_default_dtype()), isolate_rng(include_cuda=torch.cuda.is_initialized()):
+                set_global_state()
                 model = FullNequIPGNNModel(**config)
             if (list(model.type_names) != list(reference.type_names) or
                     float(model.metadata["r_max"]) != float(reference.metadata["r_max"])):

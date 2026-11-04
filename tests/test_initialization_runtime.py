@@ -64,3 +64,23 @@ def test_scratch_backbone_cannot_be_overwritten_by_warm_start_or_mislabeled_chec
     with pytest.raises(ValueError,match="does not match"):
         save_training_checkpoint(tmp_path/"never-written.pt",model,None,{"backbone":{"name":"cgcnn"}},None,None)
     assert not (tmp_path/"never-written.pt").exists()
+
+
+def test_mace_legacy_migration_rejects_unknown_or_nonstructural_state():
+    from universal_gnn.backbones.official.mace import canonical_scratch_blueprint
+
+    prefix = "products.0.symmetric_contractions.contractions.0."
+    weight = torch.nn.Parameter(torch.randn(2, 3))
+    original = {prefix + "weights.0": weight}
+    reference = SimpleNamespace(state_dict=lambda: original.copy(), named_parameters=lambda: original.items())
+    flag_key = prefix + "weights_0_zeroed"
+    actual = {**original, flag_key: torch.tensor(False)}
+    canonical, migrations = canonical_scratch_blueprint(SimpleNamespace(state_dict=lambda: actual.copy()), reference)
+    assert migrations == [flag_key] and not bool(canonical[flag_key])
+    assert set(original) == {prefix + "weights.0"}
+    for change in ({flag_key: torch.tensor(True)}, {flag_key: torch.tensor(0.)},
+                   {flag_key: torch.tensor([False])}, {prefix + "unexpected": torch.tensor(False)},
+                   {prefix + "weights_1_zeroed": torch.tensor(False)}):
+        invalid = {**actual, **change}
+        with pytest.raises(ValueError, match="MACE.*(entry|migration)"):
+            canonical_scratch_blueprint(SimpleNamespace(state_dict=lambda: invalid.copy()), reference)
