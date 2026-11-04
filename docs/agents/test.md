@@ -1129,3 +1129,7 @@
 - 2026-11-04T12:59:19+08:00：实现前测试计划：完整图扫描分为probes/native_scan.py（Slurm门禁、完整train身份/图元数据、四原包图计数、实际适配层分支、禁止模型forward、原子发布/失败证据）和scripts/scan_training_graphs.py（JSON配置CLI）。纯std控制测试验证门禁先于Torch、拒绝裁剪/非train/非official/自定义graph、完整扫描调用顺序和不漏行、失败不发布verified probe、CGCNN padding与ALIGNN triplets/两轴degree语义、真实分支元数据和源绑定；实际Torch/provider/CUDA图构造作为单独Slurm集成验收，不在本机运行模型。始终记录clean geometry范围，不签发生成全轨迹容量保证；源码/配置/图定义/source/canonical split/dtype/device/官方artifact摘要绑定，reference采用相同original预训练拓扑而非伪scratch。
 
 - 2026-11-04T14:51:38+08:00：native_scan提交前七项纯std控制通过，另与已发布HEAD src/scripts/tests隔离后同七项通过，证明不依赖工作树中未发布scratch/生成改动；移除initialization/neighbor_statistics/NequIP仅fresh的architecture只作用reference副本。已有selection六项+调度六项回归通过。AST/py_compile、相关README链接/命令/围栏、state历史保留及git diff --check通过。五个CUDA图格式/实际radius/active分支/eager与scripted forward guard检查仅写好未执行；真实四provider全扫描也未执行。
+
+- 2026-11-04T14:56:17+08:00：Slurm886七项扫描控制全部通过、零skip；收据与stderr回传后按6072d4c实际native_scan/selection/两CLI/测试共五Git blob核验。无Torch数值或真实provider图执行。文档提交前检查计划新增链接、命令路径、围栏及state历史逐字保留、git diff --check通过。
+
+- 2026-11-04T14:56:49+08:00：文档检查器首次将既有standards.md#anchor整体当文件路径，检查失败；已按Markdown链接语义分别核验目标文件和标题锚点，并对计划、扫描README及scripts README全部本地链接重新检查通过。此处修正检查器，不降低文件/锚点要求；886实际验收不受影响。

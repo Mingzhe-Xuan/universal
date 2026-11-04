@@ -457,6 +457,10 @@ Slurm配置257787MiB，即约251.75GiB主机RAM。单GPU逐任务执行时，48/
 已开始落实：`universal_gnn.benchmarks.preflight` 提供干净子进程、OOM专用错误协议、batch减半、失败留档及成功配置输出；
 控制流程的本地测试已通过，成对编排的10项纯std子进程测试亦已在Slurm875/a7b127c通过并回传核验。
 真实GPU训练步、全量最坏图规模扫描及两种初始化共同batch仍需Slurm验收，尚未据此启动全量训练。
+完整扫描工具已在6072d4c发布：`scripts/scan_training_graphs.py` 调用四骨干原生建图入口，
+并统计实际启用的响应/生成额外图；Slurm886的7项纯控制检查通过，收据按执行源码核验。
+这些检查不运行真实原包图。五项CUDA格式/guard检查及四骨干的完整训练图扫描仍待环境恢复后执行，
+尚无真实全图扫描或容量通过收据；详见[图扫描说明](../../src/universal_gnn/benchmarks/probes/README.md)。
 成对编排入口为 `python -m universal_gnn.benchmarks.pairing.capacity`，可从冻结矩阵选择一个pair，
 分别预检后用共同较小batch双侧复验；若复验又OOM，继续共同下调再双侧重验。
 输入任务/seed/数据划分/精度/图/读出/优化设置不一致则拒绝；仅保存双方最终共同通过的配置，

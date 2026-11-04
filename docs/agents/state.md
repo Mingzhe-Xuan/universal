@@ -13,7 +13,7 @@ Torch/CUDA/DGL尚未齐备。Slurm881的9项新续传器检查实际通过，收
 1. 完整144配置与身份绑定已通过Slurm872真实输入准备、15项纯std和本地实际Git blob核验；保留原定义，后续以通过的容量解析配置训练，不覆盖原始定义，不将配置准备当训练。
 2. 优先恢复环境：879零payload不能比较8/30秒；880两组约5MiB/22秒且连接复用，第三组部分前缀也匹配。新的curl同连接续片工具本地及Slurm881各9项通过，882正从旧partial接续，保持SHA与20GiB余量。完整16资源后运行既有base离线安装，再补DGL/official extras和各环境pipcheck。
 3. 真实原包scratch、native邻居统计自动集成、生成新噪声/val-best/heldout质量数值验收；补分子6Å/PBC与插件对照。源码本地修改/提交/推送后仅git pull同步，不提交用户docs/paper或ustc记录。
-4. 成对容量控制a7b127c已发布，Slurm875通过10项纯std子进程测试并按执行的三个Git blob核验；8fdea11另修复每个worst在热身后独立满batch测量，Slurm878六项纯调度通过并按三Git blob核验，仍待真实GPU；完整图流的selection纯聚合与普通batch修复dd0fcb0已发布，本地12项及Slurm883/884共12项通过并核验实际Git blob；原生+适配层native_scan及CLI/五项数值检查脚本已实现，本地七项纯控制和已发布源码隔离七项通过，实际四provider全扫描/五数值检查未运行；全训练图最坏规模与导数训练步预检，仅OOM逐级减batch至1，两种初始化共同有效batch双侧复验；正式训练、独立完整测试及质量采样，保留20GiB磁盘余量和失败记录。
+4. 成对容量控制a7b127c已发布，Slurm875通过10项纯std子进程测试并按执行的三个Git blob核验；8fdea11另修复每个worst在热身后独立满batch测量，Slurm878六项纯调度通过并按三Git blob核验，仍待真实GPU；完整图流的selection纯聚合与普通batch修复dd0fcb0已发布，本地12项及Slurm883/884共12项通过并核验实际Git blob；原生+适配层native_scan及CLI/五项数值检查脚本已实现，6072d4c已发布，本地七项纯控制、隔离七项及Slurm886七项通过并核验五执行Git blob；实际四provider全扫描/五数值检查未运行；全训练图最坏规模与导数训练步预检，仅OOM逐级减batch至1，两种初始化共同有效batch双侧复验；正式训练、独立完整测试及质量采样，保留20GiB磁盘余量和失败记录。
 
 # 变更记录
 
@@ -462,3 +462,5 @@ Torch/CUDA/DGL尚未齐备。Slurm881的9项新续传器检查实际通过，收
 - 2026-11-04T12:59:19+08:00：进入完整原图扫描实现阶段。上一回合为实际进展：179925a新续传器部署882，dd0fcb0选择器及883/884共12项Linux控制验收；73597句柄本回合实际poll仍live，882 RUNNING/字节增长，保持健康代理。下一步实现Slurm-only native_scan及CLI，完整train逐结构调用original native_input并统计实际response/生成额外图，不运行NN；真实provider图验收待依赖到位，不能用控制fixtures替代。
 
 - 2026-11-04T14:51:38+08:00：完整原图扫描本地实现单元完成：native_scan.py/CLI按完整源顺序调用四原生建图入口并统计实际启用的额外图，禁止模块forward，保留逐行/失败证据，绑定源/划分/精度/设备/artifact/加载源码与依赖，末尾复核源/划分/Git后才发布probe。七项控制及已发布源码隔离七项通过，另选择/调度12项回归通过；CUDA五项与真实provider全扫描未执行，不冒充数值验收。73597本回合句柄持续live，882离队后确认队列空再885接原断点，最新实际RUNNING/增长。下一步独立发布和CPU Slurm，再在依赖恢复后实际CUDA/全图/成对容量。正式0/144。
+
+- 2026-11-04T14:56:17+08:00：完成扫描控制的Linux兼容阶段：6072d4c服务器pull，886七项通过；收据和stderr已回传，五个实际执行Git blob摘要一致。计划12.5与模块README同步当前边界，五项CUDA和四provider全图未运行，正式0/144。73597句柄本回合已真实poll仍live；885 RUNNING且资源字节增长。继续依赖恢复、原包scratch/生成数值、全图与成对容量，再正式144训练和独立评测。
