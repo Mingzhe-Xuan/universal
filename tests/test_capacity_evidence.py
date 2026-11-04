@@ -2,6 +2,7 @@ from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
+import runpy
 import sys
 import tempfile
 import unittest
@@ -10,7 +11,8 @@ from unittest.mock import patch
 from universal_gnn.benchmarks.experiments.registry import canonical_digest
 from universal_gnn.benchmarks.pairing.capacity import run_paired_capacity
 from universal_gnn.benchmarks.pairing.evidence import verify_capacity_evidence
-from tests.test_paired_capacity import configurations, WORKER
+_fixtures = runpy.run_path(str(Path(__file__).with_name('test_paired_capacity.py')))
+configurations, WORKER = _fixtures['configurations'], _fixtures['WORKER']
 
 
 @contextmanager
