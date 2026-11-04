@@ -36,7 +36,7 @@ class NequIPFullBlueprintTests(unittest.TestCase):
         config,report=nequip_full_constructor_config(source,statistics('nequip',4.5),seed=789,layout=layout())
         self.assertEqual(config['seed'],789);self.assertEqual(config['compile_mode'],'eager')
         self.assertEqual(config['avg_num_neighbors'],3.)
-        self.assertEqual(config['per_type_energy_shifts'],0.);self.assertEqual(config['per_type_energy_scales'],1.)
+        self.assertEqual(config['per_type_energy_shifts'],{'H':0.,'O':0.});self.assertEqual(config['per_type_energy_scales'],[1.,1.])
         for key in ['type_names','r_max','per_type_energy_shifts_trainable','per_type_energy_scales_trainable','pair_potential']:
             self.assertEqual(config[key],recipe[key])
         config['pair_potential']['units']='changed'

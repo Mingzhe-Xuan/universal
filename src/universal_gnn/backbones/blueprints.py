@@ -88,6 +88,16 @@ def mace_constructor_config(extracted, statistics):
     return result
 
 
+def _neutral_type_statistic(value, names, neutral):
+    if type(value) in (int, float):
+        return neutral
+    if isinstance(value, dict) and set(value) == set(names):
+        return {name: neutral for name in value}
+    if isinstance(value, list) and len(value) in (1, len(names)):
+        return [neutral] * len(value)
+    raise ValueError("Original per-type energy statistic must retain a supported scalar or complete type layout")
+
+
 def nequip_constructor_config(blueprint, statistics, *, seed):
     if type(seed) is not int or not 0 <= seed < 2**64:
         raise ValueError("Fresh NequIP requires a nonnegative 64-bit initialization seed")
@@ -117,7 +127,9 @@ def nequip_constructor_config(blueprint, statistics, *, seed):
     if "r_max" not in result or not isinstance(result.get("type_names"), list) or not result["type_names"]:
         raise ValueError("Original NequIP blueprint lacks cutoff or type vocabulary")
     result["avg_num_neighbors"] = neighbor_normalization(statistics, provider="nequip", cutoff=result["r_max"])
-    result.update(seed=seed, compile_mode="eager", per_type_energy_shifts=0., per_type_energy_scales=1.)
+    for key, neutral in (("per_type_energy_shifts", 0.), ("per_type_energy_scales", 1.)):
+        result[key] = _neutral_type_statistic(result.get(key, neutral), result["type_names"], neutral)
+    result.update(seed=seed, compile_mode="eager")
     return result, {"skipped_nonpersistent_modifiers_for_eager": skipped,
                     "source_constructor": "nequip.model.NequIPGNNModel"}
 

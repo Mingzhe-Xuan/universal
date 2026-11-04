@@ -3302,3 +3302,13 @@
 - 2026-11-04T18:28:20+08:00: Ordinary SSH verify/pull first then read task MACE installed symmetric_contraction source around zeroed flags. Source inspection only to explain six missing boolean buffers from904; no numerical imports, edits or job submission.
 
 - 2026-11-04T18:29:15+08:00: Previous source read found rg unavailable on Guqq2; ordinary SSH again verifies/pulls then uses stdlib bounded source-line read for same exact MACE file, no numerical imports or edits.
+
+- 2026-11-04T18:34:25+08:00：SCP上传已推送0b72689的6429B小型离线bundle，SHA eb8fbab0da92aa9e452b274567d61b5dc10467d2e06f85a9cb1d12c68228636f，先决c3f1787；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T18:35:20+08:00: Revalidate canonical state migrations and isolated NequIP global setup after actual900/901/903 failures. Ordinary SSH verifies/pulls 0b72689 bundle before any work; unique claim queues original CGCNN/ALIGNN constructor and MACE/NequIP native calibration acceptance as two CPU Slurm jobs (1CPU/8GiB/20min each). Query df afterwards, no scientific computation on login, source edits, binary downloads or official training. Original900/901 are terminal FAILED; do not overwrite their logs or count them as passes.
+
+- 2026-11-04T18:36:57+08:00: Ordinary read-only SSH first verify/pull published bundle then inspect specific live905/906 Slurm states and their own fixed reports/log tails, save local ignored evidence. No package/model computation or job restarts on observation failures.
+
+- 2026-11-04T18:40:46+08:00：Ordinary SSH first verify/pull0b72689 then unique claim queues one CPU NequIP shape diagnostic and two GPU CGCNN/ALIGNN frozen bandgap pilot pipelines (2CPU/24GiB/1GPU/90min). Each requires actual905 acceptance, frozen895 SHA, original parity, full64 clean native graph scan and100-batch paired capacity before any three-epoch training. No source checkout updates while these graph scans run; no formal training, cropping, precision changes, parent data edits or numerical login work.
+
+- 2026-11-04T18:43:15+08:00: Ordinary read-only SSH verify/pull unchanged0b72689 then inspect specific907/908/909 Slurm states, bounded logs and own pilot/scan/capacity reports. No new jobs, restarts, source updates beyond already-current pull, or numerical login work.

@@ -36,6 +36,19 @@ def blueprint():
 
 
 class FreshBlueprintTests(unittest.TestCase):
+    def test_nequip_neutral_statistics_preserve_scalar_and_per_type_shapes(self):
+        for value, expected in ((5., 0.), ({"H": -3., "O": -5.}, {"H": 0., "O": 0.}),
+                                ([2., 4.], [0., 0.]), ([2.], [0.])):
+            data = blueprint();recipe = data["training_module"]["model"]["model"]
+            recipe["per_type_energy_shifts"] = value
+            config, _ = nequip_constructor_config(data, statistics("nequip", 4.5), seed=123)
+            self.assertEqual(config["per_type_energy_shifts"], expected)
+            self.assertEqual(recipe["per_type_energy_shifts"], value)
+        for value in ({"H": -3.}, {"H": -3., "Ne": -5.}, [], [1., 2., 3.], True, None, "fit"):
+            data = blueprint();data["training_module"]["model"]["model"]["per_type_energy_shifts"] = value
+            with self.subTest(value=value), self.assertRaisesRegex(ValueError, "per-type energy statistic"):
+                nequip_constructor_config(data, statistics("nequip", 4.5), seed=123)
+
     def test_native_normalizers_treat_zero_degree_nodes_differently(self):
         self.assertEqual(neighbor_normalization(statistics("mace", 6.), provider="mace", cutoff=6.), 6.)
         self.assertEqual(neighbor_normalization(statistics("nequip", 4.5), provider="nequip", cutoff=4.5), 3.)
@@ -80,8 +93,8 @@ class FreshBlueprintTests(unittest.TestCase):
         self.assertEqual(kwargs["type_names"], ["H", "O"])
         self.assertEqual(kwargs["r_max"], 4.5)
         self.assertEqual(kwargs["avg_num_neighbors"], 3.)
-        self.assertEqual(kwargs["per_type_energy_shifts"], 0.)
-        self.assertEqual(kwargs["per_type_energy_scales"], 1.)
+        self.assertEqual(kwargs["per_type_energy_shifts"], {"H": 0., "O": 0.})
+        self.assertEqual(kwargs["per_type_energy_scales"], [1., 1.])
         self.assertFalse(kwargs["per_type_energy_shifts_trainable"])
         self.assertTrue(kwargs["per_type_energy_scales_trainable"])
         self.assertEqual(kwargs["pair_potential"], before["training_module"]["model"]["model"]["pair_potential"])

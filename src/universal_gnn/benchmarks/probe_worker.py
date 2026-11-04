@@ -20,6 +20,8 @@ def execute(request, result, result_path):
 
     config, probe = request["config"], request["probe"]
     device = torch.device(config["device"])
+    if device.type == "cuda" and device.index is None:
+        device = torch.device("cuda", torch.cuda.current_device())
     torch.cuda.set_device(device)
     torch.manual_seed(config.get("seed", 123))
     torch.cuda.manual_seed_all(config.get("seed", 123))
