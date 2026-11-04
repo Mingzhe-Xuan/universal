@@ -275,3 +275,5 @@ Slurm868已核验并暂存五个原本就在本机的wheel到 `models/official-i
 - 2026-11-04T16:00:46+08:00：资源传输路径变更：用户明确授权本次16个固定官方Torch/CUDA wheel从服务器HTTPS直连，curl --noproxy *且清除ALL/HTTP/HTTPS代理，HTTPS验证保持启用。889实测通过，890只向既有models/official-install/arxiv-linux-base暂存并做完整SHA。没有修改任何venv/.pth或安装包，没有新增CPU环境/CPU二进制；后续安装与数值门禁仍待实验目标恢复。
 
 - 2026-11-04T16:16:33+08:00：恢复执行前环境计划：复用已创建并记录的universal-base及universal/universal-mace/universal-official，不重新创建/覆盖venv。890全部16资源成功后运行既有install_offline_cuda_base.slurm；固定DGL1.1.3cu121官方wheel独立Slurm直连并SHA后，与base共同afterok触发install_official_extras.slurm，保留MACE e3nn0.4.4/NequIP与official0.5.8。之后单GPU最小训练/导数/checkpoint与通用CUDA/OOM验收。所有数值计算在Slurm，当前未宣称安装或验收成功。
+
+- 2026-11-04T17:36:31+08:00: Dependency repair planned after actual892 base success and893 failure: official originally inherits MACE site-packages and e3nn0.4.4 (documented2026-11-02); installing an own e3nn0.5.8 exposes a mace-torch metadata conflict. Restore only that exact task-owned overlay and preserve inherited0.4.4; NequIP universal keeps own0.5.8. Reuse existing envs, no new venv, binary download, or parent modification.

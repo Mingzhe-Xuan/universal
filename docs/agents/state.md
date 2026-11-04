@@ -1,18 +1,12 @@
 # 当前状态
 
-用户本回合已明确恢复执行的实验目标：按照docs/plan/arxiv_v1_experiments.md开展四模型×六任务×两种整个骨干初始化×三seed144次正式实验。正式训练0/144，不以数据、配置、fixture或安装替代。
-
-已发布ed2a646：六类主体任务共用的五份完整数据已通过Slurm准备与独立审计；原始四模型权重和NequIP作者配置已核验。49个common与59个provider包已安装，Slurm864 pipcheck与13项非Torch测试通过；868补充五轮已暂存，869安装门禁3项通过，尚非实际环境安装。
-
-已发布be3d579的144组完整配置生成器与数据/划分身份绑定。Slurm872实际通过15项纯std检查，从五份完整数据/作者或冻结划分及四原始模型资源生成144配置；收据已回传按实际三个Git blob与全部case摘要重建核对。状态prepared_not_launched，正式0/144。原始scratch构造、自动native校准、生成训练/独立评测原型仍未发布，等待原包数值验收；不将架构变体或重置头冒充整个骨干scratch。
-
-Torch主wheel已在服务器通过既有校验，大小1039365846B；当前剩余的是CUDA依赖，原CuBLAS断点165498715B。旧本机HTTP/SOCKS链路反复断开，所有本任务代理监督器已实际结束，1080已释放。用户新指令明确允许这批固定官方资源从服务器直连。Slurm889已实际完成4MiB/18.16秒、HTTP206/TLS校验通过，收到SHA与固定原wheel同偏移一致。已提交直连续传890，沿用原partial，首次观察CuBLAS已增长至191086427B；全部请求显式noproxy/HTTPS并清除代理环境，保留完整SHA、单writer锁和20GiB余量。旧只读HTTP52372/54339在核对进程与监听后关闭，端口释放已确认。只下载/校验，不安装、不恢复实验训练。新CPU二进制下载仍未执行。
+Torch2.7.1+cu128 and all pinned CUDA resources installed by Slurm892; base pip check passed. Official extras893 failed on an e3nn parent conflict, under repair. GPU readiness not yet accepted. Real diagnostic dataset/config preparation895 passed (48 configs, seven controls); formal training0/144, pilot training0/48.
 
 # 当前计划
 
-1. 当前执行：890继续直连CUDA，891直连DGL；892/893安装和894 GPU验收已按afterok排队。真实pilot准备器本地及隔离七项通过，发布后Slurm生成48诊断配置；不把准备/合成验收计入正式144。
-2. 用户已明确继续：恢复环境安装与小规模Slurm验收。先用afterok串联完整CUDA资源、DGL资源、base安装、official extras与GPU最小训练/求导/checkpoint检查，任一步失败停止后续。完成数据/配置/纯控制与实际训练仍分别记录，当前正式0/144。
-3. 已发布的控制工具与仍未验收的original scratch/生成运行时保留，完整需求仍以docs/plan/arxiv_v1_experiments.md为准；按完整门禁继续，不缩减矩阵；小规模真实数据使用单列96结构诊断子集，不计正式结果。
+1. Repair official e3nn overlay while preserving original provider pins; verify offline installer controls and republish.
+2. Rerun actual installation and targeted GPU readiness through Slurm; collect receipts before declaring installation complete.
+3. Original model pilot/runtime gates remain separate from dependency readiness; preserve the complete paper experiment plan.
 
 # 变更记录
 
@@ -479,3 +473,5 @@ Torch主wheel已在服务器通过既有校验，大小1039365846B；当前剩�
 - 2026-11-04T16:16:33+08:00：用户新指令“现在继续目标，可以准备开始小规模实验了吗”明确撤销暂停，恢复实际工作。890仍RUNNING，CuBLAS281722715/609620630B，CUDA未齐；准备DGL官方直连与有依赖的安装/GPU小规模验收流水线，并准备真实数据64train/16val/16test、四骨干六任务两初始化单seed48配置。暂不宣称可立即训练或将pilot计入144正式结果。
 
 - 2026-11-04T16:50:12+08:00：完成小规模准备本地阶段：新增pilots.py/CLI/七控制测试，源与划分完整校验、每原role固定64/16/16，48配置准备不训练；本地与已发布源码隔离均七项通过。依赖流水线891–894已有实际回执，等待890/DGL完成后才安装和GPU验收。下一步独立发布并Slurm生成真实pilot数据/配置和复核，正式0/144。
+
+- 2026-11-04T17:36:31+08:00: Entered dependency repair:890 all16 CUDA resources verified,891 DGL verified,892 shared Torch2.7.1cu128/base pip check completed.893 failed because an own official e3nn0.5.8 overrides its documented MACE0.4.4 parent;894 remains dependency-blocked and is not GPU success. Restore official original compatible0.4.4 and rerun Slurm install/acceptance.895 actually prepared48 real diagnostic configurations with seven controls and verified source blobs; zero training runs.

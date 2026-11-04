@@ -253,3 +253,5 @@
 - 2026-11-04T15:09:33+08:00：不能从NequIP作者num_features列表直接推断逐层width。本任务原package的type_embed32、layer0.feature_irreps_hidden=128x0e+64x1e、layer1=128x0e，readout输入128x0e；0.14以及官方0.15的简化builder仅单一整数且自己传type_embed，直接传作者recipe将失败。应从原包模块读取明确layout，使用同包FullNequIPGNNModel完整builder并严格比较state/布局及数值；不能猜[128,64]为128→64，不能放宽state检查或换架构。
 
 - 2026-11-04T16:00:46+08:00：下载进度应区分Torch根wheel与其CUDA依赖。本任务根wheel1039365846B早已完整；后续反复续传主要是cuBLAS等。用户授权服务器直连后，计算节点实际4MiB官方下载18.16秒/HTTP206/TLS验证通过，精确offset SHA与本机固定源相同。直连作业还在1080无监听时增长，证明无需本机中转。不能用历史默认代理规则拒绝用户已明确授权的新下载路径；也不能仅据HEAD成功声称完整传输或安装完成。
+
+- 2026-11-04T17:36:31+08:00: Pip dependency isolation must account for every legacy .pth parent. universal-official intentionally inherited universal-mace/e3nn0.4.4; installing an own0.5.8 while MACE remains visible creates a real pip-check conflict. Preserve the documented provider pins and check effective distribution roots, not only child-owned packages. Do not suppress pip check or uninstall a package whose root belongs to a parent.

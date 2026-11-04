@@ -3224,3 +3224,45 @@
 - 2026-11-04T16:07:12+08:00: Ordinary read-only SSH verify/pull bc9ea6c then read known CUDA job890 small receipt, own queue,1080 listener and filesystem free bytes. Actual31436 is terminal/proxy255/released; no new proxy, job, installation or unknown-session signal.
 
 - 2026-11-04T16:18:54+08:00：用户明确恢复实验后，普通SSH先核验/pull bc9ea6c，独占claim串联DGL1.1.3cu121官方直连/SHA资源作业、afterok890的已有base安装、afterok(base+DGL)的official extras及afterok(extras)的单GPU最小图/训练求导/断点/流式推理和六输出/OOM诊断。CUDA/DGL未完成不启动安装，任一步失败阻断后续；不直接排144长训练，不把合成诊断冒充原模型pilot。源码未远端编辑，现有venv保留。
+
+- 2026-11-04T16:55:51+08:00：SCP上传已推送6100fe9的13023B小型离线bundle，SHA 3420b4531732ca2b39ee493e444043ae3f1fabacb547de9805c798c827edcff3，先决bc9ea6c；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T17:00:27+08:00: Ordinary SSH first verify/pull6100fe9, then unique claim submits1CPU/2GiB Slurm pilot preparation. Seven stdlib controls and full parent source/split identity scans produce5x96 real records and48 configs/24 matched pairs; verify saved digests and record4 executed Git blobs. No Torch import, model execution, original-data mutation or formal training.
+
+- 2026-11-04T17:04:46+08:00: Ordinary SSH first verify/pull6100fe9; read only own890-895 queues, small CUDA/DGL reports and895 preparation receipt/embedded matrix/test log. Collect generated diagnostic metadata into ignored results and verify executed Git blobs/config digests, without model computation, data/source changes or duplicate submission.
+
+- 2026-11-04T17:07:52+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:12:42+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:17:09+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:17:48+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:18:25+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:19:03+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:19:42+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:20:24+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:21:02+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:21:55+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:22:35+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:23:13+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:23:51+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:24:28+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:25:06+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:25:42+08:00: User asks whether CUDA dependencies are installed. Ordinary read-only SSH first verify/pull6100fe9, then inspect890 download,892/893 install states/package receipts and894 GPU validation report/log tails. No Torch/model imports on login node, job submission or environment changes.
+
+- 2026-11-04T17:33:19+08:00: Installation893 failed at universal-official pip check; ordinary SSH first verifies/pulls published bundle, then lightweight pip metadata/check diagnosis only. No Torch imports, numerical work, source edits or network downloads.
+
+- 2026-11-04T17:34:30+08:00: Ordinary SSH verify/pull first; stdlib-only distribution roots and requirements for four task envs to locate MACE/e3nn conflict before choosing fix. No numerical imports or environment changes.

@@ -756,3 +756,5 @@
 - 2026-11-04T16:00:46+08:00：用户暂停实验并要求试服务器直接下载后，889实际官方HTTPS四MiB验证通过，890从原断点直连剩余依赖，首次已增长25.6MB。Torch根wheel1.039GB已存在且SHA校验后跳过；原耗时主要CUDA依赖和本机/SSH中转。已关闭旧任务HTTP服务，未开启新代理、安装或训练。正式0/144，实验目标维持paused。
 
 - 2026-11-04T16:50:12+08:00：用户继续目标后已实际提交891 DGL、892 base(after890)、893 extras(after892+891)、894 GPU最小图/训练求导/checkpoint及六输出/OOM诊断(after893)，未执行任何登录节点数值。新增真实pilot准备器：五源64/16/16、48原模型/两初始化配置、3epoch/batch2，保留原144定义，七项控制本地及隔离通过，待Slurm实际生成；original scratch等数值仍待，正式0/144。
+
+- 2026-11-04T17:38:10+08:00: Repair official dependency installer after actual893 conflict: preserve documented official MACE/e3nn0.4.4 parent, universal NequIP0.5.8 and shared Torch2.7.1cu128; remove only known own0.5.8 overlay, six pinned offline wheels, five control tests passed. Actual892 installed CUDA/base successfully. Real pilot preparation895 was collected: seven tests,48 configs/24 pairs, full-parent source verification, prepared_not_launched; zero pilot/formal training.

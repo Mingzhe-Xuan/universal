@@ -190,9 +190,12 @@ summarized by shape rather than exported. This establishes native-task contracts
 the official prediction head into UGNN.
 
 `install_official_extras.slurm` follows the shared CUDA base installer and verified native-wheel
-staging. It checks all seven pinned resource sizes/SHA values before installation, requires the
+staging. It checks all six pinned resource sizes/SHA values before installation, requires the
 existing shared-base links and exact shared Torch metadata, and installs only into
-`universal-official` without resolving dependencies from the network. It retains MACE's e3nn0.4.4,
+`universal-official` without resolving dependencies from the network. It retains MACE's e3nn0.4.4
+and the official environment's documented MACE/e3nn0.4.4 parent; NequIP retains its own e3nn0.5.8.
+An exact child-owned e3nn0.5.8 overlay from the earlier installer is removed before installation;
+unexpected versions or roots stop the operation without uninstalling parent packages. The installer
 checks the three task environments and records complete package lists. A successful report proves
 dependency metadata acceptance; original model/CUDA/derivative validation remains separate.
 `sbatch scripts/prepare_arxiv_matrix.slurm` verifies all five complete primary input sources,

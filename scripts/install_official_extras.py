@@ -8,7 +8,6 @@ from pathlib import Path
 import subprocess
 
 RESOURCES = [
-    ("official-extra-wheelhouse/e3nn-0.5.8-py3-none-any.whl", 450056, "551b886a0761bce8022df242271c0397bcf5ee689834ddcb402c99ab985cbc58"),
     ("official-extra-wheelhouse/opt_einsum-3.4.0-py3-none-any.whl", 71932, "69bb92469f86a1565195ece4ac0323943e83477171b91d24c35afe028a90d7cd"),
     ("official-extra-wheelhouse/opt_einsum_fx-0.1.4-py3-none-any.whl", 13213, "85f489f4c7c31fd88d5faf9669c09e61ec37a30098809fdcfe2a08a9e42f23c9"),
     ("official-extra-wheelhouse/torchmetrics-1.9.0-py3-none-any.whl", 983384, "bfdcbff3dd1d96b3374bb2496eb39f23c4b28b8a845b6a18c313688e0d2d9ca1"),
@@ -58,14 +57,14 @@ def install(repository, venv_root, *, runner=subprocess.run, resources=RESOURCES
         python = venv_root / name / "bin/python"
         return runner([str(python), *arguments], capture_output=True, text=True, check=True)
 
-    def probe(name, expected_e3nn=None):
+    def probe(name, expected_e3nn=None, e3nn_parent=None):
         value = json.loads(execute(name, "-c", PROBE).stdout)
         if value.get("torch") != "2.7.1+cu128" or Path(value["torch_root"]).resolve() != base.resolve():
             raise ValueError(f"{name} does not use the exact task shared Torch distribution")
         if expected_e3nn is not None and value.get("e3nn") != expected_e3nn:
             raise ValueError(f"{name} does not retain its pinned e3nn version")
-        if expected_e3nn is not None and Path(value["e3nn_root"]).resolve() != (venv_root / name / "lib/python3.10/site-packages").resolve():
-            raise ValueError(f"{name} does not use its own isolated e3nn installation")
+        if expected_e3nn is not None and Path(value["e3nn_root"]).resolve() != (venv_root / (e3nn_parent or name) / "lib/python3.10/site-packages").resolve():
+            raise ValueError(f"{name} does not use its pinned e3nn source")
         return value
 
     probe("universal-base")
@@ -73,14 +72,21 @@ def install(repository, venv_root, *, runner=subprocess.run, resources=RESOURCES
     for name, expected in (("universal", "0.5.8"), ("universal-mace", "0.4.4")):
         probe(name, expected)
         execute(name, "-m", "pip", "check")
-    probe("universal-official")
+    official = probe("universal-official")
+    own_site = venv_root / "universal-official/lib/python3.10/site-packages"
+    migrations = []
+    if official.get("e3nn") == "0.5.8" and Path(official["e3nn_root"]).resolve() == own_site.resolve():
+        execute("universal-official", "-m", "pip", "uninstall", "--yes", "e3nn")
+        migrations.append("Removed own official e3nn0.5.8 overlay; retained documented MACE e3nn0.4.4 parent")
+    probe("universal-official", "0.4.4", "universal-mace")
     execute("universal-official", "-m", "pip", "install", "--disable-pip-version-check", "--no-index", "--no-deps",
             "--no-cache-dir", "--only-binary=:all:", *map(str, wheels))
     verified = {}
-    for name, expected in (("universal", "0.5.8"), ("universal-mace", "0.4.4"), ("universal-official", "0.5.8")):
+    for name, expected in (("universal", "0.5.8"), ("universal-mace", "0.4.4"), ("universal-official", "0.4.4")):
         execute(name, "-m", "pip", "check")
-        verified[name] = {"metadata": probe(name, expected), "packages": json.loads(execute(name, "-m", "pip", "list", "--format=json").stdout)}
+        verified[name] = {"metadata": probe(name, expected, "universal-mace" if name == "universal-official" else None), "packages": json.loads(execute(name, "-m", "pip", "list", "--format=json").stdout)}
     return dict(status="complete", verified_wheels=len(wheels), environments=verified, numerical_acceptance=False,
+                migrations=migrations,
                 interpretation="offline dependencies and metadata verified; CUDA/GNN/derivative numerical acceptance still required")
 
 
