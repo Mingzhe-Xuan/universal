@@ -1219,3 +1219,13 @@
 - 2026-11-04T23:03:37+08:00：重载验收修复单元计划：942真实ALIGNN全部参数/buffer与checkpoint逐项相同；原CUDA模式同模型重复前向存在数e-6差异，deterministic algorithms=True在全部64记录均严格差异0。保持原float32 rtol1e-5/atol1e-6和float64标准，新增仅在重载比较作用域启用确定性计算、前置逐项state/dtype/shape完全相等检查，退出含异常恢复旧deterministic/warn_only；训练更新路径不改。训练入口在CUDA使用前setdefault CUBLAS_WORKSPACE_CONFIG，尊重显式环境值。Slurm测试参数/buffer/类型/布局损坏必须拒绝、RNG不变与异常恢复、实际CUDA对照；再跑完整heldout/force/generation/CLI回归，不用放宽容差消除失败。实际943/944诊断终态及结果需确认后才能同步/重新真实任务。
 
 - 2026-11-04T23:08:04+08:00：重载作用域修复提交前：四Python AST、两Slurm bash/内嵌Python AST、README链接/围栏及Git差异通过。942/943/944原始报告已回传，三者参数/buffer state_exact=true、32batch/64记录，确定性阶段重复与双加载所有分量max_abs=0；普通CGCNN有46/50处重复/重载越原容差，MACE有2/3处。该证据支持确定性验证而非改变标准。新增7项状态/策略/CUDA测试及18项既有heldout/force/generation/CLI共25项将发布后Slurm；同时重跑40项生成套件并准备revision2全量矩阵。此处不宣称新代码数值验收或正式训练成功。
+
+- 2026-11-04T23:17:08+08:00：945实际25项、946实际40主+16子数值均零错/零skip；947实际14控制与完整输入重核验/144定义revision2通过，三份收据源码SHA已核对Git blob。新7对/14次诊断请求AST/bash通过：从已冻结947父配置和895固定子集用公共pilot_config推导，逐字典证明仅FF三处输出/损失/绑定名称修正，其余参数不变。原13个未完成格加1个ALIGNN介电预训练重复对照；总唯一目标仍48，不按49累计。重做原包对照/全64图/4x100batch/物理与完整16测试/独立8采样；不复用预检权重、不减原100x2采样步。
+
+- 2026-11-04T23:26:46+08:00:948实际CGCNN stress FD失败，00分量analytic=-.59258 vsnumeric=-.64313，其他力/几何/混合梯度通过。保持原rtol/atol，计划CPU Slurm对同一初始化和真实Cu帧以.002/.001/.0005/.0002/.0001做收敛，原生get_all_neighbors只观察不改结果，比较中心/正负应变12邻居索引与周期镜像；另将同一float32参数和几何复制为float64诊断以区分量化误差，不改变正式float32训练设置或图。数值全部Slurm，不先改测试标准。
+
+- 2026-11-04T23:35:27+08:00：有限差分收敛单元计划：955的float32五步扫描实际证明CGCNN正00应变h=.002/.001改变原12邻居拓扑且误差.05055/.09854，h=.0005拓扑一致且F/stress原容差全部通过（应力误差.0004896）；更小h力出现量化误差。955整体FAILED因为后续float64旧helper的零张量dtype不匹配，保留失败，不把partial当整作业成功。改为统一预声明h=[.002,.001,.0005,.00025,.000125]，力/应力分别要求相邻两个中心差分均匹配解析值且彼此一致，仍rtol=.02/atol=.002；选最大的收敛步长对，不按模型手工放宽。纯std测试包含跨离散边界但局部可微函数、错误解析值/仅单步偶然匹配/不收敛必须拒绝、非有限/非法步长。修复旧数值helper的typed zero且增加float64实际回归。发布后Slurm19主测试、两个真实不变骨干两初始化与原协议比较；不改官方图/参数、训练dtype或数据。
+
+- 2026-11-04T23:50:16+08:00：生成数值失败类型单元计划：954 pretrained三epoch训练/完整留出/重载已通过，但独立采样在实际MACE NativeFeatures.validate因Nonfinite node output抛ValueError终止，未进入scratch。只将非有限数值特征明确归类FloatingPointError，保持维度/语义/设备等结构契约ValueError与OOM原样致命，不捕获所有ValueError、不更改采样步数/参数或丢弃条件。新增通过真实NativeFeatures.validate触发节点/图特征非有限错误的端到端质量测试，完整2次尝试均记录为无效且指标0；错误shape仍终止且无完成收据。原OOM测试保持。质量用例4增至7，生成全套40增至43主用例，严格各模块覆盖/零skip；发布后Slurm及真实954采样续评验证。
+
+- 2026-11-05T00:06:38+08:00：FD收敛与数值失败两单元提交前：12文件隔离候选建立，4项纯std收敛控制本地/隔离均通过；相关Python AST、两Slurm bash/内嵌Python AST、README链接/围栏及Git差异通过。原rtol/.atol、图、权重、训练dtype和采样100x2不变；新19主物理回归及43主生成回归必须发布后Slurm，尚不宣称数值通过。原955FAILED及float32完整五步/拓扑证据原样归档。954采样失败保留，新增真实NativeFeatures非有限/形状/OOM分类测试不放宽形状契约、不丢条件。旧948–955均已终态，允许同步。

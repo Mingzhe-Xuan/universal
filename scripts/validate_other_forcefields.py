@@ -93,7 +93,7 @@ def assess_gradients(model, structures, *, step=.002):
         if not model._component_policy["train_"+name]: assert not grads
     assert norms["readout"] > 1e-10
     if model._component_policy["train_backbone"]: assert norms["backbone"] > 1e-10
-    torch.testing.assert_close(value["forces"].sum(0),torch.zeros(3),rtol=0,atol=2e-5)
+    torch.testing.assert_close(value["forces"].sum(0),torch.zeros_like(value["forces"][0]),rtol=0,atol=2e-5)
     forces, stresses = [], []
     for atom in range(min(2,len(source.numbers))):
         for axis in range(3):
@@ -113,7 +113,7 @@ def assess_gradients(model, structures, *, step=.002):
               "step":step,"rtol":.02,"atol":.002,
               "force_sum_max":float(value["forces"].sum(0).abs().max().detach())}
     for name, entries in (("forces",forces),("stress",stresses)):
-        a = torch.tensor([v["analytic"] for v in entries]);n = torch.tensor([v["numeric"] for v in entries])
+        a = probe.positions.new_tensor([v["analytic"] for v in entries]);n = probe.positions.new_tensor([v["numeric"] for v in entries])
         result[name+"_max_abs_error"] = float((a-n).abs().max())
         result[name+"_finite_difference_passed"] = bool(torch.isclose(a,n,rtol=.02,atol=.002).all())
     return result

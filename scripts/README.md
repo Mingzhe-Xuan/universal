@@ -16,7 +16,7 @@ unchanged; training updates remain outside the deterministic verification scope.
 
 ## Generation protocol acceptance and quality
 
-`validate_generation_protocol.slurm` runs40 numerical/control main cases with zero allowed skips,
+`validate_generation_protocol.slurm` runs43 numerical/control main cases with zero allowed skips,
 including fresh-noise training, complete validation/test, exact continuation, erased sampling
 geometry, structural scoring and automatic native-calibration routing. It writes JUnit and
 source-bound acceptance metadata. Passing it does not replace original-model GPU task tests.
@@ -261,7 +261,7 @@ and derives balanced accuracy from the original binary held-out confusion counts
 It verifies reported test counts, retains original metrics and report SHA256 values,
 and writes a separate supplement without changing reports, predictions or checkpoints.
 Single-class tests have null balanced accuracy. New training reports include it directly.
-The generation regression receipt checks all40 unique main cases by module and zero
+The generation regression receipt checks all43 unique main cases by module and zero
 errors/failures/skips; JUnit's total can additionally include successful unittest subtests.
 
 Original scratch construction is separate from resetting a task head. Run

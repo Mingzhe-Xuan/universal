@@ -3386,3 +3386,23 @@
 - 2026-11-04T23:00:42+08:00: All930–941 now terminal;942 actual state_exact true and deterministicTrue gives zero repeated/reloaded differences on all64 ALIGNN records without tolerance changes. Ordinary SSH verify/pull unchangedcf58fc4 then unique claim submits2 GPU read-only CGCNN938/MACE940 generation checkpoint fixed-noise repeat/reload diagnostics (CPU2/16GiB/GPU1/20min each) in their own environments. No training, source updates, new packages or standard relaxation.
 
 - 2026-11-04T23:02:52+08:00: Ordinary SSH verify/pull unchangedcf58fc4, observe943/944 exact diagnosis claim handles and own reports/logs. No new jobs, restarts, training, source edits or tolerance changes.
+
+- 2026-11-04T23:08:48+08:00：SCP上传已推送29d0d99的15507B小型离线bundle，SHA c129bea06a88089c76d1458aeb6eca2b608c2c79f1c291b4876b93e02af07ad5，先决cf58fc4；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T23:09:52+08:00: All930–944 terminal with reports;943/944 deterministicTrue32batches/64records all differences0. Ordinary SSH verify/pull published29d0d99 then unique claim submits25case GPU checkpoint integration,40main generation CPU regression and14stdlib controls+new immutable144 revision2 definition with full input inspection/120unchanged24named corrections. No training, old definition edits, source edits, downloads or login numerics.
+
+- 2026-11-04T23:12:26+08:00: Ordinary SSH first verifies/pulls current29d0d99, then collects only completed930/931partial/932/933/939/941 own diagnostic reports,64-graph/probe/4worker capacity receipts, full16 test predictions, derivatives and8sample quality files. No weights, numerical imports, source edits, new jobs or computed dataset processing on login. Local stdlib metadata/ID/config verification only.
+
+- 2026-11-04T23:13:23+08:00: Ordinary SSH verify/pull unchanged29d0d99, observe exact945–947 handles and own numerical receipts/JUnit/revision2 definition and bounded logs. No new jobs, restarts, source or environment changes.
+
+- 2026-11-04T23:17:08+08:00：Ordinary SSH verify/pull unchanged29d0d99, unique claim submits7 corrected original-model pilot pairs (FF4,dielectricALIGNN,generationCGCNN/MACE),GPU1/CPU2/24GiB/2h each.945/946/947 actual passed and source-bound; configs derive via public pilot_config from immutable947 plus895 exactsubsets, only proven FF output-name correction. Original failed931/934–938/940 and all passed reports preserved. Current35 unique diagnostic cases verified;14 attempts cover13 missing cases plus1 repeated control, never49 unique. No source updates while jobs run, login numerics or environment edits.
+
+- 2026-11-04T23:20:02+08:00: Ordinary SSH verifies/pulls unchanged29d0d99 before observing exact948–954 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.
+
+- 2026-11-04T23:26:46+08:00: Ordinary SSH verify/pull unchanged29d0d99 then unique claim submitsCPU1/8GiB/20min read-only actual948 CGCNN stress FD convergence/topology diagnosis. Original frozenconfig/weights/input preserved; float64 is copied-parameter diagnostic only. No training, tolerance changes, scientific login work or source updates while948–954 run.
+
+- 2026-11-04T23:28:02+08:00: Ordinary SSH verifies/pulls unchanged29d0d99 before observing exact948–954 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.
+
+- 2026-11-04T23:29:18+08:00: Ordinary SSH verify/pull unchanged29d0d99, inspect exact955 convergence/topology diagnostic handle and own report/logs. No new jobs, restarts, source edits, numerical login work or tolerance changes.
+
+- 2026-11-04T23:42:05+08:00: Ordinary SSH verifies/pulls unchanged29d0d99 before observing exact948–954 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.

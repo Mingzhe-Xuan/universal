@@ -11,7 +11,15 @@ in both actual training and evaluation modes. Response tensors compare the actua
 auxiliary-field derivative against independent central differences, with no
 symmetry projection. Equivariant Cartesian outputs must transform as declared;
 fixed-frame invariant baselines record covariance error without promising it.
-These checks do not replace all-training-graph scans or CUDA capacity preflights.
+Force/strain finite differences use the predeclared decreasing steps
+0.002,0.001,0.0005,0.00025,0.000125. Each requires two adjacent estimates to match
+the analytic result and each other at the original rtol0.02/atol0.002; the largest
+convergent pair is retained, with all attempts recorded. This tests local behavior
+when large steps can cross a discrete neighbor-selection boundary; a single
+accidental agreement is rejected. Force and strain can require different steps. Nothing
+changes the original graph, weights or training precision. The pure control is
+in `finite_difference.py`. These checks do not replace all-training-graph scans
+or CUDA capacity preflights.
 
 Use `scripts/validate_task_derivatives.py --config CONFIG --output NEW_JSON`
 inside a Slurm allocation with the provider's environment. The CLI fits native

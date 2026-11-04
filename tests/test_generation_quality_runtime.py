@@ -106,3 +106,42 @@ def test_sampling_oom_is_not_counted_as_an_invalid_scientific_sample(tmp_path, m
         run_generation_quality(tmp_path / "train/checkpoint.pt", tmp_path / "oom", count=2,
                                draws_per_condition=1, device="cpu")
     assert not (tmp_path / "oom/metrics.json").exists()
+
+
+@pytest.mark.parametrize('location', ['nodes', 'graph_features'])
+def test_actual_nonfinite_feature_validation_is_recorded_for_every_condition(tmp_path, monkeypatch, location):
+    from universal_gnn.contracts import NativeFeatures
+    from universal_gnn.tasks.generation import PeriodicDenoiser
+    config = generation_config(tmp_path)
+    run_training({**config, 'epochs': 1}, tmp_path / 'train')
+    def sample(model, batch, **options):
+        nodes = batch.positions.new_ones((len(batch.numbers), 1))
+        graphs = batch.positions.new_ones((batch.num_graphs, 1))
+        (nodes if location == 'nodes' else graphs).fill_(float('nan'))
+        NativeFeatures(nodes, '1x0e', 'invariant', batch.batch, batch.ptr, batch,
+                       graph_features=graphs).validate()
+        pytest.fail('Nonfinite features passed validation')
+    monkeypatch.setattr(PeriodicDenoiser, 'sample', sample)
+    result = run_generation_quality(tmp_path / 'train/checkpoint.pt', tmp_path / 'invalid', count=2,
+                                    draws_per_condition=1, device='cpu')
+    assert result['execution_complete'] and result['attempted'] == 2
+    assert result['geometric_validity'] == 0 and result['geometrically_valid'] == 0
+    rows = [json.loads(line) for line in (tmp_path / 'invalid/samples.jsonl').read_text().splitlines()]
+    assert len(rows) == 2 and len({row['condition_id'] for row in rows}) == 2
+    assert all(row['structure'] is None and not row['quality']['geometrically_valid'] for row in rows)
+    assert all('Nonfinite' in row['quality']['reason'] for row in rows)
+
+
+def test_shape_contract_errors_still_stop_quality_instead_of_becoming_invalid_samples(tmp_path, monkeypatch):
+    from universal_gnn.contracts import NativeFeatures
+    from universal_gnn.tasks.generation import PeriodicDenoiser
+    config = generation_config(tmp_path)
+    run_training({**config, 'epochs': 1}, tmp_path / 'train')
+    def sample(model, batch, **options):
+        NativeFeatures(batch.positions.new_zeros((len(batch.numbers), 2)), '1x0e', 'invariant',
+                       batch.batch, batch.ptr, batch).validate()
+    monkeypatch.setattr(PeriodicDenoiser, 'sample', sample)
+    with pytest.raises(ValueError, match='Node dimensions'):
+        run_generation_quality(tmp_path / 'train/checkpoint.pt', tmp_path / 'bad-shape', count=2,
+                               draws_per_condition=1, device='cpu')
+    assert not (tmp_path / 'bad-shape/metrics.json').exists()

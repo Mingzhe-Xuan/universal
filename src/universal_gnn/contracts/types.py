@@ -127,11 +127,12 @@ class NativeFeatures:
         if self.nodes.device != self.geometry.positions.device or self.nodes.dtype != self.geometry.positions.dtype:
             raise ValueError("Node output must share geometry dtype/device")
         if not bool(torch.isfinite(self.nodes).all()):
-            raise ValueError("Nonfinite node output")
+            raise FloatingPointError("Nonfinite node output")
         if self.graph_features is not None and (not isinstance(self.graph_features, Tensor)
                                                 or self.graph_features.ndim != 2
                                                 or self.graph_features.shape[0] != self.geometry.num_graphs
                                                 or self.graph_features.device != self.nodes.device
-                                                or self.graph_features.dtype != self.nodes.dtype
-                                                or not bool(torch.isfinite(self.graph_features).all())):
-            raise ValueError("Optional graph features must be finite [B,F] with node dtype/device")
+                                                or self.graph_features.dtype != self.nodes.dtype):
+            raise ValueError("Optional graph features must have shape [B,F] with node dtype/device")
+        if self.graph_features is not None and not bool(torch.isfinite(self.graph_features).all()):
+            raise FloatingPointError("Nonfinite graph feature output")

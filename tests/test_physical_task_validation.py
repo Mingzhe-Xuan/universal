@@ -57,3 +57,15 @@ def test_wrong_force_offset_is_rejected_by_independent_energy_difference(monkeyp
     result = validate_derivatives(model, structures, config)
     assert not result['passed']
     assert not result['checks']['forces_finite_difference']['passed']
+
+
+def test_original_assessment_helper_accepts_float64_geometry_and_zero_reference(monkeypatch):
+    import importlib
+    from pathlib import Path
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / 'scripts'))
+    assess = importlib.import_module('validate_other_forcefields').assess_gradients
+    model, structures, _ = configured('forcefield')
+    data = [replace(item, positions=item.positions.double(), cell=item.cell.double()) for item in structures]
+    result = assess(model.cpu().double(), data)
+    assert result['forces_finite_difference_passed']
+    assert result['stress_finite_difference_passed']

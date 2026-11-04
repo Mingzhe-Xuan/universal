@@ -31,3 +31,9 @@ unit, reduction, head module paths, pooling, normalization and artifact hashes.
 Custom providers can implement `native_task_contract()` and
 `native_prediction(batch, contract)` using the same protocol. Providers without
 an explicit verified contract must use `head_mode: reset`.
+
+`NativeFeatures.validate()` raises `FloatingPointError` for NaN/Inf node or graph
+values. Shape, basis, atom mapping and dtype/device violations remain structural
+errors. Generation quality counts the numerical failure as an invalid attempted
+sample; structural failures and CUDA OOM still stop evaluation. This distinction
+does not accept nonfinite features during training or inference.

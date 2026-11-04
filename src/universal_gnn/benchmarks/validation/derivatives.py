@@ -7,6 +7,7 @@ from universal_gnn.adapters.features import scalar_features
 from universal_gnn.contracts import StructureBatch
 from universal_gnn.data.geometry import scatter_mean, strain_batch
 from universal_gnn.engine.optimization import components
+from .finite_difference import STEPS, converged_difference
 
 
 def validate_derivatives(model, structures, config):
@@ -29,7 +30,8 @@ def validate_derivatives(model, structures, config):
     model.eval()
     result = {'dtype': str(parameter.dtype), 'device': str(parameter.device),
               'structure_ids': list(selected.identifiers), 'checks': {},
-              'finite_difference': {'step': .002, 'rtol': .02, 'atol': .002},
+              'finite_difference': {'steps': list(STEPS), 'rtol': .02, 'atol': .002,
+                                    'criterion': 'adjacent steps must match analytic derivative and each other'},
               'geometry_tolerance': {'rtol': .001, 'atol': .0002}}
 
     def compare(name, actual, expected, *, rtol=.001, atol=.0002, required=True):
@@ -57,28 +59,41 @@ def validate_derivatives(model, structures, config):
     value = {key:item.detach() for key,item in value.items()} if field else value.detach()
     model.zero_grad(set_to_none=True)
     if field:
-        force_a, force_n, stress_a, stress_n = [], [], [], []
-        for atom in range(min(2, len(batch.numbers))):
-            for axis in range(3):
+        force_indices = [(atom, axis) for atom in range(min(2, len(batch.numbers))) for axis in range(3)]
+        stress_indices = [(0, 0), (1, 1), (0, 1)]
+        force_a = torch.stack([value['forces'][atom, axis] for atom, axis in force_indices])
+        stress_a = torch.stack([value['stress'][0, i, j] for i, j in stress_indices])
+
+        def force_estimate(step):
+            estimates = []
+            for atom, axis in force_indices:
                 change = torch.zeros_like(batch.positions)
-                change[atom, axis] = .002
-                plus = model.energy_model(batch.with_geometry(batch.positions + change, batch.cell))
-                minus = model.energy_model(batch.with_geometry(batch.positions - change, batch.cell))
-                force_a.append(value['forces'][atom, axis])
-                force_n.append((-(plus - minus) / .004).reshape(()))
-        for i, j in [(0, 0), (1, 1), (0, 1)]:
-            strain = torch.zeros_like(batch.cell)
-            strain[0, i, j] = .002
-            plus = model.energy_model(strain_batch(batch, strain))
-            minus = model.energy_model(strain_batch(batch, -strain))
-            stress_a.append(value['stress'][0, i, j])
-            stress_n.append(((plus - minus) / (.004 * torch.linalg.det(batch.cell[0]).abs()) * 160.21766208).reshape(()))
-        compare('forces_finite_difference', torch.stack(force_a), torch.stack(force_n), rtol=.02, atol=.002)
-        compare('stress_finite_difference', torch.stack(stress_a), torch.stack(stress_n), rtol=.02, atol=.002)
-        result['finite_difference'].update(forces_analytic=torch.stack(force_a).tolist(),
-                                            forces_numeric=torch.stack(force_n).detach().tolist(),
-                                            stress_analytic=torch.stack(stress_a).tolist(),
-                                            stress_numeric=torch.stack(stress_n).detach().tolist())
+                change[atom, axis] = step
+                plus = model.energy_model(batch.with_geometry(batch.positions + change, batch.cell)).detach()
+                minus = model.energy_model(batch.with_geometry(batch.positions - change, batch.cell)).detach()
+                estimates.append((-(plus - minus) / (2 * step)).reshape(()))
+            return torch.stack(estimates).tolist()
+
+        def stress_estimate(step):
+            estimates = []
+            for i, j in stress_indices:
+                strain = torch.zeros_like(batch.cell)
+                strain[0, i, j] = step
+                plus = model.energy_model(strain_batch(batch, strain)).detach()
+                minus = model.energy_model(strain_batch(batch, -strain)).detach()
+                estimates.append(((plus - minus) / (2 * step * torch.linalg.det(batch.cell[0]).abs()) * 160.21766208).reshape(()))
+            return torch.stack(estimates).tolist()
+
+        for name, analytic, estimate in [('forces', force_a, force_estimate), ('stress', stress_a, stress_estimate)]:
+            convergence = converged_difference(analytic.tolist(), estimate)
+            numeric = analytic.new_tensor(convergence['numeric'])
+            key = name+'_finite_difference'
+            compare(key, analytic, numeric, rtol=.02, atol=.002)
+            result['checks'][key]['passed'] &= convergence['passed']
+            result['checks'][key]['selected_steps'] = convergence['selected_steps']
+            result['finite_difference'][name+'_analytic'] = analytic.tolist()
+            result['finite_difference'][name+'_numeric'] = convergence['numeric']
+            result['finite_difference'][name+'_convergence'] = convergence
         compare('net_force', value['forces'].sum(0), torch.zeros_like(value['forces'][0]), rtol=0, atol=2e-5)
     else:
         features = model.backbone.encode(batch)

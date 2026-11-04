@@ -29,10 +29,10 @@ counts={name:sum(int(s.get(name,'0')) for s in suites) for name in ('tests','err
 cases=[case for suite in suites for case in suite.findall('testcase')]
 expected={'tests.test_generation_protocol.GenerationProtocolTests':10,
  'tests.test_generation':4,'tests.test_generation_heldout_runtime':5,
- 'tests.test_generation_quality_runtime':4,'tests.test_structure_quality.StructuralQualityTests':6,
+ 'tests.test_generation_quality_runtime':7,'tests.test_structure_quality.StructuralQualityTests':6,
  'tests.test_initialization_runtime':5,'tests.test_initialization_routes':5,'tests.test_cli':1}
 assert Counter(case.get('classname') for case in cases)==expected, 'Incomplete main-test coverage'
-assert len({(case.get('classname'),case.get('name')) for case in cases})==40, 'Duplicate main tests'
+assert len({(case.get('classname'),case.get('name')) for case in cases})==43, 'Duplicate main tests'
 assert all(counts[name]==0 for name in ('errors','failures','skipped')),counts
 assert not any(case.find(tag) is not None for case in cases for tag in ('error','failure','skipped'))
 assert counts['tests']>=len(cases),counts
@@ -40,7 +40,7 @@ sources=['src/universal_gnn/engine/generation.py','src/universal_gnn/engine/trai
  'src/universal_gnn/engine/generative/protocol.py','src/universal_gnn/engine/generative/evaluation.py',
  'src/universal_gnn/engine/generative/quality.py','tests/test_generation_heldout_runtime.py',
  'tests/test_generation_quality_runtime.py','tests/test_initialization_routes.py',
- 'src/universal_gnn/engine/verification.py']
+ 'src/universal_gnn/engine/verification.py','src/universal_gnn/contracts/types.py']
 report=dict(status='passed',slurm_job_id=os.environ['SLURM_JOB_ID'],tests=counts,main_test_cases=len(cases),
  git_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
  source_sha256={name:hashlib.sha256(Path(name).read_bytes()).hexdigest() for name in sources},
