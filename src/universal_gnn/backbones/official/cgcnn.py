@@ -8,11 +8,12 @@ import numpy as np
 import torch
 
 from .base import OfficialBackbone, ReferenceValue, artifact_files, capture_features
+from universal_gnn.backbones.initialization import initialize_original
 
 
 class OfficialCGCNN(OfficialBackbone):
     def __init__(self, checkpoint=None, *, atom_init=None, preprocessing=None,
-                 context_dim=0, source=None, _artifact=None):
+                 context_dim=0, source=None, _artifact=None, initialization="pretrained"):
         from cgcnn.model import CrystalGraphConvNet
         from cgcnn.data import AtomCustomJSONInitializer, GaussianDistance
 
@@ -31,12 +32,13 @@ class OfficialCGCNN(OfficialBackbone):
         model = CrystalGraphConvNet(feature_width, edge_width, atom_fea_len=atom_width, n_conv=count,
                                     h_fea_len=hidden, n_h=depth,
                                     classification=arguments.get("task", "regression") == "classification")
-        model.load_state_dict(state, strict=True)
+        initialization_report = initialize_original(model, state, mode=initialization)
         settings = artifact.get("preprocessing", preprocessing or {})
         settings = {"radius": 8., "max_num_nbr": 12, "dmin": 0., "step": .2, **settings}
         artifact["preprocessing"] = settings
         super().__init__(model, f"{atom_width}x0e", "invariant", settings["radius"], artifact,
-                         context_dim=context_dim, version="txie-93/cgcnn")
+                         context_dim=context_dim, version="txie-93/cgcnn", initialization=initialization)
+        self.load_report.update(initialization_report)
         self.unused_parameter_prefixes = ("model.conv_to_fc", "model.fcs", "model.fc_out")
         self.forcefield_requires_eval_training = True
         self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}

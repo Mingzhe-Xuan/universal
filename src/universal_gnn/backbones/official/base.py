@@ -97,6 +97,20 @@ def select_packaged_model(loaded, model_key=None):
 
 
 class OfficialBackbone(nn.Module):
+    def native_graph_provenance(self):
+        from importlib.metadata import version
+
+        value = dict(artifact_sha256=self.official_artifact["sha256"],
+                     adapter_source_sha256=hashlib.sha256(Path(inspect.getsourcefile(type(self))).read_bytes()).hexdigest(),
+                     provider_version=self.backend_version, ase_version=version("ase"), torch_version=version("torch"))
+        if self.official_artifact["provider"] == "mace":
+            value["torch_geometric_version"] = version("torch-geometric")
+        return value
+
+    def validate_native_neighbor_graph(self, statistics):
+        if not isinstance(statistics, dict) or statistics.get("native_graph") != self.native_graph_provenance():
+            raise ValueError("Fresh native neighbor statistics differ from the original graph implementation/artifact")
+
     def native_task_contract(self):
         from .native_heads import native_contract
 
@@ -107,8 +121,12 @@ class OfficialBackbone(nn.Module):
 
         return native_prediction(self, batch, contract)
 
-    def __init__(self, model, irreps, kind, cutoff, artifact, *, context_dim=0, version=None):
+    def __init__(self, model, irreps, kind, cutoff, artifact, *, context_dim=0, version=None,
+                 initialization="pretrained"):
         super().__init__()
+        from universal_gnn.backbones.initialization import validate_initialization
+
+        self.initialization = validate_initialization(initialization)
         self.model = model
         self.feature_irreps = str(irreps)
         self.irreps = str(irreps) + (f" + {context_dim}x0e" if context_dim else "")
@@ -119,7 +137,9 @@ class OfficialBackbone(nn.Module):
         self.unused_parameter_prefixes = ()
         self.official_artifact, self.backend_version = artifact, version
         native_module = re.sub(r"^<torch_package_\d+>\.", "", type(model).__module__)
-        self.load_report = {"strict": True, "parameter_coverage": 1., "buffer_coverage": 1.,
+        loaded = self.initialization == "pretrained"
+        self.load_report = {"strict": loaded, "parameter_coverage": float(loaded), "buffer_coverage": float(loaded),
+                            "initialization": self.initialization,
                             "sha256": artifact["sha256"], "source": artifact.get("source"),
                             "native_class": native_module + "." + type(model).__name__,
                             "parameter_count": sum(parameter.numel() for parameter in model.parameters())}

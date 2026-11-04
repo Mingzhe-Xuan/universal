@@ -24,6 +24,10 @@ PROFILES = {
                    "files": {"equiformer/best_checkpoint.pt": "45a991aac88702003156a5fc3e45ee80f63ca5be4af6c385f033448cd43ce7e2"}},
 }
 
+NEQUIP_BLUEPRINT = {"file": "nequip/NequIP-OAM-S_pretrain_config.yaml",
+                   "sha256": "d61e684aa85e3cad83578042fa485df9fb9ab8d8a3f6fe56b8b20564d7f6f076",
+                   "source": "https://zenodo.org/records/23472045"}
+
 
 def cache_root():
     configured = os.environ.get("UGNN_MODEL_CACHE")
@@ -66,5 +70,10 @@ def official_options(name, options):
     options["checkpoint"] = str(root / profile["checkpoint"])
     if "atom_init" in profile:
         options["atom_init"] = str(root / profile["atom_init"])
+    if name == "nequip" and options.get("initialization") == "scratch" and options.get("architecture") is None:
+        path = root / NEQUIP_BLUEPRINT["file"]
+        if not path.is_file() or sha256_file(path) != NEQUIP_BLUEPRINT["sha256"]:
+            raise ValueError("Prepare the pinned NequIP author pretraining blueprint before fresh construction")
+        options["architecture"] = str(path)
     options.setdefault("source", profile["source"])
     return options

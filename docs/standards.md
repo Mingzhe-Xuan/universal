@@ -1,5 +1,18 @@
 # UGNN 扩展接口与文件格式标准 v1
 
+## 官方骨干初始化策略（待原包数值验收）
+
+`backbone.initialization` 对官方 provider 区分 `pretrained`（默认严格加载发布权重）与
+`scratch`（使用原始架构构造器的全新状态）。`prediction.head_mode: reset` 仅决定任务头，
+不能代替骨干初始化。配置和checkpoint保留初始化策略；旧官方配置省略时按pretrained解释，
+严格续训不允许改变此策略。scratch与官方native头、骨干warm-start不兼容；只复用读出器也须另记来源，
+不能把该整次运行称为完全从头训练。
+
+四原模型入口已实现构造与严格状态布局检查，真实官方构造器的Slurm验收尚待执行，
+不可据此宣称48/144矩阵已就绪。MACE/NequIP需先通过显式CLI准备完整训练分区的原生邻居统计，
+重置源模型的能量偏移/缩放；NequIP保留原包实际irreps布局与作者架构。自动训练解析另行接入。
+原始artifact可作为架构蓝图，但scratch不得复制学到的参数或BN/目标拟合统计。
+
 本文件是 GNN、分子/晶体图、config、dataset 和 checkpoint 的统一规范。
 使用命令见 [usage](plan/usage.md)，最小可执行扩展见
 [custom_knn_gcn](../examples/custom_knn_gcn/README.md)。规范与实现对应，未支持的能力不通过字段名暗示。

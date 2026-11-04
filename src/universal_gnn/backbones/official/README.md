@@ -1,5 +1,35 @@
 # Official pretrained backbones
 
+## Backbone initialization
+
+The `backbone.initialization: pretrained|scratch` implementation separates
+body initialization from `prediction.head_mode`. Default `pretrained` keeps the
+existing strict original-weight load. CGCNN/ALIGNN `scratch` builds the same
+upstream class/configuration and checks every state key/shape against the source
+blueprint, without copying any learned parameters or BatchNorm statistics. It
+does not recursively reset an already trained module. Published source artifacts,
+element descriptors and geometry settings remain the architecture blueprint.
+
+MACE uses the original ScaleShiftMACE constructor with neutral energy offsets/scales.
+NequIP uses the original FullNequIPGNNModel builder, the author's pinned blueprint,
+and the exact angular-order layout extracted from the original package. Both require
+neighbor normalization fitted on the complete declared training partition using the
+original graph builder; see [preparation](../../engine/initialization/README.md).
+No learned source parameters or fitted source normalization are copied into scratch.
+
+**Numerical acceptance pending:** run `scripts/validate_official_scratch.slurm`
+and `scripts/validate_native_neighbors.slurm` before using fresh paths in the paper
+matrix. These scripts check actual original packages; policy fixtures alone cannot
+prove constructor, state-layout, derivative or GPU behavior. No legacy fallback is used.
+
+Scratch requires `prediction.head_mode: reset` for prediction tasks. Reusing an
+original native head contradicts the policy; loading backbone warm-start weights
+also rejects a scratch target. Readout-only transfer is a separate initialization
+choice and must not be reported as a wholly fresh run. Full checkpoint continuation
+requires the same backbone initialization; omitted old official settings mean
+`pretrained`. A checkpoint cannot label an actually scratch body as pretrained.
+Load reports distinguish zero original-state coverage from strict pretrained load.
+
 This module is the default route for the six canonical model names. Providers are not declared
 verified until published-checkpoint and ten-real-structure Slurm evidence has been recorded.
 

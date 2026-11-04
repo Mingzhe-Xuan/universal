@@ -9,10 +9,11 @@ import zipfile
 import torch
 
 from .base import OfficialBackbone, artifact_files, capture_features, default_dtype
+from universal_gnn.backbones.initialization import initialize_original
 
 
 class OfficialALIGNN(OfficialBackbone):
-    def __init__(self, checkpoint=None, *, context_dim=0, source=None, _artifact=None):
+    def __init__(self, checkpoint=None, *, context_dim=0, source=None, _artifact=None, initialization="pretrained"):
         if _artifact is not None:
             artifact = artifact_files("alignn", {}, artifact=_artifact)
         elif checkpoint is not None and Path(checkpoint).is_dir():
@@ -48,11 +49,12 @@ class OfficialALIGNN(OfficialBackbone):
         state = state.get("model", state.get("state_dict", state))
         if state and all(key.startswith("module.") for key in state):
             state = {key.removeprefix("module."): value for key, value in state.items()}
-        model.load_state_dict(state, strict=True)
+        initialization_report = initialize_original(model, state, mode=initialization)
         if configuration.get("neighbor_strategy", "pure_torch") != "pure_torch":
             raise ValueError("This ALIGNN provider preserves the official pure_torch graph strategy")
         super().__init__(model, f"{settings['hidden_features']}x0e", "invariant", configuration["cutoff"], artifact,
-                         context_dim=context_dim, version=version("alignn"))
+                         context_dim=context_dim, version=version("alignn"), initialization=initialization)
+        self.load_report.update(initialization_report)
         self.configuration = configuration
         self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
         self.unused_parameter_prefixes = ("model.fc", "model.fc_atomwise", "model.fc_additional_output")

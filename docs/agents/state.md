@@ -6,8 +6,8 @@ Guqq2 本批实验依赖安装与 GPU 基础验收已完成。共享 Torch2.7.1+
 
 # 当前计划
 
-1. 本次“继续安装，安装好了通知”已完成，向用户交付版本及实际验收结果。
-2. 后续实验从四个原模型的小规模真实数据验收继续，保留全部144正式配置和原计划门禁；未验收运行时代码不冒充可用结果。
+1. 目标已恢复active；先发布并通过四原模型fresh构造、显式训练集邻居统计及原包兼容验收。
+2. 再接入训练/生成/预检自动解析并验收，运行四模型带隙小规模成对实验，扩至其他五任务及完整训练图/共同batch；保留全部144正式配置和原计划门禁。
 3. 三个任务环境继续共享同一Torch基础环境，按各自固定e3nn运行；源码遵循本地提交、服务器pull规则，数值计算仅走Slurm。
 
 # 变更记录
@@ -479,3 +479,5 @@ Guqq2 本批实验依赖安装与 GPU 基础验收已完成。共享 Torch2.7.1+
 - 2026-11-04T17:36:31+08:00: Entered dependency repair:890 all16 CUDA resources verified,891 DGL verified,892 shared Torch2.7.1cu128/base pip check completed.893 failed because an own official e3nn0.5.8 overrides its documented MACE0.4.4 parent;894 remains dependency-blocked and is not GPU success. Restore official original compatible0.4.4 and rerun Slurm install/acceptance.895 actually prepared48 real diagnostic configurations with seven controls and verified source blobs; zero training runs.
 
 - 2026-11-04T17:48:05+08:00：完成本批依赖安装与GPU基础验收：890/891资源、892共享base、修复后896五项控制、897离线extras、898图/18回归/九CUDA预检场景、899三环境扩展检查均有实际通过证据。保留893失败日志，精确取消失效894；没有代理持有会话或后台下载需要续传。下一步通知安装完成，原模型pilot及正式144仍为零。
+
+- 2026-11-04T18:12:37+08:00：恢复目标，进入四原模型fresh构造与原生训练邻居统计验收阶段。上一目标回合属于实际进展：完成依赖安装和GPU验收，不是等待或无进展。本阶段先发布独立backbone初始化/显式calibration单元，执行CGCNN/ALIGNN原构造器与MACE/NequIP实际原包构造；训练器自动接线、生成新协议随后单独验收，不将未跑的原型当成功。

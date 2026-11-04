@@ -11,6 +11,10 @@ def initialize_components(model, path, selected=("backbone",)):
 
     if not isinstance(selected, (list, tuple)) or not selected or len(set(selected)) != len(selected):
         raise ValueError("warm_start_components must be a nonempty unique component list")
+    target_backbone = getattr(model, "backbone", None)
+    if ("backbone" in selected and hasattr(target_backbone, "official_artifact") and
+            getattr(target_backbone, "initialization", None) == "scratch"):
+        raise ValueError("A scratch backbone cannot be initialized from warm-start weights; select a pretrained policy or omit backbone transfer")
     source = load_checkpoint(path)
     old, new = components(source), components(model)
     source_root, target_root = getattr(source,"energy_model",source),getattr(model,"energy_model",model)

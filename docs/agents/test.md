@@ -1159,3 +1159,7 @@
 - 2026-11-04T17:44:08+08:00: Installation acceptance extension planned: GPU Slurm operator smoke checks in existing three provider envs. Verify pinned Torch/CUDA, e3nn differentiable linear layers, original NequIP/MACE/ALIGNN/CGCNN imports and actual DGL graph message-passing/gradient plus PyG cluster/scatter/sparse CUDA kernels. This detects binary/device mismatches hidden by metadata; does not count as original model pilot training.
 
 - 2026-11-04T17:48:05+08:00：实际Slurm896安装修复五项全部通过，收据按640da1d两个Git blob核验；897成功完成离线安装/三个环境pip check，898与899均COMPLETED/0:0。898：图格式/半径图/活动分支/模型前向阻断五项通过；batching/checkpoint/geometry/heldout共18项通过，failures/errors/skipped均0；CUDA预检九场景通过，包括六任务完整训练步、生成采样、真实OOM时batch5→2成功、始终OOM时5→2→1后按预期拒绝。899：NequIP0.5.8、MACE0.4.4、official0.4.4三个环境RTX5090 CUDA/e3nn前反向与四模型包导入通过，DGL/PyG扩展CUDA算子通过。收据已回传；本地仅stdlib解析核对16资源/固定版本/图检查Git SHA/测试计数/实际OOM序列，没有本地NN计算。文档提交前核查state历史完整前缀保留、相关链接/路径、Markdown表格与围栏和git diff --check。未把基础验收记作原模型pilot或正式训练。
+
+- 2026-11-04T18:12:37+08:00：原模型初始化单元实施计划：复核并运行六项初始化policy、三项统计绑定及既有blueprint纯std测试；候选按已发布HEAD隔离运行，AST/Slurm bash语法/README链接与历史保留检查后发布。实际数值仅Slurm：初始化/官方兼容回归，CGCNN/ALIGNN同原类/状态形状/RNG/BN/scratch重载与native拒绝；MACE/NequIP各五项真实原生图/训练全覆盖/禁止GNN forward/RNG/统计绑定/实际fresh构造测试。任何构造或state布局差异都修复原构造适配，不放宽strict或换架构。自动训练入口与生成改动不混入本单元；测试按验收边界分文件保留。
+
+- 2026-11-04T18:15:12+08:00???????????????21??std???policy6?binding3?fresh blueprints7?NequIP full5?????HEAD????30????????21????????/??Python AST??Slurm??bash-n????????README/???????????state??????????git diff --check???Torch/??????????????????Slurm????????????

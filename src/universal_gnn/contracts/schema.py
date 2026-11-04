@@ -9,6 +9,16 @@ def validate_version(value, kind):
 
 
 def validate_config(config):
+    backbone = config.get("backbone")
+    if isinstance(backbone, dict) and "initialization" in backbone:
+        from universal_gnn.backbones.official.profiles import PROFILES
+        from universal_gnn.backbones.initialization import validate_initialization
+
+        if backbone.get("implementation", "official" if backbone.get("name") in PROFILES else "legacy") == "official":
+            validate_initialization(backbone["initialization"])
+            if (backbone["initialization"] == "scratch" and isinstance(config.get("prediction"), dict) and
+                    config["prediction"].get("head_mode") == "native"):
+                raise ValueError("Scratch initialization requires prediction.head_mode=reset")
     if "schema_version" in config:
         validate_version(config["schema_version"], "config")
     if "graph" in config and not isinstance(config["graph"], dict):

@@ -10,6 +10,8 @@ from .profiles import PROFILES
 
 
 def native_contract(backbone):
+    if getattr(backbone, "initialization", "pretrained") != "pretrained":
+        raise ValueError("prediction.head_mode=native requires the original pretrained head; use head_mode=reset with scratch")
     artifact = backbone.official_artifact
     name = artifact["provider"]
     if (name not in PROFILES or sorted(artifact["sha256"].values()) != sorted(PROFILES[name]["files"].values())):

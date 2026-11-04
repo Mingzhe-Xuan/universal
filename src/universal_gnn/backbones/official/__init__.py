@@ -2,6 +2,13 @@
 
 
 def make_official(name, **options):
+    from universal_gnn.backbones.initialization import FRESH_OFFICIAL_PROVIDERS, validate_initialization
+
+    initialization = validate_initialization(options.pop("initialization", "pretrained"))
+    if initialization == "scratch" and name not in FRESH_OFFICIAL_PROVIDERS:
+        raise ValueError(f"Official {name} fresh construction is not implemented yet; no pretrained or legacy fallback")
+    if name in FRESH_OFFICIAL_PROVIDERS:
+        options["initialization"] = initialization
     if name == "alignn":
         from .alignn import OfficialALIGNN
 

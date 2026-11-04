@@ -40,6 +40,8 @@ def check_model_config(expected, actual, *, training=True):
         value = dict(settings)
         if value.get("name") in PROFILES:
             value.setdefault("implementation", "official")
+            if value["implementation"] == "official":
+                value.setdefault("initialization", "pretrained")
         return value
 
     if normalized(expected["backbone"]) != normalized(actual["backbone"]):
@@ -135,6 +137,11 @@ def restore_optimizer(saved, optimizer, config, fingerprint):
 
 def save_training_checkpoint(path, model, optimizer, config, versions, state, *, scales=None):
     from universal_gnn.contracts.schema import CONTRACT_VERSIONS
+
+    backbone = getattr(model, "backbone", None)
+    if (hasattr(backbone, "official_artifact") and
+            getattr(backbone, "initialization", "pretrained") != config.get("backbone", {}).get("initialization", "pretrained")):
+        raise ValueError("Checkpoint config initialization does not match the actual official backbone")
 
     devices = {parameter.device.index for parameter in model.parameters() if parameter.is_cuda}
     from universal_gnn.engine.batching import continuation_settings

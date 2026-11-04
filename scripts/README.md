@@ -228,6 +228,14 @@ offline base installer, which independently hashes all sixteen wheels again.
 
 # Original head acceptance
 
+Original scratch construction is separate from resetting a task head. Run
+`validate_official_scratch.slurm` for CGCNN/ALIGNN and
+`validate_native_neighbors.slurm` for MACE/NequIP before paper training. The latter
+checks the original graph builders and complete train-only normalization. Use
+`prepare_native_neighbors.slurm` with `UGNN_CONFIG`, `UGNN_RESOLVED_CONFIG` and
+the provider's `UGNN_PYTHON` to produce a new bound scratch configuration.
+See [initialization preparation](../src/universal_gnn/engine/initialization/README.md).
+
 `validate_native_heads.py --model MODEL --output runs/native-heads/MODEL` must run
 through Slurm. It compares original public predictions and physical normalization,
 checks each independent freeze policy and mixed force gradients, trains on ten

@@ -6,13 +6,31 @@ import io
 import torch
 
 from .base import OfficialBackbone, artifact_files
+from universal_gnn.backbones.initialization import initialize_original, validate_initialization
 
 
 class OfficialMACE(OfficialBackbone):
-    def __init__(self, checkpoint=None, *, context_dim=0, source=None, _artifact=None):
+    def __init__(self, checkpoint=None, *, context_dim=0, source=None, _artifact=None,
+                 initialization="pretrained", neighbor_statistics=None):
+        validate_initialization(initialization)
+        if initialization == "pretrained" and neighbor_statistics is not None:
+            raise ValueError("Pretrained MACE retains its original normalization; neighbor_statistics is scratch-only")
         artifact = artifact_files("mace", {"model": checkpoint}, artifact=_artifact, source=source)
         # MACE releases complete Python modules as its trainable .model artifact.
         model = torch.load(io.BytesIO(artifact["files"]["model"]), map_location="cpu", weights_only=False)
+        report = None
+        if initialization == "scratch":
+            from mace.tools.scripts_utils import extract_config_mace_model
+            from universal_gnn.backbones.blueprints import mace_constructor_config
+
+            if type(model).__name__ != "ScaleShiftMACE" or getattr(model, "embedding_specs", None) is not None:
+                raise ValueError("Fresh official MACE currently requires the original ScaleShiftMACE without auxiliary embeddings")
+            reference = model
+            config = mace_constructor_config(extract_config_mace_model(reference), neighbor_statistics)
+            with torch.random.fork_rng(devices=[]):
+                model = type(reference)(**config)
+            report = initialize_original(model, reference.state_dict(), mode="scratch")
+            report["neighbor_statistics"] = neighbor_statistics
         from universal_gnn.contracts.e3nn_compat import load_o3
 
         o3 = load_o3()
@@ -20,7 +38,10 @@ class OfficialMACE(OfficialBackbone):
         for product in model.products:
             irreps += product.linear.irreps_out
         super().__init__(model, str(irreps), "equivariant", float(model.r_max), artifact,
-                         context_dim=context_dim, version=version("mace-torch"))
+                         context_dim=context_dim, version=version("mace-torch"), initialization=initialization)
+        if report is not None:
+            self.validate_native_neighbor_graph(neighbor_statistics)
+            self.load_report.update(report)
         self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
         self.unused_parameter_prefixes = ("model.readouts",)
 
