@@ -64,5 +64,3 @@ def test_scratch_backbone_cannot_be_overwritten_by_warm_start_or_mislabeled_chec
     with pytest.raises(ValueError,match="does not match"):
         save_training_checkpoint(tmp_path/"never-written.pt",model,None,{"backbone":{"name":"cgcnn"}},None,None)
     assert not (tmp_path/"never-written.pt").exists()
-
-
