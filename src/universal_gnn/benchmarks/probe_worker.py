@@ -29,10 +29,36 @@ def execute(request, result, result_path):
                   device={"name": torch.cuda.get_device_name(device),
                           "total_memory": torch.cuda.get_device_properties(device).total_memory})
     write_json(result_path, result)
+    generation = config["task"]["kind"] == "generation"
+    from universal_gnn.engine.initialization.policy import requires_native_neighbor_statistics
+
+    native_calibration = requires_native_neighbor_statistics(config)
+    structures = dataset(config) if generation or native_calibration else None
+    if native_calibration:
+        from universal_gnn.engine.initialization.neighbors import prepare_native_neighbors
+
+        result["stage"] = "native_neighbor_calibration"
+        write_json(result_path, result)
+        config = prepare_native_neighbors(config, structures)
+        result["resolved_native_initialization"] = {"neighbor_statistics": config["backbone"]["neighbor_statistics"]}
+        write_json(result_path, result)
+    if generation:
+        from universal_gnn.engine.generation import resolve_sampling_prior
+        from universal_gnn.engine.generative.protocol import corruption_mode
+        from universal_gnn.engine.runtime import data_fingerprint
+
+        config.setdefault("generation_corruption", corruption_mode(config))
+        resolve_sampling_prior(config, structures, data_fingerprint(structures))
+        result["resolved_generation"] = {"generation_corruption": config["generation_corruption"],
+                                         "generation_prior": config.get("generation_prior"),
+                                         "sampling": config["task"].get("sampling", {})}
+        write_json(result_path, result)
     model = build_model(config).to(device=device, dtype=model_dtype(config))
     result["execution"] = execution_record(model)
     optimizer = make_optimizer(model, config)
-    structures = dataset(config)
+    if structures is None:
+        structures = dataset(config)
+    result["selected_training_structures"] = len(structures)
     indices = probe["indices"]
     if max(indices) >= len(structures):
         raise ValueError("Probe index exceeds selected training dataset")
@@ -42,7 +68,6 @@ def execute(request, result, result_path):
     result["coverage"] = probe.get("coverage", {"verified_full_training_scan": False})
     result["stage"] = "label_scales"
     write_json(result_path, result)
-    generation = config["task"]["kind"] == "generation"
     scales = None if generation else dataset_scales(structures, config)
     if request["phase"] == "sample" and not generation:
         raise ValueError("Sampling capacity applies only to generation")
@@ -64,7 +89,7 @@ def execute(request, result, result_path):
                       batch_phase=planned["phase"], batch_kind=planned["kind"])
         write_json(result_path, result)
         if generation and request["phase"] == "train":
-            from universal_gnn.engine.generation import generation_batches, score_loss
+            from universal_gnn.engine.generation import denoising_parts, generation_batches
 
             chosen = [structures[i] for i in selected]
             _, batch, times, targets = next(generation_batches(chosen, config, epoch=step))
@@ -85,7 +110,7 @@ def execute(request, result, result_path):
             write_json(result_path, result)
             if generation:
                 prediction = model(batch, times)
-                loss = score_loss(prediction, targets)
+                loss = weighted_loss(denoising_parts(prediction, targets), config)
             else:
                 prediction = predict(model, batch, config, training=True)
                 loss = weighted_loss(loss_parts(prediction, batch, config, scales), config)

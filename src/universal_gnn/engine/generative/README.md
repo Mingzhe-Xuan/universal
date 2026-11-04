@@ -30,6 +30,27 @@ fingerprint and must not be silently substituted for it.
 The full generation trainer and quality evaluation still require numerical
 integration tests before this protocol can be counted as an accepted experiment.
 
+## Training and independent evaluation
+
+`generation.py` in the parent engine uses fresh training noise, full validation
+selection and a complete held-out denoising pass from `evaluation.py`. A fitted
+prior belongs only to the actual training partition and precision. Full resume
+inherits omitted derived prior/volume settings, verifies them against current
+training geometry, and rejects changes to declared sampling settings or noise.
+
+`quality.run_generation_quality(last_checkpoint, new_output, ...)` verifies the
+validation-best checkpoint using the last checkpoint's selection history. It
+erases held-out geometry/labels before sampling, saves every condition/draw,
+and reports geometry validity, uniqueness, training novelty, matched references
+and volume/density distributions. The default is1000 samples from200 conditions
+with5 draws each; smaller diagnostic requests are explicitly marked. CUDA OOM
+terminates evaluation rather than counting as a physically invalid sample.
+
+Run the [numerical regression](../../../../scripts/validate_generation_protocol.slurm)
+and [quality entry](../../../../scripts/evaluate_generation.slurm) through Slurm.
+The implementation is awaiting numerical acceptance; metadata controls alone
+cannot prove original-model training, sampling or scientific quality.
+
 ## Structural scoring without a model runtime
 
 `structure_quality.py` accepts standard records with `numbers`, Cartesian

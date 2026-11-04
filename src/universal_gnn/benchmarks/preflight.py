@@ -89,6 +89,9 @@ def run_preflight(config, output, *, probe, phase="train", python=None, timeout=
                     raise ValueError("Worker result identity mismatch")
                 attempt["worker"] = result
                 if attempt.get("returncode") == 0 and result.get("status") == "passed":
+                    from .resolution import resolved_candidate
+
+                    accepted = resolved_candidate(candidate, result)
                     attempt["status"] = "passed"
                 elif (attempt.get("returncode") == 42 and result.get("status") == "cuda_oom"
                       and result.get("error_type") == "cuda_out_of_memory"):
@@ -103,7 +106,7 @@ def run_preflight(config, output, *, probe, phase="train", python=None, timeout=
         if attempt["status"] == "passed":
             report.update(status="passed", passed=True, final_batch_size=batch_size,
                           effective_batch_size=batch_size, gradient_accumulation_steps=1)
-            write_json(output / "config.resolved.json", candidate)
+            write_json(output / "config.resolved.json", accepted)
         elif attempt["status"] != "cuda_oom" or batch_size == 1:
             report["status"] = "failed"
         write_json(output / "report.json", report)

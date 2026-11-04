@@ -10,8 +10,9 @@
 
 四原模型入口已实现构造与严格状态布局检查，Slurm910/911原包构造/图/统计验收已通过，
 四模型带隙各两版真实GPU诊断已完成；其他任务及全量48/144矩阵仍须分别验收。
-MACE/NequIP需先通过显式CLI准备完整训练分区的原生邻居统计，
-重置源模型的能量偏移/缩放；NequIP保留原包实际irreps布局与作者架构。自动训练解析另行接入。
+MACE/NequIP需准备完整训练分区的原生邻居统计，
+重置源模型的能量偏移/缩放；NequIP保留原包实际irreps布局与作者架构。
+显式CLI已通过实际pilot；训练/生成/预检自动准备与续训继承已接入代码，待独立Slurm集成验收。
 原始artifact可作为架构蓝图，但scratch不得复制学到的参数或BN/目标拟合统计。
 
 本文件是 GNN、分子/晶体图、config、dataset 和 checkpoint 的统一规范。
@@ -530,7 +531,14 @@ SHA256、源顺序ID/组、三分区索引与实际计数；必须无重复ID、
 监督/力场训练要求 `partition: train`，统计量只从实际训练记录拟合；每epoch完整验证集loss
 选择真实最小值的best权重。`evaluation.patience` 为正整数或null，`min_delta` 为非负有限数；
 二者只控制早停，min_delta不阻止保存更小的真实验证loss。完成后以best评测完整测试集；
-训练loss与 `report.heldout` 分开。新增流程仍待Slurm数值验收，生成的独立评测尚未接入此路径。
+训练loss与 `report.heldout` 分开。监督/力场流程已通过基础回归及标量任务真实pilot。
+生成的独立去噪评测与质量采样已接入代码，正在进行独立Slurm数值验收。
+
+生成配置显式记录 `generation_corruption: per_epoch_structure_v2`；训练噪声按seed、稳定ID和epoch
+确定，验证/test噪声分开。`generation_prior` 保存实际训练数据指纹、计数、精度下的体积先验及来源；
+不使用留出几何拟合。完整resume可继承省略的已拟合先验/体积，但不得改变显式sampling设置或噪声版本。
+`report.heldout` 的去噪误差不等于生成质量；独立质量入口用last验证历史核验best，擦除参考几何后
+只按组成/原子数采样，另保存全部样本、条件/draw与质量指标。见[生成协议](plan/generation_protocol.md)。
 
 Last checkpoint保持format2和training_state v1，另存 `training_state.evaluation`，包含验证历史、
 manifest摘要、best路径/文件SHA256和早停状态。Best为无optimizer/training_state的format2权重文件。

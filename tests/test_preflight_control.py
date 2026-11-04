@@ -18,6 +18,8 @@ config=request["config"]
 mode=config.get("test_mode","capacity")
 batch=config["batch_size"]
 result={"version":1,"batch_size":batch,"phase":request["phase"],"pid":os.getpid()}
+if "fixture_resolved_generation" in config: result["resolved_generation"]=config["fixture_resolved_generation"]
+if "fixture_native_worker_fields" in config: result.update(config["fixture_native_worker_fields"])
 if mode=="kill": os._exit(137)
 if mode=="timeout": time.sleep(5)
 if mode=="invalid":

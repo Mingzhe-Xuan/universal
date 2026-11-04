@@ -161,6 +161,7 @@ def execution_record(model):
             "backbone_class": type(model.backbone).__name__,
             "gnn_class": type(model.backbone.gnn).__name__ if hasattr(model.backbone, "gnn") else None,
             "native_irreps": model.backbone.irreps,
+            "backbone_cutoff": getattr(model.backbone, "cutoff", None),
             "backend_version": getattr(model.backbone, "backend_version", None),
             "official": getattr(model.backbone, "load_report", None),
             "graph_builder": type(model.backbone.graph_builder).__name__ if hasattr(model.backbone, "graph_builder") else None,
@@ -175,11 +176,12 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     validate_config(config)
     if resume is not None and warm_start is not None:
         raise ValueError("resume and warm_start are mutually exclusive")
+    if (warm_start is not None and "backbone" in warm_start_components and
+            config.get("backbone", {}).get("initialization") == "scratch"):
+        raise ValueError("An explicit scratch backbone cannot receive backbone warm-start weights")
     if config["dataset"].get("split_manifest") is not None and config["dataset"].get("partition") != "train":
         raise ValueError("Training with a split manifest requires dataset.partition=train")
     if config["task"]["kind"] == "generation":
-        if config["dataset"].get("split_manifest") is not None or "evaluation" in config:
-            raise ValueError("Generation held-out evaluation requires its dedicated denoising/sampling workflow")
         if warm_start is not None:
             raise ValueError("Explicit component warm-start is not supported for generation")
         from universal_gnn.engine.generation import run_generation_training
@@ -200,6 +202,9 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     validate_batching(config)
     if saved is not None:
         expected = checkpoint_config(saved)
+        from universal_gnn.engine.initialization.policy import inherit_neighbor_statistics
+
+        config = inherit_neighbor_statistics(config, expected)
         if expected["backbone"].get("implementation") == "legacy":
             config["backbone"].setdefault("implementation", "legacy")
         if saved.get("format_version", 1) == 1:
@@ -217,6 +222,14 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
         if (not config["backbone"].get("checkpoint") or
                 config["backbone"].get("checkpoint") == source_config["backbone"].get("checkpoint")):
             artifact = warm_saved.get("official_backbone")
+    from universal_gnn.engine.initialization.policy import requires_native_neighbor_statistics
+
+    structures = None
+    if requires_native_neighbor_statistics(config):
+        from universal_gnn.engine.initialization.neighbors import prepare_native_neighbors
+
+        structures = dataset(config)
+        config = prepare_native_neighbors(config, structures, official_artifact=artifact)
     model = build_model(config, official_artifact=artifact).to(
         device=device, dtype=model_dtype(config))
     if saved is not None:
@@ -234,9 +247,10 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
     config = resolved_model_config(config, model)
     execution = execution_record(model)
     optimizer = make_optimizer(model, config)
-    structures = dataset(config)
+    if structures is None:
+        structures = dataset(config)
     config = resolved_model_config(config, model, structure_count=len(structures))
-    if "prediction" in config or "optimization" in config:
+    if "prediction" in config or "optimization" in config or requires_native_neighbor_statistics(config):
         (output / "config.resolved.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
         if event_callback is not None:
             event_callback("model_resolved", config=config, components=component_audit(model))

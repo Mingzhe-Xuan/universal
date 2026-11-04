@@ -1,6 +1,7 @@
 """Generation randomness and training-only statistics, independent of Torch."""
 
 import hashlib
+import copy
 import json
 import math
 import re
@@ -51,6 +52,24 @@ def require_corruption_compatible(saved_config, actual_config, *, full_resume):
         if corruption_mode(saved_config) != actual:
             raise ValueError("Full resume requires the same generation corruption objective")
     return actual
+
+
+def generation_resume_config(actual, saved):
+    """Inherit derived training priors without allowing a changed sampling protocol."""
+    result = copy.deepcopy(actual)
+    previous = saved.get("task", {}).get("sampling", {})
+    sampling = result.setdefault("task", {}).setdefault("sampling", {})
+    if not isinstance(previous, dict) or not isinstance(sampling, dict):
+        raise ValueError("Generation sampling must be a mapping")
+    prior = saved.get("generation_prior")
+    if "generation_prior" not in result and prior is not None:
+        result["generation_prior"] = copy.deepcopy(prior)
+    if (isinstance(prior, dict) and prior.get("sampling_volume_source") == "train_fit" and
+            "volume_per_atom" not in sampling and "volume_per_atom" in previous):
+        sampling["volume_per_atom"] = previous["volume_per_atom"]
+    if sampling != previous:
+        raise ValueError("Full resume requires the same declared generation sampling settings")
+    return result
 
 
 def volume_per_atom(record):

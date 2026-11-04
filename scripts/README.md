@@ -1,5 +1,19 @@
 # Scripts
 
+## Generation protocol acceptance and quality
+
+`validate_generation_protocol.slurm` runs40 numerical/control cases with zero allowed skips,
+including fresh-noise training, complete validation/test, exact continuation, erased sampling
+geometry, structural scoring and automatic native-calibration routing. It writes JUnit and
+source-bound acceptance metadata. Passing it does not replace original-model GPU task tests.
+
+`evaluate_generation.slurm` requires `UGNN_GENERATION_CHECKPOINT` (the last checkpoint with
+validation history) and a new `UGNN_GENERATION_OUTPUT`. It verifies validation-best weights,
+uses training-only priors and writes1000 conditional samples by default. Configuration steps
+are retained. Small diagnostics and scientifically invalid structures remain explicit; OOM
+terminates instead of becoming an invalid scientific sample. See
+[the protocol](../docs/plan/generation_protocol.md).
+
 This directory contains Slurm, dependency and dataset preparation entry points. Source changes are
 made and committed locally, then pulled on Guqq2. Downloaded datasets and generated job outputs
 remain ignored. Each remote session is recorded in docs/agents/gpu.md before connection.

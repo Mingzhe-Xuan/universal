@@ -1,5 +1,12 @@
 # Experiment resource preflight
 
+`resolution.py` accepts only actual worker-derived generation priors and original
+scratch neighbor statistics. It preserves every explicit setting and verifies
+fresh zero source-weight coverage, source/graph identity, precision and training
+counts before writing a resolved config. Invalid metadata stops the attempt and
+does not trigger OOM halving. Training, generation and capacity share the same
+native calibration routine; numerical integration acceptance is still required.
+
 Run inside a Slurm GPU allocation, using the same environment and configuration as
 the intended training run:
 

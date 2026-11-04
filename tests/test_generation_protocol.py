@@ -20,6 +20,23 @@ def cube(edge):
 
 
 class GenerationProtocolTests(unittest.TestCase):
+    def test_resume_inherits_only_derived_defaults_and_rejects_changed_sampling(self):
+        from universal_gnn.engine.generative.protocol import generation_resume_config
+        import copy
+
+        config = {"task": {"sampling": {"steps": 50, "inner_steps": 2}}}
+        saved = copy.deepcopy(config)
+        saved["task"]["sampling"]["volume_per_atom"] = 14.
+        saved["generation_prior"] = {"sampling_volume_source": "train_fit", "statistics": {"volume_per_atom": 14.}}
+        original = copy.deepcopy(config)
+        self.assertEqual(generation_resume_config(config, saved), saved)
+        self.assertEqual(config, original)
+        for key, value in (("steps", 2), ("inner_steps", 1), ("volume_per_atom", 15.), ("seed", 999)):
+            changed = copy.deepcopy(config);changed["task"]["sampling"][key] = value
+            with self.subTest(key=key), self.assertRaisesRegex(ValueError, "same declared generation sampling"):
+                generation_resume_config(changed, saved)
+        explicit = copy.deepcopy(saved);explicit["generation_prior"] = {"explicit": "retain for subsequent verification"}
+        self.assertEqual(generation_resume_config(explicit, saved), explicit)
     def test_fresh_epoch_noise_is_reproducible_and_independent_of_minibatch_order(self):
         config = {"seed": 42}
         first = corruption_seed(config, "material-A", 0, epoch=0)

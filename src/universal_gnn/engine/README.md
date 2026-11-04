@@ -7,10 +7,11 @@ interpret a 10-structure execution test as generalization performance.
 # Generation and inference
 
 `ugnn train CONFIG --output runs/NAME` also accepts `task.kind=generation`; denoising targets
-come from known periodic corruption of real structures, without DFT. The small-data acceptance
-runner intentionally overfits one fixed corruption and records that limitation. It reloads the
-checkpoint, compares both score heads, and samples from random fractional coordinates and a
-composition-based initial volume. Sampling quality and close contacts are reported separately.
+come from known periodic corruption of real structures, without DFT. New training uses
+`per_epoch_structure_v2`: stable IDs and epochs determine fresh noise, with separate fixed
+validation/test streams and a training-only volume prior. Explicit legacy fixed noise remains
+available. Checkpoint reload, complete held-out denoising and independent generated-structure
+quality have separate reports. See [generation protocol](generative/README.md).
 
 `ugnn infer CHECKPOINT DATASET --output results/predictions.json [--limit 10]` runs reloaded
 models on structures without requiring labels. Property and force-field outputs retain the
@@ -29,8 +30,9 @@ Torch RNG. Legacy weight-only files are explicitly identified as warm starts.
 forcefield and generation tasks. Epochs is the cumulative target. Full continuation requires the
 same selected labelled structures/bindings and seed; model/task mismatch fails before training.
 The CLI defaults to atomic per-epoch snapshots, while the legacy API keeps final-only saving unless
-`checkpoint_every` is set. Fixed-corruption generation rebuilds the same corruption from the saved
-seed; this preserves the existing small-data objective, not fresh-noise diffusion training.
+`checkpoint_every` is set. Generation preserves its explicit noise version and declared sampling
+settings on full resume; unversioned objectives require a weights-only warm start. Fresh-noise
+training resumes by epoch/ID without changing perturbations or validation selection history.
 
 ## Extension/version reconstruction
 

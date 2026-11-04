@@ -3334,3 +3334,15 @@
 - 2026-11-04T19:11:12+08:00: Ordinary SSH verify/pull unchanged6a179b1 then collect only fixed912/913/916/915 completed pilot JSON reports,64-graph probes,4-worker capacity evidence,16-row predictions and checkpoint file-size metadata. No weight downloads/hashes, numerical imports, source edits or new jobs on login. Preserve failed914 separately; local checks are stdlib provenance/count checks only.
 
 - 2026-11-04T19:19:49+08:00: Ordinary read-only SSH verify/pull unchanged6a179b1 then inspect specific912/913/914/915 Slurm states, bounded logs and own pilot/scan/capacity reports. No new jobs, restarts, source updates beyond already-current pull, or numerical login work.
+
+- 2026-11-04T19:28:55+08:00：SCP上传已推送532e8c6的9942B小型离线bundle，SHA ae9a21fa2ef0bb995f147227644337febd2bbddb6fbc73e33d61f9a06f5f063a，先决6a179b1；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T21:06:58+08:00：Ordinary SSH verify/pull532e8c6 then unique claim submits8 GPU pipelines (classification and spectrum, four providers, each two initializations),2CPU/24GiB/1GPU/90min each. One physical GPU serializes execution. Each pipeline independently gates original parity, complete64 train graphs and100-batch paired capacity before three-epoch training; exact895 matrix SHA and unchanged6a code versus docs-only commit are verified.917+ job IDs must come from receipts, no assumed restart. No formal training, dataset edits, package changes or source checkout updates during running pipelines.
+
+- 2026-11-04T21:14:00+08:00: Ordinary read-only SSH verify/pull unchanged532e8c6 then inspect exact eight job IDs from second-wave claim and their own stage/scan/capacity reports and bounded log tails. No restarts/submissions/source updates or numerical login operations. Save observation locally before summarizing live states.
+
+- 2026-11-04T21:18:47+08:00: Ordinary read-only SSH verify/pull unchanged532e8c6 then inspect exact eight job IDs from second-wave claim and their own stage/scan/capacity reports and bounded log tails. No restarts/submissions/source updates or numerical login operations. Save observation locally before summarizing live states.
+
+- 2026-11-04T21:40:23+08:00: Ordinary read-only SSH verify/pull unchanged532e8c6 then inspect exact eight job IDs from second-wave claim and their own stage/scan/capacity reports and bounded log tails. No restarts/submissions/source updates or numerical login operations. Save observation locally before summarizing live states.
+
+- 2026-11-04T21:47:52+08:00: Ordinary SSH verify/pull532e8c6, collect completed917–924 own scalar/spectrum reports,64-graph probes,4x100batch worker results, frozen manifests and16-row predictions only. No weights, scientific imports, numerical login work or job changes. Local verification checks count/IDs/config/source fields using stdlib.

@@ -1,4 +1,4 @@
-"""Small-data execution acceptance for periodic diffusion, without external labels."""
+"""Periodic denoising with fresh training noise and optional held-out selection."""
 
 import hashlib
 import json
@@ -14,6 +14,33 @@ from universal_gnn.tasks.generation import corrupt, fractional_coordinates
 
 def score_loss(prediction, targets):
     return sum((prediction[key] - target).square().mean() for key, target in targets.items())
+
+
+def denoising_parts(prediction, targets):
+    return {key: ((prediction[key] - target).square().sum(), target.numel()) for key, target in targets.items()}
+
+
+def resolve_sampling_prior(config, structures, fingerprint):
+    from universal_gnn.engine.generative.protocol import corruption_mode, fit_volume_prior
+
+    if corruption_mode(config) == "per_structure_v1":
+        return
+    prior = fit_volume_prior(({"numbers": item.numbers.tolist(), "cell": item.cell.tolist()}
+                              for item in structures), training_fingerprint=fingerprint)
+    sampling = config["task"].setdefault("sampling", {})
+    previous = config.get("generation_prior")
+    if previous is not None:
+        if not isinstance(previous, dict) or previous.get("statistics") != prior:
+            raise ValueError("Generation prior differs from the current training structures")
+        if previous.get("sampling_volume_source") == "train_fit" and sampling.get("volume_per_atom") != prior["volume_per_atom"]:
+            raise ValueError("Sampling volume differs from the fitted training prior")
+    else:
+        origin = "explicit_config" if "volume_per_atom" in sampling else "train_fit"
+        sampling.setdefault("volume_per_atom", prior["volume_per_atom"])
+        config["generation_prior"] = {"statistics": prior, "sampling_volume_source": origin}
+    value = sampling["volume_per_atom"]
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
+        raise ValueError("Sampling volume_per_atom must be finite and positive")
 
 
 def generated_record(batch):
@@ -32,9 +59,10 @@ def generated_record(batch):
             "minimum_distance_below_2_angstrom": minimum}
 
 
-def generation_batches(structures, config, *, epoch=None):
+def generation_batches(structures, config, *, epoch=None, phase="train", draw=0):
     from dataclasses import replace
     from universal_gnn.engine.batching import batch_indices, model_dtype
+    from universal_gnn.engine.generative.protocol import corruption_seed
 
     for indices in batch_indices(structures, config, epoch=epoch):
         originals, corrupted, times = [], [], []
@@ -43,7 +71,8 @@ def generation_batches(structures, config, *, epoch=None):
             structure = structures[index]
             single = StructureBatch.from_structures([structure]).to(
                 config.get("device", "cpu"), model_dtype(config))
-            generator = torch.Generator(device=single.positions.device).manual_seed(config.get("seed", 123) + 1 + index)
+            generator = torch.Generator(device=single.positions.device).manual_seed(
+                corruption_seed(config, structure.identifier, index, epoch=epoch, phase=phase, draw=draw))
             noisy, time, local_targets = corrupt(single, generator=generator)
             originals.append(structure)
             corrupted.append(replace(structure, positions=noisy.positions, cell=noisy.cell[0], graph=None))
@@ -64,27 +93,49 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
                                                load_checkpoint, version_record)
     from universal_gnn.engine.batching import model_dtype, validate_batching
     from universal_gnn.engine.metrics import LossTotals, weighted_loss
+    from universal_gnn.engine.generative.protocol import corruption_mode, require_corruption_compatible
 
     config = copy.deepcopy(config)
     saved = torch.load(resume, map_location="cpu", weights_only=True) if resume else None
     config.setdefault("dtype", saved["config"].get("dtype", "float64") if saved is not None else "float32")
-    config.setdefault("generation_corruption", "per_structure_v1")
+    full_resume = saved is not None and "training_state" in saved
+    mode_default = saved["config"].get("generation_corruption", "per_epoch_structure_v2") if full_resume else "per_epoch_structure_v2"
+    config.setdefault("generation_corruption", mode_default)
+    corruption_mode(config)
+    if config["dataset"].get("split_manifest") is not None:
+        if config["dataset"].get("partition") != "train":
+            raise ValueError("Generation training with a manifest requires dataset.partition=train")
+        if config.get("validate_sampling", False):
+            raise ValueError("Held-out generation uses separate quality evaluation; disable validate_sampling training replay")
     validate_batching(config)
     if saved is not None:
         expected = checkpoint_config(saved)
+        from universal_gnn.engine.initialization.policy import inherit_neighbor_statistics
+
+        config = inherit_neighbor_statistics(config, expected)
+        if full_resume:
+            from universal_gnn.engine.generative.protocol import generation_resume_config
+
+            config = generation_resume_config(config, expected)
         if expected["backbone"].get("implementation") == "legacy":
             config["backbone"].setdefault("implementation", "legacy")
         if saved.get("format_version", 1) == 1:
             config["task"].setdefault("adapter_version", 1)
         check_model_config(checkpoint_config(saved), config)
-        if "training_state" in saved and "generation_corruption" not in saved["config"]:
-            raise ValueError("Legacy fixed-batch generation requires a weights-only warm start; corruption convention changed")
+        require_corruption_compatible(saved["config"], config, full_resume=full_resume)
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     torch.manual_seed(config.get("seed", 123))
     device = config.get("device", "cpu")
     structures = dataset(config)
     fingerprint = data_fingerprint(structures)
+    resolve_sampling_prior(config, structures, fingerprint)
+    from universal_gnn.engine.initialization.policy import requires_native_neighbor_statistics
+
+    if requires_native_neighbor_statistics(config):
+        from universal_gnn.engine.initialization.neighbors import prepare_native_neighbors
+
+        config = prepare_native_neighbors(config, structures, official_artifact=saved.get("official_backbone") if saved else None)
     model = build_model(config, official_artifact=saved.get("official_backbone") if saved else None).to(
         device=device, dtype=model_dtype(config))
     if saved is not None:
@@ -102,16 +153,18 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
         raise ValueError(f"epochs is the total target; set it greater than the {completed} completed epochs")
     checkpoint = Path(checkpoint_path) if checkpoint_path is not None else output / "checkpoint.pt"
     versions = version_record()
+    from universal_gnn.engine.evaluation.heldout import make_holdout
 
-    def parts(prediction, targets):
-        return {key: ((prediction[key] - target).square().sum(), target.numel()) for key, target in targets.items()}
+    holdout = make_holdout(config, structures, checkpoint, state=state)
+    (output / "config.resolved.json").write_text(json.dumps(config, indent=2), encoding="utf-8")
 
-    def evaluate(current):
+    def evaluate(current, *, evaluation_data=None, phase="train_evaluation"):
         totals = LossTotals()
         current.eval()
         with torch.no_grad():
-            for clean, noisy, time, targets in generation_batches(structures, config):
-                totals.add(parts(current(noisy, time), targets))
+            for clean, noisy, time, targets in generation_batches(
+                    structures if evaluation_data is None else evaluation_data, config, phase=phase):
+                totals.add(denoising_parts(current(noisy, time), targets))
         return totals.loss(config)
 
     segment_initial = evaluate(model)
@@ -120,17 +173,23 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
     gradient_norms = list(state["backbone_gradient_norms"]) if state is not None else []
 
     def save_progress(epoch):
+        continuation = {"completed_epochs": epoch, "data_fingerprint": fingerprint,
+                        "initial_loss": initial, "history": history,
+                        "backbone_gradient_norms": gradient_norms}
+        if holdout is not None:
+            continuation["evaluation"] = holdout.snapshot()
         save_training_checkpoint(checkpoint, model, optimizer, config, versions,
-                                 {"completed_epochs": epoch, "data_fingerprint": fingerprint,
-                                  "initial_loss": initial, "history": history,
-                                  "backbone_gradient_norms": gradient_norms})
+                                 continuation)
+        if holdout is not None:
+            holdout.finalize_best()
 
+    completed_epochs = completed
     for epoch in range(completed, epochs):
         model.train()
         totals, squared, steps = LossTotals(), 0., 0
         for clean, noisy, time, targets in generation_batches(structures, config, epoch=epoch):
             optimizer.zero_grad(set_to_none=True)
-            values = parts(model(noisy, time), targets)
+            values = denoising_parts(model(noisy, time), targets)
             loss = weighted_loss(values, config)
             if not bool(torch.isfinite(loss)):
                 raise FloatingPointError("Nonfinite denoising loss")
@@ -145,16 +204,27 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
             steps += 1
         gradient_norms.append(math.sqrt(squared))
         history.append(totals.loss(config))
+        completed_epochs = epoch + 1
+        if holdout is not None:
+            validation_loss = evaluate(model, evaluation_data=holdout.validation, phase="validation")
+            improved = holdout.update(completed_epochs, validation_loss, model, optimizer, config, versions, None)
+            if event_callback is not None:
+                event_callback("validation", epoch=completed_epochs, loss=validation_loss, best_updated=improved,
+                               structures=len(holdout.validation), best_epoch=holdout.tracker.state["best_epoch"])
         interval = config.get("checkpoint_every", 0)
         if interval and (epoch + 1) % interval == 0:
             save_progress(epoch + 1)
         if event_callback is not None:
             event_callback("epoch", epoch=epoch + 1, loss=history[-1], minibatches=steps, structures=len(structures))
+        if holdout is not None and holdout.tracker.should_stop:
+            if event_callback is not None:
+                event_callback("early_stopping", epoch=completed_epochs, best_epoch=holdout.tracker.state["best_epoch"])
+            break
     model.eval()
     final = evaluate(model)
     delta = math.sqrt(sum(float((p.detach().cpu() - starting[name]).square().sum())
                           for name, p in model.named_parameters()))
-    save_progress(epochs)
+    save_progress(completed_epochs)
     reloaded = load_checkpoint(checkpoint, device=device)
     collected, generated_values, valid = {}, {}, True
     digest = hashlib.sha256()
@@ -168,7 +238,7 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
                 if collect:
                     collected.setdefault(key, []).extend(again[key].cpu().tolist())
             digest.update(noisy.positions.cpu().numpy().tobytes() + noisy.cell.cpu().numpy().tobytes())
-            if config.get("validate_sampling", True):
+            if config.get("validate_sampling", holdout is None):
                 generated = reloaded.sample(clean, **config["task"].get("sampling", {}))
                 torch.testing.assert_close(generated.numbers, clean.numbers)
                 fractional = fractional_coordinates(generated)
@@ -181,20 +251,29 @@ def run_generation_training(config, output, *, resume=None, checkpoint_path=None
                         generated_values.setdefault(key, []).extend(value)
     report = {"config": config, "versions": version_record(), "execution": execution,
               "initial_loss": initial, "selected_structures": len(structures), "available_structures": len(structures.source),
-              "checkpoint": str(checkpoint), "completed_epochs": epochs, "segment_initial_loss": segment_initial,
+              "checkpoint": str(checkpoint), "completed_epochs": completed_epochs, "requested_epochs": epochs,
+              "segment_initial_loss": segment_initial,
               "resume": {"path": str(resume) if resume else None,
                          "kind": "full" if state is not None else "weights_only" if saved is not None else "none",
                          "completed_epochs_before": completed},
               "final_loss": final, "history": history, "backbone_gradient_norms": gradient_norms,
               "parameter_delta_norm": delta, "checkpoint_reload": True,
               "structures": [{"id": structure.identifier, "provenance": structure.metadata,
-                              "role": "fixed_corruption_train_and_reloaded_inference"}
+                              "role": "fixed_evaluation_noise_train_and_reloaded_inference"}
                              for structure in structures[:config.get("report_structure_limit", 1000)]],
               "structure_records_truncated": len(structures) > config.get("report_structure_limit", 1000),
               "data_fingerprint": fingerprint, "corruption_sha256": digest.hexdigest(),
               "predictions": collected, "predictions_included": bool(collect), "generation": generated_values,
-              "interpretation": "per-structure fixed corruption; no quality/generalization claim",
+              "interpretation": "training denoising metrics and execution checks; no generation quality claim",
               "passed": bool(history[completed:] and delta > 0 and valid and math.isfinite(final))}
+    if holdout is not None:
+        from universal_gnn.engine.generative.evaluation import score_denoising_test
+
+        report["heldout"] = score_denoising_test(holdout, reloaded, config,
+                                               output / "evaluation" / f"epoch-{completed_epochs}" / "denoising")
+        report["best_checkpoint"] = str(holdout.best_checkpoint)
+        report["early_stopped"] = completed_epochs < epochs
+        report["interpretation"] = "validation-selected full test denoising under heldout; independent generation quality evaluation still required"
     (output / "report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     if not report["passed"]:
         raise RuntimeError(f"Generation execution failed: {output / 'report.json'}")

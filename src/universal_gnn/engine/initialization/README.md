@@ -16,8 +16,9 @@ validation/test records, plugin sources and graph overrides are rejected. Existi
 never overwritten.
 
 The explicit preparation CLI resolves statistics before original MACE/NequIP scratch construction.
-Automatic preparation in training, generation and capacity workers is a separate integration unit;
-until it is published and accepted, pass the CLI's resolved configuration to these entry points.
+Training, generation and capacity workers now invoke the same preparation before construction;
+this automatic route awaits its own Slurm integration acceptance. Full resume inherits omitted
+saved statistics and then validates their complete binding. The explicit CLI remains available.
 Other providers and pretrained initialization retain their existing paths. Cached receipts must
 match input precision, native cutoff, complete training membership, artifact and graph provenance.
 An invalid receipt is a configuration failure and must never trigger batch halving.
