@@ -3466,3 +3466,9 @@
 - 2026-11-05T02:13:25+08:00: Ordinary SSH verify/pull current published root then observe exact981 complete scalar baseline claim/report/JUnit/predictions and current-user queue. Only own result files read/transferred; no source edits, new jobs, environment changes or numerical login work. Local independent provenance/ID-count/config verification, not scientific rescoring.
 
 - 2026-11-05T02:18:05+08:00: Ordinary SSH verifies/pulls current published da3ba0e root, then reads exact own965-980 claims/receipts,968/969 formal status/events and current-user Slurm queue. Fixed8d/3b/7b source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T02:24:29+08:00：SCP上传已推送b0f337e的5692B小型离线bundle，SHA 5d0327351c8b0321cde204839e357c7f276a6a11cd4300c5a5b9c42aaa8b7977，先决da3ba0e；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T02:25:59+08:00: Ordinary SSH verifies/pulls current published b0f337e root, then reads exact own965-980 claims/receipts,968/969 formal status/events and current-user Slurm queue. Fixed8d/3b/7b source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T02:30:00+08:00: Ordinary SSH verifies/pulls current published b0f337e root, then reads exact own965-980 claims/receipts,968/969 formal status/events and current-user Slurm queue. Fixed8d/3b/7b source caches unchanged; no submissions, restarts, source edits, packages or login numerics.

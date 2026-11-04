@@ -16,7 +16,7 @@ Run with the matching provider environment inside a Slurm GPU allocation:
 
 ```bash
 python -m universal_gnn.benchmarks.pairing.capacity \
-  runs/arxiv-v1/definition-872/matrix.json \
+  runs/arxiv-v1/definition-947/matrix.json \
   --pair seed-123--bandgap--cgcnn --probe runs/probes/cgcnn-bandgap.json \
   --output runs/paired-capacity/seed-123--bandgap--cgcnn
 ```
@@ -31,3 +31,13 @@ This controller does not certify a caller's full-training-graph coverage claim. 
 alone never proves derivative correctness, held-out quality, full-data coverage or readiness
 to launch formal training. The graph scan, original-model and other experiment gates remain
 required. Pure subprocess tests cover controller behavior; actual GPU acceptance is separate.
+
+`evidence.verify_capacity_evidence(directory, probe)` verifies saved trial hashes,
+request/result identity, typed OOM exit42 and exact batch halving, complete measured
+workers and worst-case coverage, and both final modes at the same common batch.
+It returns accepted workers plus retry/trial counts and the capacity digest. It
+does no numerical work and never retries anything. Consumers must count accepted
+trials rather than assume exactly four worker result files: legitimate OOM retries
+and repeated common rounds retain additional files. Unknown errors, incomplete
+measurements and altered evidence remain fatal. This proves only the supplied
+capacity probe; all other scientific and full-data gates still apply.
