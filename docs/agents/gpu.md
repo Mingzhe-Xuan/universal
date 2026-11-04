@@ -3516,3 +3516,11 @@
 - 2026-11-05T04:05:24+08:00: Ordinary SSH first verify/pull current published root, validate fixed dfea7b0/983, eight unused spectrum case claims and exact current owned GPU969/988–991/995–997. Submit four serial full phonon-DOS preparations (four original providers,1GPU2CPU32GiB8h each) afterany all existing forcefield jobs then each previous prep. No formal spectrum training submission yet, no source/data/model/env changes, no login numerical work or perturbation to current requests.
 
 - 2026-11-05T04:05:40+08:00: Ordinary SSH first verify/pull current published root, collect only completed968 formal report/config/events/164 predictions/split, last973 scratch diagnostic and split,976/978/984 gate receipts,992/993 CPU post-evaluation receipts/bounded logs and current-user queue. No checkpoints copied, model computation, jobs or remote edits. Local verification metadata/IDs/config/provenance only.
+
+- 2026-11-05T04:10:51+08:00：SCP上传已推送81b77a5的10524B小型离线bundle，SHA f3f4883739fe05ed5992c1d104dc0d4c42eaddb54ab2c63bbecb21f9f3a8b1e9，先决70606fb；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T04:12:55+08:00: Ordinary SSH verifies/pulls current published 81b77a5 root, then reads exact own known965-991 claims/receipts, eight formal status/events,984/985 replacement preparations and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T04:13:50+08:00: Ordinary SSH first verify/pull current published root, validate fixed dfea7b0 and exact own993 RUNNING or passed receipt; submit one1CPU2GiB10min stdlib full-inference validator with afterok993 if still running. Only reads task-owned full source/predictions and writes a new receipt, no model imports/training or source/env edits.
+
+- 2026-11-05T04:14:48+08:00: Ordinary SSH first verify/pull current published root, collect only completed968 formal report/config/events/164 predictions/split, last973 scratch diagnostic and split,976/978/984 gate receipts,992/993 CPU post-evaluation receipts/bounded logs and current-user queue. No checkpoints copied, model computation, jobs or remote edits. Local verification metadata/IDs/config/provenance only.
