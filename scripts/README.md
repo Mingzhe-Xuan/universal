@@ -315,3 +315,5 @@ substituted for relaxed-energy labels.
 both head-mode directions, preserves target heads, streams all-frozen native
 inference and replays actual pre-headmode checkpoints. Run through Slurm after
 `validate_native_heads.py`; it writes bounded reports separately from weights.
+
+`prepare_generation_pair.py` and `prepare_generation_pair.slurm` prepare one frozen full-data generation pair. See [generation preparation](../src/universal_gnn/benchmarks/generation/README.md) for required variables and separate train/sample outputs. They launch no formal training.

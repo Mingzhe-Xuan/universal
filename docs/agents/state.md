@@ -1,5 +1,9 @@
 # 当前状态
 
+2026-11-05T05:43:39+08:00: Enter full generation preparation stage for four official backbones. Preserve144 formal trainings and all frozen947 inputs. Observe exact current Slurm handles; prepare full11356 native graphs and independent train/sample paired capacity with train-only prior, retaining100x2 sampling steps and1000x5 formal quality requirements.
+
+2026-11-05T05:42:27+08:00: Installation follow-up: verify existing Slurm897 installation and898/899 GPU acceptance receipts before reporting completion; preserve running experiments and existing environments.
+
 原目标active：CGCNN/ALIGNN/MACE/NequIP × 六任务 × 两初始化 × 三seed共144次正式训练及既定扩展；目前1/144独立验收完成、8/144唯一case已提交。CUDA及四原模型依赖已完成安装与实际GPU验收。
 
 968 MACE预训练微调完整1309/93/164、初始共同batch4、float32，300epoch/patience30预算下在174epoch正常提前停止，best144。全部174轮每轮1309条/328 minibatch、93验证和164独立测试ID、固定配置/源/划分、正骨干梯度、checkpoint逐项状态与确定性重载均核验。test MAE：能量0.0132882435eV/atom、力0.0308030417eV/angstrom。证据results/paper-completed-20261105/{verified,gates-verified}.json。
@@ -16,6 +20,10 @@ CGCNN985预检在训练前因原包CIFData要求CSV property字段失败；994 C
 长作业固定源码缓存不更新：MACE正式8dba196，其他当前请求dfea7b0；每次普通连接仍先pull根仓库，模型/训练/数据相关Python源与环境兼容由门禁验证。没有新增包或改变运行作业的源码。
 
 # 当前计划
+
+2026-11-05T05:43:39+08:00: Enter full generation preparation stage for four official backbones. Preserve144 formal trainings and all frozen947 inputs. Observe exact current Slurm handles; prepare full11356 native graphs and independent train/sample paired capacity with train-only prior, retaining100x2 sampling steps and1000x5 formal quality requirements.
+
+2026-11-05T05:42:27+08:00: Installation follow-up: verify existing Slurm897 installation and898/899 GPU acceptance receipts before reporting completion; preserve running experiments and existing environments.
 
 本轮1010全源曝光审计已验收，1011–1018完整带隙／分类预检排队。继续原正式句柄和其他完整门禁；下一步生成完整预检及统一复现入口，原947划分/144范围不变。
 
@@ -563,3 +571,11 @@ CGCNN985预检在训练前因原包CIFData要求CSV property字段失败；994 C
 - 2026-11-05T05:13:02+08:00：预训练全源审计1008尚未完成，因发布参考清单非互斥被默认strict挡住，原控制6主17子通过。1009诊断确认2个原train/test共享ID、角色内重复0。显式歧义报告实现保留strict、完整成员关系及训练曝光，新7主控制通过；下一步新固定源码审计，所有GPU句柄/947定义不变。
 
 - 2026-11-05T05:26:18+08:00：完成1010显式歧义全源ID审计和独立证据校验，披露本次test中的ALIGNN材料/同源目标曝光；不改947数据/划分/初始化，仅修正可声称范围。新增1011–1018完整带隙/分类准备，仍1/144完成、8唯一正式提交。下一步继续已有GPU及生成门禁，保留三seed和其他扩展。
+
+- 2026-11-05T05:42:27+08:00: Installation follow-up: verify existing Slurm897 installation and898/899 GPU acceptance receipts before reporting completion; preserve running experiments and existing environments.
+
+- 2026-11-05T05:42:43+08:00: Installation follow-up verified: Slurm897 complete; all three environments Torch2.7.1+cu128/CUDA12.8 and provider-specific e3nn agree with899 aggregate/individual RTX5090 passed receipts;898 JSON and JUnit18 tests agree with zero failures/errors/skips. Dependencies already installed and GPU-accepted; no reinstall, environment changes, new jobs or local neural computation.
+
+- 2026-11-05T05:43:39+08:00: Enter full generation preparation stage for four official backbones. Preserve144 formal trainings and all frozen947 inputs. Observe exact current Slurm handles; prepare full11356 native graphs and independent train/sample paired capacity with train-only prior, retaining100x2 sampling steps and1000x5 formal quality requirements.
+
+- 2026-11-05T05:47:43+08:00: Generation execution design: add benchmarks/generation/{preparation.py,__init__.py,README.md} for frozen recipe checks/full train-only prior/native graph and two-phase paired capacity; scripts/prepare_generation_pair.{py,slurm} expose a reusable public fixed-checkout entry. Tests cover recipe/quality corruption, phase separation, complete calibration provenance and login-node guard before any runtime import. Existing training/model implementations unchanged.

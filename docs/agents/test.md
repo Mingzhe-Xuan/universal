@@ -1335,3 +1335,11 @@
 - 2026-11-05T05:26:18+08:00：1010实际passed：7主17子共24JUnit零错零skip，7执行源Git blob SHA、四权重artifact SHA、参考55,713条目/55,711唯一ID及2跨角色成员保留。三完整源合计95,236数据记录、四任务171,229审计行/76,054唯一材料ID均由公共CLI源/分区/顺序及独立集合/逐行校验通过；带隙/分类同源曝光一致。旧1008失败23控制实际通过、1009诊断均归档。1011–1018八完整标量/分类预检AST/bash、16冻结case及1010先决通过并取得Slurm收据，只准备不新增训练。945四源码SHA与dfea7b0逐项一致。
 
 - 2026-11-05T05:26:18+08:00：本阶段记录提交前检查通过：state已有变更历史前缀保留、三分区结构正确，审计/计划本地链接与Markdown围栏有效，1010数值/样本/源SHA和1011–1018收据一致，git diff --check通过。未把ID审计、预检或预训练材料曝光当新增训练或无泄漏证明。
+
+- 2026-11-05T05:42:27+08:00: Installation follow-up check plan: stdlib-only validate897 complete, three expected environment versions,899 aggregate and individual CUDA receipts,898 zero-failure18-test JSON/JUnit agreement, and documented environment paths. No local neural execution or repeated installation.
+
+- 2026-11-05T05:42:43+08:00: Installation follow-up verified: Slurm897 complete; all three environments Torch2.7.1+cu128/CUDA12.8 and provider-specific e3nn agree with899 aggregate/individual RTX5090 passed receipts;898 JSON and JUnit18 tests agree with zero failures/errors/skips. Dependencies already installed and GPU-accepted; no reinstall, environment changes, new jobs or local neural computation.
+
+- 2026-11-05T05:43:39+08:00: Full generation preparation test plan: AST/Slurm shell syntax, frozen947 pair/config SHA and diagnostic identities, independent trainB16/sampleB4 settings, full11356 source/manifest/prior binding, native parity and all graph coverage, train>=100 and sample>=5 measured batches per paired worker with typedOOM-only fallback. Runtime numerical checks only through Slurm. Dry-run must create no remote jobs/claims; no formal generation launch until evidence and throughput budget pass.
+
+- 2026-11-05T05:50:39+08:00: Public generation preparation: isolated candidate8 unit controls passed (including scientific mutation/provider subcases), all four actual947 pairs match fixed matrix SHA, CLI rejects outsideSlurm before imports/output, new Python AST and Slurm bash syntax/link/fence checks passed. Existing957/945/983 numerical execution files match current Linux Git blobs (10/4/6 SHA); raw Windows CRLF hashes were rejected as inappropriate, no source change. New runtime GPU acceptance remains pending.

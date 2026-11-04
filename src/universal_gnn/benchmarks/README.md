@@ -77,3 +77,5 @@ For the original-pretrained versus whole-backbone-scratch comparison, use
 at their common smaller batch. If another OOM lowers this common size, both are rechecked again.
 Only the final shared size is exported; the original full-matrix definitions remain unchanged.
 This orchestration retains the supplied-probe scope above and launches no formal training.
+
+Full-data generation has a public [pair preparation entry](generation/README.md): separate training/sampling capacity, complete train-only prior and original graphs. Formal1000-sample quality remains a separate run.

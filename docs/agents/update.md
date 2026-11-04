@@ -804,3 +804,7 @@
 - 2026-11-05T05:13:02+08:00：预训练审计1008在已通过6主17子后因发布ID非互斥停止；1009确认原train/test共享两个ID，未改权重、数据、划分或训练。新增显式歧义报告模式并保留默认strict拒绝；报告多角色、完整成员关系及保守训练曝光，7主控制通过，下一步新固定源码全源审计。
 
 - 2026-11-05T05:26:18+08:00：完成预训练来源/ID曝光审计：1010全源通过，保留原train/test两ID冲突；本次带隙/class test7580中4405原训练+586原验证曝光，因此明确仅作迁移适配，介电/谱为跨目标且披露材料曝光，其他模型交集unknown。7主17子控制、源/ID/分区和独立集合复查通过。新增四骨干带隙1011–1014和分类1015–1018完整预检，原60823/7590/7580和947定义不变，正式仍1/144，继续所有当前GPU请求。
+
+- 2026-11-05T05:42:43+08:00: Installation follow-up verified: Slurm897 complete; all three environments Torch2.7.1+cu128/CUDA12.8 and provider-specific e3nn agree with899 aggregate/individual RTX5090 passed receipts;898 JSON and JUnit18 tests agree with zero failures/errors/skips. Dependencies already installed and GPU-accepted; no reinstall, environment changes, new jobs or local neural computation.
+
+- 2026-11-05T05:50:39+08:00: Added public full-generation pair preparation module and CLI/Slurm entry with module documentation. It preserves complete11356 train-only prior/native topology, separately pairs trainingB16 and samplingB4, retains full100x2 sampling and1000/5 formal quality budget, and exports separate configurations. Eight pure control tests pass; new actual server acceptance and four full GPU preparations are next.
