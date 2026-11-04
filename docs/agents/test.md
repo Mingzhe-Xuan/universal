@@ -1139,3 +1139,11 @@
 - 2026-11-04T15:09:33+08:00：NequIP full blueprint五项与既有七项纯std在本地、仅已发布HEAD加本单元两文件的隔离目录均通过；实际author checkpoint以不执行GLOBAL/REDUCE的pickletools opcode数据解释确认type_embed32、hidden128x0e+64x1e/128x0e。AST、README路径/围栏和state历史保留、git diff --check通过。仅发布metadata参数转换；official/nequip runtime改动和native_neighbors数值断言暂不发布，真实构造/键形状/前向导数仍未执行。
 
 - 2026-11-04T15:21:30+08:00：Slurm887五项NequIP Full参数控制全部通过、零skip，收据与stderr回传后按4c4616c的blueprints.py/新测试/原fixture共三Git blob核验。文档提交前README路径/围栏、state历史逐字保留和git diff --check通过；没有模型/导数数值验收。网络一次恢复前真实确认73597 terminal、旧PID不存在和1080释放，新诊断固定8B206/GitHub HEAD200/Vlab SSH banner/887 SCP成功；新68162端到端健康已通过，沿用885不重交。
+
+- 2026-11-04T15:30:10+08:00：启动生命周期修复前计划：将新专用代理的归属绑定提前到首次HTTP健康检查之前，监听仅用于归属不宣称网络健康；端口未就绪/观察中断不猜PID，健康仍需完整curl。纯控制测试首次health失败时已绑定精确身份并可安全finally清理、观察失败不终止健康代理、歧义不绑定、不触碰用户会话；复跑既有ownership五项和观察/孤立控制场景。先完成本次无归属监听的只读核对，不批量kill。
+
+- 2026-11-04T15:51:00+08:00：直连下载实现前验证计划：固定catalog SHA、官方CuBLAS当前偏移最多4MiB，真实Slurm记录curl HTTP/连接/速度/响应Content-Range/接收SHA及错误；本地与既有原wheel相同offset字节核对。若直连可用才停止仍活跃的已知旧writer并接原partial下载剩余固定资源，最终SHA发布；不安装或启动暂停的实验。AST/bash-n通过后提交。
+
+- 2026-11-04T15:55:10+08:00：889实际完成4194304B，offset165498715，与本机已有固定CuBLAS片段SHA一致；18.16s/231150Bps，HTTP206、ssl_verify_result0。直连续传wrapper AST/bash-n及真实函数隔离注入检查通过：每个--next段单独带noproxy/HTTPS约束、清理代理env并拒绝显式proxy；使用已发布续传器/原SHA/20GiB/单writer锁，等待实际下载与完整SHA结果，不宣称完成安装。
+
+- 2026-11-04T16:00:46+08:00：直连切换本阶段实际验收：889四MiB官方Range与已有原文件偏移SHA一致；直接runner对每个--next段明确noproxy/HTTPS-only，curlrc禁用，代理环境清除，注入拒绝proxy与AST/bash-n通过。890首个只读观察RUNNING，资源partial191086427>165498715，1080无监听，environment_installed=false/experiment_goal_status=paused。旧HTTP工具句柄live、CIM52372命令/54339 OwningProcess一致后仅Kill自身服务，监听释放已确认。仅文档提交前检查state历史逐字保留、相关路径和git diff --check。

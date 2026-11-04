@@ -271,3 +271,5 @@ Slurm868已核验并暂存五个原本就在本机的wheel到 `models/official-i
 - 2026-11-04T09:19:00+08:00：Slurm869实际通过离线installer全部3项纯std测试；收据/日志已回传，按ed2a646的Git blob核对脚本SHA 6e91bb1f328ed84eb8fad4d69dadffcb61707d24329d36f7d42c3bf6f876bd8a。这验证Linux/Python3.10门禁兼容，不代表实际pip安装或模型/CUDA验收。NequIP作者YAML已在服务器模型缓存通过11565B/SHA轻量核验，未改源码。
 
 - 2026-11-04T10:32:01+08:00：补充既有资源只读核对：本机早先下载的Torch2.6.0+cpu wheel为178630806B，官方HTML索引SHA256 35a9e78b7e4096968b54c1a198687b981569c50ae93e661aa430f9fd208da102；本次只读431099B索引metadata并核对既有字节，没有下载新CPU二进制。Slurm873按四个固定URL缓存键检查，结果missing；没有安装、建新CPU环境或改变正式Torch2.7.1cu128/GPU验收要求。新7个CPU wheel下载许可仍待既有问题回答。
+
+- 2026-11-04T16:00:46+08:00：资源传输路径变更：用户明确授权本次16个固定官方Torch/CUDA wheel从服务器HTTPS直连，curl --noproxy *且清除ALL/HTTP/HTTPS代理，HTTPS验证保持启用。889实测通过，890只向既有models/official-install/arxiv-linux-base暂存并做完整SHA。没有修改任何venv/.pth或安装包，没有新增CPU环境/CPU二进制；后续安装与数值门禁仍待实验目标恢复。
