@@ -23,13 +23,18 @@ def inputs(tmp_path):
 
 def test_configuration_safe_yaml_and_cli_precedence(tmp_path):
     path = tmp_path / "config.yaml"
-    path.write_text('backbone: {name: mace, implementation: legacy, width: 8}\ndataset: {path: old, sha256: stale}\n'
+    path.write_text('backbone: {name: mace, implementation: legacy, width: 8}\ndataset: {path: old, sha256: stale, split_manifest: old-split.json, split_manifest_sha256: old-pin, partition: train}\n'
                     'task: {kind: supervised, property: formation_energy, unit: eV/atom}\nepochs: 2\n')
     resolved = resolve_config(load_config(path), model="alignn", dataset="new", task="bandgap", training=True)
     assert resolved["backbone"] == {"name": "alignn", "implementation": "legacy", "width": 8}
     assert resolved["dataset"] == {"path": "new"}
     assert resolved["task"] == {"kind": "supervised", "property": "bandgap"}
     assert resolved["checkpoint_every"] == 1
+    base = {"backbone": {"name": "gcn"}, "task": {"kind": "supervised", "property": "bandgap"},
+            "dataset": {"path": "old.jsonl", "sha256": "a" * 64, "split_manifest": "old-split.json",
+                        "split_manifest_sha256": "b" * 64, "partition": "train"}}
+    file_override = resolve_config({"dataset": {"path": "new.jsonl", "sha256": "c" * 64}}, base=base)
+    assert file_override["dataset"] == {"path": "new.jsonl", "sha256": "c" * 64}
     path.write_text('!!python/object/apply:os.system ["echo unsafe"]')
     with pytest.raises(ValueError, match="Invalid YAML"):
         load_config(path)

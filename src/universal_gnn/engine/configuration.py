@@ -38,9 +38,30 @@ def merge_config(base, changes):
     return result
 
 
+def resolve_dataset_settings(file_dataset, *, base=None, source_override=None):
+    if not isinstance(file_dataset, dict) or (base is not None and not isinstance(base, dict)):
+        raise ValueError("Dataset settings must be mappings")
+    previous_dataset = base or {}
+    result = merge_config(previous_dataset, file_dataset)
+    fields = ("sha256", "split_manifest", "split_manifest_sha256", "partition")
+    if previous_dataset.get("path") is not None and result.get("path") != previous_dataset["path"]:
+        for field in fields:
+            if field not in file_dataset:
+                result.pop(field, None)
+    if source_override is not None:
+        if source_override != file_dataset.get("path", previous_dataset.get("path")):
+            for field in fields:
+                result.pop(field, None)
+        result["path"] = source_override
+    return result
+
+
 def resolve_config(file_config, *, base=None, model=None, dataset=None, task=None,
                    graph=None, device=None, epochs=None, training=False):
     config = merge_config(base or {}, file_config)
+    if "dataset" in config or dataset is not None:
+        config["dataset"] = resolve_dataset_settings(file_config.get("dataset", {}),
+                                                     base=(base or {}).get("dataset"), source_override=dataset)
     if model is not None:
         previous = config.get("backbone", {})
         from universal_gnn.backbones.official.profiles import PROFILES
@@ -52,13 +73,6 @@ def resolve_config(file_config, *, base=None, model=None, dataset=None, task=Non
     if graph is not None:
         if config.get("graph", {}).get("name") != graph:
             config["graph"] = {"name": graph}
-    if dataset is not None:
-        config.setdefault("dataset", {})["path"] = dataset
-        # A file-specific checksum from the configuration cannot describe an overridden file.
-        if dataset != file_config.get("dataset", {}).get("path", (base or {}).get("dataset", {}).get("path")):
-            config["dataset"].pop("sha256", None)
-            config["dataset"].pop("split_manifest", None)
-            config["dataset"].pop("partition", None)
     if task is not None:
         previous = config.get("task", {})
         kind = task if task in {"forcefield", "generation"} else "supervised"

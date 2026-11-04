@@ -8,9 +8,14 @@ from .manifest import PARTITIONS, validate_manifest
 
 
 def load_partition(source, settings, *, partition=None):
+    from universal_gnn.data.identity import check_expected_digest, validate_dataset_digest
+
+    validate_dataset_digest(settings, actual_sha256=getattr(source, "sha256", None))
     path = settings.get("split_manifest")
     role = settings.get("partition") if partition is None else partition
     if path is None:
+        if settings.get("split_manifest_sha256") is not None:
+            raise ValueError("dataset.split_manifest_sha256 requires dataset.split_manifest")
         if role is not None:
             raise ValueError("dataset.partition requires dataset.split_manifest")
         return range(len(source)), None, None
@@ -24,4 +29,5 @@ def load_partition(source, settings, *, partition=None):
         raise ValueError("Manifest record IDs do not match source order")
     digest = hashlib.sha256(json.dumps(manifest, sort_keys=True, separators=(",", ":"),
                                        allow_nan=False).encode("utf-8")).hexdigest()
+    check_expected_digest(settings.get("split_manifest_sha256"), digest, "dataset.split_manifest_sha256")
     return manifest["partitions"][role], manifest, digest

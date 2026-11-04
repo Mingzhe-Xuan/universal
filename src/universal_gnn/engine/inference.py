@@ -43,6 +43,7 @@ def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None,
     if not same_source:
         # A training-source partition cannot select records in a new prediction source.
         settings.pop("split_manifest", None)
+        settings.pop("split_manifest_sha256", None)
         settings.pop("partition", None)
         settings.pop("sha256", None)
     settings["path"] = str(dataset_path)

@@ -231,3 +231,9 @@
 - 2026-11-04T04:54:06+08:00：PowerShell不会为rg展开tests/test_*.py等参数；重复不存在路径会浪费诊断回合。先rg --files确认目录，用rg PATTERN tests -g " *.py\过滤，不能假定模块目录/单文件布局。
 
 - 2026-11-04T05:00:08+08:00：Vlab会在普通状态SSH上返回255（202.38.75.226主动关闭），即使刚验证的专用代理仍live、cleanup下一连接又可成功。不能因只读观察失败而在finally拆掉正在服务数据的健康代理。监督器改为每30秒重试同一观察路径，保留现有Popen，不据未知状态重交sbatch；fresh健康的SSH观察最多三次/间隔30秒，curl非255失败仍停止。去掉3秒密集SSH重试，普通连接超时45秒；变更仅本地控制器，工作body SHA不变。
+
+- 2026-11-04T09:36:13+08:00：rg --files的-g模式主要匹配文件名，不能靠*properties*发现properties目录里的__init__.py/catalog.py。目录布局不确定时直接rg --files具体目录，再按实际输出读文件；不要将包猜成同名.py或猜library.py。该经验属于查找工具，不写入业务代码。
+
+- 2026-11-04T09:58:49+08:00：no-progress周期必须查真正worker。此次867确因连续curl7和保留断点而failed，无digest/磁盘/策略错误；health页成功不能替代固定wheel本身的Range检查。确认旧进程与监听已释放、实际队列空、具体断点8B来源可读且Vlab banner正常后才恢复一次监督，不放宽代理策略或删除partial。
+
+- 2026-11-04T10:17:11+08:00：PowerShell向python stdin传递含中文的检查脚本时应显式配置UTF-8输出编码，或优先保存UTF-8脚本再执行，避免分隔符变为问号造成伪失败。元数据helper的无依赖测试应直接测试生产helper，不为导入完整contracts/Torch调用链而模拟科学依赖；完整API留在真实环境集成测试。

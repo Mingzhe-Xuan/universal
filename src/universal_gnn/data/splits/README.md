@@ -21,6 +21,13 @@ with group leakage are rejected and require a documented protocol decision.
 Only split metadata are copied, never structures or labels. Indexed JSONL sources
 also retain source-ordered IDs, so loading verifies both bytes and manifest IDs.
 
+Optional `dataset.sha256` pins the exact source file bytes. JSONL reuses its verified index hash;
+other file sources are streamed for the check. `dataset.split_manifest_sha256` pins canonical JSON
+(`sort_keys=True`, separators `,`/`:`, UTF-8, no NaN), so whitespace/key formatting changes are
+allowed while partition, group, ID or protocol changes fail. A manifest hash requires a manifest;
+file hashes cannot be applied to a plugin reference. Existing unpinned configurations keep their
+previous behavior. See `data/identity.py` for the dependency-independent policy.
+
 ```yaml
 dataset:
   path: data/experiment/structures.jsonl

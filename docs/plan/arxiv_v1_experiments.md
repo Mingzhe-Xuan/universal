@@ -471,3 +471,21 @@ Slurm配置257787MiB，即约251.75GiB主机RAM。单GPU逐任务执行时，48/
 预检报告至少保存：模型/任务/初始化、代码与环境版本、Slurm作业、GPU型号/总显存、测试样本ID及原子/边/三体数量、
 每次尝试的batch与结果、OOM位置、最终训练/采样batch、有效batch/累积步数、峰值allocated/reserved显存及吞吐。
 保留失败记录；正式长作业使用通过后的值，不重新继承示例中的32/5/4等batch。
+
+### 12.6 全量配置准备入口与当前边界
+
+`sbatch scripts/prepare_arxiv_matrix.slurm` 在 CPU Slurm 中读取五份完整标准数据，
+核验固定源文件 SHA、完整且有序的记录 ID、作者/已冻结划分以及四模型原始资源，
+生成四模型×六任务×两种整个骨干初始化×三 seed（123/456/789）的144组配置。
+实现及字段说明见[配置模块](../../src/universal_gnn/benchmarks/experiments/README.md)。
+输出位于新建的 `runs/arxiv-v1/definition-JOB_ID/`，不覆盖既有定义。
+
+各配置显式指定 `structures: all`、float32、CUDA、reset任务头和全骨干训练；
+数据字节与 canonical 划分 SHA 均绑定。初始 batch 按任务设为32、4或16，
+300轮、学习率0.0003、patience30只是待验证的统一基线预算，不是测得最优设置。
+生成使用独立训练噪声/heldout协议及1000次条件采样定义，不继承监督任务头设置。
+
+此入口只准备定义，输出状态为 `prepared_not_launched`，不提交正式训练。
+文件中的门禁是待验收要求，尚无统一正式启动器执行这些门禁；原包scratch、导数、
+完整训练图扫描、共同batch和GPU资源验收通过后，才能按测得结果解析并启动相应配置。
+不得将144份JSON、源文件校验或配置fixture测试记作144次训练完成。

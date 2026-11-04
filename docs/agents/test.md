@@ -1079,3 +1079,9 @@
 - 2026-11-04T09:07:22+08:00：未发布的native校准运行时更新：监督/生成训练与容量worker已本地自动接完整train统计，resume仅继承省略字段；native成功回执控制4项、原生成解析4项和原容量控制4项纯std共12/12通过，身份/缓存3/3通过。新增原包图/构造10项（每provider5项）和训练路由5项待Slurm；新增推理重建图来源校验，并修正校准加载源包时不混用保存的fresh类来源，原artifact不变。Torch/生成实际数值尚未验收，运行时不在本次提交范围。
 
 - 2026-11-04T09:08:43+08:00：环境流水线提交前最终检查：3/3纯std安装门禁测试通过（含已有report拒绝、防外来e3nn来源），compileall、Slurm bash-n、相关Markdown链接/围栏、state变更历史逐字保留及git diff --check通过。提交范围仅独立环境脚本/测试与实际868/元数据/词表记录；未发布尚无Torch数值验收的backbone、生成或校准运行时。实际pip安装未运行，正式训练0/144。
+
+- 2026-11-04T09:19:00+08:00：Slurm869实际通过离线installer全部3项纯std测试；收据/日志已回传，按ed2a646的Git blob核对脚本SHA 6e91bb1f328ed84eb8fad4d69dadffcb61707d24329d36f7d42c3bf6f876bd8a。这验证Linux/Python3.10门禁兼容，不代表实际pip安装或模型/CUDA验收。NequIP作者YAML已在服务器模型缓存通过11565B/SHA轻量核验，未改源码。
+
+- 2026-11-04T09:36:13+08:00：实现前计划：正式144配置准备单元。data/identity.py与splits/loading.py可选强制source SHA和canonical manifest SHA，覆盖缺/错/格式变化、无manifest/插件误用及复用indexed source hash，不导入Torch。benchmarks/experiments/registry.py按五份完整已发布source SHA/实际计数扫描JSONL ID并验证manifest和官方资源，输出冻结身份；recipes.py生成四骨干×六任务×两初始化×三seed144配置，所有structures=all/float32/CUDA，reset头/全骨干训练，生成不混入prediction/optimization，保留相同成对任务设置和待验收门禁。只生成配置不提交训练。纯std测试覆盖完整笛卡尔积、固定seed/划分/单位/导数路径、无native graph或宽度覆写、构造/微调成对设置一致、污染或不完整registry拒绝和已有输出不可覆盖。完整数据读取/哈希和实际144生成在Slurm执行；运行时读出规范验证待Torch，不能把配置生成当训练或GPU通过。
+
+- 2026-11-04T10:17:11+08:00：全量配置单元提交前实际检查：144配置/成对一致性6项、新source/canonical split身份4项、既有manifest5项纯std测试均通过，共15项；compileall、Slurm bash-n、README/计划相对链接和围栏、state历史逐字保留通过。初次将全API配置解析放入-S测试因contracts包导入Torch失败，现将真正生产使用的metadata合并函数独立为resolve_dataset_settings并实际测试；完整resolve_config和外部推理绑定保留真实Torch测试待Slurm，未作依赖mock或降低数值断言。初次本地历史检查的PowerShell管道编码导致分隔符查找失败，已改为UTF-8文件脚本重查通过。

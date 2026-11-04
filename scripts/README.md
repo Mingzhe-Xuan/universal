@@ -171,6 +171,14 @@ existing shared-base links and exact shared Torch metadata, and installs only in
 `universal-official` without resolving dependencies from the network. It retains MACE's e3nn0.4.4,
 checks the three task environments and records complete package lists. A successful report proves
 dependency metadata acceptance; original model/CUDA/derivative validation remains separate.
+`sbatch scripts/prepare_arxiv_matrix.slurm` verifies all five complete primary input sources,
+their source-ordered manifests and original model artifacts, then writes 144 separate configurations
+and a frozen matrix into a new ignored run directory. It runs without Torch and launches no training.
+Configurations pin both source bytes and canonical split SHA values. Initial batches and the
+300-epoch/0.0003 learning-rate/30-patience baseline remain declared defaults; original-model,
+derivative and paired CUDA capacity acceptance must still precede formal runs. See
+[experiment definitions](../src/universal_gnn/benchmarks/experiments/README.md).
+
 # Original head acceptance
 
 `validate_native_heads.py --model MODEL --output runs/native-heads/MODEL` must run

@@ -29,7 +29,8 @@ def fixture_config(tmp_path, *, property_name="bandgap"):
     split.write_text(json.dumps(manifest), encoding="utf-8")
     config = {"seed": 123, "epochs": 3, "batch_size": 3, "dtype": "float32", "checkpoint_every": 1,
               "backbone": {"name": "gcn", "width": 8, "layers": 1}, "graph": {"name": "knn", "k": 1},
-              "dataset": {"path": str(path), "split_manifest": str(split), "partition": "train"},
+              "dataset": {"path": str(path), "sha256": manifest["source_sha256"], "split_manifest": str(split),
+                          "split_manifest_sha256": hashlib.sha256(json.dumps(manifest, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest(), "partition": "train"},
               "task": {"kind": "supervised", "property": property_name}, "evaluation": {"patience": None}}
     return config, manifest
 
@@ -65,6 +66,7 @@ def test_training_partition_train_scales_best_selection_and_test_tail(tmp_path):
     external_result = run_inference(report["best_checkpoint"], external, tmp_path / "external-predictions.jsonl")
     assert external_result["structure_count"] == 20
     assert "split_manifest" not in external_result["config"]["dataset"]
+    assert "split_manifest_sha256" not in external_result["config"]["dataset"]
 
 
 def test_resume_preserves_validation_selection_and_exact_weights(tmp_path):
