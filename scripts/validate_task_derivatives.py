@@ -22,7 +22,12 @@ def main():
     from universal_gnn.engine.initialization.neighbors import prepare_native_neighbors
     from universal_gnn.engine.training import build_model, dataset
 
-    config = prepare_native_neighbors(load_config(args.config))
+    config = load_config(args.config)
+    backbone = config['backbone']
+    if (backbone['name'] in {'mace', 'nequip'} and
+            backbone.get('implementation', 'official') == 'official' and
+            backbone.get('initialization', 'pretrained') == 'scratch'):
+        config = prepare_native_neighbors(config)
     torch.manual_seed(config.get('seed', 123))
     model = build_model(config).to(device=config.get('device', 'cpu'), dtype=model_dtype(config))
     result = validate_derivatives(model, dataset(config), config)
