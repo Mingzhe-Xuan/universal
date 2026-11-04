@@ -740,3 +740,5 @@
 - 2026-11-04T11:34:02+08:00：8fdea11已发布/服务器pull，调度修复经Slurm878六项纯检查和三源Git blob核验。补充完整扫描模块计划：selection.py/native_scan.py尚未实现；需同时统计native与EquivariantAdapter额外radius graph，CGCNN分清padding槽位，ALIGNN统计line graph，并另外实测生成噪声/采样轨迹。几何适配可从scalar native特征构造响应通道，因此不能只看native irreps断言张量不可适配。正式训练0/144，完整扫描与数值预检仍是下一阶段。
 
 - 2026-11-04T12:31:02+08:00：新增download_offline_cuda_resources.py，同一curl最多8个1MiB Range、20s连接/30s操作预算、-C续原partial/--next复用/--fail-early遇错止后片；校验CR/收到字节与append位置，协议错只回滚新追加、网络部分保留，最终SHA前不发布。保留固定16 catalog、20GiB、未知/SOCKS拒绝失败和POSIX单writer锁，计算节点先单独验证proxy；仅暂存不安装。Windows9项包括真实curl通过；880三组12193792B接收前缀全部匹配固定源，证实可行但非严格超时因果实验。下一步CPU Slurm9项后才替换877，健康SSH不重启。
+
+- 2026-11-04T12:51:17+08:00：完整训练图计数流的probe选择器已实现：强制逐条源顺序身份，保留五维极值与确定性普通候选，区分CGCNN padded slots，聚合本身不签发真实图扫描证明。调度保证所有worst满batch后至少一个普通batch。本地12项通过，待CPU Slurm；实际native_scan仍未实现。资源新工具881九项真实通过，新882保留旧断点恢复；正式0/144。

@@ -16,25 +16,29 @@ class ProbeScheduleTests(unittest.TestCase):
         settings=schedule_settings(probe,1)
         batches=list(iter_probe_batches(probe,1))
         self.assertEqual(settings['requested_measure_batches'],5)
-        self.assertEqual(settings['measure_batches'],7)
-        self.assertEqual([row['indices'][0] for row in batches if row['phase']=='measure'],probe['worst_indices'])
-        self.assertEqual([row['phase'] for row in batches],['warmup']+['measure']*7)
+        self.assertEqual(settings['measure_batches'],8)
+        self.assertEqual([row['indices'][0] for row in batches if row['kind']=='worst'],probe['worst_indices'])
+        self.assertEqual([row['phase'] for row in batches],['warmup']+['measure']*8)
+        self.assertEqual(batches[-1]['kind'],'ordinary')
+        self.assertNotIn(batches[-1]['indices'][0],probe['worst_indices'])
 
     def test_each_extreme_fills_a_full_batch_instead_of_packing_extremes_together(self):
         for size in (1,2,8):
             probe=dict(indices=[0,1,2,3],worst_indices=[1,3],warmup_batches=2,measure_batches=2)
             batches=list(iter_probe_batches(probe,size))
             measured=[row['indices'] for row in batches if row['phase']=='measure']
-            self.assertEqual(measured,[[1]*size,[3]*size])
+            self.assertEqual(measured[:2],[[1]*size,[3]*size])
+            self.assertEqual(len(measured),3)
+            self.assertEqual([row for row in batches if row['phase']=='measure'][-1]['kind'],'ordinary')
             self.assertTrue(all(len(row['indices'])==size for row in batches))
 
     def test_training_budget_retained_and_remaining_measurements_cycle_ordinary_indices(self):
-        probe=dict(indices=[0,2,4,6],worst_indices=[6,2,4],warmup_batches=2,measure_batches=100)
-        batches=list(iter_probe_batches(probe,3));measured=[row for row in batches if row['phase']=='measure']
+        probe=dict(indices=[0,2,4,6,8,10],worst_indices=[6,2,4],warmup_batches=2,measure_batches=100)
+        batches=list(iter_probe_batches(probe,2));measured=[row for row in batches if row['phase']=='measure']
         self.assertEqual(len(batches),102);self.assertEqual(len(measured),100)
         self.assertEqual([row['kind'] for row in measured[:4]],['worst']*3+['ordinary'])
-        self.assertEqual(measured[3]['indices'],[0,2,4]);self.assertEqual(measured[4]['indices'],[6,0,2])
-        self.assertEqual({index for row in measured[3:] for index in row['indices']},set(probe['indices']))
+        self.assertEqual(measured[3]['indices'],[0,8]);self.assertEqual(measured[4]['indices'],[10,0])
+        self.assertEqual({index for row in measured[3:] for index in row['indices']},{0,8,10})
 
     def test_defaults_are_deterministic_and_leave_inputs_unchanged(self):
         probe=dict(indices=[5,1,9]);before=copy.deepcopy(probe)

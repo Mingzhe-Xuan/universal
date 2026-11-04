@@ -22,19 +22,21 @@ def schedule_settings(probe, batch_size):
     warmup = _positive(probe.get("warmup_batches", 2), "warmup_batches")
     requested = _positive(probe.get("measure_batches", 100), "measure_batches")
     return dict(batch_size=batch_size, warmup_batches=warmup, requested_measure_batches=requested,
-                measure_batches=max(requested, len(worst)), worst_stress_batches=len(worst))
+                measure_batches=max(requested, len(worst) + 1), worst_stress_batches=len(worst))
 
 
 def iter_probe_batches(probe, batch_size):
     settings = schedule_settings(probe, batch_size)
     indices, worst = probe["indices"], probe.get("worst_indices", probe["indices"])
+    worst_set = set(worst)
+    ordinary_indices = [index for index in indices if index not in worst_set] or indices
     for index in range(settings["warmup_batches"]):
-        selected = [indices[(index * batch_size + offset) % len(indices)] for offset in range(batch_size)]
+        selected = [ordinary_indices[(index * batch_size + offset) % len(ordinary_indices)] for offset in range(batch_size)]
         yield dict(phase="warmup", kind="ordinary", indices=selected)
     for index in range(settings["measure_batches"]):
         if index < len(worst):
             yield dict(phase="measure", kind="worst", indices=[worst[index]] * batch_size)
         else:
             ordinary = index - len(worst)
-            selected = [indices[(ordinary * batch_size + offset) % len(indices)] for offset in range(batch_size)]
+            selected = [ordinary_indices[(ordinary * batch_size + offset) % len(ordinary_indices)] for offset in range(batch_size)]
             yield dict(phase="measure", kind="ordinary", indices=selected)

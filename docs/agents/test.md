@@ -1119,3 +1119,7 @@
 - 2026-11-04T12:22:50+08:00：实现前计划：新离线CUDA资源续传器复用已验证curl -C -+有限Range+--next/--fail-early协议，连接预算20秒、操作30秒、每连接最多8个1MiB片，保持固定catalog/SHA/原URL与20GiB余量。Linux880两组5.06MiB约22秒完整、第三组部分前缀正确；connect实际10.27秒超过原5秒，连接num_connects1/0/0证明复用；不将其当严格8/30因果对照。单测覆盖尾片/从非对齐断点续、部分网络失败后无丢失续片、真实loopback curl连接复用、Content-Range/字节计数异常回滚本次未验证追加、最终SHA失败不发布、已验证文件跳过/冲突不覆盖、无进展超时及SOCKS规则拒绝不绕过、CLI先Slurm门禁。旧资源作业只在新工具本地及CPU Slurm通过后，持有健康代理不变、暂停旧模板重交、确认旧作业终止后从原partial接续；不修改模型、数据或官方版本。
 
 - 2026-11-04T12:31:02+08:00：同连接续传器提交前实际9/9通过，含真实loopback curl连续四片仅一个连接、非对齐旧断点、网络半片后正确续、CR/字节/JSON异常回滚新追加而保留旧prefix、最终SHA拒绝、已有冲突不覆盖/验证缓存跳过、20GiB门禁、无进展时间预算与ruleset不重试、CLI Slurm先于catalog/posix导入。首次真实curl测试暴露Windows默认GBK解码UTF-8 metrics失败，现显式UTF-8并重新完整9项通过；未降低断言。compileall、README链接/围栏、state旧历史保留与git diff --check通过。仅发布资源工具及对应测试，不混入selection/调度或模型运行时待发布改动；Linux真实9测试需发布后Slurm。
+
+- 2026-11-04T12:43:30+08:00：Slurm881实际9/9通过、两源码Git blob校验通过后，配置下一次资源任务模板为已发布179925a的脚本；旧40620/53648已actual terminal/CIM不存在、1080已释放。更新本地监督器lint兼容外部脚本模板，只允许精确命令且脚本字节匹配published Git blob；旧模板留备份，仍以真实queue门禁提交。新模板body SHA 8ae00a2496d3fbf0973bcf562b3c7191c43a7ca4eff6e51cd42cd3040fa65687；启动前复跑三控制故障场景/--plan/bash-n，并先查询旧877是否结束，必要时只取消其精确作业保留partial，不改健康代理。
+
+- 2026-11-04T12:51:17+08:00：提交前检查：selection六项和调度六项纯std全部通过，包括完整源顺序身份、各维极值、固定ID哈希普通候选、单遍有界、行摘要、padding语义和不冒充实际图扫描；worst占满预算仍增一普通batch，普通池排除worst，100次预算不变。881九项Linux实际通过且两执行Git blob已核验。新监督器五项ownership、观察中断和孤立身份场景、--plan/bash-n已通过，882从65712455B断点继续且观察增长；没有NN或正式训练验收。
