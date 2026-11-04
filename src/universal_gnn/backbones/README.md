@@ -81,5 +81,6 @@ has the same restriction. Use the original full builder with explicit irreps and
 The converter rejects disagreement between the package layout and recipe rather than guessing
 successive layer widths. It resets seed, energy shift/scale and training-fitted neighbor statistics
 according to the existing scratch policy, retaining species, cutoff, ZBL and trainability flags.
-Five stdlib conversion tests pass locally; constructor integration, strict state-layout and numerical
+Five stdlib conversion tests passed locally and in Slurm887 with executed-source hashes verified;
+constructor integration, strict state-layout and numerical
 acceptance still await Slurm. Metadata conversion alone does not establish usable scratch training.

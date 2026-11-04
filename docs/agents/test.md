@@ -1137,3 +1137,5 @@
 - 2026-11-04T15:03:37+08:00：实现前计划：作者NequIP YAML shorthand与0.14/0.15简化builder不兼容，新增纯元数据explicit-full构造参数准备，输入必须来自原package层级/irreps和作者冻结recipe；测试独立type embed32、第一层128x0e+64x1e/末层128x0e，不把[128,64]当逐层width；保持rmax/type/MLP/Bessel/ZBL/trainable flags，仅seed和训练统计重置，拒绝缺失/冲突布局/未知recipe/层数/irreps；原helper行为兼容。cached wheel和pickle opcode只读、不反序列化/不执行Tensor或GNN；实际FullNequIPGNNModel/state/输出和导数对照须Slurm单独验证，不能凭元数据宣称通过。
 
 - 2026-11-04T15:09:33+08:00：NequIP full blueprint五项与既有七项纯std在本地、仅已发布HEAD加本单元两文件的隔离目录均通过；实际author checkpoint以不执行GLOBAL/REDUCE的pickletools opcode数据解释确认type_embed32、hidden128x0e+64x1e/128x0e。AST、README路径/围栏和state历史保留、git diff --check通过。仅发布metadata参数转换；official/nequip runtime改动和native_neighbors数值断言暂不发布，真实构造/键形状/前向导数仍未执行。
+
+- 2026-11-04T15:21:30+08:00：Slurm887五项NequIP Full参数控制全部通过、零skip，收据与stderr回传后按4c4616c的blueprints.py/新测试/原fixture共三Git blob核验。文档提交前README路径/围栏、state历史逐字保留和git diff --check通过；没有模型/导数数值验收。网络一次恢复前真实确认73597 terminal、旧PID不存在和1080释放，新诊断固定8B206/GitHub HEAD200/Vlab SSH banner/887 SCP成功；新68162端到端健康已通过，沿用885不重交。
