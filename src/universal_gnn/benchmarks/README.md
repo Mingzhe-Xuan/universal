@@ -79,3 +79,5 @@ Only the final shared size is exported; the original full-matrix definitions rem
 This orchestration retains the supplied-probe scope above and launches no formal training.
 
 Full-data generation has a public [pair preparation entry](generation/README.md): separate training/sampling capacity, complete train-only prior and original graphs. Formal1000-sample quality remains a separate run.
+
+[Full native-head baselines](native_heads/README.md) evaluate original matching-task public heads on complete frozen test partitions without training or target-reference fitting.

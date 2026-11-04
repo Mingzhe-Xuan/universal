@@ -1,5 +1,7 @@
 # 当前状态
 
+2026-11-05T06:03:01+08:00: Start scratch forcefield post-evaluation pipeline: preserve144 primary scope and all existing jobs. Current969 is confirmedRUNNING, last236 epochs. Prepare two new CPU Slurm jobs afterok969: independent164 test-target/metric re-score, trained-best derivative checks and complete1566 inference, followed by independent all-output validation. Use new scratch-only claim/output paths; no rerun or overwrite of FT993/1002.
+
 Original goal remains active: four official backbones x six tasks x two whole-backbone initializations x three seeds =144 formal trainings, plus the original native/frozen, rank3/4, molecular/plugin and cost deliverables. Independently completed1/144; unique formal cases submitted8/144. Diagnostics48/48 and64 diagnostic generation attempts are separate.
 
 968 MACE full forcefield FT is independently accepted (174 epochs, validation best144; test164).969 whole-backbone scratch was confirmed RUNNING at2:26:20 in the latest queue observation.988/989 ALIGNN,990/991 NequIP and996/997 CGCNN remain queued;995 is CGCNN's repaired full preparation. Existing immutable source caches/environments/data and scientific configurations remain unchanged.
@@ -11,6 +13,8 @@ Public generation preparation commit47a208f is pushed and materialized in a clea
 Previous accepted independent work remains:993/1002 all1566-source MACE FT inference and raw164-test re-evaluation;1003 dielectric tensor/component grouping;1010 exact published-ID exposure with explicit ambiguity and other providers unknown;981 full scalar mean baseline. None changes the formal completion count.
 
 # 当前计划
+
+2026-11-05T06:03:01+08:00: Start scratch forcefield post-evaluation pipeline: preserve144 primary scope and all existing jobs. Current969 is confirmedRUNNING, last236 epochs. Prepare two new CPU Slurm jobs afterok969: independent164 test-target/metric re-score, trained-best derivative checks and complete1566 inference, followed by independent all-output validation. Use new scratch-only claim/output paths; no rerun or overwrite of FT993/1002.
 
 1. Observe exact existing formal handles; collect each terminal case's configs/events/all heldout predictions, source/split/checkpoint identities, early stopping and resource evidence. After969 completes, separately re-evaluate scratch best and run/verify full-source inference without touching968 artifacts.
 2. Complete queued full-data preparation gates. Launch remaining full formal task/model/initialization/seed cases from actual paired configs and measured budgets, retaining typedOOM-only fallback and complete data. Formal generation additionally requires validation-best1000-attempt quality; diagnostic or capacity samples do not substitute.
@@ -564,3 +568,7 @@ Previous accepted independent work remains:993/1002 all1566-source MACE FT infer
 - 2026-11-05T05:47:43+08:00: Generation execution design: add benchmarks/generation/{preparation.py,__init__.py,README.md} for frozen recipe checks/full train-only prior/native graph and two-phase paired capacity; scripts/prepare_generation_pair.{py,slurm} expose a reusable public fixed-checkout entry. Tests cover recipe/quality corruption, phase separation, complete calibration provenance and login-node guard before any runtime import. Existing training/model implementations unchanged.
 
 - 2026-11-05T05:57:04+08:00: Completed public generation preparation controls and source-compatible server acceptance1019; queued four complete generation pair preparations1020-1023. Independent train/sample configurations prevent overwriting training batch; formal1000/5 quality remains pending. Next observe969 and existing complete-data gates; original144 and supplementary scope unchanged.
+
+- 2026-11-05T06:03:01+08:00: Start scratch forcefield post-evaluation pipeline: preserve144 primary scope and all existing jobs. Current969 is confirmedRUNNING, last236 epochs. Prepare two new CPU Slurm jobs afterok969: independent164 test-target/metric re-score, trained-best derivative checks and complete1566 inference, followed by independent all-output validation. Use new scratch-only claim/output paths; no rerun or overwrite of FT993/1002.
+
+- 2026-11-05T06:07:34+08:00: Enter supplementary full native-head baseline stage while soleGPU969 trains. Add benchmarks/native_heads/ with pure frozen-case config derivation and Slurm-only full test evaluation, plus public CLI/CPU Slurm script and module README. Evaluate CGCNN/ALIGNN original bandgap heads on7580 frozen test structures, MACE/NequIP original energy/force heads on164. No training, target offset fit or selection, no144-case changes; report pretrained exposure and label/reference differences explicitly. Scratch post-evaluation1024/verification1025 are queued afterok969/1024.
