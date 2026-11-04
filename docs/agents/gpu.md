@@ -3530,3 +3530,15 @@
 - 2026-11-05T04:18:16+08:00: Ordinary SSH verifies/pulls current published 76c5f1c root, then reads exact own known965-991 claims/receipts, eight formal status/events,984/985 replacement preparations and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
 
 - 2026-11-05T04:19:13+08:00: Ordinary SSH verifies/pulls current published 76c5f1c root, then reads exact own known965-991 claims/receipts, eight formal status/events,984/985 replacement preparations and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T04:33:09+08:00：SCP上传已推送376b00a的14554B小型离线bundle，SHA ca6fd05c31b12d3096fff65ed3a4c7936e4db73d8214ffe8db593d33c759e451，先决76c5f1c；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T04:33:52+08:00：Ordinary SSH verifies/pulls published376b00a first, then Git clone --shared from this confirmed task repository into new task-owned ignored runs/source-checkouts/376b00a... . No server code editor/patch/source mutation; only Git materializes already-pushed source. Verify fixedHEAD/clean tracked source, symlink only untracked data/models/runs to their exact existing task paths, cache-only Git excludes/provenance metadata. Existing paths not overwritten, no neural imports, package installs or numerical login execution. Root origin remains unchanged; future normal connections still pull root first, immutable cache is verified rather than updated.
+
+- 2026-11-05T04:34:40+08:00: Ordinary SSH verifies/pulls published376b00a then clean immutable cache, unique claim submitsCPU1/4GiB/20min seven assessment unit controls, complete4999 dielectric label population/source audit, eight saved real dielectric diagnostic predictions16each with full-parent target lineage and public CLI. No models/imports or new training/GPU, no changes to969 or other GPU requests, source, environments or datasets.
+
+- 2026-11-05T04:35:25+08:00: Ordinary SSH verifies/pulls current published 376b00a root, then reads exact own known965-991 claims/receipts, eight formal status/events,984/985 replacement preparations and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T04:36:30+08:00: Ordinary SSH verify/pull current published root first, read exact own tensor assessment1003 reports/JUnit/ID groups and bounded logs plus current-user queue. No numerical processing, new jobs, source/env/data edits or restarts on login.
+
+- 2026-11-05T04:40:29+08:00: Ordinary SSH first verify/pull current published root, validate clean fixed dfea7b0,983 and1003 passed, unused eight full dielectric case claims and exact own1001 PENDING. Submit four serial full tensor preparations1GPU2CPU64GiB8h afterany1001 then each prior prep. Full3998 graph/response/capacity/physics only, no formal tensor training yet; no modification/cancellation of existing jobs, source, environments or data, no numerical login work.
