@@ -27,7 +27,7 @@
 seed123的四骨干×六任务×两种整个模型初始化共48配置，三epoch、初始batch2；
 分类/带隙共享子集，不按原子数筛选，不改全量数据和144正式定义。
 先验收原模型构造/求导及实际可用batch，再从带隙小规模对照推进其他任务；小规模结果不计正式完成。
-895已实际完成48诊断配置/24对及五份96结构子集，七项控制与完整父数据来源核验通过。定义为 `runs/arxiv-v1/pilot-895/matrix.json`，状态 `prepared_not_launched`。环境/GPU基础验收已通过，真实模型pilot训练仍为0/48；接口见[小规模准备说明](../../src/universal_gnn/benchmarks/experiments/README.md)。
+895已实际完成48诊断配置/24对及五份96结构子集，七项控制与完整父数据来源核验通过。定义为 `runs/arxiv-v1/pilot-895/matrix.json`，原定义保留 `prepared_not_launched` 不覆盖。910/911四原模型构造验收已通过；912/913/916/915完成四模型带隙各两版真实GPU训练，当前诊断8/48、正式0/144。每版64/16/16、三epoch，原包对照、64训练图扫描、四次100batch成对容量与完整测试ID均已核验。结果与限定口径见[实际pilot记录](../agents/arxiv-pilots.md)，接口见[小规模准备说明](../../src/universal_gnn/benchmarks/experiments/README.md)。
 
 Slurm872已基于be3d579完成五份全量标准数据、全部源顺序ID/划分和四原始模型资源的重新核验，
 并生成三seed共144份配置（72组成对对照），15项相关纯std测试全部通过。
@@ -180,8 +180,9 @@ CGCNN/ALIGNN当前UGNN provider要求3D周期输入，这是当前入口的实�
 从头版使用相同原始架构/cutoff/元素词表/任务头，按官方构造器重新初始化骨干与任务头；不沿用checkpoint中学到的参数、BN统计或拟合数据统计。
 固定的几何/群表示常数与词表属于架构规格，不能将所有buffer盲目随机化。
 
-`prediction.head_mode: reset`只重置任务头，不等于从头训练。当前官方factory仍默认加载发布权重，缺少统一的整个骨干scratch入口。
-需新增明确的骨干初始化策略（例如拟议的`backbone.initialization: pretrained|scratch`），并将其记录进checkpoint/配置/严格续训检查。
+`prediction.head_mode: reset`只重置任务头，不等于从头训练。官方factory默认加载发布权重，现已新增统一的整个骨干scratch入口。
+`backbone.initialization: pretrained|scratch`已写入checkpoint/配置/严格续训检查，并通过910/911原包验收。
+MACE/NequIP当前需先以显式CLI准备完整训练分区的原生邻居统计，自动训练解析仍待独立接线验收；生成完整路径也另行验收。
 验证scratch时应与同seed的官方新模型构造参考对照，防止遗漏自定义层的权重或统计；不能仅在已加载模型上递归调用零散reset_parameters后就宣称完全随机初始化。
 生成使用独立的去噪训练入口，需同样接入初始化策略；不能套用生成路径不支持的prediction配置块。
 
@@ -463,11 +464,13 @@ Slurm配置257787MiB，即约251.75GiB主机RAM。单GPU逐任务执行时，48/
 用户确认：**预检阶段如果batch太大导致显存OOM，自动减小batch_size重试，直到能够容纳。**
 已开始落实：`universal_gnn.benchmarks.preflight` 提供干净子进程、OOM专用错误协议、batch减半、失败留档及成功配置输出；
 控制流程的本地测试已通过，成对编排的10项纯std子进程测试亦已在Slurm875/a7b127c通过并回传核验。
-真实GPU训练步、全量最坏图规模扫描及两种初始化共同batch仍需Slurm验收，尚未据此启动全量训练。
+四模型带隙诊断已各完成四次100batch真实GPU预检、两种初始化共同batch2，并完成训练；其扫描只覆盖64条诊断训练数据。
+全量最坏图扫描及各任务共同batch仍需Slurm验收，尚未据此启动全量训练。
 完整扫描工具已在6072d4c发布：`scripts/scan_training_graphs.py` 调用四骨干原生建图入口，
 并统计实际启用的响应/生成额外图；Slurm886的7项纯控制检查通过，收据按执行源码核验。
-这些检查不运行真实原包图。五项CUDA格式/guard检查及四骨干的完整训练图扫描仍待环境恢复后执行，
-尚无真实全图扫描或容量通过收据；详见[图扫描说明](../../src/universal_gnn/benchmarks/probes/README.md)。
+上述七项纯控制不运行真实原包图；五项CUDA格式/guard已在898通过。
+四骨干在912/913/916/915已扫描全部64条诊断训练图，正式完整训练分区仍未扫描；
+诊断原图/容量不能替代全量验收，详见[图扫描说明](../../src/universal_gnn/benchmarks/probes/README.md)。
 成对编排入口为 `python -m universal_gnn.benchmarks.pairing.capacity`，可从冻结矩阵选择一个pair，
 分别预检后用共同较小batch双侧复验；若复验又OOM，继续共同下调再双侧重验。
 输入任务/seed/数据划分/精度/图/读出/优化设置不一致则拒绝；仅保存双方最终共同通过的配置，

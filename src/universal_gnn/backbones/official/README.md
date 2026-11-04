@@ -23,10 +23,13 @@ artifact; only known false flags with matching original weights are migrated for
 layout comparison. Unknown entries, empty/changed paths and wrong shapes still fail.
 NequIP's required official global setup runs inside RNG/default-dtype isolation.
 
-**Numerical acceptance pending:** run `scripts/validate_official_scratch.slurm`
-and `scripts/validate_native_neighbors.slurm` before using fresh paths in the paper
-matrix. These scripts check actual original packages; policy fixtures alone cannot
-prove constructor, state-layout, derivative or GPU behavior. No legacy fallback is used.
+**Constructor acceptance:** Slurm910 passed CGCNN/ALIGNN constructor/RNG/BN/reload checks
+and17 compatibility regressions;911 passed five original graph/calibration/fresh tests each
+for MACE and NequIP, with no skips. All four models also completed both initialization
+modes on the frozen64/16/16 band-gap pilot, including real GPU gradients and reload.
+See [evidence and limits](../../../../docs/agents/arxiv-pilots.md).
+Other tasks, full-data graph coverage and derivative behavior require their own acceptance;
+these results do not certify all144 formal runs. No legacy fallback is used.
 
 Scratch requires `prediction.head_mode: reset` for prediction tasks. Reusing an
 original native head contradicts the policy; loading backbone warm-start weights

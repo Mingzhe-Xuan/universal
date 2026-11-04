@@ -3312,3 +3312,25 @@
 - 2026-11-04T18:40:46+08:00：Ordinary SSH first verify/pull0b72689 then unique claim queues one CPU NequIP shape diagnostic and two GPU CGCNN/ALIGNN frozen bandgap pilot pipelines (2CPU/24GiB/1GPU/90min). Each requires actual905 acceptance, frozen895 SHA, original parity, full64 clean native graph scan and100-batch paired capacity before any three-epoch training. No source checkout updates while these graph scans run; no formal training, cropping, precision changes, parent data edits or numerical login work.
 
 - 2026-11-04T18:43:15+08:00: Ordinary read-only SSH verify/pull unchanged0b72689 then inspect specific907/908/909 Slurm states, bounded logs and own pilot/scan/capacity reports. No new jobs, restarts, source updates beyond already-current pull, or numerical login work.
+
+- 2026-11-04T18:51:48+08:00：SCP上传已推送6a179b1的4673B小型离线bundle，SHA ddf3647074abeca6f34fbd695e93491344b1f84994ccbdb29513356893a30faa，先决0b72689；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T18:53:10+08:00: Revalidate exact per-type neutral statistics and generic CUDA fix;905 accepted CGCNN/ALIGNN and906 accepted MACE, but907 isolated NequIP shift shape. Ordinary SSH verifies/pulls 6a179b1 bundle before any work; unique claim queues original CGCNN/ALIGNN constructor and MACE/NequIP native calibration acceptance as two CPU Slurm jobs (1CPU/8GiB/20min each). Query df afterwards, no scientific computation on login, source edits, binary downloads or official training. Original908/909 are terminal before training; preserve failure receipts.
+
+- 2026-11-04T18:54:42+08:00：Ordinary SSH first verify/pull6a179b1 then unique claim queues two GPU CGCNN/ALIGNN frozen bandgap pilot pipelines (2CPU/24GiB/1GPU/90min). Each requires actual905 acceptance, frozen895 SHA, original parity, full64 clean native graph scan and100-batch paired capacity before any three-epoch training. Both GPU jobs depend afterok910.907 is not repeated. No source checkout updates while these graph scans run; no formal training, cropping, precision changes, parent data edits or numerical login work.
+
+- 2026-11-04T18:56:06+08:00: Ordinary read-only SSH first verify/pull published bundle then inspect specific live910/911 Slurm states and their own fixed reports/log tails, save local ignored evidence. No package/model computation or job restarts on observation failures.
+
+- 2026-11-04T18:57:17+08:00: Ordinary read-only SSH verify/pull unchanged6a179b1 then inspect specific912/913 Slurm states, bounded logs and own pilot/scan/capacity reports. No new jobs, restarts, source updates beyond already-current pull, or numerical login work.
+
+- 2026-11-04T19:01:01+08:00：Ordinary SSH first verify/pull unchanged6a179b1, unique claim submits MACE/NequIP GPU bandgap pilot pipelines afterok911, 2CPU/24GiB/1GPU/90min each.911 passed five actual original-package tests per provider. Runtime fits scratch neighbor statistics only on complete64 pilot train records before scan/capacity/train; preserves frozen895 source/split and three-epoch definition. No source updates while912/913 or these pipelines run, no numerical login operations, package changes, dataset edits or formal training.
+
+- 2026-11-04T19:03:26+08:00: Ordinary read-only SSH verify/pull unchanged6a179b1 then inspect specific912/913/914/915 Slurm states, bounded logs and own pilot/scan/capacity reports. No new jobs, restarts, source updates beyond already-current pull, or numerical login work.
+
+- 2026-11-04T19:05:57+08:00：Ordinary SSH first verify/pull unchanged6a179b1, unique claim submits MACE GPU bandgap pilot pipeline, correcting only reference model dtype to the frozen config float32 after914 failed before training afterok911, 2CPU/24GiB/1GPU/90min each.911 passed five actual original-package tests per provider. Runtime fits scratch neighbor statistics only on complete64 pilot train records before scan/capacity/train; preserves frozen895 source/split and three-epoch definition. No source updates while912/913 or these pipelines run, no numerical login operations, package changes, dataset edits or formal training.
+
+- 2026-11-04T19:08:00+08:00: Ordinary read-only SSH verify/pull unchanged6a179b1 then inspect specific912/913/914/915 Slurm states, bounded logs and own pilot/scan/capacity reports. No new jobs, restarts, source updates beyond already-current pull, or numerical login work.
+
+- 2026-11-04T19:11:12+08:00: Ordinary SSH verify/pull unchanged6a179b1 then collect only fixed912/913/916/915 completed pilot JSON reports,64-graph probes,4-worker capacity evidence,16-row predictions and checkpoint file-size metadata. No weight downloads/hashes, numerical imports, source edits or new jobs on login. Preserve failed914 separately; local checks are stdlib provenance/count checks only.
+
+- 2026-11-04T19:19:49+08:00: Ordinary read-only SSH verify/pull unchanged6a179b1 then inspect specific912/913/914/915 Slurm states, bounded logs and own pilot/scan/capacity reports. No new jobs, restarts, source updates beyond already-current pull, or numerical login work.

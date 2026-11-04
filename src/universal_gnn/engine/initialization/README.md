@@ -22,6 +22,9 @@ Other providers and pretrained initialization retain their existing paths. Cache
 match input precision, native cutoff, complete training membership, artifact and graph provenance.
 An invalid receipt is a configuration failure and must never trigger batch halving.
 
-Status: runtime prototype pending actual MACE/NequIP graph, RNG and training tests on Slurm.
-Pure policy tests do not establish numerical acceptance. The independent preparation CLI remains
-available for preparing a reusable resolved configuration after runtime acceptance.
+Status: Slurm911 passed five actual original graph/calibration/fresh/RNG tests per provider.
+The complete64-record band-gap pilot training partitions were then calibrated and used by
+MACE916 and NequIP915 for both original-architecture initialization modes on CUDA.
+This proves the explicit preparation route for these inputs; automatic training/capacity
+integration remains separate. See [evidence](../../../../docs/agents/arxiv-pilots.md).
+Full-dataset preparation must scan that dataset's complete training partition anew.

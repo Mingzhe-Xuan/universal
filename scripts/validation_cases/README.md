@@ -11,5 +11,7 @@ is mandatory via `UGNN_NEIGHBOR_PROVIDER`; an unavailable provider is a failure,
 Fresh constructors must actually consume the receipt and reject a changed graph during inference
 reconstruction as well as training preparation.
 
-Status: provider environments have passed CUDA dependency checks; actual original-constructor
-and graph-calibration tests remain pending. Dependency checks do not establish these results.
+Status: Slurm911 passed all ten actual cases with no skips. Original-source hashes were verified
+against6a179b1; MACE/NequIP also completed both band-gap pilot initialization modes on CUDA.
+See [evidence and coverage limits](../../docs/agents/arxiv-pilots.md). These checks do not
+replace each downstream task's full-data, derivative or quality acceptance.
