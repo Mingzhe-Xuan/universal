@@ -3362,3 +3362,21 @@
 - 2026-11-04T22:21:04+08:00: Ordinary SSH verify/pull published1afa6d4 first.925 has terminal post-test assertion failure (40 main+16 subtests actually passed);92632controls passed and handle absent. Unique claim submits corrected complete generation regression CPU1/6GiB/20min and eight immutable classification report-count augmentations plus5 stdlib metric tests CPU1/1GiB/10min. No training, numerical login work, environment edits or overwrite of925/original reports.
 
 - 2026-11-04T22:23:45+08:00: Ordinary SSH verifies/pulls current published bundle first, then reads exact927/928 handles from existing claim and their own reports/JUnit/bounded logs. No new jobs, restarts, scientific imports or source edits.
+
+- 2026-11-04T22:32:35+08:00：SCP上传已推送cf58fc4的16716B小型离线bundle，SHA 25b047659d1b3eac1994d96be6aedee918087f8af3ed93b9f42aecb93ad52679，先决1afa6d4；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-04T22:33:29+08:00:927/928 terminal COMPLETED0:0 with reports verified. Ordinary SSH first SHA/pull publishedcf58fc4, then unique claim submits14-case physical acceptance (GPU1/CPU1/8GiB/20min). ActualCUDA GCN validator, independent bad-force rejection, per-atom/missing-energy and heldout/resume regressions. No original model training, login numerics, source or environment edits.
+
+- 2026-11-04T22:35:52+08:00: Ordinary SSH verify/pullcf58fc4 first, observe exact929 physical regression handle and own report/JUnit/bounded logs only. No restarts, submissions, source or environment changes; save local evidence.
+
+- 2026-11-04T22:39:16+08:00：Ordinary SSH verify/pull unchangedcf58fc4, confirm929 passed report then unique claim submits12 GPU pipelines/24 diagnostic runs: dielectric,forcefield,generation times4providers,each both initializations,CPU2/24GiB/GPU1/2h. Frozen895 all64 train graphs/100-batch paired capacity precede training; physical tasks require actual FD/rotation/mixed-gradient acceptance per mode; generation independent8 samples at100x2 steps, not formal1000. No source updates while these run, no dataset/environment edits or login numerics. Existing927/928/929 are terminal COMPLETED0:0; no restarts.
+
+- 2026-11-04T22:40:52+08:00: Ordinary SSH verifies/pulls unchangedcf58fc4 before observing exact930–941 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.
+
+- 2026-11-04T22:43:21+08:00: Ordinary SSH verifies/pulls unchangedcf58fc4 before observing exact930–941 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.
+
+- 2026-11-04T22:47:00+08:00: Static runtime contract confirms frozen FF definitions use invalidenergy output instead oftotal_energy. Ordinary SSH verify/pull unchangedcf58fc4, inspect exact934–937 UserId/JobName/JobState and cancel only matching current-user PENDING invalid FF requests. Preserve other8 pipelines and all original definitions/reports. No numerical login work, source changes or blind retries.
+
+- 2026-11-04T22:52:03+08:00: Ordinary SSH verify/pull unchangedcf58fc4 then unique claim submits GPU1/CPU2/16GiB/20min read-only diagnosis of actual931 scratch checkpoint. Compare every saved/reloaded parameter/buffer exactly and both same-model repeat versus double-load predictions over64 train records, with deterministic algorithms false/true separately. Original strict1e-5/1e-6 acceptance unchanged. No training, source edits or new packages; queued8 live pilots retain their checkout.
+
+- 2026-11-04T22:54:09+08:00: Ordinary SSH verifies/pulls unchangedcf58fc4 before observing exact930–941 claim handles, own pipeline/capacity/derivative receipts and failed-job log tails. No new jobs, restarts, source updates or numerical login operations.

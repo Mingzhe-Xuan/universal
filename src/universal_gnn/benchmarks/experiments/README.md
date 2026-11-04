@@ -18,6 +18,13 @@ dielectric uses the explicit small-response profile for equivariant bodies and f
 components for invariant bodies. MLearn supervises total energy and forces only. Original native
 head comparisons, molecular/plugin and other additional experiments remain separate requirements.
 
+Definition revision2 names the force-field output/loss `total_energy` and binds it
+to the unchanged source label `energy` in eV. Earlier frozen definitions used the
+unsupported output name `energy`; they must remain immutable as preparation
+history and cannot launch force-field training. Prepare a new matrix rather than
+overwriting them. The tests call the real runtime supervision contract for every
+force-field case, independently of the recipe's expected names.
+
 `write_matrix(matrix, output)` creates a new definition directory and writes each configuration plus
 the final manifest; existing outputs are refused. `prepared_not_launched` is deliberate: source
 identity checks and configuration preparation cannot substitute for original-model, derivative,

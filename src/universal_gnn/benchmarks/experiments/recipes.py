@@ -68,8 +68,8 @@ def _config(registry, model, task, mode, seed, *, epochs, learning_rate, patienc
                       generation_corruption="per_epoch_structure_v2", validate_sampling=False)
         return config
     if task == "forcefield":
-        config["task"] = dict(kind="forcefield", supervised_outputs=["energy", "forces"], loss_weights=dict(energy=1., forces=1.))
-        dataset["bindings"] = dict(energy=dict(key="energy", unit="eV"), forces=dict(key="forces", unit="eV/angstrom"))
+        config["task"] = dict(kind="forcefield", supervised_outputs=["total_energy", "forces"], loss_weights=dict(total_energy=1., forces=1.))
+        dataset["bindings"] = dict(total_energy=dict(key="energy", unit="eV"), forces=dict(key="forces", unit="eV/angstrom"))
         readout = dict(name="node_mlp", pooling="sum", hidden_features=[128, 64], activation="silu")
     else:
         config["task"] = dict(kind="supervised", property=task)
@@ -124,7 +124,7 @@ def build_matrix(registry, *, seeds=SEEDS, epochs=300, learning_rate=3e-4, patie
                         case["required_gates"].extend(("heldout_generation_protocol", "sampling_cuda_capacity"))
                     cases.append(case);identifiers.append(identifier)
                 pairs.append(dict(id=pair, cases=identifiers, batch_policy="common minimum accepted size; revalidate both before training"))
-    return dict(version=1, kind="arxiv_v1_primary_matrix", status="prepared_not_launched", seeds=list(seeds),
+    return dict(version=1, definition_revision=2, kind="arxiv_v1_primary_matrix", status="prepared_not_launched", seeds=list(seeds),
                 registry=copy.deepcopy(registry), registry_sha256=canonical_digest(registry), cases=cases, pairs=pairs,
                 expected_training_runs=len(MODELS)*len(TASKS)*len(INITIALIZATIONS)*len(seeds), completed_training_runs=0,
                 interpretation="full primary definitions only; runtime/capacity gates and independent evaluation still required")

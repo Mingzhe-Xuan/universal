@@ -4,6 +4,7 @@ from collections import Counter
 import copy
 import hashlib
 import json
+import runpy
 import os
 from pathlib import Path
 import subprocess
@@ -68,7 +69,7 @@ class ArxivDefinitionTests(unittest.TestCase):
                 self.assertTrue(config["optimization"]["train_backbone"])
                 self.assertTrue(config["optimization"]["train_readout"])
                 if case["task"] == "forcefield":
-                    self.assertEqual(config["task"]["supervised_outputs"], ["energy","forces"])
+                    self.assertEqual(config["task"]["supervised_outputs"], ["total_energy","forces"])
                     self.assertEqual(config["prediction"]["readout"]["pooling"], "sum")
                     self.assertNotIn("stress", config["dataset"]["bindings"])
                 else:
@@ -76,6 +77,21 @@ class ArxivDefinitionTests(unittest.TestCase):
                     self.assertEqual(config["dataset"]["bindings"][case["task"]]["unit"], spec.unit)
         self.assertEqual(source, original)
 
+    def test_forcefield_definitions_satisfy_the_actual_runtime_supervision_contract(self):
+        contract = runpy.run_path(str(Path(__file__).resolve().parents[1] / 'src/universal_gnn/tasks/supervision.py'))
+        matrix = build_matrix(registry_fixture())
+        self.assertEqual(matrix['definition_revision'], 2)
+        cases = [case for case in matrix['cases'] if case['task'] == 'forcefield']
+        self.assertEqual(len(cases), 24)
+        for case in cases:
+            config = case['config']
+            outputs = contract['supervised_outputs'](config)
+            self.assertEqual(outputs, ('total_energy', 'forces'))
+            self.assertEqual(set(config['task']['loss_weights']), set(outputs))
+            self.assertEqual(set(config['dataset']['bindings']), set(outputs))
+            self.assertEqual(config['dataset']['bindings']['total_energy'], dict(key='energy', unit='eV'))
+        with self.assertRaises(ValueError):
+            contract['supervised_outputs']({'task': {'kind':'forcefield', 'supervised_outputs':['energy','forces']}})
     def test_pairs_share_every_task_setting_except_whole_backbone_initialization(self):
         matrix = build_matrix(registry_fixture())
         cases = {case["id"]:case for case in matrix["cases"]}

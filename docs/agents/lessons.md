@@ -267,3 +267,5 @@
 - 2026-11-04T21:41:39+08:00：unittest形式不代表标准库控制测试。结构质量测试通过延迟导入Pymatgen/ASE/NumPy进行实际物理评分，应与Torch测试一起走Slurm；只有metadata/CLI guard可在-S本地检查。先阅读测试调用依赖再分类，导入失败时移动到正确执行环境并保留完整验收要求，不以安装本地科学栈或跳过测试替代。
 
 - 2026-11-04T22:16:43+08:00：pytest当前版本会把unittest成功subTest加入JUnit tests总计数，但不为每个成功子测试写独立testcase节点。925实际40主测试+16子测试、40个节点、汇总56。固定主测试覆盖应核对唯一classname/name节点及分组完整性，另要求汇总和节点均无error/failure/skipped并保留原总计数；不能据汇总计数误报科学失败，也不能绕过失败的作业收据。
+
+- 2026-11-04T22:49:21+08:00：原全矩阵测试曾照着recipe断言supervised_outputs=[energy,forces]，和运行时只允许total_energy的协议脱节。数值force-only smoke未覆盖energy监督，直到真实FF入口暴露。定义测试必须跨到实际监督输出协议，并校验输出名、loss_weights、binding输出名一致且源标签仍可为energy。旧冻结定义不可覆盖，应记录revision与修正前后指纹；未验真实配置不能宣称全矩阵可运行。

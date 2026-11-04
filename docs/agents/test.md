@@ -1209,3 +1209,9 @@
 
 - 2026-11-04T22:30:53+08:00：物理单元提交前静态检查通过：六份Python AST、Slurm bash-n及内嵌Python AST、CLI在-S无科学依赖/非Slurm时先拒绝、三份README链接/围栏正常。14项数值测试（4验收器正反例含CUDA、4 E/atom/force-only/不同batch、6既有完整留出/续训）全部指定发布后Slurm，未在本地跑Torch。927/928实际收据已回传核验：927八Git blob一致、40主/16子零错误零跳过；928八个原报告SHA使用observation保存的原始LF字节匹配，避免Windows落盘CRLF误报，并从原混淆计数独立重算全部指标。
 - 2026-11-04：物理CLI发布前复审修正：邻居校准仅适用于official MACE/NequIP scratch，其他模型/初始化直接使用配置；此前CLI无条件调用会被校准器正确拒绝。已增加与训练路径一致的条件，AST和差异检查通过。尚未同步此单元或提交数值作业，14项真实数值门禁保持不变。
+
+- 2026-11-04T22:39:16+08:00：929实际14项数值全部通过、零skip，GPU为RTX5090，五Git blob已核验回传。剩余24真实诊断请求检查：12管线/24冻结895 case，完整64/16/16、3epoch、batch2起步、generation100steps×2 inner保持；原构造代码自6a未变，每模型重新native parity；完整64原图/四次100batch成对CUDA→真实物理FD/几何→两版训练/全部测试ID/重载。生成另外每版8次独立留出条件采样，仅执行诊断、不冒称正式1000样本。12请求AST/bash及配置静态核验通过。请求完整内容和SHA保存在忽略claim，不直接修改远程源码。
+
+- 2026-11-04T22:49:21+08:00：力场定义修复单元计划：实际runtime supervised_outputs只接受total_energy/forces/stress；旧recipes/tests共同写成energy，24份正式及8份诊断FF配置均无法执行。改为总能量输出total_energy、loss_weights同名、dataset.bindings.total_energy.key仍energy，原数据/单位/权重/结构划分和架构不变。新增跨模块测试，直接调用真实纯stdlib supervision函数验全部24格输出/绑定/权重合法，避免只镜像recipe；保留原定义/失败证据，新定义显式revision2。运行定义全套、pilot控制及隔离发布候选；发布后Slurm重建新的完整144定义并实际验证FF。不会修改运行中cf58checkout。另准备独立GPU重载诊断，先验证保存/重载参数buffer逐项完全相等，再比较同模型重复前向与双加载，保留当前预测容差，不因931失败放宽。
+
+- 2026-11-04T22:54:18+08:00：FF定义修复提交前：7项定义控制和7项pilot控制在本地/隔离候选通过；直接实际监督协议验证24份FF输出/权重/绑定合法、拒绝旧energy输出。与冻结872逐项比较144份完整配置：120份完全相同、24份只更正输出/损失/绑定目标名，source标签energy和全部数据/划分/架构/预算完全保持。新增方法首次插入位置造成IndentationError已修正并完整重跑7项通过，未删断言或降低标准。AST、README及git diff检查通过。当前cf58远程作业仍运行；本修复仅本地提交，等待其全部终态再同步/Slurm重建新revision2定义。
