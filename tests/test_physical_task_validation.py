@@ -97,3 +97,27 @@ def test_original_assessment_helper_accepts_float64_geometry_and_zero_reference(
     result = assess(model.cpu().double(), data)
     assert result['forces_finite_difference_passed']
     assert result['stress_finite_difference_passed']
+
+
+@pytest.mark.parametrize('provider', ['nequip', 'other'])
+def test_reference_cast_policy_preserves_live_values_and_unrelated_attributes(provider):
+    from universal_gnn.benchmarks.validation.precision import energy_difference_reference
+    model = torch.nn.Module()
+    model.backbone = torch.nn.Module()
+    model.backbone.official_artifact = {'provider': provider}
+    model.backbone.model = torch.nn.ModuleDict()
+    for name in ['BesselEdgeLengthEncoding', 'SphericalHarmonicEdgeAttrs', 'AddRadialCutoffToData', 'Unrelated']:
+        child = type(name, (torch.nn.Module,), {})()
+        child.register_parameter('weight', torch.nn.Parameter(torch.tensor([.125, -.75])))
+        child._output_dtype = torch.float32
+        model.backbone.model[name] = child
+    reference, adjustments = energy_difference_reference(model)
+    assert len(adjustments) == (3 if provider == 'nequip' else 0)
+    for name, original in model.backbone.model.items():
+        copied = reference.backbone.model[name]
+        assert original._output_dtype == torch.float32
+        assert original.weight.dtype == torch.float32
+        assert copied.weight.dtype == torch.float64
+        assert torch.equal(copied.weight, original.weight.double())
+        expected = torch.float64 if provider == 'nequip' and name != 'Unrelated' else torch.float32
+        assert copied._output_dtype == expected

@@ -1,5 +1,4 @@
 """Independent finite differences and geometry checks; no training or metadata patches."""
-import copy
 import math
 
 import torch
@@ -9,6 +8,7 @@ from universal_gnn.contracts import StructureBatch
 from universal_gnn.data.geometry import scatter_mean, strain_batch
 from universal_gnn.engine.optimization import components
 from .finite_difference import STEPS, converged_difference
+from .precision import energy_difference_reference
 
 
 def validate_derivatives(model, structures, config):
@@ -62,12 +62,12 @@ def validate_derivatives(model, structures, config):
     if field:
         # Promote identical parameter values only for independent energy differences:
         # float32 subtraction can erase small force increments on extensive energies.
-        energy_reference = (copy.deepcopy(model.energy_model).double().eval()
-                            if parameter.dtype != torch.float64 else model.energy_model)
+        energy_reference, adjustments = energy_difference_reference(model.energy_model)
         reference_batch = batch.to(parameter.device, torch.float64)
         result['finite_difference']['analytic_dtype'] = str(parameter.dtype)
         result['finite_difference']['energy_reference_dtype'] = 'torch.float64'
         result['finite_difference']['reference'] = 'same parameter values; promoted geometry; no training'
+        result['finite_difference']['reference_dtype_adjustments'] = adjustments
         force_indices = [(atom, axis) for atom in range(min(2, len(batch.numbers))) for axis in range(3)]
         stress_indices = [(0, 0), (1, 1), (0, 1)]
         force_a = torch.stack([value['forces'][atom, axis] for atom, axis in force_indices])

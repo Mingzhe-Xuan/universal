@@ -24,7 +24,12 @@ and the already selected input coordinates promoted to float64; existing float64
 models need no copy. This prevents cancellation of small energy increments while
 still checking the actual float32 analytic forces/stress against the original
 tolerances and adjacent-step convergence. Both dtypes are recorded. The live
-model's parameters, buffers and dtype are preserved. The pure control is
+model's parameters, buffers and dtype are preserved. `precision.py` also synchronizes
+the reference copy's explicit output dtype for the three known official NequIP
+embedding classes; their ordinary `.double()` leaves that Python attribute unchanged.
+This is confined to the reference copy and recorded per module, with no original
+backbone, live dtype, graph or normalization changes. Other providers' attributes
+are left alone. The pure control is
 in `finite_difference.py`. These checks do not replace all-training-graph scans
 or CUDA capacity preflights.
 
