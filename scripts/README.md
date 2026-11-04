@@ -6,6 +6,30 @@ remain ignored. Each remote session is recorded in docs/agents/gpu.md before con
 
 ## Arxiv experiment preparation regression
 
+`scan_training_graphs.py` constructs complete original training graphs, including active response
+or generation geometry graphs. Use the provider's own environment and a GPU Slurm allocation:
+
+```bash
+sbatch --partition=compute --nodelist=node42 --gres=gpu:1 --cpus-per-task=1 --mem=8G \
+  --time=12:00:00 --output=runs/graph-scan-%j.out --error=runs/graph-scan-%j.err \
+  --wrap='cd /home/xmz/universal && PYTHONPATH=src /home/xmz/.venvs/universal-official/bin/python scripts/scan_training_graphs.py --config PATH_TO_FROZEN_CONFIG.json --output runs/NEW_GRAPH_SCAN_DIRECTORY'
+```
+
+Replace the config, fresh output path and environment for each actual case. Both CGCNN and ALIGNN
+use `universal-official`; MACE uses `universal-mace`, NequIP uses `universal`. The scanner retains
+all source-ordered training records, native directed edges or CGCNN padded slots, ALIGNN triplets,
+active auxiliary graph edges and maximum endpoint degree. It loads the original pretrained
+topology reference without running the GNN; this does not validate scratch initialization.
+Receipts bind full input identities and graph implementations. Changed source/split/checkout,
+failed graph construction or a model forward prevents probe publication. Clean-geometry coverage
+does not cover all generated noisy states or sampling trajectories.
+
+Before real scans, run `python scripts/validate_graph_scan.py --output NEW_RESULT.json` in the same
+GPU allocation/environment. Its five numerical tests cover native output format fixtures,
+actual auxiliary radius graphs, active module selection and eager/scripted forward guards.
+They do not replace real provider full scans. Seven stdlib controls can run without Torch.
+Neither numerical checks nor real provider full scans have been executed at this publication.
+
 After restoring and recording the task-owned environment, submit
 `sbatch scripts/validate_arxiv_preparation.slurm`. It requests a GPU, runs the existing
 suite plus held-out integration tests, then runs scalar/classification/spectrum/

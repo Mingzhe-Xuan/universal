@@ -1125,3 +1125,7 @@
 - 2026-11-04T12:51:17+08:00：提交前检查：selection六项和调度六项纯std全部通过，包括完整源顺序身份、各维极值、固定ID哈希普通候选、单遍有界、行摘要、padding语义和不冒充实际图扫描；worst占满预算仍增一普通batch，普通池排除worst，100次预算不变。881九项Linux实际通过且两执行Git blob已核验。新监督器五项ownership、观察中断和孤立身份场景、--plan/bash-n已通过，882从65712455B断点继续且观察增长；没有NN或正式训练验收。
 
 - 2026-11-04T12:56:51+08:00：Slurm883与884各六项全部通过；回传收据/日志按dd0fcb0实际三源Git blob核验，无skip、没有Torch数值验收或正式训练。文档提交前检查：state原历史逐字保留、源路径/结果本地文件存在、git diff --check通过。
+
+- 2026-11-04T12:59:19+08:00：实现前测试计划：完整图扫描分为probes/native_scan.py（Slurm门禁、完整train身份/图元数据、四原包图计数、实际适配层分支、禁止模型forward、原子发布/失败证据）和scripts/scan_training_graphs.py（JSON配置CLI）。纯std控制测试验证门禁先于Torch、拒绝裁剪/非train/非official/自定义graph、完整扫描调用顺序和不漏行、失败不发布verified probe、CGCNN padding与ALIGNN triplets/两轴degree语义、真实分支元数据和源绑定；实际Torch/provider/CUDA图构造作为单独Slurm集成验收，不在本机运行模型。始终记录clean geometry范围，不签发生成全轨迹容量保证；源码/配置/图定义/source/canonical split/dtype/device/官方artifact摘要绑定，reference采用相同original预训练拓扑而非伪scratch。
+
+- 2026-11-04T14:51:38+08:00：native_scan提交前七项纯std控制通过，另与已发布HEAD src/scripts/tests隔离后同七项通过，证明不依赖工作树中未发布scratch/生成改动；移除initialization/neighbor_statistics/NequIP仅fresh的architecture只作用reference副本。已有selection六项+调度六项回归通过。AST/py_compile、相关README链接/命令/围栏、state历史保留及git diff --check通过。五个CUDA图格式/实际radius/active分支/eager与scripted forward guard检查仅写好未执行；真实四provider全扫描也未执行。

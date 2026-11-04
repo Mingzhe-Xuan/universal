@@ -21,7 +21,7 @@ graph scan selected every relevant extreme. The original-model graph scanner and
 or sampling acceptance remain separate requirements. Current worker integration awaits numerical
 acceptance in the restored provider environments.
 
-## Full graph scan still to implement
+## Complete original graph scanner
 
 `selection.select_probe(rows, records, binding)` verifies all source-ordered training identities and
 retains bounded extreme and deterministic ordinary candidates. Counts must include atoms, native
@@ -29,9 +29,27 @@ edges, native triplets, auxiliary edges and maximum degree. Native edge semantic
 directed edges from CGCNN's padded slots. Ordinary examples exclude selected extremes when the
 dataset contains enough records. The reducer alone keeps `verified_full_training_scan: false`.
 
-`native_scan.py` is still planned for Slurm-only construction with the original providers.
-It is not implemented yet. Receipts must bind the complete source-ordered train
-partition, input precision, native artifacts, actual graph implementations and active cutoffs.
+`native_scan.scan_training_graphs(config, output)` constructs every source-ordered training
+graph through the four original providers' `native_input`. It requires Slurm, the configured
+CUDA device, `structures: all`, an explicit train manifest and the reset-head experiment path.
+It rejects custom graphs and atom-count cropping. To inspect topology independently of scratch
+normalization, it loads the original pretrained constructor, removing initialization/calibration
+options only from a copy. This does not validate the scratch constructor or its weights.
+
+The scanner writes `graph-sizes.jsonl`, a status `report.json`, then `probe.json` only on success.
+Failed prefixes remain for diagnosis. Existing output directories cannot be reused. It binds raw
+source SHA, canonical manifest SHA, precision/device, original artifacts, provider settings,
+loaded Python source hashes and dependency versions. It rechecks source/split and checkout
+identity before publication. Model module forwards are forbidden during graph construction.
+The current seven stdlib controls cover policy, complete-stream identity and count arithmetic;
+the five numerical checks in `scripts/validate_graph_scan.py` and actual four-provider full scans
+remain pending restored Torch/provider environments. No real graph-scan receipt exists yet.
+
+Run `scripts/scan_training_graphs.py --config CONFIG --output NEW_DIRECTORY` inside a GPU Slurm
+allocation in the model's isolated environment. See the [script instructions](../../../../scripts/README.md)
+for commands. Use the emitted probe for the paired capacity runner only after separately
+verifying the original initialization and derivative checks. The scan itself does not run
+training, adapt batch size or prove that selected batches fit memory.
 
 The scan must count auxiliary readout graphs too. The existing
 [equivariant adapter](../../adapters/features.py) adds a radius graph for geometric response;

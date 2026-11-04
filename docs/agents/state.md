@@ -6,14 +6,14 @@ Active goal：按照docs/plan/arxiv_v1_experiments.md开展四模型×六任务�
 
 已发布be3d579的144组完整配置生成器与数据/划分身份绑定。Slurm872实际通过15项纯std检查，从五份完整数据/作者或冻结划分及四原始模型资源生成144配置；收据已回传按实际三个Git blob与全部case摘要重建核对。状态prepared_not_launched，正式0/144。原始scratch构造、自动native校准、生成训练/独立评测原型仍未发布，等待原包数值验收；不将架构变体或重置头冒充整个骨干scratch。
 
-Torch/CUDA/DGL尚未齐备。Slurm881的9项新续传器检查实际通过，收据已按执行Git blob核验；旧877已failed且无活动作业，5个已校验wheel与CuBLAS 65712455B断点保留。旧监督器40620/代理53648实际终止且1080释放后，固定HTTP断点8B和Vlab banner检查通过，启动唯一监督器exec73597/PID12124；代理随实际链路断开精确替换，当前身份以监督器文件为准。新882已提交且观察到CUDA字节增长；实时状态以句柄、队列及tmp/arxiv-linux-base/transfer-supervisor.json为准，不重启健康代理。固定只读HTTP PID52372/54339继续服务，未碰用户或未知SSH。新CPU二进制下载及直接公网例外仍未获答复，均未执行。
+Torch/CUDA/DGL尚未齐备。Slurm881的9项新续传器检查实际通过，收据已按执行Git blob核验；旧877已failed，5个已校验wheel与CuBLAS 65712455B断点保留。旧监督器40620/代理53648实际终止且1080释放后，固定HTTP断点8B和Vlab banner检查通过，启动唯一监督器exec73597/PID12124；代理随实际链路断开精确替换，当前身份以监督器文件为准。882在链路断开后已离队，监督器确认无活动writer后提交885，最新885 RUNNING且CUDA字节增长；实时状态以句柄、队列及tmp/arxiv-linux-base/transfer-supervisor.json为准，不重启健康代理。固定只读HTTP PID52372/54339继续服务，未碰用户或未知SSH。新CPU二进制下载及直接公网例外仍未获答复，均未执行。
 
 # 当前计划
 
 1. 完整144配置与身份绑定已通过Slurm872真实输入准备、15项纯std和本地实际Git blob核验；保留原定义，后续以通过的容量解析配置训练，不覆盖原始定义，不将配置准备当训练。
 2. 优先恢复环境：879零payload不能比较8/30秒；880两组约5MiB/22秒且连接复用，第三组部分前缀也匹配。新的curl同连接续片工具本地及Slurm881各9项通过，882正从旧partial接续，保持SHA与20GiB余量。完整16资源后运行既有base离线安装，再补DGL/official extras和各环境pipcheck。
 3. 真实原包scratch、native邻居统计自动集成、生成新噪声/val-best/heldout质量数值验收；补分子6Å/PBC与插件对照。源码本地修改/提交/推送后仅git pull同步，不提交用户docs/paper或ustc记录。
-4. 成对容量控制a7b127c已发布，Slurm875通过10项纯std子进程测试并按执行的三个Git blob核验；8fdea11另修复每个worst在热身后独立满batch测量，Slurm878六项纯调度通过并按三Git blob核验，仍待真实GPU；完整图流的selection纯聚合与普通batch修复dd0fcb0已发布，本地12项及Slurm883/884共12项通过并核验实际Git blob；真实原生+适配层图扫描尚未实现；全训练图最坏规模与导数训练步预检，仅OOM逐级减batch至1，两种初始化共同有效batch双侧复验；正式训练、独立完整测试及质量采样，保留20GiB磁盘余量和失败记录。
+4. 成对容量控制a7b127c已发布，Slurm875通过10项纯std子进程测试并按执行的三个Git blob核验；8fdea11另修复每个worst在热身后独立满batch测量，Slurm878六项纯调度通过并按三Git blob核验，仍待真实GPU；完整图流的selection纯聚合与普通batch修复dd0fcb0已发布，本地12项及Slurm883/884共12项通过并核验实际Git blob；原生+适配层native_scan及CLI/五项数值检查脚本已实现，本地七项纯控制和已发布源码隔离七项通过，实际四provider全扫描/五数值检查未运行；全训练图最坏规模与导数训练步预检，仅OOM逐级减batch至1，两种初始化共同有效batch双侧复验；正式训练、独立完整测试及质量采样，保留20GiB磁盘余量和失败记录。
 
 # 变更记录
 
@@ -458,3 +458,7 @@ Torch/CUDA/DGL尚未齐备。Slurm881的9项新续传器检查实际通过，收
 - 2026-11-04T12:51:17+08:00：新资源续传器881九项实际通过并核验两Git blob；旧877已失败，无需取消，5个wheel和CuBLAS 65712455B断点保留。旧监督器实际终止/端口释放后经固定8B Range和Vlab banner检查，唯一73597/12124监督器启动、11564代理绑定远端3464654，882已提交且资源字节增长。完成selection与至少一普通batch的12项本地纯std检查，进入独立发布及CPU Slurm兼容阶段；真实native_scan/GPU/原包scratch/生成数值仍待执行。正式0/144。
 
 - 2026-11-04T12:56:51+08:00：完成selection/普通batch控制的Linux兼容阶段：dd0fcb0已发布并服务器pull，883与884各六项通过；收据及stderr回传，均按实际执行三Git blob核验。882使用179925a资源工具，固定catalog/source SHA与计算节点代理健康通过，CuBLAS至少72675655B；阶段性停顿错误curl7/端口拒绝，专用SSH日志为超时或连接reset，未见协议/SHA错误。监督器仅精确恢复已绑定断线代理；当前正式0/144。下一阶段完整native_scan与原包/GPU数值，资源同时继续。
+
+- 2026-11-04T12:59:19+08:00：进入完整原图扫描实现阶段。上一回合为实际进展：179925a新续传器部署882，dd0fcb0选择器及883/884共12项Linux控制验收；73597句柄本回合实际poll仍live，882 RUNNING/字节增长，保持健康代理。下一步实现Slurm-only native_scan及CLI，完整train逐结构调用original native_input并统计实际response/生成额外图，不运行NN；真实provider图验收待依赖到位，不能用控制fixtures替代。
+
+- 2026-11-04T14:51:38+08:00：完整原图扫描本地实现单元完成：native_scan.py/CLI按完整源顺序调用四原生建图入口并统计实际启用的额外图，禁止模块forward，保留逐行/失败证据，绑定源/划分/精度/设备/artifact/加载源码与依赖，末尾复核源/划分/Git后才发布probe。七项控制及已发布源码隔离七项通过，另选择/调度12项回归通过；CUDA五项与真实provider全扫描未执行，不冒充数值验收。73597本回合句柄持续live，882离队后确认队列空再885接原断点，最新实际RUNNING/增长。下一步独立发布和CPU Slurm，再在依赖恢复后实际CUDA/全图/成对容量。正式0/144。
