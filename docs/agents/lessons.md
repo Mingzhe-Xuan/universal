@@ -247,3 +247,5 @@
 - 2026-11-04T12:04:42+08:00：PowerShell调用rg时，不要把未展开的readouts/*.py等glob作为路径；用真实目录加-g "*.py"。也应先rg --files确认generation是generation.py还是子包，避免凭习惯猜model.py。此类路径经验只记运维文档，不加到GNN业务数学里。
 
 - 2026-11-04T12:31:02+08:00：879表明HEAD与GET分别重开curl时，成功HEAD不能证明下一条SOCKS连接可建立；880同一curl后两次num_connects=0，两组5MiB约22s完整，第三组部分也为正确prefix，且一次初始connect10.27s超过原5s。用-C -配合显式有限Range头与--next可以连续append同一partial并复用HTTP/SOCKS连接，--fail-early防止中间片失败后跳过缺口；仍需验证CR/长度和完整SHA。Windows curl JSON含UTF-8路径，subprocess text须显式UTF-8，不能依赖默认GBK。
+
+- 2026-11-04T12:56:51+08:00：纠正早先概括：response的额外图来自EquivariantAdapter；生成实际走tasks/generation.py的DirectionReadout，仅native_polar为false时才建额外radius graph。完整扫描应检查实际模型模块和启用分支，不对所有带cutoff的模块一律重复计数。882的CLI资源报告compute_node_proxy_health_exit为0不保证整个后续长传输持续可用；应关联具体curl错误、实际断点增长和对应代理SSH日志，不能把它判成SHA/协议故障。
