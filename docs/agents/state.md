@@ -1,5 +1,9 @@
 # 当前状态
 
+2026-11-05T10:51:57+08:00: Generation formal train/quality execution unit passed27 pure controls and144 actual recipe checks; next publish fixed source and run CPU acceptance on6 real predictive preparation gates plus8 real diagnostic generation report formats.989 last confirmed RUNNING129 epochs;1040/1041 independent scratch post-evaluation queued afterok989.1039 source species consistency passed115730 records/20 comparisons. Accepted formal3/144, submitted8/144, full scope preserved.
+
+2026-11-05T10:12:21+08:00: Continue generation formal training/quality orchestration while989 is confirmed live91 epochs. Before later task launches, perform a parallel CPU full-source species compatibility audit: all five registered sources and actual pinned CGCNN/ALIGNN encodings plus MACE/NequIP vocabularies. This is an early capability check, not graph/derivative/accuracy acceptance; no filtering or model/data edits and no change to144 scope.
+
 The original goal remains active: four original providers x six tasks x two whole-backbone initializations x three seeds =144 formal trainings, plus original native/frozen, rank3/4, molecular/plugin and cost deliverables. Scope is unchanged.
 
 Independently accepted formal cases:3/144; unique submitted cases:8/144. MACE968 pretrained174 epochs/best144 and969 whole scratch295/best265, and ALIGNN988 pretrained115/best85 all passed full1309/93/164, batch4,float32 and independent raw164-target metrics, trained-best CPU physics and all1566 inference checks. Independent post jobs are993/1002,1024/1025,1035/1036 respectively. Formal unique index: results/paper-completed-20261105/formal-index.json.988 E/atomMAE0.0328126441 and forceMAE0.0577026302;3 accepted cases are still onlyseed123.
@@ -11,6 +15,12 @@ Public predictive formal execution source00b2dc3 is pushed and cached immutably.
 Four full original-head baselines1027-1030 and independent1031-1034 raw source/metric audits remain accepted;1026 had8 main/13 sub21 JUnit.48/48 diagnostics,64 diagnostic generation attempts,1019 generation preparation32-JUnit control,1010 exposure audit,1003 tensor groups and981 scalar baseline remain accepted. Every limitation about pretrained exposure, unmatched energy references and single-seed results is retained. Existing immutable model/engine/source caches, environments and datasets are unchanged.
 
 # 当前计划
+
+2026-11-05T10:40:42+08:00: Revalidate authoritative queue; finish generation execution unit and tests; independently accept newly completed cases.
+
+2026-11-05T10:39:49+08:00: Deliver installation completion notice based on verified existing evidence; preserve prior experiment plan below.
+
+2026-11-05T10:12:21+08:00: Continue generation formal training/quality orchestration while989 is confirmed live91 epochs. Before later task launches, perform a parallel CPU full-source species compatibility audit: all five registered sources and actual pinned CGCNN/ALIGNN encodings plus MACE/NequIP vocabularies. This is an early capability check, not graph/derivative/accuracy acceptance; no filtering or model/data edits and no change to144 scope.
 
 1. Continue exact989 and later formal/preparation handles. Collect each terminal case's complete configs/events/heldout outputs, initialization/source/split/checkpoint identities, trained-best physics and full inference chain before updating the independent count. Do not restart on observation timeout.
 2. Finish full-data task preparations and launch remaining cases/seeds using actual paired configs and measured budget. The new public predictive runner consumes genuine full evidence; generation retains its separate full training/1000-attempt/five-draw/100x2 protocol. No data/graph/precision/epoch reductions or CPU fallback; only typedOOM changes preparation batch.
@@ -574,3 +584,15 @@ Four full original-head baselines1027-1030 and independent1031-1034 raw source/m
 - 2026-11-05T09:14:05+08:00: Enter public formal predictive execution stage; repair previously garbled current-state snapshot using ASCII text while preserving the complete change-history prefix. Existing experiments unchanged.1035 full inference and989 epoch40 are confirmed live. Next build/test source-bound gate and runner before use in new formal tasks.
 
 - 2026-11-05T09:53:22+08:00: Completed formal predictive execution unit:1037 passed151 JUnit and6 actual full preparation chains;1038 accepted3 genuine completed result reports without Torch.00b2dc3 source public. Independent1035/1036 accepted ALIGNN988 complete115/best85 and full1566 inference, bringing formal accepted count3/144;989 remains live. Original144 and supplementary scope unchanged. Next complete remaining real gates/launches and generation quality orchestration.
+
+- 2026-11-05T10:12:21+08:00: Continue generation formal training/quality orchestration while989 is confirmed live91 epochs. Before later task launches, perform a parallel CPU full-source species compatibility audit: all five registered sources and actual pinned CGCNN/ALIGNN encodings plus MACE/NequIP vocabularies. This is an early capability check, not graph/derivative/accuracy acceptance; no filtering or model/data edits and no change to144 scope.
+
+- 2026-11-05T10:29:54+08:00: Species audit1039 completed successfully: all115730 records of five frozen sources and all four actual input encoders/vocabularies have zero unsupported records, by every role, with no filtering/remapping. Continue generation formal orchestration in benchmarks/generation/{evidence.py,execution.py}; extend common formal gate with explicit internal generation opt-in while the predictive CLI keeps rejecting it. New public train/quality commands preserve two-stage records and checkpoints.
+
+- 2026-11-05T10:39:23+08:00: Entered installation handoff audit; inspect already-collected install and actual RTX5090 acceptance evidence before any environment mutation.
+
+- 2026-11-05T10:39:49+08:00: Installation handoff verified from collected897/898/899 receipts: Torch2.7.1+cu128/CUDA12.8, three compatible environments, actual RTX5090 provider and DGL/PyG CUDA checks passed;18 regressions zero failures/errors/skips,898/899 completed0:0. Installation already complete; no reinstallation, new SSH, proxy, package changes or Slurm submission required. Notify user; broader experiment plan and unrelated work preserved.
+
+- 2026-11-05T10:40:42+08:00: Resume complete arxiv_v1_experiments goal. Previous turn repeated existing installation evidence and counts as no progress toward experiments. Revalidate live formal/preparation handles, finish generation train/quality orchestration controls, and advance completed cases through independent post-evaluation; preserve all144 trainings and supplementary requirements.
+
+- 2026-11-05T10:51:57+08:00: Generation formal train/quality execution unit passed27 pure controls and144 actual recipe checks; next publish fixed source and run CPU acceptance on6 real predictive preparation gates plus8 real diagnostic generation report formats.989 last confirmed RUNNING129 epochs;1040/1041 independent scratch post-evaluation queued afterok989.1039 source species consistency passed115730 records/20 comparisons. Accepted formal3/144, submitted8/144, full scope preserved.

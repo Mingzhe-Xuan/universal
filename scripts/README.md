@@ -321,3 +321,5 @@ inference and replays actual pre-headmode checkpoints. Run through Slurm after
 `evaluate_native_baseline.py` and `.slurm` run [full native-head baselines](../src/universal_gnn/benchmarks/native_heads/README.md) on the matching7580 bandgap or164 forcefield test records. These CPU Slurm evaluations do not add formal trainings.
 
 `run_formal_case.py` and `.slurm` expose [formal predictive execution](../src/universal_gnn/benchmarks/execution/README.md) for the five predictive tasks. The Slurm-only `--check-only` mode audits real full preparation evidence without training; a formal run refuses existing case directories.
+
+`run_generation_case.py` and `.slurm` provide separate [full generation training and quality stages](../src/universal_gnn/benchmarks/generation/README.md#formal-training-and-quality). `--stage check` validates both actual capacity chains; `train` preserves the full recipe and `quality` preserves1000 attempts/5 draws. Partial quality attempts remain available for audit and never reset the trained backbone.

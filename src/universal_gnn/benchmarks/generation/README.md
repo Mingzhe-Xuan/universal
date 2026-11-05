@@ -45,3 +45,70 @@ The separate quality evaluator currently samples singly: its formal budget remai
 1000 attempted samples,5 draws per condition, seed456 from validation-best weights.
 Probe throughput at a different batch is not a measured1000-sample runtime.
 No DFT thermodynamic stability claim is made.
+
+## Formal training and quality
+
+`execution.py` consumes both complete capacity chains via the shared preparation
+gate. Inputs are the frozen144-case matrix, a generation case ID, a passed full
+preparation directory and a declared wall-time budget. It requires unchanged
+model/engine/graph sources, matching provider versions and original artifacts.
+`evidence.py` checks the complete train-only prior, sampling configuration and
+separate sample capacity. These modules do not change a model or training recipe.
+
+Check first from the clean immutable checkout in a CPU Slurm allocation, using
+the provider's normal Python so installed dependency metadata remains visible:
+
+```bash
+"$UGNN_PYTHON" scripts/run_generation_case.py "$UGNN_MATRIX" \
+  --matrix-sha256 "$UGNN_MATRIX_SHA256" \
+  --case seed-123--generation--mace--pretrained --stage check \
+  --preparation runs/arxiv-v1/new-mace-generation-preparation \
+  --budget-seconds 86400 --gate-output runs/new-generation-gate.json
+```
+
+After that gate passes, submit training with `UGNN_CASE`, `UGNN_STAGE=train`,
+`UGNN_PREPARATION` and `UGNN_BUDGET_SECONDS`, plus the same `UGNN_PYTHON`,
+`UGNN_MATRIX`, `UGNN_MATRIX_SHA256` variables:
+
+```bash
+sbatch scripts/run_generation_case.slurm
+```
+
+This creates the case's new run directory and refuses to overwrite an existing
+one. It verifies every complete training/validation epoch, full test denoising
+predictions, validation-best selection, source/split bytes and exact reload.
+Successful training sets `training_passed_quality_pending`; it is one completed
+training, with generation quality and independent post-evaluation still pending.
+Keep both the last checkpoint (which contains selection history) and the best
+checkpoint. Do not substitute the best file as the quality command's input.
+
+Submit a separate GPU job with the same variables and `UGNN_STAGE=quality` after
+training succeeds. Its independent stage budget must cover the measured sample
+preflight batch time times1000, plus50% reserve. This deliberately uses a full
+probe batch as the estimate for one current single-sample attempt. It is a
+conservative heuristic, not a measured trained-model runtime or a guarantee.
+The gate also checks the remaining actual Slurm wall time and GPU allocation.
+If the declared or remaining budget is insufficient, submit a larger allocation;
+do not reduce1000 attempts,5 draws, seed456 or100x2 diffusion steps.
+
+Each quality job writes `quality-SLURM_JOB_ID/` and appends `quality_attempts` to
+`formal-status.json`. `quality-active/owner.json` prevents concurrent sampling of
+the same case. An ordinary failure keeps the partial attempt, marks
+`quality_failed` and releases its own claim, allowing a fresh job with the same
+fixed protocol. Completed quality refuses another run. A claim left after a
+hard kill requires an operator to verify that exact owning Slurm job is terminal
+before recovery; a directory or observation timeout alone is never proof.
+
+All1000 attempted rows, including explicitly invalid samples, are retained.
+The integrity validator checks200 deterministic test conditions,5 distinct draws
+each, their seeds and order, source-bound compositions, numeric formats,
+best/prior identities and reported rates. Empty quality groups stay null; zero
+valid samples still constitutes a complete execution and reports zero validity.
+Unexpected exceptions or OOM fail the stage. Successful execution sets
+`generation_quality_complete=true`, but leaves
+`independent_postevaluation_verified=false`: independent geometry/matching and
+distribution rescoring is still required before accepting the paper result.
+
+The current code has pure metadata/protocol controls. Full generation gate and
+numerical training/1000-attempt acceptance require the actual full preparations;
+the existing8-attempt diagnostic reports do not satisfy this formal protocol.

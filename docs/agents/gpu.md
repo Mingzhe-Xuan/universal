@@ -3644,3 +3644,17 @@
 - 2026-11-05T09:46:56+08:00: Ordinary SSH first SHA-verify/pull published root, validate clean fixed execution source and passed1037; submit oneCPU1/2GiB10min public result-verifier acceptance on actual completed968/969/988 configs/all events/test predictions/checkpoint bytes. Read-only original data/checkpoints; no Torch import, training, GPU queue change, source/env/data edits or login batch computation.
 
 - 2026-11-05T09:49:24+08:00: Ordinary SSH first verify/pull published root then read exact own1038 actual formal-report validator acceptance JSON/bounded stderr and current-user queue. No new jobs, model/numerical execution, source/env/data edits or restart.
+
+- 2026-11-05T09:59:12+08:00：SCP上传已推送bcc9bac的7431B小型离线bundle，SHA d0b1cb5d652b5d0b1d7695759cee704774ec70ce440a30d6b2beb9c925300ded，先决00b2dc3；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T10:00:10+08:00: Ordinary SSH verifies/pulls current published bcc9bac root, then reads exact own known965-1023 claims/receipts, eight current formal status/events, replacement forcefield and four spectrum/four tensor/eight scalar/four generation preparations plus completed CPU post-evaluation, and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T10:03:27+08:00: Ordinary SSH verifies/pulls current published bcc9bac root, then reads exact own known965-1023 claims/receipts, eight current formal status/events, replacement forcefield and four spectrum/four tensor/eight scalar/four generation preparations plus completed CPU post-evaluation, and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T10:12:37+08:00: Ordinary SSH first SHA-verify/pull current published root, validate fixed clean00b2dc3 cache; submit1CPU8GiB20min complete five-source species/ID/SHA/role audit and actual pinned provider input encodings/vocabularies in isolated four environments. No model forward/training, no filtering/remapping, GPU queue or source/env/data edits, no login numerical/batch work.
+
+- 2026-11-05T10:24:27+08:00: Ordinary SSH first SHA-verify/pull published root, then read exact own1039 complete species audit report/bounded logs and current-user queue. Per-record full spool stays on server. No neural/full-source computation, new jobs or edits.
+
+- 2026-11-05T10:40:42+08:00: Ordinary SSH verifies/pulls current published bcc9bac root, then reads exact own known965-1023 claims/receipts, eight current formal status/events, replacement forcefield and four spectrum/four tensor/eight scalar/four generation preparations plus completed CPU post-evaluation, and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
+
+- 2026-11-05T10:42:08+08:00: Ordinary SSH first SHA-verify/pull current published root, validate clean dfea7b0 source cache and exact own989 RUNNING or passed scratch case. Submit2CPU16GiB4h ALIGNN scratch-only independent raw164-target/metric/physics/full1566 inference afterok989, then1CPU2GiB10min complete-output validator afterokpost. New exact scratch claim/output paths only; do not change969, other queue, source, environments or data; no login numerical work.

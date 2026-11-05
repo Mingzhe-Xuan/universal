@@ -83,3 +83,5 @@ Full-data generation has a public [pair preparation entry](generation/README.md)
 [Full native-head baselines](native_heads/README.md) evaluate original matching-task public heads on complete frozen test partitions without training or target-reference fitting.
 
 [Formal predictive execution](execution/README.md) binds a new full case to actual complete-data preparation evidence and records training/test/resource coverage. Generation keeps its independent quality orchestration.
+
+[Formal generation execution](generation/README.md#formal-training-and-quality) binds training and independent1000-attempt quality stages to separate capacity evidence, a full train-only prior and retained last/best checkpoints. Failed quality attempts are preserved and guarded against concurrent execution.

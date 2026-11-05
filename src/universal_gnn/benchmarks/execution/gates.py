@@ -33,7 +33,7 @@ def file_sha(path):
     return digest.hexdigest()
 
 
-def case_spec(matrix, identifier):
+def case_spec(matrix, identifier, *, allow_generation=False):
     """Check the full144 definition and selected original recipe without model imports."""
     if (matrix.get("kind") != "arxiv_v1_primary_matrix" or matrix.get("definition_revision") != 2 or
             matrix.get("expected_training_runs") != 144 or len(matrix.get("cases", [])) != 144 or
@@ -48,7 +48,7 @@ def case_spec(matrix, identifier):
     if len(cases) != 1:
         raise ValueError("Select exactly one primary case")
     case = copy.deepcopy(cases[0])
-    if case["task"] == "generation":
+    if case["task"] == "generation" and not allow_generation:
         raise ValueError("Generation requires its independent training and1000-attempt quality orchestration")
     baseline = expected[identifier]
     if (case["config"] != baseline["config"] or case["config_sha256"] != canonical_digest(case["config"]) or
@@ -119,21 +119,25 @@ def check_artifact_identity(official, definition, artifacts, provider):
         raise ValueError("Capacity/original graph used a different public artifact")
 
 
-def check_preparation(matrix, identifier, preparation, *, budget_seconds):
+def check_preparation(matrix, identifier, preparation, *, budget_seconds, allow_generation=False):
     """Slurm-only full-source gate; reads evidence and never trains or submits jobs."""
     if not os.environ.get("SLURM_JOB_ID"):
         raise RuntimeError("Formal preparation checks must run through Slurm")
     if type(budget_seconds) not in (int, float) or not math.isfinite(budget_seconds) or budget_seconds <= 0:
         raise ValueError("Declare a finite positive wall-time budget in seconds")
-    spec = case_spec(matrix, identifier)
+    spec = case_spec(matrix, identifier, allow_generation=allow_generation)
     case, configs, counts = spec["case"], spec["configs"], spec["counts"]
+    generation = case["task"] == "generation"
     preparation = Path(preparation)
     prepared = read_json(preparation / "report.json")
+    identity_ok = (prepared.get("pair_id") == case["pair_id"] and
+                   prepared.get("kind") == "full_generation_pair_preparation") if generation else (
+                   prepared.get("model") == case["model"] and prepared.get("task") == case["task"])
     if (prepared.get("status") != "passed" or prepared.get("stage") != "complete" or
-            prepared.get("matrix_sha256") != spec["matrix_sha256"] or prepared.get("model") != case["model"] or
-            prepared.get("task") != case["task"] or prepared.get("cuda_acceptance") is False):
+            prepared.get("matrix_sha256") != spec["matrix_sha256"] or not identity_ok or
+            prepared.get("cuda_acceptance") is False):
         raise ValueError("Preparation is incomplete, not CUDA-accepted, or belongs to another case")
-    capacity_root = Path(prepared.get("capacity_path", str(preparation / "capacity")))
+    capacity_root = preparation / "train-capacity" if generation else Path(prepared.get("capacity_path", str(preparation / "capacity")))
     graph_root = Path(prepared.get("graph_scan_path", str(preparation / "graph-scan")))
     scan, probe = read_json(graph_root / "report.json"), read_json(graph_root / "probe.json")
     capacity = read_json(capacity_root / "report.json")
@@ -172,18 +176,38 @@ def check_preparation(matrix, identifier, preparation, *, budget_seconds):
     if common > config["batch_size"]:
         raise ValueError("Capacity cannot increase the frozen initial batch")
     resolved = {}
+    prior, generation_definition = None, None
+    if generation:
+        from ..generation.preparation import generation_spec
+        from ..generation.evidence import validate_prior, checked_generation_config, check_sampling_capacity
+
+        generation_definition = generation_spec(matrix, case["pair_id"])
+        prior = prepared.get("training_prior")
+        validate_prior(prior, counts["train"])
     for mode in ("pretrained", "scratch"):
         actual = read_json(capacity_root / ("config." + mode + ".resolved.json"))
-        checked_config(actual, configs[mode], common, counts)
+        if generation:
+            checked_generation_config(actual, configs[mode], common, counts, prior)
+        else:
+            checked_config(actual, configs[mode], common, counts)
         if canonical_digest(actual) != capacity["resolved_config_sha256"][mode]:
             raise ValueError("Final resolved capacity configuration hash differs")
         resolved[mode] = actual
+    train_worker_count = len(workers)
+    sampling_evidence = None
+    if generation:
+        sampling_evidence = check_sampling_capacity(preparation, configs, resolved, probe, counts, prior,
+                                                    generation_definition["sampling_preflight"])
+        if (prepared.get("training_batch_size") != common or
+                prepared.get("sampling_batch_size") != sampling_evidence["common_batch_size"]):
+            raise ValueError("Generation preparation mixed its training and sampling batches")
+        workers = workers + sampling_evidence["successful_workers"]
     versions, seconds = installed_versions(), []
     artifacts = matrix["registry"]["artifacts"][case["model"]]["files"]
     for name, artifact in artifacts.items():
         if file_sha(Path("models/official") / name) != artifact["sha256"]:
             raise ValueError("Current public checkpoint/constructor artifact differs")
-    for worker in workers:
+    for index, worker in enumerate(workers):
         official = worker["execution"]["official"]
         check_artifact_identity(official, definition, artifacts, case["model"])
         if (worker.get("selected_training_structures") != counts["train"] or
@@ -199,7 +223,10 @@ def check_preparation(matrix, identifier, preparation, *, budget_seconds):
         elapsed = worker["elapsed_seconds"]
         if type(elapsed) not in (int, float) or not math.isfinite(elapsed) or elapsed <= 0:
             raise ValueError("Missing measured capacity timing")
-        seconds.append(elapsed / worker["measured_batches"])
+        if generation and worker.get("resolved_generation", {}).get("generation_prior") != prior:
+            raise ValueError("Generation worker used another fitted training prior")
+        if index < train_worker_count:
+            seconds.append(elapsed / worker["measured_batches"])
     physical = {}
     if case["task"] in {"forcefield", "dielectric"}:
         for mode in ("pretrained", "scratch"):
@@ -216,7 +243,7 @@ def check_preparation(matrix, identifier, preparation, *, budget_seconds):
     train_estimate = max(seconds) * math.ceil(counts["train"] / common) * config["epochs"]
     if budget_seconds < 1.5 * train_estimate:
         raise ValueError("Declared budget lacks the measured training estimate plus50% validation/IO reserve")
-    return dict(status="passed", kind="formal_predictive_execution_gate", case=case,
+    result = dict(status="passed", kind="formal_generation_execution_gate" if generation else "formal_predictive_execution_gate", case=case,
                 config=resolved[case["initialization"]], counts=counts, source_structures=spec["source_structures"],
                 matrix_sha256=spec["matrix_sha256"], git_commit=commit, versions=versions,
                 preparation=str(preparation), preparation_sha256=file_sha(preparation / "report.json"),
@@ -225,3 +252,9 @@ def check_preparation(matrix, identifier, preparation, *, budget_seconds):
                 capacity_evidence={k: v for k, v in evidence.items() if k != "successful_workers"},
                 budget_seconds=budget_seconds, probed_train_only_seconds=train_estimate,
                 interpretation="Full source/graph/paired-capacity/physical evidence; timing is a probe estimate, not a runtime guarantee. No training launched by this check.")
+    if generation:
+        result.update(training_prior=prior, quality_protocol=generation_definition["quality"],
+                      sampling_batch_size=sampling_evidence["common_batch_size"],
+                      probed_sample_batch_seconds=max(w["elapsed_seconds"] / w["measured_batches"] for w in sampling_evidence["successful_workers"]),
+                      sampling_capacity_evidence={k: v for k, v in sampling_evidence.items() if k != "successful_workers"})
+    return result

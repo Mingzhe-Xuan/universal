@@ -1,4 +1,4 @@
-"""Full-data generation preparation, independent of formal training."""
+"""Full-data generation preparation, training and separate quality execution."""
 
 from .preparation import generation_spec, prepare_generation_pair
 
