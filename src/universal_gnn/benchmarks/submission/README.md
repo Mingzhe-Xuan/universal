@@ -70,3 +70,15 @@ receipts increase submitted-case counts, and independent post-evaluation is stil
 required to increase scientifically accepted cases. Pure mock tests exercise all
 72 frozen pair identities, resource budgets, dependency chains and failure
 semantics; they do not certify actual data gates or Slurm execution.
+
+Source97523c2 passed CPU control1051:31 main tests/318 JUnit records with zero
+failures, errors or skips, plus six actual full forcefield mode gates under the
+three original provider environments. Existing primary cases were refused.
+CPU-only children1052/1053 completed0:0 and verified real parsable receipts,
+unique comment tokens, ownership, no-requeue, afterok and exact known-receipt
+reuse without another job. Six source hashes match Git blobs. Evidence is saved
+under ignored `results/paper-submission-20261105/1051/`; these controls count zero
+formal trainings. Other task gates and formal downstream executions still need
+their own actual full-data evidence. Deferred CPU gates1054-1073 have been armed
+after their respective existing full preparations; they are not40 submitted
+training cases.
