@@ -87,3 +87,5 @@ Full-data generation has a public [pair preparation entry](generation/README.md)
 [Formal generation execution](generation/README.md#formal-training-and-quality) binds training and independent1000-attempt quality stages to separate capacity evidence, a full train-only prior and retained last/best checkpoints. Failed quality attempts are preserved and guarded against concurrent execution.
 
 [Deferred formal submission](submission/README.md) checks both full preparation gates before submitting a frozen initialization pair, derives finite Slurm allocations from measured capacity, and preserves exact requests and receipts to prevent ambiguous retries.
+
+[Supplemental rank3/4 preparation](supplemental_tensors/README.md) expands full released contracted labels into Cartesian27/81 formats and jointly anchors their material groups to the immutable primary dielectric split. It launches no model training.

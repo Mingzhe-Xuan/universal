@@ -3794,3 +3794,9 @@
 - 2026-11-05T13:19:22+08:00: Ordinary SSH first verify/pull published root. Require completed successful1051 source acceptance and twoCPU child controls, clean fixed97523c2 source, actual20 preparation request hashes/Slurm identities and absent40 primary claims. Arm20 CPU-only deferred pair gates with afterok1051:originalPreparation, finite20min4GiB and exact new claims. Public gate can submit two formal GPU jobs only after both original full preparation modes pass; generation adds1000-attempt quality and independent CPU assessment. Existing jobs/recipes/data/environments unchanged; no direct login numerical work.
 
 - 2026-11-05T13:20:50+08:00: Ordinary SSH first verify/pull published root, verify exact20 own deferred CPU gates1054-1073 Slurm owner/name/dependency/resource/source/request and persisted receipts, count actual primary GPU receipts independently, read current990 status. Metadata only; no submission/restart/source/environment/model work.
+
+- 2026-11-05T13:24:49+08:00：SCP上传已推送69f2729的8245B小型离线bundle，SHA 10facf1f2eec22fdb30dec2e58c5dd31c011d899c299185f80d4b7c038fd2cac，先决97523c2；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T13:25:40+08:00: Ordinary SSH first verify/pull published root then read exact own1046/1047 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current990 pretrained status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T13:27:01+08:00: Ordinary SSH first verify/pull published root then read exact own1046/1047 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current990 pretrained status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
