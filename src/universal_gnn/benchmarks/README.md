@@ -91,3 +91,5 @@ Full-data generation has a public [pair preparation entry](generation/README.md)
 [Supplemental rank3/4 preparation](supplemental_tensors/README.md) expands full released contracted labels into Cartesian27/81 formats and jointly anchors their material groups to the immutable primary dielectric split. It launches no model training.
 
 [Full predictive preparation](preparation/README.md) binds original upstream parity, complete training graphs, paired100-batch capacity and applicable two-mode CUDA derivatives to any original predictive task/seed pair before formal launch.
+
+[Independent predictive assessment](prediction_assessment/README.md) re-scores original saved test labels, runs unchanged trained-best physics/full-source CPU inference, then independently validates every saved output without loading or running a GNN. The active campaign uses only training seed123.

@@ -8,7 +8,7 @@ Authoritative accepted count5/48; unique formally submitted8/48. Existing968/969
 
 Exact96 excluded pending preparation/gate requests canceled (48 launch gates first, then48 preparations), all immediateCANCELLED retained. Original123 selected handles preserved; separate48-case execution scope saved. Evidence results/paper-single-seed-20261105/cancellation.json. First RPC timed out before creating intent; independent read proved no action and all96pending before compact SHA-bound retry succeeded.
 
-Prediction independent assessment is partially implemented in untracked benchmarks/prediction_assessment; numerical code/engine/models unchanged. Do not publish unfinished or untested source. Resume that unit after this scope change is fully recorded/verified.
+Current phase: collect991 trained/post/independent evidence, then finish and accept common prediction assessment. Prediction independent assessment implemented and locally accepted36 pure main controls; numerical/model/engine source unchanged. Publish this tested unit, then actualCPU40 accepted diagnostic raw replays/six fullFF gates+complete outputs and fresh991 post+independent acceptance before deployment to remaining primary cases.
 
 Environment Torch2.7.1+cu128 and three provider venvs accepted898/899 and unchanged. Supplemental full tensors1074/1075, native baselines1027-1034, diagnostic48/48 and source/cost/pretraining audits retain earlier evidence and exact limits.
 
@@ -643,3 +643,7 @@ Environment Torch2.7.1+cu128 and three provider venvs accepted898/899 and unchan
 - 2026-11-05T16:00:53+08:00: Single-seed active snapshot and plan updated; scope48 with training seed123 only, original144 frozen source and all accepted evidence preserved. Cancellation evidence status=inspected. Next verify retained source/requests/terminals and document invariants, then resume original predictive assessment.
 
 - 2026-11-05T16:02:56+08:00: Exact single-seed cancellation completed:48 excluded launch gates first,48 excluded preparations, all96 immediateCANCELLED owner/name/source/request-bound. First SSH timed out without intent/action, independently verified no claim and all96pending before compact retry; no blind duplicate cancellation. Separate48-case scope preserved original144 matrix and active123 jobs.991 report nowpassed199, independent proof not yet collected. Next validate docs/metadata/history, publish scope-only changes, resume scientific assessment.
+
+- 2026-11-05T16:15:33+08:00: Continue48-case goal; previous turn made authoritative progress by canceling exact96 excluded requests and publishing/syncing48-case scope. Enter991 proof collection and resume previously test-planned predictive assessment. Original training/source/science unchanged.
+
+- 2026-11-05T16:43:03+08:00: Prediction assessment local acceptance completed36 main controls,8AST/Bash/docs with noTorch. Added explicit legacy diagnostic balanced-metric handling from archived evidence and separate current physical-validator hashes (MACE was trained before the already accepted precision-reference validator update). No model/training recipe or tolerances changed. Publish unit then realCPU acceptance;991 heldout metadata199/best169 and1049/1050 reports passed, original terminal handles purged/accounting disabled, so collect fresh independent evidence before count increases.

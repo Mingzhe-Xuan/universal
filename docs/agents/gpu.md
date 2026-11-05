@@ -3872,3 +3872,11 @@
 - 2026-11-05T15:59:32+08:00: Cancellation RPC has not returned; do not repeat. Ordinary read-only SSH first verify/pull root, reconcile exact single-seed claim intent/immediate gate+prep terminals/report/scope and current own queue plus991 report. No new cancellation, job submissions, numerical work or source/environment changes.
 
 - 2026-11-05T16:01:20+08:00: User explicitly changed every experiment to one training seed; retain123. Ordinary SSH first verify/pull published root, then cancel exact96 own verifiedPENDING seed456/789 preparation/gate handles, launch gates first, preserving all requests/intents/immediate terminal records; create separate48-case execution scope without editing frozen144 definitions. Never cancel123,1077 or post jobs. No numerical/login model work, code/environment/source/data modifications.
+
+- 2026-11-05T16:08:01+08:00：SCP上传已推送1ce6a37的12182B小型离线bundle，SHA 75afe6242487beb3853190ce656f33159edb5a91571a29ca6abaef98fe22d7a0，先决f2341a5；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T16:09:07+08:00: Single-seed cancellation already verified. Ordinary read-only SSH first verify/pull latest published root, verify retained claim/instant96 cancellation terminals/report/scope and current own queue plus991 report. No new cancellation, job submissions, numerical work or source/environment changes. Compressed metadata return only.
+
+- 2026-11-05T16:15:42+08:00: Ordinary SSH first verify/pull published root, collect completed991 full report/config/events/all164 predictions and frozen split/bestSHA,1049/1050 original post+physics+stream-verification reports, exactrequestSHA/source/terminal identities or accounting availability, current996/997/1077 and own queue. Read-only metadata/short fileSHA, no model/numerical execution, new jobs or environment/source changes.
+
+- 2026-11-05T16:19:28+08:00: Ordinary SSH first verify/pull published root, collect completed991 full report/config/events/all164 predictions and frozen split/bestSHA,1049/1050 original post+physics+stream-verification reports, exactrequestSHA/source/terminal identities or accounting availability, current996/997/1077 and own queue. Read-only metadata/short fileSHA, no model/numerical execution, new jobs or environment/source changes.
