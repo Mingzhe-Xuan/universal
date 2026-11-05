@@ -26,7 +26,10 @@ def test_audit_wraps_real_steps_preserving_body_and_input_derivatives(kind, dtyp
     config = copy.deepcopy(config);config["optimization"]["train_backbone"] = False
     torch.manual_seed(123)
     model = build_model(config).to(device="cpu", dtype=dtype)
-    uninstrumented = copy.deepcopy(model)
+    torch.manual_seed(123)
+    uninstrumented = build_model(config).to(device="cpu", dtype=dtype)
+    uninstrumented.load_state_dict(model.state_dict(), strict=True)
+    assert all(torch.equal(value, uninstrumented.state_dict()[name]) for name, value in model.state_dict().items())
     original_optimizer = optimization.make_optimizer
     modules = optimization.components(model)
     before = {name: value.detach().clone() for name, value in modules["backbone"].state_dict().items()}
