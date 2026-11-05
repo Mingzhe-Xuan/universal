@@ -3698,3 +3698,75 @@
 - 2026-11-05T11:41:59+08:00: Ordinary SSH first verify/pull published root, then read exact saved-generation assessment1045 parent/8 child reports/JUnit/bounded logs, request SHA and current-user queue. No model/geometry compute, new jobs or source/env/data edits.
 
 - 2026-11-05T11:43:22+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.
+
+- 2026-11-05T11:47:17+08:00：SCP上传已推送8825fc4的5434B小型离线bundle，SHA f9c1470b2fd4926272a12f3346d7f54fc4822a3264d6977a6607037f2d4eae39，先决d6a71f6；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T11:49:57+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.
+
+- 2026-11-05T11:51:20+08:00: Ordinary SSH first verify/pull published root then collect exact completed seed-123--forcefield--alignn--scratch reports/configs/events/all164 saved test predictions/frozen split and short best-file SHA check plus current-user queue. No model execution, new jobs, source/env/data edits or checkpoint transfer.
+
+- 2026-11-05T11:53:00+08:00: Ordinary SSH first verify/pull published root, then lightweight exact two GMTNet raw-file presence/size/SHA and two NequIP current launch receipts; no pickle loading, batch processing or model imports. No job/source/env/data changes or model computation.
+
+- 2026-11-05T11:54:44+08:00: Ordinary SSH first SHA-verify/pull current published root, validate clean dfea7b0 source cache and exact own990 RUNNING or passed scratch case. Submit2CPU16GiB4h NequIP-only independent raw164-target/metric/physics/full1566 inference afterok990, then1CPU2GiB10min complete-output validator afterokpost. New exact scratch claim/output paths only; do not change969, other queue, source, environments or data; no login numerical work.
+
+- 2026-11-05T11:56:27+08:00: Ordinary SSH first verify/pull published root, create/check exact task-owned supplemental-rank34 upload manifest and new partial path only. No pickle loading, source/environment/data overwrite or numerical work.
+
+- 2026-11-05T11:56:34+08:00: SCP upload verified20448007B GMTNet elastic raw pickle to task-owned supplemental-rank34 partial only; raw data ignored by Git. Source SHA5def6ffc... pinned, existing primary source/data untouched, no proxy needed for this authorized local transfer.
+
+- 2026-11-05T11:59:14+08:00: Ordinary SSH first verify/pull published root, inspect exact failed task raw partial size and require new compressed transport path; no pickle loading, cleanup or data/source/env overwrite.
+
+- 2026-11-05T11:59:21+08:00: One bounded legacySCP -O compressed elastic transport4643051B with archive SHA50c30e5c and raw SHA5def6ffc, exact task-owned new gzip path. Original partial retained; no parallel workSSH or public proxy and no raw data processing.
+
+- 2026-11-05T12:02:01+08:00: After legacySCP timeout inspect local ssh processes only when command line matches this exact supplemental-rank34 elastic path, printing PID/parent/time only; no termination or unknown session changes.
+
+- 2026-11-05T12:02:02+08:00: Ordinary SSH first verify/pull published root, then inspect exact task raw/compressed partial sizes and short hashes after transfer timeout; no retry, deletion, pickle processing or model imports. No job/source/env/data changes or model computation.
+
+- 2026-11-05T12:04:24+08:00: Inspect exact local legacy upload ssh PID37120, parent7376 and creation time, matching only supplemental-rank34-20261105/elastic.pkl.gz. If parent has exited and exact identity is rechecked, terminate only this task orphan; preserve all server partials and every other SSH. Then resume verified compressed prefix using small SCP chunks, not restart full transfer. Reviewed existing large-SCP/timeout lessons before changing transport.
+
+- 2026-11-05T12:05:59+08:00: Ordinary SSH first verify/pull published root, recheck exact1769472B gzip prefix and task manifest; create/check new compressed-parts-v1 manifest and existing chunk hashes only. Timed-out task ssh has exited; no sessions terminated. No primary data, sources or environments changed.
+
+- 2026-11-05T12:06:06+08:00: Bounded legacySCP exact task elastic chunk part-01769472.bin 131072B; preserve verified gzip prefix and earlier chunks. No parallel SSH work connection, source/data/env overwrite or public proxy.
+
+- 2026-11-05T12:06:14+08:00: Bounded legacySCP exact task elastic chunk part-01900544.bin 131072B; preserve verified gzip prefix and earlier chunks. No parallel SSH work connection, source/data/env overwrite or public proxy.
+
+- 2026-11-05T12:06:22+08:00: Bounded legacySCP exact task elastic chunk part-02031616.bin 131072B; preserve verified gzip prefix and earlier chunks. No parallel SSH work connection, source/data/env overwrite or public proxy.
+
+- 2026-11-05T12:06:37+08:00: Bounded legacySCP exact task elastic chunk part-02162688.bin 131072B; preserve verified gzip prefix and earlier chunks. No parallel SSH work connection, source/data/env overwrite or public proxy.
+
+- 2026-11-05T12:06:45+08:00: Bounded legacySCP exact task elastic chunk part-02293760.bin 131072B; preserve verified gzip prefix and earlier chunks. No parallel SSH work connection, source/data/env overwrite or public proxy.
+
+- 2026-11-05T12:06:55+08:00: Bounded legacySCP exact task elastic chunk part-02424832.bin 131072B; preserve verified gzip prefix and earlier chunks. No parallel SSH work connection, source/data/env overwrite or public proxy.
+
+- 2026-11-05T12:07:02+08:00: Bounded legacySCP exact task elastic chunk part-02555904.bin 131072B; preserve verified gzip prefix and earlier chunks. No parallel SSH work connection, source/data/env overwrite or public proxy.
+
+- 2026-11-05T12:10:31+08:00: Local-only process inspection of the exact resume_supplemental_elastic_chunks.py controller, its SCP children and SSH command lines matching only this task compressed-parts-v1 paths; inspect timeout/orphan versus live transfer without remote connections, restart or termination.
+
+- 2026-11-05T12:12:10+08:00: Ordinary SSH first verify/pull published root, then inspect exact task compressed chunk presence/size/hash after small-SCP timeout; local authoritative process inspection found no remaining controller/SCP/target-SSH. No retry, deletion, pickle processing or model imports. No job/source/env/data changes or model computation.
+
+- 2026-11-05T12:13:23+08:00: Ordinary SSH first verify/pull published root, recheck exact1769472B gzip prefix and task manifest; create/check new compressed-parts-v1 manifest and existing chunk hashes only. Timed-out task ssh has exited; no sessions terminated. No primary data, sources or environments changed.
+
+- 2026-11-05T12:13:31+08:00: Bounded legacySCP group of3 exact task elastic chunks, max384KiB per connection; skip all server-verified complete chunks, including chunk7 whose client timed out after a complete transfer. Preserve prefix/earlier chunks, no parallel workSSH or unknown overwrite.
+
+- 2026-11-05T12:13:44+08:00: Bounded legacySCP group of3 exact task elastic chunks, max384KiB per connection; skip all server-verified complete chunks, including chunk7 whose client timed out after a complete transfer. Preserve prefix/earlier chunks, no parallel workSSH or unknown overwrite.
+
+- 2026-11-05T12:13:55+08:00: Bounded legacySCP group of3 exact task elastic chunks, max384KiB per connection; skip all server-verified complete chunks, including chunk7 whose client timed out after a complete transfer. Preserve prefix/earlier chunks, no parallel workSSH or unknown overwrite.
+
+- 2026-11-05T12:14:37+08:00: Bounded legacySCP group of3 exact task elastic chunks, max384KiB per connection; skip all server-verified complete chunks, including chunk7 whose client timed out after a complete transfer. Preserve prefix/earlier chunks, no parallel workSSH or unknown overwrite.
+
+- 2026-11-05T12:14:49+08:00: Bounded legacySCP group of3 exact task elastic chunks, max384KiB per connection; skip all server-verified complete chunks, including chunk7 whose client timed out after a complete transfer. Preserve prefix/earlier chunks, no parallel workSSH or unknown overwrite.
+
+- 2026-11-05T12:17:14+08:00: Ordinary SSH first verify/pull published root, recheck exact1769472B gzip prefix and task manifest; create/check new compressed-parts-v1 manifest and existing chunk hashes only. Timed-out task ssh has exited; no sessions terminated. No primary data, sources or environments changed.
+
+- 2026-11-05T12:17:22+08:00: Ordinary SSH first verify/pull published root, short3MB chunk/prefix hashes and full4.6MB compressed digest continuity check, without reassembly/decompression/pickle loading. Full source audit remainsCPU Slurm.
+
+- 2026-11-05T12:19:32+08:00: Ordinary SSH first SHA-verify/pull current published root, validate fixed clean d6a71f6 cache; submit1CPU8GiB20min exact gzip/raw hash+decompression and complete GMTNet rank3/4 source field/finite/zero/geometry/primary dielectric anchor audit. No neural imports/training, no magnitude/zero/atom-count filtering, GPU queue or source/env/data edits, no login numerical/batch work.
+
+- 2026-11-05T12:20:39+08:00: Ordinary SSH first SHA-verify/pull current published root, validate clean dfea7b0 source cache and exact own991 RUNNING or passed scratch case. Submit2CPU16GiB4h NequIP-only independent raw164-target/metric/physics/full1566 inference afterok991, then1CPU2GiB10min complete-output validator afterokpost. New exact scratch claim/output paths only; do not change969, other queue, source, environments or data; no login numerical work.
+
+- 2026-11-05T12:21:28+08:00: Ordinary SSH first verify/pull published root then read exact own1040/1041 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. Also read exact1048 raw tensor audit report and compute partition time/resource policy, both lightweight. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T12:24:35+08:00: Ordinary SSH first verify/pull published root then read exact own1040/1041 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T12:27:44+08:00: Ordinary SSH first verify/pull published root then read exact own1040/1041 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T12:29:17+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.
