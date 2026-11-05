@@ -17,6 +17,7 @@ from universal_gnn.benchmarks.execution import gates
 from universal_gnn.benchmarks.experiments.recipes import build_matrix
 from universal_gnn.benchmarks.experiments.registry import canonical_digest
 from universal_gnn.benchmarks.generation import staging
+from universal_gnn.benchmarks.generation import sampling_failures
 from universal_gnn.benchmarks.generation.sampling_failures import (
     image_budget_failure, invalid_geometry_attempts, checked_untrained_sampling_failure, sampling_policy)
 
@@ -40,6 +41,30 @@ def failed_sample(root, mode="scratch", error_type="ValueError", message="Cell r
                   trials=[dict(stage="individual", initialization=mode, passed=False, directory=str(path.parent), report_sha256=canonical_digest(trial))])
     write(root / "sample-capacity/report.json", report)
     return path, report
+
+
+@contextmanager
+def failed_source_receipts():
+    with tempfile.TemporaryDirectory() as folder, ExitStack() as stack:
+        before = Path.cwd();os.chdir(folder);stack.callback(os.chdir, before)
+        commit = "a" * 40;provider = "mace";job = "1022"
+        claim = Path("runs/full-generation-preparations-aaaaaaa-claim")
+        source = Path("runs/source-checkouts") / commit;source.mkdir(parents=True)
+        path = Path("runs/arxiv-v1/full-generation-preparation-1022-mace");path.mkdir(parents=True)
+        claim.mkdir();request = claim / "mace.sh";request.write_bytes(b"original request")
+        control_request = claim / "control.sh";control_request.write_bytes(b"original control")
+        control_path = Path("runs/generation-preparation-control-1019/report.json")
+        control = dict(status="passed", git_commit=commit, slurm_job_id="1019", main_test_cases=8)
+        write(control_path, control)
+        entry = dict(job=job, git_commit=commit, status="submitted_preparation_only", formal_training_runs=0,
+                     source_checkout=str(source.resolve()), request_path=str(request), request_sha256=gates.file_sha(request))
+        receipts = dict(preparations={provider: entry}, control=dict(job="1019", git_commit=commit,
+            source_checkout=str(source.resolve()), request_sha256=gates.file_sha(control_request)))
+        write(claim / "jobs.json", receipts)
+        stack.enter_context(patch.object(sampling_failures.subprocess, "check_output",
+            side_effect=lambda args, **kwargs: commit + "\n" if args[-1] == "HEAD" else ""))
+        yield dict(path=path, prepared=dict(slurm_job_id=job), commit=commit, provider=provider,
+                   claim=claim, receipts=receipts, request=request, control_path=control_path, control=control)
 
 
 @contextmanager
@@ -75,6 +100,43 @@ def training_evidence():
 
 
 class GenerationStagingTests(unittest.TestCase):
+    def test_missing_success_only_source_stamp_requires_exact_original_receipts(self):
+        with failed_source_receipts() as f:
+            proof = sampling_failures.checked_failed_preparation_source(f["path"], f["prepared"], f["commit"], f["provider"], graph_job="1022")
+            self.assertEqual(proof["git_commit"], f["commit"])
+            self.assertEqual(proof["original_job"], "1022")
+            self.assertEqual(proof["request_sha256"], gates.file_sha(f["request"]))
+            self.assertEqual(proof["control_report_sha256"], gates.file_sha(f["control_path"]))
+
+    def test_failed_source_receipt_job_graph_request_control_and_git_tampering_refuse(self):
+        for mutation in ("job", "graph_job", "request", "control", "git", "missing"):
+            with self.subTest(mutation=mutation), failed_source_receipts() as f:
+                graph_job = "1022"
+                if mutation == "job":
+                    f["prepared"]["slurm_job_id"] = "1020"
+                elif mutation == "graph_job":
+                    graph_job = "1020"
+                elif mutation == "request":
+                    f["request"].write_bytes(b"changed request")
+                elif mutation == "control":
+                    f["control"]["status"] = "failed";write(f["control_path"], f["control"])
+                elif mutation == "git":
+                    sampling_failures.subprocess.check_output.side_effect = lambda *a, **kw: "b" * 40
+                else:
+                    (f["claim"] / "jobs.json").unlink()
+                with self.assertRaises((ValueError, FileNotFoundError)):
+                    sampling_failures.checked_failed_preparation_source(f["path"], f["prepared"], f["commit"], f["provider"], graph_job=graph_job)
+
+    def test_training_gate_retains_verified_original_source_when_parent_stamp_missing(self):
+        with training_evidence() as f:
+            f["report"].pop("git_commit");write(f["prepared"] / "report.json", f["report"])
+            proof = dict(git_commit="a" * 40, original_job="fixture", request_sha256="b" * 64)
+            with patch.object(sampling_failures, "checked_failed_preparation_source", return_value=proof) as check:
+                result = gates._check_prepared_spec(f["matrix"], f["spec"], f["prepared"], budget_seconds=10000, generation_training_only=True)
+            self.assertEqual(result["preparation_source_proof"], proof)
+            self.assertTrue(result["training_readiness_only"])
+            self.assertEqual(check.call_count, 1)
+
     def test_only_exact_known_periodic_guard_is_adapted(self):
         self.assertTrue(image_budget_failure("ValueError", "Cell requires 51129 periodic images; check cell/cutoff"))
         for kind, message in [("RuntimeError", "Cell requires 51129 periodic images; check cell/cutoff"),

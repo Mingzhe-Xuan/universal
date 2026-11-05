@@ -264,7 +264,14 @@ def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds, generatio
                     any(not c["passed"] for c in value["checks"].values() if c["required"])):
                 raise ValueError("Both initializations require passed derivative/geometry evidence")
             physical[mode] = file_sha(path)
-    commit = compatible_sources([prepared["git_commit"], scan["git_commit"]] + [w["execution"]["git_commit"] for w in workers])
+    preparation_source = None
+    if generation_training_only and sampling_failure is not None and "git_commit" not in prepared:
+        from ..generation.sampling_failures import checked_failed_preparation_source
+
+        preparation_source = checked_failed_preparation_source(preparation, prepared, scan["git_commit"], case["model"],
+                                                              graph_job=coverage.get("scan_slurm_job_id"))
+    preparation_commit = preparation_source["git_commit"] if preparation_source is not None else prepared["git_commit"]
+    commit = compatible_sources([preparation_commit, scan["git_commit"]] + [w["execution"]["git_commit"] for w in workers])
     train_estimate = max(seconds) * math.ceil(counts["train"] / common) * config["epochs"]
     if budget_seconds < 1.5 * train_estimate:
         raise ValueError("Declared budget lacks the measured training estimate plus50% validation/IO reserve")
@@ -284,6 +291,8 @@ def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds, generatio
                           sampling_readiness=sampling_failure or dict(status="not_rechecked_by_training_only_gate", sampling_capacity_passed=False),
                           generation_quality_complete=False,
                           interpretation="Complete unchanged graph/source/paired100-batch training evidence only. No sampling memory/throughput or quality qualification; full validation-best1000-attempt quality and independent assessment remain mandatory.")
+            if preparation_source is not None:
+                result["preparation_source_proof"] = preparation_source
         else:
             result.update(
                       sampling_batch_size=sampling_evidence["common_batch_size"],

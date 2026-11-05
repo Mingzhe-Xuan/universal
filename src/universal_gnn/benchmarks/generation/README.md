@@ -10,6 +10,13 @@ It can consume an original preparation that failed **only** at
 `paired_sampling_capacity`, with byte-bound known nonfinite/image-budget failure
 evidence. It leaves that original report failed and records sampling readiness
 as unqualified. No sampling timing or memory qualification is invented.
+Original failed wrappers lack their success-only parent source stamp. For those
+reports the campaign checker requires the original job/provider/output identity,
+saved preparation/control request SHA, accepted control report and clean original
+source cache, bound to the graph scan's actual job and commit. This separate
+source proof is retained in the new gate; missing receipts refuse readiness.
+The original trial `report_sha256` is a canonical JSON digest; the new gate also
+records raw file hashes so later replay detects byte changes.
 The existing strict `check_preparation` and original CLI retain their requirement
 for complete sampling preparation. Only the eight active seed123 cases qualify.
 
