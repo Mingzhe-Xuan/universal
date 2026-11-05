@@ -70,8 +70,10 @@ errors or skips; all60 actual predictive pairs/120 server configs, four complete
 source/split hash/count manifests and six existing full mode gates checked.
 The actual CPU job was rejected by the GPU-only runtime context. Twelve executed
 Git blobs match. Evidence is in ignored
-`results/paper-predictive-preparation-20261105/1114/`. The new40 remaining-seed
-GPU preparation jobs1115,1117,...,1193 and CPU gates1116,1118,...,1194 are queued
-after the existing pipeline and actualGPU control1077. Their own numerical
-preparation and training are still pending; this CPU acceptance counts zero
-formal trainings and does not certify future graph/capacity/derivative results.
+`results/paper-predictive-preparation-20261105/1114/`. This is historical
+three-seed definition coverage. The current campaign uses only training seed123;
+the40 seed456/789 GPU preparations1115,1117,...,1193 and40 CPU gates1116,1118,...,1194
+were canceled when the user reduced the scope. Do not restore these jobs.
+The original seed123 preparations and gates remain active. CPU acceptance counts
+zero formal trainings and does not certify future graph/capacity/derivative
+results; use the current48-case scope in `configs/arxiv_v1_scope.json`.

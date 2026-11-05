@@ -94,3 +94,15 @@ separate from the primary matrix and its case execution guard. Graph scanning,
 paired CUDA capacity/OOM resolution, both official model physical validations,
 formal training and independent raw-label/test/full-inference acceptance remain
 required. Defining these cases does not launch training or increase primary counts.
+
+
+Definition source90a5836 passed actual CPU1231/1232:85 main tests/509 JUnit
+counts without failure/error/skip,19499 ordered records/1309419 finite Cartesian
+components,16 emitted configs,5 executed Git blobs and retained successful
+control terminal/request binding. Saved files are under ignored
+`results/paper-tensor-definition-20261105/1231/`; server configs are under
+`runs/tensor-definition-control-1231/definitions/`. Eight low-priority full GPU
+preparers1233/1235/.../1247 and eight afterany CPU terminal recorders are armed.
+These exact request receipts are not completed numerical preparation or training.
+Even a passed preparer requires the separate independent complete gate before
+formal supplementary training. The primary campaign remains48 seed123 cases.
