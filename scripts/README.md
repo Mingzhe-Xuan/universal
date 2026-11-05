@@ -331,3 +331,13 @@ inference and replays actual pre-headmode checkpoints. Run through Slurm after
 `prepare_supplemental_tensors.py` and `.slurm` prepare [complete rank3/4 tensor datasets](../src/universal_gnn/benchmarks/supplemental_tensors/README.md) in CPU Slurm, retaining source values and jointly anchoring cross-task material groups to the frozen dielectric partitions. They produce data/audits, not training results.
 
 `prepare_predictive_pair.py` and `.slurm` prepare [any full predictive initialization pair](../src/universal_gnn/benchmarks/preparation/README.md) from the original144-case definition, with each actual seed, original upstream parity, complete graph scan, paired100-batch capacity and applicable two-mode CUDA derivative checks. They submit no formal model training.
+
+
+`run_tensor_case.py train|post|verify` is the separate full-data supplemental
+rank3/4 entry; see the
+[tensor execution contract](../src/universal_gnn/benchmarks/supplemental_tensors/README.md).
+`run_tensor_case.slurm` requires an already successful independent pair gate
+and measured reserved training budget. `assess_tensor_case.slurm` provides
+CPU-only trained-best postprocessing and separate no-model full-output
+acceptance. All stages require Slurm, fixed seed123/closed16 definitions and
+fresh case/output paths; none submits or retries jobs automatically.

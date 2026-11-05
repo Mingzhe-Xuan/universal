@@ -151,13 +151,26 @@ def _new_report(output, kind, identifier):
 
 
 def postprocess_case(matrix, identifier, output):
-    """Run unchanged trained-best physics and complete inference in a CPU Slurm job."""
+    """Primary campaign entry; its original matrix/scope selector remains mandatory."""
+    return _postprocess_case(matrix, identifier, output, context_loader=formal_context)
+
+
+def _verify_context_physics(context, physics, selection):
+    if context["gate"]["case"]["task"] in {"piezoelectric", "elastic"}:
+        from ..supplemental_tensors.gate import checked_tensor_physics
+        checked_tensor_physics(physics, context["gate"]["case"], selection["ids"], device="cpu")
+    else:
+        verify_physics(physics, context["gate"]["case"]["task"], selection)
+
+
+def _postprocess_case(matrix, identifier, output, *, context_loader):
+    """Shared CPU numerical stages after a domain-specific complete context check."""
     if not os.environ.get("SLURM_JOB_ID"):
         raise RuntimeError("Predictive post-processing must run through Slurm")
     started = time.perf_counter()
     output, report, record = _new_report(output, "formal_predictive_postprocessing", identifier)
     try:
-        context = formal_context(matrix, identifier)
+        context = context_loader(matrix, identifier)
         trained, gate = context["trained"], context["gate"]
         record(stage="saved_raw_label_rescore", git_commit=context["git_commit"],
                matrix_sha256=context["spec"]["matrix_sha256"], input_sha256=context["input_sha256"],
@@ -165,11 +178,11 @@ def postprocess_case(matrix, identifier, output):
                verified_training=context["verified_training"])
         rescore = rescore_saved(context["report_path"], output / "heldout")
         record(stage="trained_best_physics", raw_label_assessment_sha256=file_sha(output / "heldout/report.json"))
-        if gate["case"]["task"] in {"forcefield", "dielectric"}:
+        if gate["case"]["task"] in {"forcefield", "dielectric", "piezoelectric", "elastic"}:
             selection = physical_selection(context)
             physics = numerics.trained_physics(trained["best_checkpoint"], trained["config"], selection["indices"])
             write_json(output / "trained-best-physics.json", physics)
-            verify_physics(physics, gate["case"]["task"], selection)
+            _verify_context_physics(context, physics, selection)
             record(physical_selection=selection, physical_report_sha256=file_sha(output / "trained-best-physics.json"))
         record(stage="complete_source_inference")
         predictions = output / "all-source-predictions.jsonl"
@@ -193,14 +206,19 @@ def postprocess_case(matrix, identifier, output):
 
 
 def verify_case(matrix, identifier, postprocessing, output):
-    """Independent saved-output acceptance; tensor CPU softmax only, no GNN execution."""
+    """Primary campaign entry; no model execution is permitted."""
+    return _verify_case(matrix, identifier, postprocessing, output, context_loader=formal_context)
+
+
+def _verify_case(matrix, identifier, postprocessing, output, *, context_loader):
+    """Shared independent saved-output acceptance, with a closed-domain context."""
     if not os.environ.get("SLURM_JOB_ID"):
         raise RuntimeError("Independent prediction validation must run through Slurm")
     started = time.perf_counter()
     output, report, record = _new_report(output, "independent_formal_predictive_acceptance", identifier)
     try:
         with numerics.forbid_models():
-            context = formal_context(matrix, identifier)
+            context = context_loader(matrix, identifier)
             parent_path = Path(postprocessing) / "report.json"
             parent_sha = file_sha(parent_path)
             parent = read_json(parent_path)
@@ -219,13 +237,13 @@ def verify_case(matrix, identifier, postprocessing, output):
             compare(rescored, read_json(saved_rescore_path), "independent_rescore")
             compare(rescored["metrics"], parent["metrics"], "post_metrics")
             task = context["gate"]["case"]["task"]
-            if task in {"forcefield", "dielectric"}:
+            if task in {"forcefield", "dielectric", "piezoelectric", "elastic"}:
                 selection = physical_selection(context)
                 compare(selection, parent["physical_selection"], "physical_selection")
                 physics_path = Path(postprocessing) / "trained-best-physics.json"
                 if file_sha(physics_path) != parent["physical_report_sha256"]:
                     raise ValueError("Trained-best physical evidence bytes changed")
-                verify_physics(read_json(physics_path), task, selection)
+                _verify_context_physics(context, read_json(physics_path), selection)
             predictions = Path(postprocessing) / "all-source-predictions.jsonl"
             if Path(parent["inference_path"]).resolve() != predictions.resolve():
                 raise ValueError("Inference path differs from the retained post-processing output")

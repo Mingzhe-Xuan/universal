@@ -91,3 +91,10 @@ its own closed16-case spec to the same graph/capacity/artifact/version checks an
 adds stricter high-rank physical/terminal evidence. Supplemental definitions
 cannot be passed through the primary selector. Original immutable primary
 execution directories keep their original code and requests.
+
+The private `_run_prepared_case` shares the original complete training executor
+with the separate closed16 supplemental tensor entry. The public
+`run_formal_case` still uses its original primary selector and full preparation
+gate. Shared heldout validation recognizes Cartesian27/81 shapes while retaining
+every original epoch, selection, checkpoint, source and ordered-ID requirement.
+It does not add high-rank definitions to the primary matrix.

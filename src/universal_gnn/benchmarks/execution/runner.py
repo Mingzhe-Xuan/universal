@@ -142,7 +142,10 @@ def verify_training_report(trained, gate, events):
                 raise ValueError("Heldout outputs differ from the task")
             for name in names:
                 shape = {"bandgap": (1, 1), "classification": (1, 2), "dielectric": (1, 3, 3),
-                         "spectrum": (1, 200), "total_energy": (1, 1)}.get(name)
+                         "spectrum": (1, 200), "total_energy": (1, 1),
+                         "piezoelectric": (1, 3, 3, 3), "elastic": (1, 3, 3, 3, 3)}.get(name)
+                if shape is None and name != "forces":
+                    raise ValueError("Unsupported heldout output format")
                 if name == "forces":
                     if type(row.get("natoms")) is not int or row["natoms"] <= 0:
                         raise ValueError("Missing forcefield atom count")
@@ -167,6 +170,16 @@ def run_formal_case(matrix, identifier, preparation, *, budget_seconds):
     if root.exists() or root.is_symlink():
         raise FileExistsError("Refusing to rerun or overwrite an existing primary case")
     gate = check_preparation(matrix, identifier, preparation, budget_seconds=budget_seconds)
+    return _run_prepared_case(identifier, gate, budget_seconds=budget_seconds)
+
+
+def _run_prepared_case(identifier, gate, *, budget_seconds):
+    """Shared executor; callers must independently validate their closed case domain."""
+    if not os.environ.get("SLURM_JOB_ID"):
+        raise RuntimeError("Formal training must run through Slurm")
+    root = Path(gate["case"]["run_directory"])
+    if root.exists() or root.is_symlink():
+        raise FileExistsError("Refusing to rerun or overwrite an existing formal case")
     effective_budget = allocation_budget(budget_seconds, gate["probed_train_only_seconds"])
     import resource
     import torch

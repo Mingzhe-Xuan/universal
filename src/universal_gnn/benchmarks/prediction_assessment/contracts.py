@@ -1,4 +1,4 @@
-"""Strict primary output formats and raw-source identity, without model imports."""
+"""Strict predictive output formats and raw-source identity, without model imports."""
 
 import copy
 import hashlib
@@ -11,9 +11,11 @@ from ..execution.gates import canonical_digest, file_sha, read_json
 from universal_gnn.data.splits import validate_manifest
 
 SHAPES = {"bandgap": (1, 1), "classification": (1, 2), "dielectric": (1, 3, 3),
-          "spectrum": (1, 200), "total_energy": (1, 1), "stress": (1, 3, 3)}
+          "spectrum": (1, 200), "total_energy": (1, 1), "stress": (1, 3, 3),
+          "piezoelectric": (1, 3, 3, 3), "elastic": (1, 3, 3, 3, 3)}
 UNITS = {"bandgap": "eV", "classification": "class", "dielectric": "dimensionless",
-         "spectrum": "dataset_defined", "total_energy": "eV", "forces": "eV/angstrom"}
+         "spectrum": "dataset_defined", "total_energy": "eV", "forces": "eV/angstrom",
+         "piezoelectric": "C/m^2", "elastic": "GPa"}
 
 
 def finite_shape(value, shape):
@@ -29,8 +31,8 @@ def finite_shape(value, shape):
 def task_name(config):
     task = config["task"]
     name = "forcefield" if task.get("kind") == "forcefield" else task.get("property")
-    if name not in {"forcefield", "bandgap", "classification", "dielectric", "spectrum"}:
-        raise ValueError("Only the five primary predictive task formats are supported")
+    if name not in {"forcefield", "bandgap", "classification", "dielectric", "spectrum", "piezoelectric", "elastic"}:
+        raise ValueError("Unsupported predictive task output format")
     if name != "forcefield" and task.get("kind") != "supervised":
         raise ValueError("Direct predictive outputs require a supervised task")
     if name == "forcefield" and task.get("supervised_outputs") != ["total_energy", "forces"]:

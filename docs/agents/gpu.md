@@ -3994,3 +3994,9 @@
 - 2026-11-05T21:25:56+08:00: Ordinary SSH first verify/pull published root then collect completed997 full report/config/events/raw164 predictions/split/bestSHA and1206/1207 post/heldout/physics/request identities, current997/1077. Read-only metadata and short checksums; no model execution, new jobs, source/data/environment changes or training restart.
 
 - 2026-11-05T21:33:35+08:00: Ordinary read-only SSH first verify/pull published3483500. CG997/1206/1207 actual0:0 and full scientific evidence accepted eighth result. Inspect exact original20 seed123 full task preparation reports/known prep+gate Slurm identities/current ownqueue and bounded task-owned failed-prep logs to identify already-finished or failed blockers. No model work, submissions/restarts/cancellations, source/data/environment edits.
+
+- 2026-11-05T21:45:44+08:00：SCP上传已推送9f62045的9967B小型离线bundle，SHA acda138205ded756110b57d0d93e7f16b27799b388f5e84cb680bdb3223b2ac1，先决3483500；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T21:47:44+08:00: Ordinary final publication check SSH first SHA-verify/pull current published documentation bundle. Check rootHEAD/cleantracked/48-onlyseed123 scope byteSHA, retained1209,1231/16 definitions/8GPUprep receipts,1252/8independent-gate receipts and completed59-epochCG997/1206/1207 exact retained0:0. No source-cache changes, model work, environments, job submissions or queue restarts.
+
+- 2026-11-05T21:55:07+08:00: Ordinary read-only SSH first verify/pull published3483500. CG997/1206/1207 actual0:0 and full scientific evidence accepted eighth result. Inspect exact original20 seed123 full task preparation reports/known prep+gate Slurm identities/current ownqueue and bounded task-owned failed-prep logs to identify already-finished or failed blockers. No model work, submissions/restarts/cancellations, source/data/environment edits.

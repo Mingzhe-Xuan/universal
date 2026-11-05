@@ -36,16 +36,17 @@ def tensor_case_spec(primary, definitions, identifier):
                 matrix_sha256=DEFINITION_SHA, definition_kind=expected["kind"])
 
 
-def checked_tensor_physics(value, case, identifiers):
+def checked_tensor_physics(value, case, identifiers, *, device="cuda"):
     rank = len(case["tensor_shape"])
     guarantee = "O3_cartesian" if case["model"] in {"mace", "nequip"} else "fixed_frame_components"
     response = value.get("response", {})
     if (value.get("passed") is not True or value.get("dtype") != "torch.float32" or
-            not str(value.get("device", "")).startswith("cuda") or value.get("structure_ids") != identifiers or
+            not ((device == "cuda" and str(value.get("device", "")).startswith("cuda")) or
+                 (device == "cpu" and value.get("device") == "cpu")) or value.get("structure_ids") != identifiers or
             response.get("guarantee") != guarantee or response.get("rank") != rank or
             response.get("shape") != case["tensor_shape"] or response.get("inversion_parity") != (-1)**rank or
             response.get("no_symmetry_projection") is not True):
-        raise ValueError("Higher-tensor CUDA output/geometry declaration differs")
+        raise ValueError("Higher-tensor device/output/geometry declaration differs")
     for key in ("analytic", "numeric"):
         finite_shape(response.get(key), (1, *case["tensor_shape"]))
     compare(response["analytic"], response["numeric"], "auxiliary_derivative", rtol=2e-4, atol=2e-5)

@@ -1132,3 +1132,23 @@ best SHA `9ef49829f5d08684b8bdc08e81cb278397d7d513f5564b3c11fd828351b9cc90`，
 1013 MACE带隙实际RUNNING于完整训练图扫描；剩余1014、1015–1018和1020–1023排队，1077 GPU控制仍PENDING。
 原20个pair门禁等待1077和各自预检成功后独立复核并提交训练；producer报告完成不计入正式结果，不凭已清理的句柄杜撰旧0:0。
 观察在 `results/paper-current-preparations-20261105/213345/`；本次不重提已通过或正在运行的预检。
+
+
+### 12.18 Supplemental full training and independent assessment entry
+
+The [supplemental execution module](../../src/universal_gnn/benchmarks/supplemental_tensors/README.md)
+adds separate train/post/verify entries for the16 frozen rank3/4 cases.
+Before training it requires a passed independent pair report, both mode gate hashes,
+original source/request/complete preparation and reserved budget. Existing case directories are refused.
+The shared executor preserves all samples,300epoch/patience30, commonbatch and float32;
+the primary144 selector and active48 scope remain separate.
+Assessment supports original Cartesian27/81 shapes and C/m^2/GPa units, exact raw-source labels,
+zero/nonzero and per-component groups. CPU post runs trained-best finite differences,
+rank3/4 covariance/parity/mixed gradients and complete source inference; independent verify forbids model execution.
+See scripts/run_tensor_case.py train|post|verify and its two Slurm wrappers in the module README.
+
+All130 local pure protocol controls passed (11new plus119 original), without Torch.
+Actual Slurm157 controls (including17 live high-rank and10 original physical controls),
+eight accepted full FF gate replays, actual CPU tensor schemas and full source audit follow publication.
+Supplemental training remains0; primary independently accepted8/48, submitted8/48.
+Implementation/protocol evidence does not count as completed numerical experiments.

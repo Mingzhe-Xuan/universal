@@ -146,4 +146,58 @@ ignored `results/paper-tensor-gate-20261105/1252/`. Eight independent CPU gates
 their request/resource/source/dependency identities are saved under
 `results/paper-tensor-gate-20261105/armed-3483500/`. These pending requests
 count zero supplemental trainings; the separate tensor training/post execution
-path still needs to be connected after successful independent preparation.
+path below requires successful independent preparation; pending gates do not
+authorize or count as training.
+
+`execution.py` provides the separate full supplemental training and assessment
+entry. `selected_case` checks the exact accepted definition bytes and rebuilds
+the closed16-case list. `checked_pair_gate` requires the successful independent
+pair report, both hashed mode gates, unchanged case/source/budget and provider
+environment, then rebuilds the complete original preparation gate before any
+training. It records those original gate/report/request inputs for subsequent
+assessment. Existing output directories are refused; no resume or automatic
+retry is implied. The original primary144 selector remains separate.
+
+The shared training executor keeps all samples, float32, both whole-backbone
+initializations, the accepted common batch,300epoch cap and patience30. Full
+epoch/validation coverage, exact validation-best reload and all ordered test
+IDs are checked using native Cartesian shapes27/81. Saved raw label assessment
+requires original C/m^2 or GPa, untransformed float32 source labels, every test
+component and zero/nonzero/component groups; no symmetrization or tail filtering.
+
+Run the following commands in the original provider environment, from an
+immutable source checkout, through Slurm:
+
+```bash
+python scripts/run_tensor_case.py train --case CASE \
+  --preparation PREP --independent-gate INDEPENDENT_PAIR_GATE \
+  --budget-seconds MEASURED_RESERVED_BUDGET
+python scripts/run_tensor_case.py post --case CASE --output NEW_POST_DIRECTORY
+python scripts/run_tensor_case.py verify --case CASE \
+  --postprocessing NEW_POST_DIRECTORY --output NEW_VERIFICATION_DIRECTORY
+```
+
+The optional `--definitions`/`--primary-matrix` paths default to the original
+accepted files. Training optionally accepts the original `--receipt` path;
+assessment recovers the exact inputs from `execution-gate.json`. Train output
+is fixed by the case, not supplied by the caller. `post` recomputes raw-label
+metrics, runs CPU trained-best finite differences/covariance/rank parity/mixed
+gradients on the original worst two inputs, and streams the complete source.
+`verify` reloads the full context, forbids model loads/forwards, independently
+recomputes raw metrics and validates every output ID/shape/finite component,
+source/best/validator/input hashes and retained trained-best physical evidence.
+The CPU physics contract has the same tolerances as CUDA preparation while
+explicitly requiring CPU provenance; CPU reports cannot certify CUDA readiness.
+
+The wrappers [run_tensor_case.slurm](../../../../scripts/run_tensor_case.slurm)
+and [assess_tensor_case.slurm](../../../../scripts/assess_tensor_case.slurm)
+use `UGNN_PYTHON`/`UGNN_CASE`; train additionally requires `UGNN_PREPARATION`,
+`UGNN_INDEPENDENT_GATE`, `UGNN_BUDGET_SECONDS`, while CPU stages require
+`UGNN_STAGE`/`UGNN_OUTPUT` and verify requires `UGNN_POSTPROCESSING`.
+Train is GPU1/2CPU/64GiB, CPU post2CPU/32GiB/72h; override train time from the
+independently measured reserved budget and verify to1CPU/8GiB/4h when submitting.
+Use afterok independent preparation for train, afterok train for post, and
+afterok post for verify. CPU stages hide CUDA. These entries submit no jobs;
+an external managed launcher still must retain exact requests/terminal receipts
+and prevent duplicate submissions. Pending preparations and passing protocol
+fixtures remain zero completed supplemental trainings.

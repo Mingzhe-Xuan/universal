@@ -127,3 +127,14 @@ afterany CPU1210 retained the control terminal/source/request binding. The16
 seed123 prediction resolvers1213-1228 are armed after original gates1078-1093;
 these request receipts do not count as completed predictions or new training.
 Saved proof: `results/paper-prediction-dispatch-20261105/` (ignored artifacts).
+
+
+The raw-format readers also support27-component piezoelectric (C/m^2) and
+81-component elastic (GPa) Cartesian outputs, preserving original source labels
+and zero/nonzero/per-component groups. Full training and assessment of those
+closed16 supplemental cases use the separate
+[supplemental entry](../supplemental_tensors/README.md); the public primary
+post/verify entries still require the original144 matrix and active48 scope.
+Shared private CPU stages accept a domain-specific full-context checker, keep
+the original primary physics tolerances and require explicit rank3/4 CPU
+physical provenance. Existing pinned primary post jobs remain unchanged.

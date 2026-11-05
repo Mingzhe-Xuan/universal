@@ -28,7 +28,8 @@ def rescore_saved(training_report, output, *, allow_legacy_classification=False)
     trained, config, task = (context[k] for k in ("trained", "config", "task"))
     names, held = target_names(task), trained["heldout"]
     output.mkdir(parents=True, exist_ok=False)
-    tensor_groups = GroupedRegressionMetrics((3, 3)) if task == "dielectric" else None
+    tensor_groups = (GroupedRegressionMetrics(SHAPES[task][1:])
+                     if task in {"dielectric", "piezoelectric", "elastic"} else None)
     metrics = {}
     digest, count = hashlib.sha256(), 0
     atom_counts = dict(zip(context["ids"], context["natoms"]))
