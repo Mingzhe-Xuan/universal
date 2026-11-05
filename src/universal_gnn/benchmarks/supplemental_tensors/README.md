@@ -210,8 +210,8 @@ records/1309419 finite labels and16 definitions. Four actual float32 CPU reports
 pass the CPU physics contract;8 CPU reports still fail CUDA qualification and8
 unfinished preparations are rejected. Retained control terminal is0:0.
 Proof: ignored `results/paper-tensor-execution-20261105/1262/`.
-This accepts the execution implementation; a managed submission/terminal chain
-still needs to be connected before formal supplementary training. No new
+This accepts the execution implementation; the managed submission/terminal chain
+below connects it to the original independent preparation gates. No new
 training or official higher-rank CUDA preparedness is claimed by this control.
 
 `submission.py` adds managed requests for the eight frozen initialization pairs.
@@ -255,3 +255,19 @@ and write `terminal.json` beside the corresponding original launch receipt.
 They record raw terminal owner/name/token/source/resources and artifact hashes
 without loading models or asserting numerical accuracy. Receipts, plans and
 telemetry do not increase accepted experimental counts.
+
+
+Managed launch source3ef5f11 passed actualCPU1264/1265:168 main tests/983 JUnit
+counts without failure/error/skip,25 executed Git blobs,eight real primary full
+gate replays and six harmless CPU transport children. Four known receipt reuses
+created0 jobs; a real intentional exit7 was retainedFAILED by afterany telemetry,
+with all three test recorders successful. Original16 tensor source/spec audit,
+8 live high-rank reports and explicit CPU-vs-CUDA separation remain accepted.
+Proof: ignored `results/paper-tensor-submission-20261105/1264/`.
+
+Eight terminal observers1272/1274/...1286 and eight managed pair resolvers
+1273/1275/...1287 are attached to original independent gates1254-1261. All16
+exact request/owner/token/source/resource/dependency identities were verified;
+requests remain pending, count0 supplementary trainings. Their future full
+12-stage chains require the successful original gate and its retained terminal.
+Deployment proof: ignored `results/paper-tensor-submission-20261105/armed-3ef5f11/`.

@@ -219,7 +219,7 @@ Slurm请求、SHA、唯一提交claim和运行状态单独保存，原144定义�
 
 未采用 first-N 或原子数上限裁剪。介电原档5000条中1条标签异常；声子原档55659条中41415条没有有效200通道标签。MLearn保留作者测试集，其AIMD描述族与训练集存在重叠，不据此声称轨迹独立泛化。生成沿用作者划分，Slurm860仅用11356个训练结构拟合初始晶胞体积先验，未使用留出集。
 
-正式独立完成目前为 **8 / 48**，已提交 **8 / 48**；数据准备、配置测试、原头对照、基线及诊断均另列。Torch2.7.1/CUDA12.8及三个任务环境已恢复，897–899依赖/CUDA和910/911原模型初始化均通过。48版诊断和64个独立生成样本已独立验收，生成每版8样本仍保持100×2步骤。四骨干力场两初始化均已独立验收；全部声子谱、全部介电及CGCNN/ALIGNN带隙共10个producer预检报告已完成，仍须相应独立门禁；MACE带隙1013运行中，其余原任务与1077按队列推进。分子、插件及其他原定扩展保留。
+正式独立完成目前为 **8 / 48**，已提交 **8 / 48**；数据准备、配置测试、原头对照、基线及诊断均另列。Torch2.7.1/CUDA12.8及三个任务环境已恢复，897–899依赖/CUDA和910/911原模型初始化均通过。48版诊断和64个独立生成样本已独立验收，生成每版8样本仍保持100×2步骤。四骨干力场两初始化均已独立验收；分类、带隙、介电、声子谱的16个producer预检报告全部通过，仍须相应独立门禁；CGCNN生成预检1020正在成对采样容量检查，其余生成任务与1077按原队列推进。补充张量执行器和受管提交链已独立验收，八对提交器等待原独立门禁，目前补充正式训练仍0。分子、插件及其他原定扩展保留。
 
 历史故障记录：旧872/895力场定义使用运行时不接受的`energy`输出名，934–937在训练前失败。947已重建完整144份revision2定义，使用`total_energy`输出/损失并绑定原`energy`标签；旧定义和失败证据保留。931/938/940重载出现CUDA归约差异，942–944确认状态逐项相同且确定性比较下64条记录均差异0；修复仅限重载验收作用域、原容差不变，945的25项集成回归已通过。
 
@@ -1170,3 +1170,46 @@ No supplemental training was submitted by this acceptance. Primary remains8/48;
 all90 archived hashes retained. Latest221700 original preparation observation:
 14 producer reports passed (all spectrum/dielectric/gap andCG/AL classification),
 1017 MACE classification RUNNING,1077 allocation control still pending.
+
+
+### 12.19 Managed supplemental chains accepted and attached to original gates
+
+Source3ef5f11 CPU1264/1265 passed168 main tests/983 JUnit counts, zero failure/error/skip,
+25 executed Git blobs, eight original full forcefield gate/training-receipt replays,
+all19499 tensor records/1309419 finite labels and16 fixed definitions.
+Six harmless CPU children1266-1271 validated actual signed resources/tokens,
+nonprimary claims, afterok science, afterany terminal recording and4 known receipt
+reuses with0 new jobs. One test intentionally exited7: itsFAILED/7:0 terminal
+was retained, while all three afterany recorders completed0:0. These are transport
+controls, not scientific predictions or supplementary training.
+Proof: `results/paper-tensor-submission-20261105/1264/` (ignored).
+
+The following original independent gates now have exact terminal and launch resolvers:
+
+| Original independent gate | Pair | afterany terminal | afterok launch resolver |
+|---|---|---|---|
+| 1254 | piezoelectric/CGCNN | 1272 | 1273 |
+| 1255 | piezoelectric/ALIGNN | 1274 | 1275 |
+| 1256 | piezoelectric/MACE | 1276 | 1277 |
+| 1257 | piezoelectric/NequIP | 1278 | 1279 |
+| 1258 | elastic/CGCNN | 1280 | 1281 |
+| 1259 | elastic/ALIGNN | 1282 | 1283 |
+| 1260 | elastic/MACE | 1284 | 1285 |
+| 1261 | elastic/NequIP | 1286 | 1287 |
+
+Each resolver depends on both its original gate and new terminal recorder.
+Terminal:1CPU/1GiB/2min/nice0; resolver:1CPU/4GiB/20min/nice1000; noGPU/no-requeue.
+All16 request owner/token/name/source/resources/dependencies and original receipts
+were independently observed and remainPENDING,0 supplementary trainings submitted.
+Only after original successful full preparation/independent/retained0:0 checks does
+each resolver submit its12 stages:2train/4scientificCPU/6terminal. Each science stage
+retains complete data,300/patience30/commonbatch/f32 and its existing physical protocol.
+Known exact receipts are reused; ambiguous/foreign/purged claims stop without retry.
+No original preparation, gate, primary request or source cache was replaced.
+Deployment proof: `results/paper-tensor-submission-20261105/armed-3ef5f11/`.
+
+Main source-bound observation: all16 predictive preparation producers passed;
+1020CGCNN generation RUNNING at paired_sampling_capacity,1021-1023 and1077 pending.
+Sharedfree114.61GiB preserves20GiB reserve. Primary accepted8/48/submitted8/48 and
+all90 previously archived scientific hashes remain unchanged. Native/frozen,
+molecular/custom-plugin and measured cost/source requirements remain where unproven.
