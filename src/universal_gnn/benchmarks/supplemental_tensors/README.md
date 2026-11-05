@@ -17,6 +17,9 @@ and [elastic code](https://raw.githubusercontent.com/YKQ98/GMTNet/main/GMTNet_el
 Duplicating an encoded label component does not constrain the framework's free
 Cartesian27/81 model outputs. Derivative readout and its physical checks remain
 separate downstream requirements.
+Full Cartesian component losses/metrics include repeated encoded minor entries;
+state their27/81-component convention when comparing with published3x6/6x6
+contracted-label metrics, which weight those entries differently.
 
 `partitions.py` jointly groups all valid candidates and every immutable primary
 dielectric record by shared material ID, exact Cartesian geometry, explicit
@@ -60,3 +63,15 @@ checkpoint or model is created. Source conversion is not graph, capacity,
 derivative, training or scientific accuracy acceptance. Independent complete
 source-to-Cartesian and cross-source partition re-scoring is required before
 these datasets are used for supplemental model comparisons.
+
+Source86aa7eb completed actual CPU1074/1075 acceptance:39 main tests/205 JUnit
+records with no failures, errors or skips; all19500 raw records visited and
+19499 valid Cartesian records independently re-scored. Piezoelectric retains
+5000 records including2297 whole-zero labels (3998/502/500 split); elastic
+retains14499 (11587/1442/1470), with the sole invalid source row explicitly
+excluded. An independent bipartite BFS replay confirms15904 material groups,
+4976 anchored groups and all4999 immutable primary roles without cross-role
+group conflicts. Nine source hashes match Git blobs. Original full outputs are
+`data/arxiv-v1/supplemental-rank34-1074/`; evidence is under ignored
+`results/paper-rank34-data-20261105/prepared-1074/`. This acceptance covers data
+only and counts zero model trainings.

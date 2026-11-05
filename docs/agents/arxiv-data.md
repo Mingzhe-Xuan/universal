@@ -166,3 +166,45 @@ Vlab不稳定时保留分片；同时发生的大文件传输按数据优先串�
 MACE通过已固定SHA的 `.model` ZIP中pickle opcode描述定位LongStorage，仅读取89个整数的底层存储，没有反序列化对象、导入Torch或实例化GNN；NequIP使用已校验作者YAML，CGCNN使用已校验atom_init。结果保存在忽略目录 `results/paper-environment-20261104/static-vocabulary-coverage.json`。这项静态核对不证明原包建图、特征提取、数值精度或GPU可运行，相关门禁仍未通过。
 
 - 2026-11-04T09:03:48+08:00：补充ALIGNN静态核对：固定checkpoint配置为cgcnn元素特征、92维；已核验的Jarvis2026.6.12 wheel中原始atom_init覆盖100种元素且每项92个有限分量。五份主体数据也都在此表内，四个模型静态超词表元素均为0；没有借用Jarvis超词表时的回退向量。报告已补齐ALIGNN来源SHA和特征表摘要。真实原包元素属性查询/特征提取与数值仍待Slurm，不把静态表覆盖当作模型运行验收。
+
+## 2026-11-05：压电/弹性全量笛卡尔数据及跨源锚定完成
+
+此前1048仅完成原档审计。执行源86aa7eb的CPU1074现已完成全部19500源记录转换，
+先通过39主测试/205条JUnit零失败/错误/skip；独立CPU1075逐分量复算完整19499条有效记录，
+复核全部原始几何、顺序、单位、标签、排除和跨源材料分组。二者COMPLETED/0:0，未运行GNN。
+九执行源码SHA均按Git blob核验；三份旧数据解析源码未改，主体144格及原始数据不变。
+
+| 数据 | 原始 / 有效 | train / validation / test | 最大原子数 | 输出JSONL字节 |
+|---|---|---|---:|---:|
+| 压电 | 5000 / 5000 | 3998 / 502 / 500 | 88 | 7084971 |
+| 弹性 | 14500 / 14499 | 11587 / 1442 / 1470 | 96 | 25062992 |
+
+压电数据SHA256：`0a95db91e59ef60a36007f6e333fd3507b1c01356474bf817e6f30aa9e820cd3`；
+canonical split SHA256：`e38c37d147488ba17ed9b3bb289c5f54a51853528edc62e26104ccea65ea09ad`。
+
+弹性数据SHA256：`32749c56441bf47b4411596ca68afb27d3aa2d8aba7698551c239eea2002793f`；
+canonical split SHA256：`d3e9a3c8ac74b0d73e38a3cc9c02afaaeca5867f179f13040133a59e77d1d34e`。
+
+按[作者压电](https://raw.githubusercontent.com/YKQ98/GMTNet/main/GMTNet_piezo/data.py)和
+[作者弹性代码](https://raw.githubusercontent.com/YKQ98/GMTNet/main/GMTNet_elast/data.py)中的
+Voigt索引顺序`xx,yy,zz,xy,yz,xz`展开为27/81个分量；弹性kbar乘0.1得到GPa，压电保留C/m²。
+只复制源已编码的minor索引，无工程剪切factor2、major平均或模型输出对称约束。
+原始弹性矩阵中实际major非对称记录数为0，但转换器用非对称fixture确认不会投影或平均。
+
+保留全部2297个零压电张量及全部71979个源零分量；弹性保留306878个源零分量。
+作者幅度阈值外压电2条、弹性19条仍保留，无原子数或特征筛选。
+唯一排除为弹性JVASP-20053/source_index6294，原因`missing_nonfinite_or_wrong_tensor_shape`。
+
+主介电4999条与两补充源按ID、精确几何、MP引用和原主划分材料组联合分组，
+共15904材料组，其中4976组有固定主划分锚点；全4999条主角色不变，分组跨分区冲突0。
+压电4999条直接锚定，剩余1条按固定全局seed0分组顺序分配；弹性3369条直接或传递锚定，
+其中3345共享ID、2894共享精确几何（两统计有重叠，不能相加）。
+独立核验用BFS重建材料连通分量及未锚定组hash角色，未复用生产划分构建器。
+精确几何分组不代表完整晶体等价判定，也不证明与预训练源无重叠。
+
+服务器完整输出 `data/arxiv-v1/supplemental-rank34-1074/`，两数据子目录各含标准JSONL、split、audit、exclusions；
+根目录含完整跨任务材料分组及准备报告。原档沿用1048固定SHA，主介电数据/划分SHA均保持。
+原始压电pickle6731047bytes，SHA256 `2a57e081f0072b2ac7fca7769095adcded1d299d2cd971db5c93fd25eb66929d`；
+原始弹性pickle20448007bytes，SHA256 `5def6ffc1136c482298bc20c389037ce3dc14fab1a63b52d15f0b32a40757db5`。
+本地忽略证据目录 `results/paper-rank34-data-20261105/prepared-1074/` 保存原始报告、JUnit、审计及独立核验。
+数据准备计0次训练；补充模型的图扫描、共同batch容量、数值导数/训练/科学精度仍须单独验收。
