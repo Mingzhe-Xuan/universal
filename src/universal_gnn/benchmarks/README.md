@@ -85,3 +85,5 @@ Full-data generation has a public [pair preparation entry](generation/README.md)
 [Formal predictive execution](execution/README.md) binds a new full case to actual complete-data preparation evidence and records training/test/resource coverage. Generation keeps its independent quality orchestration.
 
 [Formal generation execution](generation/README.md#formal-training-and-quality) binds training and independent1000-attempt quality stages to separate capacity evidence, a full train-only prior and retained last/best checkpoints. Failed quality attempts are preserved and guarded against concurrent execution.
+
+[Deferred formal submission](submission/README.md) checks both full preparation gates before submitting a frozen initialization pair, derives finite Slurm allocations from measured capacity, and preserves exact requests and receipts to prevent ambiguous retries.

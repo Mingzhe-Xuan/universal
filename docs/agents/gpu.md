@@ -3770,3 +3770,11 @@
 - 2026-11-05T12:27:44+08:00: Ordinary SSH first verify/pull published root then read exact own1040/1041 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
 
 - 2026-11-05T12:29:17+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.
+
+- 2026-11-05T12:40:16+08:00：SCP上传已推送752c5f2的13180B小型离线bundle，SHA fa19a61ecb8ac278deaf83a5d8735eda52c933fb1e1b0088ee3df38d92465d89，先决8825fc4；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T12:41:40+08:00: Ordinary SSH first verify/pull published root then read exact own1046/1047 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current990 pretrained status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T12:46:03+08:00: Ordinary SSH first verify/pull published root then read exact own1046/1047 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current990 pretrained status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T13:07:53+08:00: Ordinary SSH first verify/pull published root then read exact own1046/1047 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current990 pretrained status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.

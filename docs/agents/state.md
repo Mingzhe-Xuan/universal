@@ -1,12 +1,14 @@
 # 当前状态
 
-Timestamp: 2026-11-05T12:35:32+08:00.
+Timestamp: 2026-11-05T12:46:03+08:00.
+
+Current phase: build deferred CPU full-preparation gate and receipt-guarded Slurm stage submission while existing training continues. Previous turn made progress: accepted fourth formal case989, audited full rank3/4 sources1048 and queued NequIP independent post chains.
 
 Active original scope: CGCNN/ALIGNN/MACE/NequIP x classification/bandgap/dielectric/phonon-DOS/forcefield/generation x pretrained whole-backbone fine-tuning/scratch x seeds123/456/789 =144 formal trainings. Native/frozen, rank3/4, molecular/plugin and source/cost requirements remain separate and outstanding where not evidenced.
 
 Independently accepted formal cases4/144, unique submitted8/144. Both MACE968/969 and ALIGNN988/989 initializations passed full1309/93/164, batch4,float32, original300cap/patience30, raw164-target re-score, trained-best CPU physics and complete1566 inference/output checks.989 completed194 epochs/best164; E/atomMAE0.026937083500187572, forceMAE0.03921684150251242.1040/1041 passed; best0d07bb41df159620e2050772efd94d8d06dfde59dcbcd1ffe81101b0cda5545c, inference53393212db2113683af5569b40bad4bcf243b9283e8a081fd97dd8e2eb598188. Evidence and unique index: results/paper-completed-20261105/. All4 cases are seed123 only; no three-seed or universal pretraining-benefit claim.
 
-990 NequIP pretrained authoritatively RUNNING83 epochs/44:26;991 scratch pending. Independent CPU chains1046/1047 and1049/1050 now depend afterok990/991. CGCNN995 full prep and996/997 remain original queued requests, followed by existing spectrum998-1001, tensor1004-1007, scalar1011-1018 and generation1020-1023 preparations. No queue restart or changes to their model/data/environment/source caches.
+990 NequIP pretrained authoritatively RUNNING151 epochs/1:23:03;991 scratch pending. Independent CPU chains1046/1047 and1049/1050 now depend afterok990/991. CGCNN995 full prep and996/997 remain original queued requests, followed by existing spectrum998-1001, tensor1004-1007, scalar1011-1018 and generation1020-1023 preparations. No queue restart or changes to their model/data/environment/source caches.
 
 1048 complete supplemental raw tensor audit passed19500 records: piezo5000 finite and valid including2297 whole-zero labels, elastic14499 valid/1 bad label of14500. Full20,448,007B elastic raw file recovered by verified-prefix/SCP chunks, exact gzip+raw SHA checked and decompressed only inSlurm. No magnitude/zero/atom-count/symmetry filtering; shared-ID material anchor conflicts0. Three executed parser/split Git blobs and8 provider/species set comparisons verified. This is source audit only: rank3/4 Cartesian conversion and stronger cross-source geometry/reference anchored splits are not yet prepared. Evidence: results/paper-rank34-data-20261105/1048/; full raw/spools stay runs/full-rank34-source-audit-1048/.
 
@@ -607,3 +609,9 @@ Torch2.7.1+cu128 and three original provider environments are installed/verified
 - 2026-11-05T11:49:56+08:00: Previous turn made progress: saved-generation independent assessment d6a71f6 passed actual CPU1045 and64 diagnostic sample replays; formal remains3/144. Revalidate989/1040/1041 and pursue existing GMTNet rank3/4 raw-data audit/preparation onCPU while the GPU continues. Preserve original144 plus native/frozen/rank3/4/molecular/plugin/cost scope; do not replace primary data.
 
 - 2026-11-05T12:35:32+08:00: Completed ALIGNN scratch full independent acceptance through1040/1041; formal index4 unique968/969/988/989 of8 submitted. NequIP990 live83 epochs,991 pending with independent CPU chains1046/1047 and1049/1050 queued.1048 raw piezo/elastic audit and source recovery passed;19500 source records,5000/14499 valid,2297 piezo zero labels,0 shared-ID anchor conflicts; conversion remains next. Plan shifts next launch unit to deferred full-preparation CPU gates/submission because one GPU and long queue should advance automatically from verified preparations, without lowering any science budget or count rules.
+
+- 2026-11-05T12:43:05+08:00: Final same-handle observation confirms990 RUNNING151 epochs/1:23:03 and1046/1047 still waiting afterok; no errors, new submissions or restart. Formal4/144 and raw-data audit scope unchanged.
+
+- 2026-11-05T12:46:03+08:00: Entered deferred submission unit. Verify current990/991 and job receipts, add pure scheduling/provenance/claim/budget controls before implementation, then publish and CPU acceptance before arming20 pending seed123 pair gates. Preserve144 scope, all scientific settings and independent post-evaluation requirements.
+
+- 2026-11-05T13:10:26+08:00: Deferred pair submission implementation completed isolated31-main tests,72 pair identities and144 actual frozen recipes. Existing990 remains authoritatively RUNNING151 epochs;1046/1047 pending. Next publish pinned source, run six genuine complete gates and CPU-only real Slurm receipt/dependency/reuse acceptance before enabling20 pending pair gates. Scope144 unchanged; no new formal training yet.
