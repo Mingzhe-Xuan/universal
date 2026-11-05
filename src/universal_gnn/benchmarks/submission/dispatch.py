@@ -19,6 +19,20 @@ from .planning import build_submission_plan
 MANAGED = "ugnn_full_pair_dispatch_v1"
 
 
+class ReceiptNotRetained(RuntimeError):
+    """The known handle is missing; callers must reconcile artifacts, never resubmit."""
+
+
+def stage_kind(phase):
+    if phase == "train":
+        return "formal"
+    if phase in {"quality", "assessment"}:
+        return "generation-" + phase
+    if phase in {"post", "verify"}:
+        return "prediction-" + phase
+    raise ValueError("Unsupported managed submission phase")
+
+
 @contextmanager
 def pair_lock(root):
     active = root / "active"
@@ -41,15 +55,16 @@ def validate_submitted_job(receipt):
     try:
         raw = subprocess.check_output(["scontrol", "show", "job", "-o", receipt["job"]], text=True)
     except subprocess.CalledProcessError as error:
-        raise RuntimeError("Slurm no longer retains this receipt; reconcile actual artifacts before retry") from error
+        raise ReceiptNotRetained("Slurm no longer retains this receipt; reconcile actual artifacts before retry") from error
     fields = dict(token.split("=", 1) for token in shlex.split(raw) if "=" in token)
-    kind = "formal" if receipt["phase"] == "train" else "generation-" + receipt["phase"]
+    kind = stage_kind(receipt["phase"])
     if (fields.get("JobId") != receipt["job"] or
             fields.get("UserId", "").split("(")[0] != getpass.getuser() or
             fields.get("JobName") != "ugnn-" + kind + "-" + receipt["case_id"] or
             fields.get("Comment") != receipt["submission_token"] or
             fields.get("JobState") not in {"PENDING", "CONFIGURING", "RUNNING", "COMPLETING", "COMPLETED"}):
         raise RuntimeError("Existing Slurm owner/token/name/state does not match this exact stage")
+    return fields
 
 
 def check_existing_cases(plan):
@@ -98,7 +113,7 @@ def submit_stage(plan, item, jobs):
                   parent_slurm_job=os.environ["SLURM_JOB_ID"], created_at=time.time())
     write_json(intent_path, intent)
     resources = item["resources"]
-    kind = "formal" if item["phase"] == "train" else "generation-" + item["phase"]
+    kind = stage_kind(item["phase"])
     argv = ["sbatch", "--parsable", "--no-requeue", "--partition=" + resources["partition"],
             "--nodelist=" + resources["node"], "--cpus-per-task=" + str(resources["cpus_per_task"]),
             "--mem=" + str(resources["memory_gib"]) + "G", "--time=" + resources["time"],

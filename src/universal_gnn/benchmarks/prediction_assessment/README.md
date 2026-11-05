@@ -87,3 +87,34 @@ independent no-model1203 both completed successfully. This establishes saved-out
 replay across five task formats and a real forcefield post/verify run. Full-data
 scalar/classification/tensor/spectrum model inference remains to be exercised as
 those formal cases complete; preparation or fixtures are not scientific results.
+
+## Deferred post-processing for existing training
+
+`scripts/submit_prediction_assessment.py` runs in a CPU Slurm allocation after the
+original initialization-pair launch gate succeeds. It accepts the original matrix,
+`--pair` and the exact `--dispatch-job` receipt, then checks the complete original
+plan, scripts, source, both preparation gates and managed training intents/tokens.
+It only attaches two CPU post jobs and two independent CPU validators. It never
+submits training or changes the original training claims, configs or source caches.
+
+Use `scripts/submit_prediction_assessment.slurm` with `UGNN_PYTHON`, `UGNN_MATRIX`,
+`UGNN_MATRIX_SHA256`, `UGNN_PAIR` and `UGNN_DISPATCH_JOB`. Give this resolver an
+`afterok` dependency on that same dispatch job. Only the16 active seed123 pairs
+for gap, classification, dielectric and spectrum are accepted; forcefield already
+has its independent chains, and generation retains its own quality/assessment.
+
+The resolver requests1CPU/4GiB/20minutes. Its post jobs initially request2CPU/32GiB/
+72hours and its independent validators1CPU/8GiB/4hours, with noGPU and CUDA visibility
+disabled. `UGNN_POST_HOURS` and `UGNN_VERIFY_HOURS` can set other positive finite
+budgets within the partition maximum. These are initial CPU limits for complete
+source inference, not measured guarantees; data, steps, dtype and common batch
+are preserved. CPU post costs remain separate from GPU training costs.
+
+Retained training receipts require exact owner/name/token/source/allocation.
+Purged handles require complete source-bound training artifacts and record the
+missing terminal explicitly. Existing post receipts preserve their original
+dependency and submission token. Known matching receipts are reused; ambiguous
+or foreign claims stop for reconciliation instead of creating duplicate work.
+Post claims live under each case launch's `post/` and `verify/` folders, with pair
+plans and attempts under `runs/arxiv-v1/prediction-dispatch/`. Request receipts
+alone do not increase the scientific completion count.

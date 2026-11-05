@@ -3912,3 +3912,15 @@
 - 2026-11-05T17:27:23+08:00: Ordinary SSH first verify/pull published root, clean acceptedba41cf2 fixed source,1201 acceptance and exact996/997 training ownership/launch request sourceSHA. Arm only new twoCGCNN CPU post+independent chains with success-only dependencies/fresh outputs/no-requeue, retain intent/receipts. No training/GPU submissions, queue cancellations, source/environment/data edits or numerical login work.
 
 - 2026-11-05T17:31:19+08:00: Ordinary SSH first verify/pull root then inspect exactCGCNN CPUpost/verify1204-1207 own actual resource/source/requestSHA/afterok identities, original996/997 training statuses and any new output reports. Metadata only; no model execution, submissions/restarts or source/data/environment edits.
+
+- 2026-11-05T18:31:42+08:00：SCP上传已推送bf791af的8268B小型离线bundle，SHA 864549866c4bcdc13ce5a97643aa1aa47f3679e95e832ebe1f5d9857b524fd45，先决ba41cf2；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T18:35:10+08:00: Ordinary SSH first verify/pull root then inspect exactCGCNN CPUpost/verify1204-1207 own actual resource/source/requestSHA/afterok identities, original996/997 training statuses and any new output reports. Metadata only; no model execution, submissions/restarts or source/data/environment edits.
+
+- 2026-11-05T18:43:59+08:00: Ordinary SSH first verify/pull published root then collect completed996 full report/config/events/raw164 predictions/split/bestSHA and1204/1205 post/heldout/physics/request identities, current997/1077. Read-only metadata and short checksums; no model execution, new jobs, source/data/environment changes or training restart.
+
+- 2026-11-05T18:45:38+08:00: Ordinary SSH first verify/pull root;53/best23 CGCNN996 full metadata and1204/1205 reports passed but old terminal records purged. Verify accepted cleanba41cf2/post-request source; submit one freshCPU1/4GiB10min public no-model verifier against existing1204 output, not training/inference rerun. Retain unique intent/request/receipt and original-terminal limitation; existing997/1206/1207 unchanged.
+
+- 2026-11-05T18:53:48+08:00: Ordinary SSH first verify/pull root then inspect exact live/completed CGCNN no-model reconfirmation1208 source/request/terminal/report and heldout evidence; retain any actual terminal immediately. Read-only metadata, no new job/model work/source/environment changes.
+
+- 2026-11-05T19:01:26+08:00: Ordinary SSH first verify/pull root then inspect exact live/completed CGCNN no-model reconfirmation1208 source/request/terminal/report and heldout evidence; retain any actual terminal immediately. Read-only metadata, no new job/model work/source/environment changes.

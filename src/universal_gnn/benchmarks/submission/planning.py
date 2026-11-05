@@ -64,11 +64,12 @@ def measured_train_estimate(preparation, spec):
     return max(timings) * math.ceil(spec["counts"]["train"] / evidence["common_batch_size"]) * spec["case"]["config"]["epochs"]
 
 
-def request_script(arguments):
-    repository = Path.cwd().resolve()
+def request_script(arguments, *, repository=None, cpu_only=False):
+    repository = Path(repository).resolve() if repository is not None else Path.cwd().resolve()
     return ("#!/bin/bash\nset -euo pipefail\ncd " + shlex.quote(str(repository)) + "\n" +
             "export PYTHONPATH=" + shlex.quote(str(repository / "src")) + " PYTHONNOUSERSITE=1\n" +
             "export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 CUBLAS_WORKSPACE_CONFIG=:4096:8\n" +
+            ('export CUDA_VISIBLE_DEVICES=""\n' if cpu_only else "") +
             "exec " + shlex.join([str(value) for value in arguments]) + "\n")
 
 
