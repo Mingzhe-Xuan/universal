@@ -319,3 +319,5 @@ inference and replays actual pre-headmode checkpoints. Run through Slurm after
 `prepare_generation_pair.py` and `prepare_generation_pair.slurm` prepare one frozen full-data generation pair. See [generation preparation](../src/universal_gnn/benchmarks/generation/README.md) for required variables and separate train/sample outputs. They launch no formal training.
 
 `evaluate_native_baseline.py` and `.slurm` run [full native-head baselines](../src/universal_gnn/benchmarks/native_heads/README.md) on the matching7580 bandgap or164 forcefield test records. These CPU Slurm evaluations do not add formal trainings.
+
+`run_formal_case.py` and `.slurm` expose [formal predictive execution](../src/universal_gnn/benchmarks/execution/README.md) for the five predictive tasks. The Slurm-only `--check-only` mode audits real full preparation evidence without training; a formal run refuses existing case directories.

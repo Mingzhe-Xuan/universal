@@ -81,3 +81,5 @@ This orchestration retains the supplied-probe scope above and launches no formal
 Full-data generation has a public [pair preparation entry](generation/README.md): separate training/sampling capacity, complete train-only prior and original graphs. Formal1000-sample quality remains a separate run.
 
 [Full native-head baselines](native_heads/README.md) evaluate original matching-task public heads on complete frozen test partitions without training or target-reference fitting.
+
+[Formal predictive execution](execution/README.md) binds a new full case to actual complete-data preparation evidence and records training/test/resource coverage. Generation keeps its independent quality orchestration.

@@ -3622,3 +3622,11 @@
 - 2026-11-05T09:03:18+08:00: Ordinary SSH first verify/pull published root then collect exact completed seed-123--forcefield--alignn--pretrained reports/configs/events/all164 saved test predictions/frozen split and short best-file SHA check plus current-user queue. No model execution, new jobs, source/env/data edits or checkpoint transfer.
 
 - 2026-11-05T09:08:13+08:00: Ordinary SSH first verify/pull published root then read exact own1035/1036 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T09:11:23+08:00：SCP上传已推送f465106的8818B小型离线bundle，SHA ed64d520a03f76efd8c2477dd6c16d63dad3efbf52ce860a2237ef7d1b30164f，先决7a4b4a3；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T09:12:01+08:00: Ordinary SSH first verify/pull published root then read exact own1035/1036 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T09:13:21+08:00: Ordinary SSH first verify/pull published root then read exact own1035/1036 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T09:32:19+08:00: Ordinary SSH first verify/pull published root then read exact own1035/1036 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
