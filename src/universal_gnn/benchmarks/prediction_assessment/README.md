@@ -118,3 +118,12 @@ or foreign claims stop for reconciliation instead of creating duplicate work.
 Post claims live under each case launch's `post/` and `verify/` folders, with pair
 plans and attempts under `runs/arxiv-v1/prediction-dispatch/`. Request receipts
 alone do not increase the scientific completion count.
+
+
+Source33afb0c was accepted on Slurm CPU1209:59 main tests,439 JUnit counts without
+failure/error/skip,15 executed Git blobs, and actual CPU1211/1212 submission,
+dependency and receipt reuse. Reusing both receipts created0 new jobs. A separate
+afterany CPU1210 retained the control terminal/source/request binding. The16
+seed123 prediction resolvers1213-1228 are armed after original gates1078-1093;
+these request receipts do not count as completed predictions or new training.
+Saved proof: `results/paper-prediction-dispatch-20261105/` (ignored artifacts).
