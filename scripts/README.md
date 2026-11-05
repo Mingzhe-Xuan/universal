@@ -348,3 +348,10 @@ terminal proof. Each pair has two train/post/verify chains plus six afterany
 recorders. `record_tensor_terminal.py gate|stage` preserves raw terminal
 identities and report hashes. See the tensor module README for dependencies,
 resources, separate claim paths and strict no-duplicate/unknown-claim behavior.
+
+`prepare_frozen_experiment_definitions.py --output NEW_DIRECTORY` audits the
+complete original dielectric/forcefield sources and emits8 separate seed123
+head-only configurations, changing only `optimization.train_backbone=false`
+relative to each original full pretrained recipe. See the
+[frozen ablation module](../src/universal_gnn/benchmarks/frozen_backbones/README.md).
+Run via CPU Slurm; this does not run official frozen preparation or training.
