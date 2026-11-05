@@ -135,3 +135,15 @@ failed attempts, and writes `gate-pretrained.json`, `gate-scratch.json` and
 `report.json`. Training wall-time is a finite reserved budget from measured
 workers, not a runtime guarantee. This module imports no Torch, loads no model
 and submits no jobs. A passed gate is still not training or heldout accuracy.
+
+
+Gate source3483500 passed actual CPU1252/1253 acceptance:119 main tests/825
+JUnit counts without failure/error/skip,7 executed Git blobs, seven real complete
+primary preparation/training gates replayed without model execution, full tensor
+source/spec audit, and actual CPU/unfinished evidence rejection. Proof is under
+ignored `results/paper-tensor-gate-20261105/1252/`. Eight independent CPU gates
+1254-1261 are armed after both their original GPU preparer and terminal recorder;
+their request/resource/source/dependency identities are saved under
+`results/paper-tensor-gate-20261105/armed-3483500/`. These pending requests
+count zero supplemental trainings; the separate tensor training/post execution
+path still needs to be connected after successful independent preparation.
