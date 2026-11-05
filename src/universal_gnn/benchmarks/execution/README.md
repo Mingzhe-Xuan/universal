@@ -74,3 +74,12 @@ use this check. Actual CUDA visibility is checked separately by the runtime.
 See [Slurm states](https://slurm.schedmd.com/job_state_codes.html) and
 [GPU resources](https://slurm.schedmd.com/gres.html). Resource-field compatibility
 does not alter model/data/precision, derivatives or the measured finite budget.
+
+Source17be214 passed CPU1076:37 main tests/350 JUnit records without failures,
+errors or skips, exact historical991 legacy-record rejection reproduced in the
+old guard and corrected in the new guard, own actual CPU allocation rejected,
+and six existing full mode gates rechecked. Seven executed Git blobs match.
+Real GPU visibility/tiny backward control1077 is separately queued after991;
+its pending state is not GPU acceptance. Replacement CPU launch gates wait for
+that control and their original full preparations to succeed. Running training
+and original scientific configs remain unchanged.
