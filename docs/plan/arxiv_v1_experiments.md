@@ -1292,3 +1292,25 @@ CGCNN1020、MACE1022的原未训练采样准备继续保持FAILED，不修改其
 仅取消身份、token、请求哈希、源码、资源逐项核验且仍PENDING的旧质量/后评1316、1318、1322、1323、1325、1326、1328、1329，已保存即时CANCELLED终态；四个原ALIGNN/NequIP训练及原回执不变。原8个科学结果/90个归档哈希再次通过，原44请求索引已备份，当前48个唯一训练ID与active scope逐项相等。
 
 证据保存于忽略目录`results/paper-generation-staging-20261105/1450/`、`results/paper-generation-staged-plans-20261106/005154/`及`results/paper-generation-staged-dispatch-20261106/010441/`。这些是执行入口和真实请求的验收，不能替代其余40个主实验及补充实验的完整科学完成。
+
+
+### 12.23 冻结骨干独立预检已排队（2026-11-06）
+
+冻结消融仍为原8份定义：介电/力场×四模型×预训练seed123，唯一训练配置变化为`optimization.train_backbone=false`。主表48格和16个高阶张量补充不变。
+
+[冻结预检模块](../../src/universal_gnn/benchmarks/frozen_backbones/README.md)使用原完整FT/Scratch门禁重新核验来源、划分、全部图行和最坏探针，再运行本病例独立100批CUDA训练探针与两条最坏结构的物理检查。复用完整图扫描不等于复用未冻结训练的内存结论。原probe/model/engine代码不改，检查层只观察原优化器步骤：骨干参数/持久缓冲区逐位不变、所有骨干模块eval、无优化器所有权和梯度，预测头参数实际更新，输入求导保持有效。匹配原参考batch4；typedOOM可探索减小批次，但缩小结果不会自动冒充仅改一个开关的匹配消融。
+
+执行源b167881已由实际CPU1506及终态1507验收：220主测试/1151JUnit计数，0失败/错误/跳过，29个执行Git blob；完整6565源记录/393783有限标签，269条全零force标签保留；8份冻结原参考、8份原力场与8份原生成准备门禁重放。六个force/fixed-frame/equivariant、float32/64小模型在检查层包裹前后的3步参数更新和随机数状态逐位一致，冻结与输入求导验证通过；4种故意状态/模式/梯度/所有权破坏被拒绝，原6个冻结控制和11个生成质量运行控制保留。此CPU证据不能替代八个官方骨干的CUDA预检。
+
+首次1504在四个tensor对照的测试准备中遇到e3nn CartesianTensor不支持通用deepcopy，1505保留真实FAILED1:0；随后改用相同配置/seed独立构造和strict state_dict加载，不改模型、数学或容差，不跳过用例，1506完整通过。
+
+| 任务 | CGCNN 预检 / 独立门禁 | ALIGNN | MACE | NequIP |
+|---|---|---|---|---|
+| 力场 | 1508 / 1510 | 1516 / 1518 | 1524 / 1526 | 1532 / 1534 |
+| 介电 | 1512 / 1514 | 1520 / 1522 | 1528 / 1530 | 1536 / 1538 |
+
+8个GPU请求均为node42/GPU1/2CPU/64GiB/16h/nice1000/no-requeue；每个另接一个afterany的1CPU/1GiB/2min终态记录器。8个独立CPU门禁为1CPU/4GiB/20min，等待对应GPU预检和其终态记录器都成功；门禁另有8个afterany终态记录器。共32个请求的账户、token、原脚本SHA、固定源码、资源和依赖已独立核验，观察时全部PENDING，没有新增冻结全量训练或科学结果。
+
+实际源码缓存固定b167881，门禁命令见模块README；原1288定义SHA仍为`e6104992bc86dfbbc0bdc67b9d20105f79dcb5ba95dc3fabbdac7ef708c4b8f0`。报告位于忽略目录`results/paper-frozen-readiness-20261105/1506/`和`results/paper-official-frozen-preparations-20261106/023610/`；服务器原请求在`runs/official-frozen-preparations-b167881-claim/`。每个预检使用新的`runs/arxiv-v1/frozen-preparation-JOB-TASK-MODEL/`，不改已有数据、定义或主实验结果。
+
+主训练1290最新观察为RUNNING03:08:06，完整训练87轮，每轮3998结构/1000 mini-batch，验证502结构，最佳64轮。仍为主表48请求、8独立完成。冻结后续全量训练、trained-best评测及独立无模型验收入口仍需完成，其他补充项保留，不能将预检排队计作科学完成。
