@@ -115,3 +115,51 @@ failure. Readiness is neither full training nor scientific completion: each case
 still needs full head training, validation-best heldout/physical/all-source
 inference and independent no-model acceptance. This new preparation code has
 not yet qualified any official frozen case until actual Slurm evidence passes.
+
+## Full execution and independent acceptance
+
+`execution.py` accepts only these same eight definitions and a complete saved
+independent CUDA gate. It rebuilds the entire preparation and matches all gate
+fields except an independently checked compatible source commit. It refuses
+existing case directories and keeps the matched reference batch and original
+300epoch/patience30 recipe. Primary and higher-rank experiments retain their
+positive-backbone-gradient requirement; zero is allowed only by the explicit
+closed frozen policy.
+
+`training_audit.py` observes every actual optimizer step around the unchanged
+training engine, using the accepted frozen observer without editing its bytes.
+The parent audit binds the actual engine source separately from the observer's
+original capacity-delegate reference. It records exact backbone state and eval
+modes, optimizer exclusion, absent body gradients and positive changing readout
+parameters. Both actual best and last checkpoints are reloaded on CPU within
+the training Slurm allocation: their body fingerprints must equal the public
+body verified by frozen preparation; their readout and optimization policy must
+match the real training audit. This adds checks, without changing optimization,
+RNG draws or the input autograd graph.
+
+CPU post-processing replays that complete context before rescoring every raw
+heldout label, checking the validation-best model on the original graph scan's
+worst two inputs with the unchanged derivative/geometry tolerances, and streaming
+the entire source. A separate CPU process forbids model loads/forwards and checks
+raw-label metrics, Cartesian groups, physical evidence hashes, checkpoint/input
+bindings and every ordered full-source output. Both processes validate the whole
+training audit. A request or successful preparation is not a scientific result.
+
+Use the original provider interpreter in separate Slurm allocations. Each output
+directory must be new; the training destination is fixed by the accepted case:
+
+```bash
+python scripts/run_frozen_case.py train \
+  --case frozen--seed-123--forcefield--cgcnn \
+  --preparation FROZEN_PREPARATION_DIRECTORY \
+  --independent-gate INDEPENDENT_GATE_JSON --budget-seconds MEASURED_BUDGET_SECONDS
+python scripts/run_frozen_case.py post \
+  --case frozen--seed-123--forcefield--cgcnn --output NEW_POST_DIRECTORY
+python scripts/run_frozen_case.py verify \
+  --case frozen--seed-123--forcefield--cgcnn \
+  --postprocessing NEW_POST_DIRECTORY --output NEW_VERIFICATION_DIRECTORY
+```
+
+Managed submission and retained terminal identity still need their separate
+deployment checks. Small CPU numerical training controls cannot qualify an
+official CUDA preparation, nor count as one of the eight full frozen ablations.

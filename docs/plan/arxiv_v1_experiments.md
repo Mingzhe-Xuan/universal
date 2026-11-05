@@ -1314,3 +1314,19 @@ CGCNN1020、MACE1022的原未训练采样准备继续保持FAILED，不修改其
 实际源码缓存固定b167881，门禁命令见模块README；原1288定义SHA仍为`e6104992bc86dfbbc0bdc67b9d20105f79dcb5ba95dc3fabbdac7ef708c4b8f0`。报告位于忽略目录`results/paper-frozen-readiness-20261105/1506/`和`results/paper-official-frozen-preparations-20261106/023610/`；服务器原请求在`runs/official-frozen-preparations-b167881-claim/`。每个预检使用新的`runs/arxiv-v1/frozen-preparation-JOB-TASK-MODEL/`，不改已有数据、定义或主实验结果。
 
 主训练1290最新观察为RUNNING03:08:06，完整训练87轮，每轮3998结构/1000 mini-batch，验证502结构，最佳64轮。仍为主表48请求、8独立完成。冻结后续全量训练、trained-best评测及独立无模型验收入口仍需完成，其他补充项保留，不能将预检排队计作科学完成。
+### 12.24 冻结骨干的完整执行入口
+
+八个冻结消融保留原全量数据、划分、共同 batch4、300epoch/patience30、
+原包骨干和 reset 任务头，仅改变 `optimization.train_backbone: false`。
+[正式入口](../../scripts/run_frozen_case.py)区分 train、CPU post 和独立 verify，
+[模块契约](../../src/universal_gnn/benchmarks/frozen_backbones/README.md)说明输入和证据格式。
+
+训练先重建完整独立 CUDA 门禁。逐步审计骨干参数/buffer/eval 模式和优化器排除，
+验证读出参数确实更新，并重载实际 best/last checkpoint，逐字节指纹匹配原预训练骨干。
+原训练引擎及已提交冻结容量 worker 不改写；主表和高阶张量仍要求正骨干梯度。
+后评覆盖全部测试原标签、最佳权重求导/几何检查和全源推理；独立验收禁止加载或执行模型。
+
+当前203项本地纯协议检查通过；真实完整训练/重载/RNG/求导及后评验收将通过 CPU Slurm
+单独验证，不能以这些小模型控制替代官方冻结 CUDA 预检或八次全量训练。正式冻结训练尚未提交。
+主表1290已完成94轮、best64及499条测试；现有后评1306和独立验收1308仍在等待，
+因此主表独立完成保持8/48，已提交48/48。所有补充实验和单一训练seed123范围不变。

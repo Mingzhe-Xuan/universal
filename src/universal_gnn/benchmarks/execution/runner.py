@@ -77,10 +77,36 @@ def finite_shape(values, shape):
         finite_shape(value, shape[1:])
 
 
-def verify_training_report(trained, gate, events):
+def verify_training_report(trained, gate, events, *, frozen_backbone=False):
     """Verify full epoch/selection/test coverage; do not claim independent source re-score."""
     config, counts = gate["config"], gate["counts"]
     epochs = trained.get("completed_epochs")
+    if type(frozen_backbone) is not bool:
+        raise ValueError("Declare an explicit backbone training policy")
+    if frozen_backbone:
+        from ..frozen_backbones.contracts import DEFINITION_SHA
+
+        case = gate["case"]
+        if (gate.get("kind") != "formal_frozen_backbone_execution_gate" or
+                gate.get("definition_sha256") != DEFINITION_SHA or
+                case.get("model") not in {"cgcnn", "alignn", "mace", "nequip"} or
+                case.get("task") not in {"forcefield", "dielectric"} or case.get("seed") != 123 or
+                case.get("id") != "frozen--seed-123--" + case["task"] + "--" + case["model"] or
+                case.get("initialization") != "pretrained" or
+                config.get("optimization", {}).get("train_backbone") is not False or
+                config.get("optimization", {}).get("train_readout") is not True):
+            raise ValueError("Zero-backbone gradients are restricted to the closed frozen ablation")
+        norms = trained.get("gradient_norms", [])
+        if (len(norms) != epochs or any(type(g) not in (int, float) or not math.isfinite(g) or g <= 0 for g in norms)):
+            raise ValueError("Frozen training requires positive active-component gradients in every epoch")
+        for key in ("components", "components_during_training"):
+            body = trained.get(key, {}).get("backbone", {})
+            head = trained.get(key, {}).get("readout", {})
+            if (body.get("trainable_parameters") != 0 or body.get("mode") != "eval" or
+                    body.get("module_modes", {}).get("train") != 0 or
+                    head.get("trainable_parameters", 0) <= 0 or
+                    key == "components_during_training" and head.get("mode") != "train"):
+                raise ValueError("Frozen body or active readout mode/parameter policy changed")
     if (not trained.get("passed") or not trained.get("checkpoint_reload") or
             type(epochs) is not int or not 1 <= epochs <= config["epochs"] or
             trained.get("requested_epochs") != config["epochs"] or
@@ -88,7 +114,8 @@ def verify_training_report(trained, gate, events):
             trained.get("available_structures") != gate["source_structures"] or
             trained.get("resume") != {"path": None, "kind": "none", "completed_epochs_before": 0} or
             len(trained.get("history", [])) != epochs or len(trained.get("backbone_gradient_norms", [])) != epochs or
-            any(not math.isfinite(g) or g <= 0 for g in trained["backbone_gradient_norms"])):
+            any(type(g) not in (int, float) or not math.isfinite(g) or
+                (g != 0. if frozen_backbone else g <= 0) for g in trained["backbone_gradient_norms"])):
         raise ValueError("Missing full fresh training coverage or original-backbone gradients")
     same_runtime_config(trained["config"], config, gate["backbone_cutoff"])
     reload = trained.get("reload_verification", {})
@@ -173,7 +200,7 @@ def run_formal_case(matrix, identifier, preparation, *, budget_seconds):
     return _run_prepared_case(identifier, gate, budget_seconds=budget_seconds)
 
 
-def _run_prepared_case(identifier, gate, *, budget_seconds):
+def _run_prepared_case(identifier, gate, *, budget_seconds, training_executor=None, report_verifier=None):
     """Shared executor; callers must independently validate their closed case domain."""
     if not os.environ.get("SLURM_JOB_ID"):
         raise RuntimeError("Formal training must run through Slurm")
@@ -220,9 +247,11 @@ def _run_prepared_case(identifier, gate, *, budget_seconds):
     try:
         record(stage="full_training_and_validation")
         torch.cuda.reset_peak_memory_stats()
-        trained = run_training(config, root, event_callback=event)
+        train = run_training if training_executor is None else training_executor
+        verify = verify_training_report if report_verifier is None else report_verifier
+        trained = train(config, root, event_callback=event)
         events = [json.loads(line) for line in (root / "events.jsonl").read_text(encoding="utf-8").splitlines()]
-        accepted = verify_training_report(trained, gate, events)
+        accepted = verify(trained, gate, events)
         record(status="passed", stage="complete", formal_training_runs_completed=1,
                **accepted, heldout_metrics=trained["heldout"]["metrics"],
                wall_seconds=time.perf_counter() - started,

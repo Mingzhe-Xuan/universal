@@ -369,3 +369,11 @@ It performs separate frozen100-batch CUDA/state/optimizer and physical checks,
 then supports an independent CPU evidence replay. See the
 [frozen module](../src/universal_gnn/benchmarks/frozen_backbones/README.md).
 This is preparation only; it launches no official frozen training.
+# Frozen full execution
+
+`run_frozen_case.py train|post|verify` provides separate Slurm-only stages for
+the eight seed123 frozen dielectric/forcefield ablations. Training requires its
+own complete independent frozen CUDA gate and measured finite budget; post and
+verify require fresh output directories. The original primary48 selector and
+the higher-rank16 selector remain separate. See the
+[frozen module contract](../src/universal_gnn/benchmarks/frozen_backbones/README.md).

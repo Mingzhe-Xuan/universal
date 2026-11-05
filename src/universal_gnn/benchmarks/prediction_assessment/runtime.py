@@ -83,6 +83,12 @@ def validation_sources():
 def physical_selection(context):
     preparation = Path(context["gate"]["preparation"])
     prepared = read_json(preparation / "report.json")
+    if context["gate"].get("kind") == "formal_frozen_backbone_execution_gate":
+        reference = context["gate"]["reference_preparation"]
+        if prepared.get("reference_preparation") != reference:
+            raise ValueError("Frozen physics must retain the original reference graph scan")
+        preparation = Path(reference)
+        prepared = read_json(preparation / "report.json")
     graph = Path(prepared.get("graph_scan_path", str(preparation / "graph-scan")))
     probe_path = graph / "probe.json"
     probe = read_json(probe_path)
@@ -165,7 +171,8 @@ def _verify_context_physics(context, physics, selection):
         from ..supplemental_tensors.gate import checked_tensor_physics
         checked_tensor_physics(physics, context["gate"]["case"], selection["ids"], device="cpu")
     else:
-        verify_physics(physics, context["gate"]["case"]["task"], selection)
+        verify_physics(physics, context["gate"]["case"]["task"], selection,
+                       frozen_backbone=context["gate"].get("kind") == "formal_frozen_backbone_execution_gate")
 
 
 def _postprocess_case(matrix, identifier, output, *, context_loader):
