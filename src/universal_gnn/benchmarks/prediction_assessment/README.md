@@ -76,3 +76,14 @@ Only saved-only diagnostics can opt into `--allow-legacy-classification`; this
 still compares every originally recorded field at the same tolerance and marks
 balanced accuracy as newly computed. Formal post/verify always require the full
 current metric schema. No archived report is rewritten.
+
+## Accepted numerical scope
+
+Sourceba41cf2 passed CPU1201:37 main controls/291 JUnit records,40 original
+diagnostic reports (640 test structures), six complete forcefield training gates,
+984 raw test structures and9396 saved source predictions, with17 executed source
+Git blobs verified. Fresh991 CPU1202 trained-best physics/full1566 inference and
+independent no-model1203 both completed successfully. This establishes saved-output
+replay across five task formats and a real forcefield post/verify run. Full-data
+scalar/classification/tensor/spectrum model inference remains to be exercised as
+those formal cases complete; preparation or fixtures are not scientific results.
