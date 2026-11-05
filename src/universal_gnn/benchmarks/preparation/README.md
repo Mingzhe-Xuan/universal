@@ -64,3 +64,14 @@ formal training time from measured capacity. Prep request submission or a passed
 mock test is not actual full-data graph/capacity/physical acceptance. Formal
 training still starts fresh, and paper acceptance requires independent heldout
 re-score, applicable trained-model physical checks and full inference evidence.
+
+Source dcb5721 passed CPU1114:45 main tests/393 JUnit records with zero failures,
+errors or skips; all60 actual predictive pairs/120 server configs, four complete
+source/split hash/count manifests and six existing full mode gates checked.
+The actual CPU job was rejected by the GPU-only runtime context. Twelve executed
+Git blobs match. Evidence is in ignored
+`results/paper-predictive-preparation-20261105/1114/`. The new40 remaining-seed
+GPU preparation jobs1115,1117,...,1193 and CPU gates1116,1118,...,1194 are queued
+after the existing pipeline and actualGPU control1077. Their own numerical
+preparation and training are still pending; this CPU acceptance counts zero
+formal trainings and does not certify future graph/capacity/derivative results.
