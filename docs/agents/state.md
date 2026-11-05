@@ -1,6 +1,6 @@
 # 当前状态
 
-2026-11-05T10:51:57+08:00: Generation formal train/quality execution unit passed27 pure controls and144 actual recipe checks; next publish fixed source and run CPU acceptance on6 real predictive preparation gates plus8 real diagnostic generation report formats.989 last confirmed RUNNING129 epochs;1040/1041 independent scratch post-evaluation queued afterok989.1039 source species consistency passed115730 records/20 comparisons. Accepted formal3/144, submitted8/144, full scope preserved.
+2026-11-05T11:05:58+08:00: Generation execution57a907b accepted by CPU1043:27 main/248 JUnit zero failures/errors/skips,6 genuine full predictive preparation gates,4 real current generation report formats accepted and4 source-proven legacy reports rejected for absent exact reload evidence. All8 diagnostic quality8-attempt reports reject formal1000 protocol.14 executed sources verified against Git blobs.1042 failed overbroad legacy expectation retained, strict code unchanged.989 last confirmed RUNNING154 epochs/2:31:10;1040/1041 pending afterok989. Formal accepted3/144, submitted8/144; full generation numerical gates/training/quality, remaining seeds/tasks and original supplements remain outstanding.
 
 2026-11-05T10:12:21+08:00: Continue generation formal training/quality orchestration while989 is confirmed live91 epochs. Before later task launches, perform a parallel CPU full-source species compatibility audit: all five registered sources and actual pinned CGCNN/ALIGNN encodings plus MACE/NequIP vocabularies. This is an early capability check, not graph/derivative/accuracy acceptance; no filtering or model/data edits and no change to144 scope.
 
@@ -15,6 +15,8 @@ Public predictive formal execution source00b2dc3 is pushed and cached immutably.
 Four full original-head baselines1027-1030 and independent1031-1034 raw source/metric audits remain accepted;1026 had8 main/13 sub21 JUnit.48/48 diagnostics,64 diagnostic generation attempts,1019 generation preparation32-JUnit control,1010 exposure audit,1003 tensor groups and981 scalar baseline remain accepted. Every limitation about pretrained exposure, unmatched energy references and single-seed results is retained. Existing immutable model/engine/source caches, environments and datasets are unchanged.
 
 # 当前计划
+
+2026-11-05T11:05:58+08:00: Continue989 and1040/1041 until authoritative completion, then independently collect; advance queued full task preparations and use accepted predictive/generation public entries only after genuine full gates/budgets pass. Retain144 primary trainings and original native/frozen/higher-rank/molecule/plugin/source/cost deliverables.
 
 2026-11-05T10:40:42+08:00: Revalidate authoritative queue; finish generation execution unit and tests; independently accept newly completed cases.
 
@@ -596,3 +598,7 @@ Four full original-head baselines1027-1030 and independent1031-1034 raw source/m
 - 2026-11-05T10:40:42+08:00: Resume complete arxiv_v1_experiments goal. Previous turn repeated existing installation evidence and counts as no progress toward experiments. Revalidate live formal/preparation handles, finish generation train/quality orchestration controls, and advance completed cases through independent post-evaluation; preserve all144 trainings and supplementary requirements.
 
 - 2026-11-05T10:51:57+08:00: Generation formal train/quality execution unit passed27 pure controls and144 actual recipe checks; next publish fixed source and run CPU acceptance on6 real predictive preparation gates plus8 real diagnostic generation report formats.989 last confirmed RUNNING129 epochs;1040/1041 independent scratch post-evaluation queued afterok989.1039 source species consistency passed115730 records/20 comparisons. Accepted formal3/144, submitted8/144, full scope preserved.
+
+- 2026-11-05T10:59:03+08:00: Plan adjustment after1042: actual27/248 protocol controls and6 real gates passed, but4 legacy generation reports lack exact reload evidence. Keep strict code unchanged. Next CPU control must explicitly accept4 current real report formats and reject4 legacy formats for the documented missing field; diagnostic8-sample quality stays insufficient for every provider.
+
+- 2026-11-05T11:05:58+08:00: Generation execution57a907b accepted by CPU1043:27 main/248 JUnit zero failures/errors/skips,6 genuine full predictive preparation gates,4 real current generation report formats accepted and4 source-proven legacy reports rejected for absent exact reload evidence. All8 diagnostic quality8-attempt reports reject formal1000 protocol.14 executed sources verified against Git blobs.1042 failed overbroad legacy expectation retained, strict code unchanged.989 last confirmed RUNNING154 epochs/2:31:10;1040/1041 pending afterok989. Formal accepted3/144, submitted8/144; full generation numerical gates/training/quality, remaining seeds/tasks and original supplements remain outstanding.

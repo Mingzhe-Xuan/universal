@@ -3658,3 +3658,25 @@
 - 2026-11-05T10:40:42+08:00: Ordinary SSH verifies/pulls current published bcc9bac root, then reads exact own known965-1023 claims/receipts, eight current formal status/events, replacement forcefield and four spectrum/four tensor/eight scalar/four generation preparations plus completed CPU post-evaluation, and current-user Slurm queue. All immutable source caches unchanged; no submissions, restarts, source edits, packages or login numerics.
 
 - 2026-11-05T10:42:08+08:00: Ordinary SSH first SHA-verify/pull current published root, validate clean dfea7b0 source cache and exact own989 RUNNING or passed scratch case. Submit2CPU16GiB4h ALIGNN scratch-only independent raw164-target/metric/physics/full1566 inference afterok989, then1CPU2GiB10min complete-output validator afterokpost. New exact scratch claim/output paths only; do not change969, other queue, source, environments or data; no login numerical work.
+
+- 2026-11-05T10:53:04+08:00：SCP上传已推送57a907b的27308B小型离线bundle，SHA 499ab93bb6e5bb44514eb305170f5132767a3a746106895b81baf188c3f80dd9，先决bcc9bac；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T10:53:48+08:00：Ordinary SSH verifies/pulls published57a907b first, then Git clone --shared from this confirmed task repository into new task-owned ignored runs/source-checkouts/57a907b... . No server code editor/patch/source mutation; only Git materializes already-pushed source. Verify fixedHEAD/clean tracked source, symlink only untracked data/models/runs to their exact existing task paths, cache-only Git excludes/provenance metadata. Existing paths not overwritten, no neural imports, package installs or numerical login execution. Root origin remains unchanged; future normal connections still pull root first, immutable cache is verified rather than updated.
+
+- 2026-11-05T10:54:45+08:00: Ordinary SSH first SHA-verify/pull published root, verify clean new execution checkout and three passed full preparation receipts. Submit oneCPU1/4GiB20min formal execution acceptance: 27 unit controls and six public read-only full-source/preparation checks using MACE/ALIGNN/NequIP provider environments. No model execution, new formal training, GPU queue changes, source/env/data edits or login batch processing.
+
+- 2026-11-05T10:55:48+08:00: Ordinary SSH first verify/pull published root, then read exact formal execution acceptance1042 reports/JUnit/six real preparation gate files/bounded logs and current-user queue. No model or full-source computation, new jobs, source/env/data edits or restarts.
+
+- 2026-11-05T10:57:51+08:00: Ordinary SSH first verify/pull published root, then read exact8 completed diagnostic generation report fields to diagnose1042 metadata incompatibility. No model execution, source/data/env changes or jobs.
+
+- 2026-11-05T10:59:24+08:00: Ordinary SSH first SHA-verify/pull published root, verify clean new execution checkout and three passed full preparation receipts. Submit oneCPU1/4GiB20min formal execution acceptance: 27 unit controls and six public read-only full-source/preparation checks using MACE/ALIGNN/NequIP provider environments. No model execution, new formal training, GPU queue changes, source/env/data edits or login batch processing.
+
+- 2026-11-05T11:00:25+08:00: Ordinary SSH first verify/pull published root, then read exact formal execution acceptance1043 reports/JUnit/six real preparation gate files/bounded logs and current-user queue. No model or full-source computation, new jobs, source/env/data edits or restarts.
+
+- 2026-11-05T11:01:43+08:00: Ordinary SSH first verify/pull published root, then read exact formal execution acceptance1043 reports/JUnit/six real preparation gate files/bounded logs and current-user queue. No model or full-source computation, new jobs, source/env/data edits or restarts.
+
+- 2026-11-05T11:02:46+08:00: After2 Vlab observation disconnects for1043, local-only bounded TCP/banner diagnostic of configured jump endpoint and local public HTTPS reachability, plus exact Guqq2 client routing fields. No remote login commands, proxy changes, job restart or source/data/environment edits.
+
+- 2026-11-05T11:03:20+08:00: Ordinary SSH first verify/pull published root, then read exact formal execution acceptance1043 reports/JUnit/six real preparation gate files/bounded logs and current-user queue. No model or full-source computation, new jobs, source/env/data edits or restarts.
+
+- 2026-11-05T11:04:32+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.

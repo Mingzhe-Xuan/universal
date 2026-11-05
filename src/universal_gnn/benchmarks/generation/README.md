@@ -109,6 +109,13 @@ Unexpected exceptions or OOM fail the stage. Successful execution sets
 `independent_postevaluation_verified=false`: independent geometry/matching and
 distribution rescoring is still required before accepting the paper result.
 
-The current code has pure metadata/protocol controls. Full generation gate and
-numerical training/1000-attempt acceptance require the actual full preparations;
-the existing8-attempt diagnostic reports do not satisfy this formal protocol.
+Source57a907b completed CPU Slurm acceptance1043:27 main tests/248 JUnit records,
+six real complete predictive preparation gates, four current real generation
+report-format checks and four expected legacy-report rejections. The older
+ALIGNN939/NequIP941 reports predate exact reload instrumentation and are retained
+without invented evidence. Diagnostic epoch metadata was derived from reports
+for format interoperability, not an independent epoch audit. All eight diagnostic
+quality reports are correctly rejected for the formal1000-attempt protocol.
+Fourteen executed source hashes were independently checked against Git blobs.
+Full generation gates and numerical training/1000-attempt acceptance still
+require the actual full preparations and subsequent full executions.
