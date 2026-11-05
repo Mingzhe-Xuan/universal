@@ -126,15 +126,28 @@ def check_preparation(matrix, identifier, preparation, *, budget_seconds, allow_
     if type(budget_seconds) not in (int, float) or not math.isfinite(budget_seconds) or budget_seconds <= 0:
         raise ValueError("Declare a finite positive wall-time budget in seconds")
     spec = case_spec(matrix, identifier, allow_generation=allow_generation)
+    return _check_prepared_spec(matrix, spec, preparation, budget_seconds=budget_seconds)
+
+
+def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds):
+    """Evidence checks for a caller-validated, closed primary or supplemental spec."""
+    if not os.environ.get("SLURM_JOB_ID"):
+        raise RuntimeError("Formal preparation checks must run through Slurm")
+    if type(budget_seconds) not in (int, float) or not math.isfinite(budget_seconds) or budget_seconds <= 0:
+        raise ValueError("Declare a finite positive wall-time budget in seconds")
     case, configs, counts = spec["case"], spec["configs"], spec["counts"]
     generation = case["task"] == "generation"
+    supplemental = spec.get("definition_kind") == "arxiv_v1_supplemental_tensor_definitions"
     preparation = Path(preparation)
     prepared = read_json(preparation / "report.json")
     identity_ok = (prepared.get("pair_id") == case["pair_id"] and
                    prepared.get("kind") == "full_generation_pair_preparation") if generation else (
                    prepared.get("model") == case["model"] and prepared.get("task") == case["task"])
+    if supplemental:
+        identity_ok = (identity_ok and prepared.get("kind") == "full_supplemental_tensor_pair_preparation" and
+                       prepared.get("pair_id") == case["pair_id"] and prepared.get("seed") == case["seed"])
     if (prepared.get("status") != "passed" or prepared.get("stage") != "complete" or
-            prepared.get("matrix_sha256") != spec["matrix_sha256"] or not identity_ok or
+            prepared.get("definition_sha256" if supplemental else "matrix_sha256") != spec["matrix_sha256"] or not identity_ok or
             prepared.get("cuda_acceptance") is False):
         raise ValueError("Preparation is incomplete, not CUDA-accepted, or belongs to another case")
     capacity_root = preparation / "train-capacity" if generation else Path(prepared.get("capacity_path", str(preparation / "capacity")))
@@ -228,7 +241,7 @@ def check_preparation(matrix, identifier, preparation, *, budget_seconds, allow_
         if index < train_worker_count:
             seconds.append(elapsed / worker["measured_batches"])
     physical = {}
-    if case["task"] in {"forcefield", "dielectric"}:
+    if case["task"] in {"forcefield", "dielectric", "piezoelectric", "elastic"}:
         for mode in ("pretrained", "scratch"):
             path = preparation / ("derivatives-" + mode + ".json")
             value = read_json(path)

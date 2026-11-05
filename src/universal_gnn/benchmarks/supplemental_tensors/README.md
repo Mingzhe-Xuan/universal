@@ -106,3 +106,32 @@ preparers1233/1235/.../1247 and eight afterany CPU terminal recorders are armed.
 These exact request receipts are not completed numerical preparation or training.
 Even a passed preparer requires the separate independent complete gate before
 formal supplementary training. The primary campaign remains48 seed123 cases.
+
+`gate.py` is the separate independent preparation gate. It selects exactly one
+of the frozen16 cases, replays the complete source audit, and shares the primary
+gate's original graph-row/probe, both-mode capacity/typed-OOM, calibrated config,
+official artifact/initialization and installed-version checks. The primary
+`case_spec` still accepts only the original144 definitions. Higher-tensor gates
+also require the original two/100-batch schedule, exact worst-input IDs, finite
+27/81-component auxiliary derivatives, rank parity, unchanged geometry tolerances,
+both mixed parameter gradients and the four accepted validator source hashes.
+Invariant CGCNN/ALIGNN retain fixed-frame guarantees; MACE/NequIP require O(3)
+covariance and the appropriate odd/even inversion, without symmetry projection.
+
+The original preparation request and its exact retained successful terminal,
+owner/source/resources/report hashes must agree. The preparer's own
+`independent_full_gate_pending` flag remains true; this gate writes separate
+evidence and does not edit that immutable report. Missing/running/failed evidence
+cannot pass. A producer's status or number of scanned graphs alone is insufficient.
+
+Run `scripts/check_tensor_preparation.py --pair PAIR --preparation PREP_DIR
+--receipt PREP_JOB_JSON --output NEW_GATE_DIR` in CPU Slurm and the provider's
+Python environment. The wrapper `scripts/check_tensor_preparation.slurm` accepts
+`UGNN_PYTHON`, `UGNN_PAIR`, `UGNN_PREPARATION`, `UGNN_RECEIPT`, `UGNN_OUTPUT` and
+optional `UGNN_DEFINITIONS`/`UGNN_PRIMARY_MATRIX`. Use `afterok` on both the
+original GPU preparer and its CPU terminal recorder. The wrapper requests
+1CPU/4GiB/20minutes with CUDA hidden. It validates both modes, preserves partial
+failed attempts, and writes `gate-pretrained.json`, `gate-scratch.json` and
+`report.json`. Training wall-time is a finite reserved budget from measured
+workers, not a runtime guarantee. This module imports no Torch, loads no model
+and submits no jobs. A passed gate is still not training or heldout accuracy.

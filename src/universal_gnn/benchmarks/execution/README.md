@@ -83,3 +83,11 @@ Real GPU visibility/tiny backward control1077 is separately queued after991;
 its pending state is not GPU acceptance. Replacement CPU launch gates wait for
 that control and their original full preparations to succeed. Running training
 and original scientific configs remain unchanged.
+
+The primary `check_preparation` retains its strict144-case selector and delegates
+the existing evidence body to the private `_check_prepared_spec` helper.
+The separate [supplemental tensor gate](../supplemental_tensors/README.md) supplies
+its own closed16-case spec to the same graph/capacity/artifact/version checks and
+adds stricter high-rank physical/terminal evidence. Supplemental definitions
+cannot be passed through the primary selector. Original immutable primary
+execution directories keep their original code and requests.
