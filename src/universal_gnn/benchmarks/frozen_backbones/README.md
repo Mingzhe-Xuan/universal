@@ -43,3 +43,17 @@ selection/complete test and separate independent postprocessing still require
 their own explicit gates. Full-FT executors that require positive backbone
 gradients must not be bypassed to accept a frozen case. Current exported cases
 are only `defined_not_preflighted`, with formal training count0.
+
+
+Definition source0c9120c passed actualCPU1288/1289:159 main tests/981 JUnit
+counts without failure/error/skip,15 executed Git blobs, all6565 ordered source
+records/393783 finite raw labels and8 exact exports. Six live frozen small-model
+reports preserve initial predictions, backbone parameters/buffers/eval modes
+and optimizer exclusion while readout updates and input derivatives remain live;
+five existing freeze/buffer/checkpoint-resume controls pass.269 all-zero force
+labels are retained. Source/eight original primary full gate regressions passed.
+Proof: ignored `results/paper-frozen-definition-20261105/1288/`.
+Server definitions: `runs/frozen-definition-control-1288/definitions/`, SHA
+`e6104992bc86dfbbc0bdc67b9d20105f79dcb5ba95dc3fabbdac7ef708c4b8f0`.
+Official frozen CUDA capacity/physics and full execution acceptance remain pending;
+none of these checks submits or completes an official frozen training.

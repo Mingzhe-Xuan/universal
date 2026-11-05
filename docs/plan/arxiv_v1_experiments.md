@@ -17,7 +17,7 @@
 
 ### 当前执行状态（2026-11-05）
 
-正式训练仍保留947完整MLearn划分1309/93/164、300epoch/patience30与两模式共同batch。当前正式独立验收 **8/48**，唯一已提交case **8/48**。诊断 **48/48**，64个独立诊断生成样本及四个原头对照另计。
+正式训练仍保留947完整MLearn划分1309/93/164、300epoch/patience30与两模式共同batch。当前正式独立验收 **8/48**，唯一已提交case **44/48**；其中新增36个请求已逐项核对回执和Slurm身份，排队或运行不计完成。诊断 **48/48**，64个独立诊断生成样本及四个原头对照另计。
 
 | 模型 | 微调作业 | 整骨干scratch作业 | 完整准备/物理门禁 |
 |---|---:|---:|---|
@@ -219,7 +219,7 @@ Slurm请求、SHA、唯一提交claim和运行状态单独保存，原144定义�
 
 未采用 first-N 或原子数上限裁剪。介电原档5000条中1条标签异常；声子原档55659条中41415条没有有效200通道标签。MLearn保留作者测试集，其AIMD描述族与训练集存在重叠，不据此声称轨迹独立泛化。生成沿用作者划分，Slurm860仅用11356个训练结构拟合初始晶胞体积先验，未使用留出集。
 
-正式独立完成目前为 **8 / 48**，已提交 **8 / 48**；数据准备、配置测试、原头对照、基线及诊断均另列。Torch2.7.1/CUDA12.8及三个任务环境已恢复，897–899依赖/CUDA和910/911原模型初始化均通过。48版诊断和64个独立生成样本已独立验收，生成每版8样本仍保持100×2步骤。四骨干力场两初始化均已独立验收；分类、带隙、介电、声子谱的16个producer预检报告全部通过，仍须相应独立门禁；CGCNN生成预检1020正在成对采样容量检查，其余生成任务与1077按原队列推进。补充张量执行器和受管提交链已独立验收，八对提交器等待原独立门禁，目前补充正式训练仍0。分子、插件及其他原定扩展保留。
+正式独立完成目前为 **8 / 48**，已提交 **44 / 48**；数据准备、配置测试、原头对照、基线及诊断均另列。新增32个预测训练和ALIGNN/NequIP的4个生成训练已逐项核对原intent/receipt、源码、脚本哈希、账户、token、资源及Slurm身份，36个训练另接1410–1445终态记录器；1290 NequIP介电微调正在运行。1077及18对独立提交门禁已通过。CGCNN生成1020与MACE生成1022的原采样预检失败，剩余4个主训练尚未提交；实际原因分别是scratch轨迹超过周期镜像预算与pretrained非有限节点输出，均非OOM，原失败证据保留，待按完整协议修复。补充CGCNN压电微调/从头训练1398/1404已由原链自动排队，单列、不计主表48格；冻结消融八份完整配置和数值契约已验收，尚未正式训练。分子、插件及其他原定扩展保留。
 
 历史故障记录：旧872/895力场定义使用运行时不接受的`energy`输出名，934–937在训练前失败。947已重建完整144份revision2定义，使用`total_energy`输出/损失并绑定原`energy`标签；旧定义和失败证据保留。931/938/940重载出现CUDA归约差异，942–944确认状态逐项相同且确定性比较下64条记录均差异0；修复仅限重载验收作用域、原容差不变，945的25项集成回归已通过。
 
@@ -1213,3 +1213,58 @@ Main source-bound observation: all16 predictive preparation producers passed;
 Sharedfree114.61GiB preserves20GiB reserve. Primary accepted8/48/submitted8/48 and
 all90 previously archived scientific hashes remain unchanged. Native/frozen,
 molecular/custom-plugin and measured cost/source requirements remain where unproven.
+
+
+### 12.20 Frozen response ablations: complete definitions and numerical contract
+
+The [frozen module](../../src/universal_gnn/benchmarks/frozen_backbones/README.md)
+defines8 separate pretrained head-only cases:dielectric/forcefield x four original
+providers x seed123. Only optimization.train_backbone changes tofalse relative
+to each original947 full-FT config; original data/splits/heads/cutoff/f32/batch4/
+300epoch/patience30 remain. These complement primary FT/scratch, not replace them.
+
+Source0c9120c CPU1288/1289 passed159 main tests/981 JUnit counts without failures,
+errors or skips;15 executed Git blobs, eight original complete primary gates,
+all6565 original dielectric/MLearn records and8 emitted configs. Full raw labels:
+44991 dielectric +1566total-energy +347226force components=393783;269 whole-zero
+force records retained, no filters. Definition SHA:
+`e6104992bc86dfbbc0bdc67b9d20105f79dcb5ba95dc3fabbdac7ef708c4b8f0`.
+Server: `runs/frozen-definition-control-1288/definitions/`.
+Six live small models cover FF/fixed-frame/equivariant float32/64:initial forwards
+exact, frozen optimizer ownership/parameter gradients0, eval modes and parameter/
+buffer states exact after updates, nonzero changed readout and original input
+FD/rotation/translation/batch checks. Five existing freeze/buffer/checkpoint/resume
+controls also passed. This is not official frozen CUDA preparation or training.
+Evidence: `results/paper-frozen-definition-20261105/1288/` (ignored).
+
+### 12.21 Original main launchers advanced:44 submitted, two failed generation preparations
+
+After1077,16 original predictive pair gates andALIGNN/NequIP generation gates
+passed and submitted36 new training requests:32predictive+4generation.
+Exact frozen matrix/active123 scope, original intent+receipt, rebuilt scriptSHA,
+Slurm owner/token/name/resources/source cache and unique IDs were independently
+checked. Snapshot35pending/1running;1290NequIPdielectricFT running. Formal index
+now44submitted/8independently accepted, previous90 scientific hashes unchanged;
+original index snapshot backed up before the submission-count update.
+Identity proof: `results/paper-primary-launches-20261105/request-identity-audit.json`.
+Sixty-four dependent predictive CPU stages and8generation quality/assessment
+stages are observed separately; requests are not completed scientific results.
+
+New36 tiny afterany train terminal recorders1410-1445 use1CPU/1GiB/2min/nice0,
+noGPU/no-requeue and accepted metadata-only telemetry. Their exact request/receipt,
+owner/token/source/resources/dependency identities are verified. No original
+training or source was changed. CGCNNpiezo supplemental original chain also
+submitted12 stages1398-1409, including2train1398/1404pending; separate from main44.
+Observation: `results/paper-primary-launches-20261105/terminal-observers-and-supplemental.json`.
+
+CGCNNgeneration1020 andMACEgeneration1022 failed at paired sampling capacity;
+original1094/1096 stay dependency-blocked, remaining4 main training cases are
+unsubmitted. CGscratch passed the five worst probes, then ordinary measured
+step6 hit `Cell requires 51129 periodic images; check cell/cutoff` (50000guard).
+MACEpretrained first worst batch hit `Nonfinite node output`. Neither is CUDA OOM;
+no batch halving, RNG selection, shortened denoising or blind resubmission occurred.
+All original attempts and reports are preserved under
+`results/paper-generation-failures-20261105/1020-1022/`.
+Next prioritize tested consistent generation recovery, preserving full1000 attempts,
+5draws/condition,100x2 successful sampling steps and all failure accounting;
+then independent full outcomes and remaining official frozen/molecular/plugin gates.
