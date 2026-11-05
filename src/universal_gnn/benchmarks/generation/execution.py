@@ -98,13 +98,15 @@ def verify_generation_training(trained, gate, events):
                 test_structures=len(seen), best_checkpoint_sha256=held["selection"]["best_sha256"])
 
 
-def verify_quality(result, trained, gate):
+def verify_quality(result, trained, gate, *, diagnostic=False):
     """Audit every attempted condition/draw, including explicitly invalid samples."""
     from universal_gnn.engine.generative.protocol import condition_indices
 
     protocol, counts, config = gate["quality_protocol"], gate["counts"], gate["config"]
     requested, draws, seed = protocol["samples"], protocol["draws_per_condition"], protocol["seed"]
-    if (not result.get("execution_complete") or not result.get("meets_v1_sample_count") or
+    if (requested, draws, seed) != ((8, 1, 456) if diagnostic else (1000, 5, 456)):
+        raise ValueError("Use the frozen formal1000/5 protocol or explicit diagnostic8/1 protocol")
+    if (not result.get("execution_complete") or result.get("meets_v1_sample_count") is not (not diagnostic) or
             result.get("requested_samples") != requested or result.get("attempted") != requested or
             result.get("draws_per_condition") != draws or result.get("seed") != seed or result.get("sampling_batch_size") != 1 or
             result.get("training_structures") != counts["train"] or result.get("declared_training_structures") != counts["train"] or

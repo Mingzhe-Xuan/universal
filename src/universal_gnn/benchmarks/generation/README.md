@@ -119,3 +119,48 @@ quality reports are correctly rejected for the formal1000-attempt protocol.
 Fourteen executed source hashes were independently checked against Git blobs.
 Full generation gates and numerical training/1000-attempt acceptance still
 require the actual full preparations and subsequent full executions.
+
+## Independent saved-sample assessment
+
+After a full generation case completes training and1000 attempts, submit the
+CPU-only `scripts/assess_generation_quality.slurm` with `UGNN_PYTHON`,
+`UGNN_MATRIX`, `UGNN_MATRIX_SHA256`, `UGNN_CASE` and a new `UGNN_OUTPUT`.
+It runs `assessment.assess_generation_case`, binds the frozen full case and
+selection history, checks the saved last/best/sample identities and re-scores
+every saved attempt. It does not resample, deserialize a model or run a GNN.
+
+`assessment.py` reads the original complete source/split at the runtime's
+declared precision. It recomputes the training fingerprint and full train-only
+volume prior, then replays the original `StructuralQuality` scorer in a separate
+process: geometric validity, uniqueness, training novelty, assigned-reference
+matching/RMS and volume/density distributions. Every per-attempt observation and
+aggregate must match; null groups stay null. Saved numerical-failure events stay
+invalid attempts and are carried over as observations, not regenerated failures.
+The comparison is an independent process/data replay of the original scoring
+algorithm, not an independently implemented geometry algorithm.
+
+The scorer, geometry loader and fingerprint source must match the recorded
+execution commits. Torch, NumPy, ASE and Pymatgen versions must match both original
+reports. All input reports/source/split/samples/best bytes and source/version
+identity are rechecked after scoring. New output reports retain their SHA chain,
+CPU wall time/RSS and source hashes. Inputs and the original case status remain
+unchanged. A passed full assessment sets `formal_generation_quality_verified`
+in its own report; the collector must still bind this proof to the formal case
+and account for every other required training/paper gate.
+
+For the existing64/16/16 diagnostics only, run the explicit diagnostic command
+inside CPU Slurm with the matching provider environment:
+
+```bash
+"$UGNN_PYTHON" scripts/assess_generation_quality.py --diagnostic \
+  --training-report runs/pilot-generation-953-cgcnn/pretrained/report.json \
+  --quality-report runs/pilot-generation-953-cgcnn/pretrained/quality/metrics.json \
+  --output runs/new-cgcnn-diagnostic-rescore
+```
+
+This requires the frozen8-attempt/1-draw/seed456 diagnostic protocol and100x2
+steps. Its report is explicitly diagnostic, with
+`formal_generation_quality_verified=false`. It may re-score legacy geometry
+without inventing missing training reload evidence; it does not accept legacy
+reports as complete formal training. Pure controls do not substitute for actual
+CPU numerical replay or a future full1000-attempt assessment.

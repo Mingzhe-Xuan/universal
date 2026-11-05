@@ -3680,3 +3680,7 @@
 - 2026-11-05T11:03:20+08:00: Ordinary SSH first verify/pull published root, then read exact formal execution acceptance1043 reports/JUnit/six real preparation gate files/bounded logs and current-user queue. No model or full-source computation, new jobs, source/env/data edits or restarts.
 
 - 2026-11-05T11:04:32+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.
+
+- 2026-11-05T11:07:26+08:00：SCP上传已推送53fe258的5806B小型离线bundle，SHA 71f6ce4fa9b0648f444527d9671cbcd0b775374cc8adecbfd69dae5867b94159，先决57a907b；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T11:08:45+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.
