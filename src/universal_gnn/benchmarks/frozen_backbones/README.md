@@ -163,3 +163,12 @@ python scripts/run_frozen_case.py verify \
 Managed submission and retained terminal identity still need their separate
 deployment checks. Small CPU numerical training controls cannot qualify an
 official CUDA preparation, nor count as one of the eight full frozen ablations.
+
+Full-execution sourcef761dd8 passed actualCPU1540/1541 with retainedCOMPLETED0:0:
+236 main controls/1207 JUnit counts without failure/error/skip,37 executed Git
+blobs,24 original gate replays and6565 complete source records/393783 finite
+labels. Six real small-model full-training controls match an uninstrumented
+engine's history, best/last states and final RNG exactly; three float32 controls
+also execute full CPU post-processing and independent no-model verification.
+Six prior wrapped-step oracles and four corruption refusals remain. This proves
+implementation behavior; official frozen full-data scientific completion is0.
