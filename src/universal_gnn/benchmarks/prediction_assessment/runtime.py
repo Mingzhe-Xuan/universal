@@ -77,7 +77,7 @@ def validation_sources():
     repository = Path(__file__).resolve().parents[4]
     return {str(path.relative_to(repository)).replace(os.sep, "/"): file_sha(path)
             for path in ((Path(__file__).resolve().parents[1] / "validation" / name)
-                         for name in ("derivatives.py", "finite_difference.py", "precision.py"))}
+                         for name in ("derivatives.py", "finite_difference.py", "precision.py", "cartesian.py"))}
 
 
 def physical_selection(context):

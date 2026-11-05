@@ -11,6 +11,13 @@ in both actual training and evaluation modes. Response tensors compare the actua
 auxiliary-field derivative against independent central differences, with no
 symmetry projection. Equivariant Cartesian outputs must transform as declared;
 fixed-frame invariant baselines record covariance error without promising it.
+Graph responses may have rank2,3 or4 with full Cartesian3x3,3x3x3 or3x3x3x3
+outputs. Rotation acts separately on every Cartesian slot; O(3) inversion is
+even for ranks2/4 and odd for rank3. These checks never average, symmetrize or
+project a tensor. Existing rank2 rotation arithmetic and check names are retained.
+`cartesian.py` defines the shape/rank and independent-axis contraction protocol
+without importing Torch. Live high-rank checks and deliberately wrong symmetry,
+parity and derivative cases are in `tests/test_high_rank_task_validation.py`.
 Force/strain finite differences use the predeclared decreasing steps
 0.002,0.001,0.0005,0.00025,0.000125. Each requires two adjacent estimates to match
 the analytic result and each other at the original rtol0.02/atol0.002; the largest

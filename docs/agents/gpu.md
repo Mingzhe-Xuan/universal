@@ -3938,3 +3938,9 @@
 - 2026-11-05T19:32:45+08:00: Ordinary SSH first verify/pull published33afb0c and clean fixed cache; require actualCPU1209 acceptance/source/request and retained0:0 terminal, two CPU children/reuse and savedCG996 audit. Verify exact original16PENDING own gates1078-1093/source/request/receipts. Attach16new CPU1/4GiB20min no-requeue metadata post resolvers afterok each originalgate; no new training, generation jobs unchanged. Each future successful resolver validates originals then creates only4 CPU post/verify stages. Uniqueclaim/request/receipt preserved; no blind retries or login model work.
 
 - 2026-11-05T19:35:45+08:00: Ordinary read-only SSH first verify/pull current source; inspect exact16 ownCPU post resolvers1213-1228 owner/name/resource/source/request/dependency and original16 gate identities, current ownqueue/CG997 metadata/actual managedtrain receipts/free disk. Copy small compressed metadata only, no numerical execution/new submissions/environment edits.
+
+- 2026-11-05T19:41:53+08:00：SCP上传已推送d818da0的9193B小型离线bundle，SHA 18d36af4cea7ceec5c1091e0676b0921524580f4562acff230f023c6d094b645，先决33afb0c；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T19:43:01+08:00: Ordinary final publication check SSH first SHA-verify/pull d818da0 documentation bundle. Check rootHEAD/cleantracked/current48-onlyseed123 scope byteSHA and retained1209 report/terminal artifacts; no source-cache changes, model work, environments, job submissions or queue restarts.
+
+- 2026-11-05T19:44:16+08:00: Ordinary read-only SSH first verify/pull current source; inspect exact16 ownCPU post resolvers1213-1228 owner/name/resource/source/request/dependency and original16 gate identities, current ownqueue/CG997 metadata/actual managedtrain receipts/free disk. Copy small compressed metadata only, no numerical execution/new submissions/environment edits.

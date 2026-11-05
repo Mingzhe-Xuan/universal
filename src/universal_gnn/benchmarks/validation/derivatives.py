@@ -9,6 +9,7 @@ from universal_gnn.data.geometry import scatter_mean, strain_batch
 from universal_gnn.engine.optimization import components
 from .finite_difference import STEPS, converged_difference
 from .precision import energy_difference_reference
+from .cartesian import response_rank, rotation_subscripts
 
 
 def validate_derivatives(model, structures, config):
@@ -20,8 +21,7 @@ def validate_derivatives(model, structures, config):
     field = config['task']['kind'] == 'forcefield'
     if not field and model.spec.construction != 'derivative':
         raise ValueError('Supervised derivative acceptance requires a response readout')
-    if not field and (tuple(model.spec.shape) != (3, 3) or model.spec.scope != 'graph'):
-        raise ValueError('Response geometry acceptance currently requires graph-level rank2 Cartesian output')
+    rank = None if field else response_rank(model.spec.shape, model.spec.scope)
     parameter = next(model.parameters())
     selected = StructureBatch.from_structures([structures[0], structures[1]]).to(parameter.device, parameter.dtype)
     batch = StructureBatch.from_structures([structures[0]]).to(parameter.device, parameter.dtype)
@@ -45,6 +45,8 @@ def validate_derivatives(model, structures, config):
 
     model.zero_grad(set_to_none=True)
     value = model(batch, create_graph=True)
+    if not field and tuple(value.shape) != (1, *model.spec.shape):
+        raise ValueError('Response output shape differs from its Cartesian property specification')
     loss = value['forces'].square().sum() + value['stress'].square().sum() if field else value.square().sum()
     loss.backward()
     gradients = {}
@@ -128,6 +130,9 @@ def validate_derivatives(model, structures, config):
         result['response'] = {'guarantee': model.readout.descriptor['transformation_guarantee'],
                               'analytic': value.tolist(), 'numeric': numeric.detach().tolist(),
                               'no_symmetry_projection': True}
+        if rank != 2:
+            result['response'].update(rank=rank, shape=list(model.spec.shape),
+                                      inversion_parity=(-1)**rank)
 
     axis = batch.positions.new_tensor([1., 2., 3.])
     axis = axis / axis.norm()
@@ -148,13 +153,15 @@ def validate_derivatives(model, structures, config):
     else:
         compare('translation_response', move, value)
         guarantee = result['response']['guarantee']
-        compare('rotation_response_covariance', turn, rotation @ value @ rotation.T,
+        expected = rotation @ value @ rotation.T if rank == 2 else torch.einsum(
+            rotation_subscripts(rank), *((rotation,) * rank), value)
+        compare('rotation_response_covariance', turn, expected,
                 required=guarantee in {'O3_cartesian','SO3_cartesian'})
         if guarantee == 'fixed_frame_components':
             compare('rotation_fixed_frame_invariance', turn, value)
         if guarantee == 'O3_cartesian':
             inverted = model(batch.with_geometry(-batch.positions, -batch.cell), create_graph=False)
-            compare('inversion_rank2_response', inverted, value)
+            compare('inversion_rank'+str(rank)+'_response', inverted, value if rank % 2 == 0 else -value)
 
     for train_mode in ([False, True] if field else [False]):
         state = {key:item.detach().clone() for key,item in model.state_dict().items()}
