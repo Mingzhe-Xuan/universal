@@ -160,8 +160,8 @@ python scripts/run_frozen_case.py verify \
   --postprocessing NEW_POST_DIRECTORY --output NEW_VERIFICATION_DIRECTORY
 ```
 
-Managed submission and retained terminal identity still need their separate
-deployment checks. Small CPU numerical training controls cannot qualify an
+Managed submission and retained terminal identity use their separate launch
+checks below. Small CPU numerical training controls cannot qualify an
 official CUDA preparation, nor count as one of the eight full frozen ablations.
 
 Full-execution sourcef761dd8 passed actualCPU1540/1541 with retainedCOMPLETED0:0:
@@ -212,3 +212,13 @@ evidence checks pass. The CLI and planner cannot run on the login node. Automati
 CPU resolvers must wait for both the original independent gate and its terminal
 recorder; they do not repeat preparation. Implementation controls and verified
 resolver requests do not count as completed frozen science.
+
+Managed-launch source27e2339 passed actualCPU1606/1607 with retainedCOMPLETED0:0:
+245 main controls/1245 JUnit counts,45 Git source blobs,24 original complete gate
+replays,6 full-training and3 post/no-model numerical controls, all8 original
+unfinished launch refusals and6 harmless actual CPU transport children. Four
+known receipts were reused with0 new jobs; one deliberateexit7 terminal was
+retained. Eight CPU launch resolvers1614/1616/...1628 and eight afterany
+recorders1615/1617/...1629 are armed against the original successful gate and
+gate-terminal dependencies. All16 initial request/receipt/source/resource/token
+identities are independently verifiedPENDING; official frozen full training is0.
