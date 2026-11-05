@@ -45,3 +45,14 @@ inside a Slurm allocation with the provider's environment. The CLI fits native
 scratch neighbor statistics only on the selected training partition when needed,
 builds the actual configured model and writes a separate receipt. Pipeline callers
 can prepare those statistics once and pass their model/data directly.
+
+
+Rank3/4 source d6f2ddb passed actual CPU1229:105 main tests/509 JUnit counts,
+no failures/errors/skips, eight live higher-tensor reports covering fixed-frame
+and equivariant processing at float32/float64, and eight executed Git blobs.
+The suite includes independent explicit Cartesian-index rotation oracles and
+wrong covariance/parity/derivative injections, plus original physical, finite
+difference, energy and heldout regressions. CPU1230 retained the exact successful
+control terminal/request/source binding. Evidence is under ignored
+`results/paper-high-rank-validation-20261105/1229/`. These are small-model
+validator checks; official full-data graph/capacity/physical gates remain separate.

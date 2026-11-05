@@ -75,3 +75,22 @@ group conflicts. Nine source hashes match Git blobs. Original full outputs are
 `data/arxiv-v1/supplemental-rank34-1074/`; evidence is under ignored
 `results/paper-rank34-data-20261105/prepared-1074/`. This acceptance covers data
 only and counts zero model trainings.
+
+`experiments.py` defines16 separate seed123 comparisons: both full tensor datasets,
+all four official providers, and pretrained/scratch. Architecture, response head,
+feature processing, full-body optimization and300/patience30 are inherited from
+the original seed123 dielectric recipes. Only the property, source/label units and
+the separate supplemental output namespace change. No symmetry projection,
+normalization/filtering of tensor targets or primary48 mutation is introduced.
+
+Run `scripts/prepare_tensor_experiment_definitions.py --output NEW_DIRECTORY`
+in CPU Slurm from a clean pinned checkout. It requires the original947 matrix,
+the exact1074 conversion and1075 independent proof, then streams every record
+of both datasets to check data/split hashes, ordered IDs and all27/81 finite
+Cartesian label components. Zeros and tails are retained. It writes
+`definitions.json` and16 ordinary training configs under `configs/`.
+The output kind is `arxiv_v1_supplemental_tensor_definitions`, deliberately
+separate from the primary matrix and its case execution guard. Graph scanning,
+paired CUDA capacity/OOM resolution, both official model physical validations,
+formal training and independent raw-label/test/full-inference acceptance remain
+required. Defining these cases does not launch training or increase primary counts.
