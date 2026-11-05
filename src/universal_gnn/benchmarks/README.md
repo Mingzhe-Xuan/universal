@@ -89,3 +89,5 @@ Full-data generation has a public [pair preparation entry](generation/README.md)
 [Deferred formal submission](submission/README.md) checks both full preparation gates before submitting a frozen initialization pair, derives finite Slurm allocations from measured capacity, and preserves exact requests and receipts to prevent ambiguous retries.
 
 [Supplemental rank3/4 preparation](supplemental_tensors/README.md) expands full released contracted labels into Cartesian27/81 formats and jointly anchors their material groups to the immutable primary dielectric split. It launches no model training.
+
+[Full predictive preparation](preparation/README.md) binds original upstream parity, complete training graphs, paired100-batch capacity and applicable two-mode CUDA derivatives to any original predictive task/seed pair before formal launch.

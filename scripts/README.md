@@ -329,3 +329,5 @@ inference and replays actual pre-headmode checkpoints. Run through Slurm after
 `submit_formal_pair.py` and `.slurm` provide [deferred full-preparation gates and Slurm submission](../src/universal_gnn/benchmarks/submission/README.md). The CPU gate checks both initialization modes before submitting finite-budget GPU training. Generation quality and independent assessment follow via afterok dependencies; receipts and ambiguous attempts are preserved without blind resubmission.
 
 `prepare_supplemental_tensors.py` and `.slurm` prepare [complete rank3/4 tensor datasets](../src/universal_gnn/benchmarks/supplemental_tensors/README.md) in CPU Slurm, retaining source values and jointly anchoring cross-task material groups to the frozen dielectric partitions. They produce data/audits, not training results.
+
+`prepare_predictive_pair.py` and `.slurm` prepare [any full predictive initialization pair](../src/universal_gnn/benchmarks/preparation/README.md) from the original144-case definition, with each actual seed, original upstream parity, complete graph scan, paired100-batch capacity and applicable two-mode CUDA derivative checks. They submit no formal model training.

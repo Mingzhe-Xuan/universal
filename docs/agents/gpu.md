@@ -3840,3 +3840,7 @@
 - 2026-11-05T14:38:41+08:00: Ordinary SSH first verify/pull root, check clean fixed17be214/acceptedCPU1076 and nonfailedGPU1077, exact16 server frozen configs/seed identity and unused outputs/global claims. Submit8 serial full generation GPU preparations for seeds456/789 through existing public CLI,2CPU32GiB16h,nice1000,no-requeue,after original1023 and controls;8 CPU1/4GiB20min gates afterok eachprep+controls. Retain exact intents/requests/receipts; no overwrite, no data/steps/epochs reductions, no new formal count until actual downstreamGPU receipts. Existing991,primarypreps/dispatch/posts unchanged.
 
 - 2026-11-05T14:40:15+08:00: Ordinary SSH first verify/pull root, inspect exact8 remaining-seed full-generation preparations and8 success-only gates, owner/source/requestSHA/resource/nice1000/dependency/seed identity receipts. Read991 and live1077 plus actual primary claim count. Metadata only; no new jobs/source/model/environment changes.
+
+- 2026-11-05T14:45:49+08:00：SCP上传已推送dcda3e4的9239B小型离线bundle，SHA ba394abccd6bf1abc8bb5f7cb2143a2b2a217160973a68896fe6afc15f568dc3，先决17be214；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T14:48:38+08:00: Ordinary SSH first verify/pull root, inspect exact8 remaining-seed full-generation preparations and8 success-only gates, owner/source/requestSHA/resource/nice1000/dependency/seed identity receipts. Read991 and live1077 plus actual primary claim count. Metadata only; no new jobs/source/model/environment changes.
