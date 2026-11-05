@@ -3630,3 +3630,17 @@
 - 2026-11-05T09:13:21+08:00: Ordinary SSH first verify/pull published root then read exact own1035/1036 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
 
 - 2026-11-05T09:32:19+08:00: Ordinary SSH first verify/pull published root then read exact own1035/1036 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T09:37:55+08:00：SCP上传已推送00b2dc3的21962B小型离线bundle，SHA 5e2c5a70c82636bbb0a8964cabf9c05a0666025c53ce1ea8e9a4c0d96eac47fa，先决f465106；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T09:39:33+08:00：Ordinary SSH verifies/pulls published00b2dc3 first, then Git clone --shared from this confirmed task repository into new task-owned ignored runs/source-checkouts/00b2dc3... . No server code editor/patch/source mutation; only Git materializes already-pushed source. Verify fixedHEAD/clean tracked source, symlink only untracked data/models/runs to their exact existing task paths, cache-only Git excludes/provenance metadata. Existing paths not overwritten, no neural imports, package installs or numerical login execution. Root origin remains unchanged; future normal connections still pull root first, immutable cache is verified rather than updated.
+
+- 2026-11-05T09:40:22+08:00: Ordinary SSH first SHA-verify/pull published root, verify clean new execution checkout and three passed full preparation receipts. Submit oneCPU1/4GiB20min formal execution acceptance: nine unit controls and six public read-only full-source/preparation checks using MACE/ALIGNN/NequIP provider environments. No model execution, new formal training, GPU queue changes, source/env/data edits or login batch processing.
+
+- 2026-11-05T09:42:36+08:00: Ordinary SSH first verify/pull published root, then read exact formal execution acceptance1037 reports/JUnit/six real preparation gate files/bounded logs and current-user queue. No model or full-source computation, new jobs, source/env/data edits or restarts.
+
+- 2026-11-05T09:44:11+08:00: Ordinary SSH first verify/pull published root then read exact own1035/1036 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current989 scratch status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T09:46:56+08:00: Ordinary SSH first SHA-verify/pull published root, validate clean fixed execution source and passed1037; submit oneCPU1/2GiB10min public result-verifier acceptance on actual completed968/969/988 configs/all events/test predictions/checkpoint bytes. Read-only original data/checkpoints; no Torch import, training, GPU queue change, source/env/data edits or login batch computation.
+
+- 2026-11-05T09:49:24+08:00: Ordinary SSH first verify/pull published root then read exact own1038 actual formal-report validator acceptance JSON/bounded stderr and current-user queue. No new jobs, model/numerical execution, source/env/data edits or restart.

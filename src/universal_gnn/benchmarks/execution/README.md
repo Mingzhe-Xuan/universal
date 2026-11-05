@@ -13,6 +13,9 @@ initializations and their full attempt/SHA chains, common batch/resolved configs
 full scratch calibration, original parameter coverage, dependency versions,
 unchanged model/training/graph Python source and required CUDA derivative checks.
 No caller-supplied readiness boolean or diagnostic subset replaces these gates.
+NequIP scratch adds exactly its registered author-constructor blueprint to the
+same public package used by the clean pretrained topology reference. Both hashes
+must match the frozen registry; arbitrary extra artifacts remain invalid.
 
 Example read-only check from a clean fixed checkout with data/models/runs links:
 
