@@ -377,3 +377,9 @@ own complete independent frozen CUDA gate and measured finite budget; post and
 verify require fresh output directories. The original primary48 selector and
 the higher-rank16 selector remain separate. See the
 [frozen module contract](../src/universal_gnn/benchmarks/frozen_backbones/README.md).
+
+`submit_frozen_case.py` plans or submits the six managed stages for one accepted
+frozen case. It requires the original successful CUDA preparation and independent
+gate terminal proofs, replays the complete full-data gate and refuses duplicate,
+foreign or ambiguous claims. `--check-only --plan-output NEW_JSON` saves a
+reviewable plan without submission. Planning and submission require CPU Slurm.

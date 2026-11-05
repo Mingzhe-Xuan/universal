@@ -172,3 +172,43 @@ engine's history, best/last states and final RNG exactly; three float32 controls
 also execute full CPU post-processing and independent no-model verification.
 Six prior wrapped-step oracles and four corruption refusals remain. This proves
 implementation behavior; official frozen full-data scientific completion is0.
+
+## Managed launch
+
+`telemetry.py` reads the original eight `b167881` preparation pipelines from
+`runs/official-frozen-preparations-b167881-claim/jobs.json`. It validates each
+case's four original request bytes, exact job IDs, tokens, provider source,
+resources and dependencies. Both the GPU preparation and independent CPU gate
+must have their own successful retained terminal and matching artifact hash.
+Missing, failed, foreign or changed evidence stops before scientific submission.
+Purged live handles never require replacing an already retained successful proof.
+
+`submission.py` rebuilds the full independent gate and retains the original
+measured finite budget. Each case has six managed stages: one full frozen train,
+CPU post-processing, separate no-model verification, and one `afterany` terminal
+recorder per scientific stage. Scientific children use `afterok`. Training and
+scientific CPU stages use nice1000; tiny recorders use nice0. The model/data,
+batch, precision, epochs and validation selection settings remain unchanged.
+
+Claims live in `runs/arxiv-v1/frozen-launches/`; dispatch provenance and every
+attempt live in `runs/arxiv-v1/frozen-dispatch/`. These paths are separate from
+the primary and higher-rank workflows. Exact known live receipts may be reused
+without new submissions. Unknown RPC outcomes, missing/purged receipts, foreign
+claims, changed source/evidence and unclaimed output stop for reconciliation;
+they never automatically rerun a scientific stage.
+
+In an original provider CPU Slurm allocation, first inspect the complete plan:
+
+```bash
+python scripts/submit_frozen_case.py \
+  --case frozen--seed-123--forcefield--cgcnn \
+  --preparation runs/arxiv-v1/frozen-preparation-1508-forcefield-cgcnn \
+  --independent-gate runs/arxiv-v1/frozen-independent-gates-b167881/frozen--seed-123--forcefield--cgcnn.json \
+  --check-only --plan-output NEW_PLAN_JSON
+```
+
+Omitting `--check-only` submits only after all original terminal and full CUDA
+evidence checks pass. The CLI and planner cannot run on the login node. Automatic
+CPU resolvers must wait for both the original independent gate and its terminal
+recorder; they do not repeat preparation. Implementation controls and verified
+resolver requests do not count as completed frozen science.
