@@ -1,6 +1,7 @@
 """Pure protocol controls; fixture reports never represent numerical training."""
 
 import copy
+import getpass
 from contextlib import contextmanager
 import hashlib
 import json
@@ -185,7 +186,8 @@ class FormalExecutionTests(unittest.TestCase):
                     verify_training_report(trained, gate, events)
 
     def test_actual_gpu_allocation_and_remaining_time_are_required(self):
-        detail = "AllocTRES=cpu=2,mem=64G,gres/gpu=1 TimeLimit=01:00:00 RunTime=00:10:00"
+        detail = ("JobId=fixture UserId=" + getpass.getuser() + "(1000) JobState=RUNNING NodeList=node42 "
+                  "AllocTRES=cpu=2,mem=64G,gres/gpu=1 TimeLimit=01:00:00 RunTime=00:10:00")
         with patch.dict(os.environ, {"SLURM_JOB_ID": "fixture"}), patch("subprocess.check_output", return_value=detail):
             self.assertEqual(allocation_budget(4000, 1000), 3000)
             with self.assertRaises(RuntimeError):

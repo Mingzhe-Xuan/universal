@@ -63,3 +63,14 @@ trained-model physics where applicable, and full inference/cost assessment befor
 the paper's independent acceptance count is updated. The entry records
 `independent_postevaluation_verified:false` explicitly. Existing running requests
 and immutable source caches are unaffected by adding this orchestration.
+
+`slurm.py` handles modern `AllocTRES`, older allocated `TRES` GPU entries and
+the cluster's legacy `TresPerNode=gres:gpu:1` representation. It first requires
+the current job ID, owner, RUNNING state and allocated nodes. Explicit allocated
+CPU/zero-GPU records cannot fall back to request fields. The legacy fallback
+also requires a positive allocated node count and positive per-node GPU count;
+a pending GPU request never qualifies. Both predictive and generation execution
+use this check. Actual CUDA visibility is checked separately by the runtime.
+See [Slurm states](https://slurm.schedmd.com/job_state_codes.html) and
+[GPU resources](https://slurm.schedmd.com/gres.html). Resource-field compatibility
+does not alter model/data/precision, derivatives or the measured finite budget.

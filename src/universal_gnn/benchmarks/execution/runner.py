@@ -1,6 +1,7 @@
 """Execute a new full predictive case without modifying its scientific recipe."""
 
 import copy
+import getpass
 import json
 import math
 import os
@@ -12,6 +13,7 @@ import time
 
 from .gates import check_preparation, case_spec, file_sha, read_json, canonical_digest
 from ..preflight import write_json
+from .slurm import running_gpu_allocation
 
 
 def duration_seconds(value):
@@ -28,11 +30,14 @@ def duration_seconds(value):
 
 
 def allocation_budget(requested, estimate):
+    if (type(requested) not in (int, float) or not math.isfinite(requested) or requested <= 0 or
+            type(estimate) not in (int, float) or not math.isfinite(estimate) or estimate <= 0):
+        raise ValueError("Require finite positive requested and measured wall-time budgets")
+    if not os.environ.get("SLURM_JOB_ID"):
+        raise RuntimeError("Formal execution requires a running Slurm job")
     detail = subprocess.check_output(["scontrol", "show", "job", "-o", os.environ["SLURM_JOB_ID"]], text=True)
     fields = dict(token.split("=", 1) for token in shlex.split(detail) if "=" in token)
-    resources = dict(item.split("=", 1) for item in fields.get("AllocTRES", "").split(",") if "=" in item)
-    if not any(name.startswith("gres/gpu") and value.isdigit() and int(value) > 0 for name, value in resources.items()):
-        raise RuntimeError("Formal training requires a Slurm GPU allocation")
+    running_gpu_allocation(fields, job_id=os.environ["SLURM_JOB_ID"], user=getpass.getuser())
     remaining = requested if fields.get("TimeLimit") == "UNLIMITED" else (
         duration_seconds(fields["TimeLimit"]) - duration_seconds(fields["RunTime"]))
     effective = min(requested, remaining)
