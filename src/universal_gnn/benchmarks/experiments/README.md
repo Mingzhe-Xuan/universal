@@ -1,5 +1,14 @@
 # Full primary experiment definitions
 
+The current campaign uses **one training seed, 123**, for all primary and supplemental
+experiments. The primary scope is48 full-data trainings, with the active and excluded
+IDs listed in [the execution scope](../../../../configs/arxiv_v1_scope.json).
+The earlier144-case revision2 matrix stays immutable to preserve submitted-job and
+result provenance. Its seed456/789 configurations are historical definitions and
+must not be scheduled for this campaign. Their pending preparation/launch requests
+were canceled with retained Slurm terminal evidence. Generation keeps one fixed
+quality sampling RNG seed456; this is not another training replicate.
+
 `registry.inspect_registry(repository)` scans all five registered JSONL sources and source-ordered
 IDs, validates released/frozen split counts, pins canonical manifest SHA values and verifies the
 four original model artifacts plus the NequIP author blueprint. Run this full-data operation on Slurm.
@@ -51,4 +60,4 @@ common batch for each pair. Fitted full-data neighbor statistics/priors cannot b
 Run `scripts/prepare_arxiv_pilot.py --matrix runs/arxiv-v1/definition-872/matrix.json --output NEW_DIRECTORY`
 through Slurm with `PYTHONPATH=src`. It writes `data/`, `configs/` and a manifest whose kind is
 `arxiv_v1_diagnostic_pilots`. Status is `prepared_not_launched`; no model or training is executed.
-Pilot definitions/results do not count toward the separate 144 formal full-data runs.
+Pilot definitions/results do not count toward the separate48 formal full-data runs.
