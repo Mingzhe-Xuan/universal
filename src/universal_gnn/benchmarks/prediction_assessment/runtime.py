@@ -95,10 +95,10 @@ def physical_selection(context):
     return dict(probe=str(probe_path), probe_sha256=file_sha(probe_path), indices=indices, ids=ids)
 
 
-def verify_physics(physics, task, selection):
+def verify_physics(physics, task, selection, *, device="cpu", frozen_backbone=False):
     required = ("forces_finite_difference", "stress_finite_difference") if task == "forcefield" else (
         "response_auxiliary_finite_difference",)
-    if (physics.get("passed") is not True or physics.get("device") != "cpu" or
+    if (physics.get("passed") is not True or physics.get("device") != device or
             physics.get("dtype") != "torch.float32" or physics.get("structure_ids") != selection["ids"] or
             not physics.get("checks") or any(not physics["checks"].get(k, {}).get("required") for k in required) or
             any(not row["passed"] for row in physics["checks"].values() if row["required"])):
@@ -133,8 +133,13 @@ def verify_physics(physics, task, selection):
                 type(row.get("max_abs_error")) not in (int, float) or not math.isfinite(row["max_abs_error"])):
             raise ValueError("Trained-best physical tolerances/observations changed")
     gradients = physics.get("mixed_parameter_gradient_norms", {})
-    if not gradients or any(type(value) not in (int, float) or not math.isfinite(value) or value <= 1e-10
-                            for value in gradients.values()):
+    if frozen_backbone:
+        if (gradients.get("backbone") != 0. or "readout" not in gradients or
+                any(type(value) not in (int, float) or not math.isfinite(value) or
+                    (value != 0. if name == "backbone" else value <= 1e-10) for name, value in gradients.items())):
+            raise ValueError("Frozen physics requires zero backbone and positive readout mixed gradients")
+    elif not gradients or any(type(value) not in (int, float) or not math.isfinite(value) or value <= 1e-10
+                              for value in gradients.values()):
         raise ValueError("Missing finite positive mixed parameter gradients")
 
 

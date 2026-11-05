@@ -362,3 +362,10 @@ original failed reports and the mandatory trained-best1000-attempt quality and
 separate no-model CPU assessment. It accepts only active seed123 generation
 cases. See the [generation module](../src/universal_gnn/benchmarks/generation/README.md)
 for finite budgets, explicit invalid-sample policy and no-overwrite semantics.
+
+`prepare_frozen_case.py prepare|check` consumes one of the eight accepted
+single123 frozen ablations and its complete original primary reference.
+It performs separate frozen100-batch CUDA/state/optimizer and physical checks,
+then supports an independent CPU evidence replay. See the
+[frozen module](../src/universal_gnn/benchmarks/frozen_backbones/README.md).
+This is preparation only; it launches no official frozen training.

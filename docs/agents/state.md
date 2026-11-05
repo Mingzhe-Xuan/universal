@@ -1,6 +1,6 @@
 # 当前状态
 
-Timestamp: 2026-11-06T01:10:29+08:00.
+Timestamp: 2026-11-06T01:18:25+08:00.
 
 User scope: ALL training experiments use ONE seed123. Primary48 = CGCNN/ALIGNN/MACE/NequIP x classification/bandgap/dielectric/spectrum/forcefield/generation x official whole-backbone pretrained/scratch. Native/frozen/rank3/4/molecular/custom KNN+GCN supplements remain and also use123. Original144 matrix is immutable provenance; configs/arxiv_v1_scope.json lists active48/excluded96. Exact96 excluded pending preparation/gate jobs were canceled and immediate terminal evidence retained. Do not restore training seeds456/789. Generationquality RNG456 is one fixed evaluation protocol, not another training seed.
 
@@ -31,6 +31,8 @@ Independent supplemental gate source3483500 accepted actualCPU1252/1253:119main/
 
 
 Frozen ablation definitions source0c9120c acceptedCPU1288/1289:159main/981JUnit/15Gitblobs,full6565 source records/393783 raw finite labels,8 configs SHAe6104992bc86dfbbc0bdc67b9d20105f79dcb5ba95dc3fabbdac7ef708c4b8f0,6 live frozen FF/fixed/equivariant f32/f64 state+input derivative reports and5 freeze/buffer/checkpoint-resume controls. Dielectric4999/44991labels; MLearn1566/1566E+347226F,269 whole-zero force records retained. Source/protocol-only acceptance,0frozen official trainings; official frozen graph/capacity/physical/execution adapters remain.
+
+Current unit: progress frozen-backbone official capacity/physics/execution after fresh main queue observation. Prior goal turn made concrete progress: accepted192-control staged generation source, dispatched4 missing trainings/8 quality/8 assessments/20 guards, all48 main request identities and90 old scientific hashes independently verified. Main scientific acceptance remains8, full scope and all supplement requirements preserved.
 # 变更记录
 
 - 2026-11-04 01:40 +08:00：进入剩余CUDA资源续传阶段。830/832实际成功，49common已安装；831失败和833/834依赖阻塞已核查并保留日志，精确取消两个PENDING作业。旧代理终止且1080空闲；监督器静态编译/plan通过后启动，仅管理自己创建的代理和CUDA下载，不自动宣称GPU可用。下一步续传、Slurm离线安装及真实GPU回归，同时推进数据/架构缺口。
@@ -729,3 +731,7 @@ Frozen ablation definitions source0c9120c acceptedCPU1288/1289:159main/981JUnit/
 - 2026-11-06T00:41:51+08:00: Local181 source/request/control/tamper and prior regressions passed; proceed to clean published-source192-control CPU reacceptance plus8 generation/8 forcefield real gate replays. Failed1446 and1448 reports/terminals retained; no duplicate or official training/quality job changes. Still8accepted/44submitted and four CGCNN/MACE generation cases unsubmitted.
 
 - 2026-11-06T01:10:29+08:00: Completed staged generation source4347ca3 acceptance and exact deployment.1450/1451 retainedCOMPLETED0:0/192main1091JUnit/12blobs/16real gates/1000-invalid accounting. Read-only1452-1455 retainedCOMPLETED0:0 then Slurm purged handles; fresh010040 confirmed no deployment claim, retained original completion/request/output/source hashes safely restored scheduling without dependencies on purged IDs. Deployment1456/1458/1460/1462 and terminal1457/1459/1461/1463 retained0:0;40 new managed requests exact identities/resources/deps verified:4train/8quality/8assessment/20afterany. Only old pending quality/assessment1316/1318/1322/1323/1325/1326/1328/1329 canceled and immediate terminal retained. OriginalAL/NQ train1314/1321/1324/1327 receipt hashes/currentPENDING preserved. Original90 scientific hashes intact; formal-index backup and48 unique active training coverage nowverified, still8scientifically accepted. Next complete queued science and remaining supplementary work.
+
+- 2026-11-06T01:18:25+08:00: Enter frozen official readiness/execution unit; previous goal turn classified progress (source4347ca3 accepted1450/1451 and exact48 primary submissions). Revalidate live main queue first; inspect existing frozen definitions and shared capacity/physics/runner contracts before implementation. Next identify minimum benchmark-only changes preserving all old model/engine/capacity sources and historical preparation compatibility.
+
+- 2026-11-06T02:00:45+08:00: Frozen official-readiness code local193 controls passed. Enter published-source actualCPU220 tests/6 new wrapped-vs-original state-RNG-FD oracles/4 corruption refusals/6 old frozen controls/full6565 raw audit/8 frozen original-reference +8 FF +8 gen gates. No original engine/model/capacity source changed;8 official frozen GPU preparations await acceptance,0 frozen training. Primary48 submitted/8 independently accepted unchanged.
