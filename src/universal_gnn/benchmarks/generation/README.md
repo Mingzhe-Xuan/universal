@@ -1,5 +1,54 @@
 # Complete generation pair preparation
 
+## Explicit staged readiness for the single-seed campaign
+
+`staging.py` and `scripts/run_generation_staged.py` distinguish complete training
+readiness from untrained sampling readiness. `--stage check` replays the same
+full source, split, original graph extrema, artifacts, provider versions,
+initialization, paired100-batch CUDA training evidence and fitted training prior.
+It can consume an original preparation that failed **only** at
+`paired_sampling_capacity`, with byte-bound known nonfinite/image-budget failure
+evidence. It leaves that original report failed and records sampling readiness
+as unqualified. No sampling timing or memory qualification is invented.
+The existing strict `check_preparation` and original CLI retain their requirement
+for complete sampling preparation. Only the eight active seed123 cases qualify.
+
+```bash
+"$UGNN_PYTHON" scripts/run_generation_staged.py "$UGNN_MATRIX" \
+  --matrix-sha256 "$UGNN_MATRIX_SHA256" \
+  --case seed-123--generation--mace--pretrained --stage check \
+  --preparation runs/arxiv-v1/full-generation-preparation-1022-mace \
+  --budget-seconds "$UGNN_BUDGET_SECONDS" --output runs/new-staged-generation-gate.json
+```
+
+Run each stage through Slurm in a clean pinned checkout using the provider's
+environment. `--stage train` uses the same preparation and declared measured
+training budget, refuses any existing case output, and executes the unchanged
+full training recipe. It stops at `training_passed_quality_pending`.
+`--stage quality --budget-seconds SECONDS` revalidates the original evidence and
+uses validation-best weights for the original1000 attempts,5 draws, RNG456,
+100x2 sampling steps, current batch1. Where no qualified sampling throughput
+exists, its finite allocation is explicitly declared and bounded by remaining
+actual GPU Slurm wall time; it is no runtime guarantee. Timeout/unknown errors
+remain failures and partial attempts remain on disk.
+
+All eight generation cases use the same explicit policy when evaluated through
+this staged quality entry. `sampling_failures.py` converts only the exact
+periodic-image-budget graph guard to an invalid attempt understood by the
+existing evaluator. Known nonfinite outputs already count as invalid attempts.
+Unknown errors and CUDA OOM propagate. Successful sampler arguments, outputs,
+steps, RNG and model state are unchanged; the model/graph/engine source is
+unchanged. Policy version and source SHA are saved with status and metrics.
+Every invalid attempt remains in the1000 denominator. There is no retry-until-valid.
+
+`--stage verify --output NEW_DIRECTORY` checks the same readiness and policy,
+then independently recomputes quality from all saved raw geometry on CPU, with
+model loading/forward forbidden. Full quality plus independent assessment remain
+mandatory for scientific completion; training readiness is not final acceptance.
+Previously queued training does not need retraining. Its pending quality jobs
+must be superseded with exact identity checks before scheduling this entry;
+the original strict entry does not silently switch policy.
+
 Input is one corrected, frozen full experiment matrix and a generation pair ID.
 The public entry checks both initializations and the full Perov-5 split
 11356/3787/3785. All numerical work requires a Slurm GPU allocation.

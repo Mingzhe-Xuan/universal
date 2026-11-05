@@ -129,7 +129,7 @@ def check_preparation(matrix, identifier, preparation, *, budget_seconds, allow_
     return _check_prepared_spec(matrix, spec, preparation, budget_seconds=budget_seconds)
 
 
-def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds):
+def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds, generation_training_only=False):
     """Evidence checks for a caller-validated, closed primary or supplemental spec."""
     if not os.environ.get("SLURM_JOB_ID"):
         raise RuntimeError("Formal preparation checks must run through Slurm")
@@ -137,6 +137,8 @@ def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds):
         raise ValueError("Declare a finite positive wall-time budget in seconds")
     case, configs, counts = spec["case"], spec["configs"], spec["counts"]
     generation = case["task"] == "generation"
+    if generation_training_only and not generation:
+        raise ValueError("Training-only readiness applies exclusively to registered generation cases")
     supplemental = spec.get("definition_kind") == "arxiv_v1_supplemental_tensor_definitions"
     preparation = Path(preparation)
     prepared = read_json(preparation / "report.json")
@@ -146,7 +148,15 @@ def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds):
     if supplemental:
         identity_ok = (identity_ok and prepared.get("kind") == "full_supplemental_tensor_pair_preparation" and
                        prepared.get("pair_id") == case["pair_id"] and prepared.get("seed") == case["seed"])
-    if (prepared.get("status") != "passed" or prepared.get("stage") != "complete" or
+    complete = prepared.get("status") == "passed" and prepared.get("stage") == "complete"
+    sampling_failure = None
+    if generation_training_only and not complete:
+        if prepared.get("status") != "failed" or prepared.get("stage") != "paired_sampling_capacity":
+            raise ValueError("Incomplete training preparation cannot become generation training readiness")
+        from ..generation.sampling_failures import checked_untrained_sampling_failure
+
+        sampling_failure = checked_untrained_sampling_failure(preparation)
+    if ((not complete and sampling_failure is None) or
             prepared.get("definition_sha256" if supplemental else "matrix_sha256") != spec["matrix_sha256"] or not identity_ok or
             prepared.get("cuda_acceptance") is False):
         raise ValueError("Preparation is incomplete, not CUDA-accepted, or belongs to another case")
@@ -208,13 +218,15 @@ def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds):
         resolved[mode] = actual
     train_worker_count = len(workers)
     sampling_evidence = None
-    if generation:
+    if generation and not generation_training_only:
         sampling_evidence = check_sampling_capacity(preparation, configs, resolved, probe, counts, prior,
                                                     generation_definition["sampling_preflight"])
         if (prepared.get("training_batch_size") != common or
                 prepared.get("sampling_batch_size") != sampling_evidence["common_batch_size"]):
             raise ValueError("Generation preparation mixed its training and sampling batches")
         workers = workers + sampling_evidence["successful_workers"]
+    elif generation and prepared.get("training_batch_size") != common:
+        raise ValueError("Generation training preparation changed its accepted common training batch")
     versions, seconds = installed_versions(), []
     artifacts = matrix["registry"]["artifacts"][case["model"]]["files"]
     for name, artifact in artifacts.items():
@@ -266,7 +278,14 @@ def _check_prepared_spec(matrix, spec, preparation, *, budget_seconds):
                 budget_seconds=budget_seconds, probed_train_only_seconds=train_estimate,
                 interpretation="Full source/graph/paired-capacity/physical evidence; timing is a probe estimate, not a runtime guarantee. No training launched by this check.")
     if generation:
-        result.update(training_prior=prior, quality_protocol=generation_definition["quality"],
+        result.update(training_prior=prior, quality_protocol=generation_definition["quality"])
+        if generation_training_only:
+            result.update(kind="formal_generation_training_execution_gate", training_readiness_only=True,
+                          sampling_readiness=sampling_failure or dict(status="not_rechecked_by_training_only_gate", sampling_capacity_passed=False),
+                          generation_quality_complete=False,
+                          interpretation="Complete unchanged graph/source/paired100-batch training evidence only. No sampling memory/throughput or quality qualification; full validation-best1000-attempt quality and independent assessment remain mandatory.")
+        else:
+            result.update(
                       sampling_batch_size=sampling_evidence["common_batch_size"],
                       probed_sample_batch_seconds=max(w["elapsed_seconds"] / w["measured_batches"] for w in sampling_evidence["successful_workers"]),
                       sampling_capacity_evidence={k: v for k, v in sampling_evidence.items() if k != "successful_workers"})

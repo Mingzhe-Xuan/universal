@@ -355,3 +355,10 @@ head-only configurations, changing only `optimization.train_backbone=false`
 relative to each original full pretrained recipe. See the
 [frozen ablation module](../src/universal_gnn/benchmarks/frozen_backbones/README.md).
 Run via CPU Slurm; this does not run official frozen preparation or training.
+
+`run_generation_staged.py --stage check|train|quality|verify` separates complete
+paired training readiness from failed untrained sampling preparation, preserving
+original failed reports and the mandatory trained-best1000-attempt quality and
+separate no-model CPU assessment. It accepts only active seed123 generation
+cases. See the [generation module](../src/universal_gnn/benchmarks/generation/README.md)
+for finite budgets, explicit invalid-sample policy and no-overwrite semantics.

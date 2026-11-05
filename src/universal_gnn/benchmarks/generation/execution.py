@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import shutil
 import time
+from contextlib import nullcontext
 
 from ..execution.gates import case_spec, check_preparation, compatible_sources, file_sha, installed_versions, read_json
 from ..execution.runner import allocation_budget, finite_shape
@@ -246,6 +247,16 @@ def run_generation_case(matrix, identifier, preparation, *, budget_seconds):
     if root.exists() or root.is_symlink():
         raise FileExistsError("Refusing to overwrite an existing generation case")
     gate = check_preparation(matrix, identifier, preparation, budget_seconds=budget_seconds, allow_generation=True)
+    return _run_generation_with_gate(identifier, gate, budget_seconds=budget_seconds)
+
+
+def _run_generation_with_gate(identifier, gate, *, budget_seconds):
+    """Shared unchanged training, after a caller has checked its closed recipe."""
+    if not os.environ.get("SLURM_JOB_ID"):
+        raise RuntimeError("Formal generation training must run through Slurm")
+    root = Path(gate["case"]["run_directory"])
+    if root.exists() or root.is_symlink():
+        raise FileExistsError("Refusing to overwrite an existing generation case")
     budget = allocation_budget(budget_seconds, gate["probed_train_only_seconds"])
     import resource
     import torch
@@ -298,6 +309,10 @@ def run_generation_case(matrix, identifier, preparation, *, budget_seconds):
 
 
 def run_generation_case_quality(matrix, identifier, *, budget_seconds):
+    return _run_generation_case_quality(matrix, identifier, budget_seconds=budget_seconds)
+
+
+def _run_generation_case_quality(matrix, identifier, *, budget_seconds, staged=False):
     if not os.environ.get("SLURM_JOB_ID"):
         raise RuntimeError("Formal generation quality must run through Slurm")
     if type(budget_seconds) not in (int, float) or not math.isfinite(budget_seconds) or budget_seconds <= 0:
@@ -322,11 +337,30 @@ def run_generation_case_quality(matrix, identifier, *, budget_seconds):
     if installed_versions() != gate["versions"]:
         raise ValueError("Quality environment differs from accepted generation training")
     commit = compatible_sources([gate["git_commit"], trained["execution"]["git_commit"]])
-    estimate = gate["probed_sample_batch_seconds"] * gate["quality_protocol"]["samples"]
-    budget = allocation_budget(budget_seconds, estimate)
+    policy = None
+    if staged:
+        from .staging import revalidate_gate, declared_quality_budget
+        from .sampling_failures import invalid_geometry_attempts, sampling_policy
+
+        revalidate_gate(matrix, identifier, gate)
+        policy = sampling_policy()
+    if gate.get("training_readiness_only"):
+        if not staged:
+            raise ValueError("A training-only gate requires the explicit staged quality entry")
+        estimate = None
+        budget = declared_quality_budget(budget_seconds)
+    else:
+        estimate = gate["probed_sample_batch_seconds"] * gate["quality_protocol"]["samples"]
+        budget = allocation_budget(budget_seconds, estimate)
     import resource
     import torch
     from universal_gnn.engine.generative.quality import run_generation_quality
+
+    context = nullcontext()
+    if staged:
+        from universal_gnn.tasks.generation import PeriodicDenoiser
+
+        context = invalid_geometry_attempts(PeriodicDenoiser)
 
     if not torch.cuda.is_available() or shutil.disk_usage(root).free < 20 * 1024**3:
         raise RuntimeError("Quality requires CUDA and20GiB disk reserve")
@@ -354,11 +388,18 @@ def run_generation_case_quality(matrix, identifier, *, budget_seconds):
     try:
         record(status="quality_running", stage="full_conditional_sampling", quality_wall_budget_seconds=budget,
                quality_budget_estimate_seconds=estimate,
-               quality_budget_estimate_scope="conservative full preflight batch time per single sample; not a measured trained1000-sample runtime")
+               quality_budget_estimate_scope=("conservative full preflight batch time per single sample; not a measured trained1000-sample runtime"
+                   if estimate is not None else "Declared finite initial allocation; no measured sampling throughput exists. Timeout remains failure and all attempts are retained."))
+        if staged:
+            record(sampling_failure_policy=policy)
         torch.cuda.reset_peak_memory_stats()
         protocol = gate["quality_protocol"]
-        result = run_generation_quality(trained["checkpoint"], output, count=protocol["samples"],
-            draws_per_condition=protocol["draws_per_condition"], seed=protocol["seed"], device=gate["config"]["device"])
+        with context:
+            result = run_generation_quality(trained["checkpoint"], output, count=protocol["samples"],
+                draws_per_condition=protocol["draws_per_condition"], seed=protocol["seed"], device=gate["config"]["device"])
+        if staged:
+            result["sampling_failure_policy"] = policy
+            write_json(output / "metrics.json", result)
         accepted = verify_quality(result, trained, gate)
         attempts[-1]["status"] = "passed"
         record(status="passed", stage="complete", generation_quality_complete=True, quality=str(output / "metrics.json"),
