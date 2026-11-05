@@ -164,3 +164,14 @@ steps. Its report is explicitly diagnostic, with
 without inventing missing training reload evidence; it does not accept legacy
 reports as complete formal training. Pure controls do not substitute for actual
 CPU numerical replay or a future full1000-attempt assessment.
+
+Source d6a71f6 passed CPU Slurm1045 acceptance:29 main tests/236 JUnit records,
+including two actual geometry cases, then all eight original-provider diagnostic
+CLI replays. All64 saved attempts and full64-structure training priors/fingerprints
+matched, including49 valid samples and15 invalid ones; one whole case had zero
+valid samples, exercising null groups. Test-process guards forbade `torch.load`,
+`torch.jit.load` and neural-module calls during every replay. All original input
+bytes stayed unchanged. Ten recorded execution-source hashes and seven scoring
+source hashes per replay were checked against Git blobs. These counts establish
+diagnostic numerical interoperability only, not full generation quality or a
+comparison of model quality.1044's initial controller argv failure is retained.

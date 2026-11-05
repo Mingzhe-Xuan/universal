@@ -3684,3 +3684,17 @@
 - 2026-11-05T11:07:26+08:00：SCP上传已推送53fe258的5806B小型离线bundle，SHA 71f6ce4fa9b0648f444527d9671cbcd0b775374cc8adecbfd69dae5867b94159，先决57a907b；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
 
 - 2026-11-05T11:08:45+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.
+
+- 2026-11-05T11:35:55+08:00：SCP上传已推送d6a71f6的15564B小型离线bundle，SHA a931111ad4e2c1d3e0a6c6f649479755143f73529df846570996384d003a93ff，先决53fe258；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T11:37:42+08:00：Ordinary SSH verifies/pulls publishedd6a71f6 first, then Git clone --shared from this confirmed task repository into new task-owned ignored runs/source-checkouts/d6a71f6... . No server code editor/patch/source mutation; only Git materializes already-pushed source. Verify fixedHEAD/clean tracked source, symlink only untracked data/models/runs to their exact existing task paths, cache-only Git excludes/provenance metadata. Existing paths not overwritten, no neural imports, package installs or numerical login execution. Root origin remains unchanged; future normal connections still pull root first, immutable cache is verified rather than updated.
+
+- 2026-11-05T11:38:09+08:00: Ordinary SSH first SHA-verify/pull published root, verify clean new execution checkout and three passed full preparation receipts. Submit oneCPU1/4GiB20min formal execution acceptance: 29 controls (27 protocol and2 actual geometry), then8 actual saved diagnostic rescoring CLI processes with model-load/Module-forward guards in original provider environments. No model execution, new formal training, GPU queue changes, source/env/data edits or login batch processing.
+
+- 2026-11-05T11:39:07+08:00: Ordinary SSH first verify/pull published root, then read exact saved-generation assessment1044 parent/8 child reports/JUnit/bounded logs, request SHA and current-user queue. No model/geometry compute, new jobs or source/env/data edits.
+
+- 2026-11-05T11:40:58+08:00: Ordinary SSH first SHA-verify/pull published root, verify clean new execution checkout and three passed full preparation receipts. Submit oneCPU1/8GiB1h formal execution acceptance: 29 controls (27 protocol and2 actual geometry), then8 actual saved diagnostic rescoring CLI processes with model-load/Module-forward guards in original provider environments. No model execution, new formal training, GPU queue changes, source/env/data edits or login batch processing.
+
+- 2026-11-05T11:41:59+08:00: Ordinary SSH first verify/pull published root, then read exact saved-generation assessment1045 parent/8 child reports/JUnit/bounded logs, request SHA and current-user queue. No model/geometry compute, new jobs or source/env/data edits.
+
+- 2026-11-05T11:43:22+08:00: Ordinary SSH first verify/pull published root, then compact read of exact8 existing forcefield formal status files,1040/1041 scratch post-evaluation receipts,current-user queue and disk free. No job/source/env/data changes or model computation.
