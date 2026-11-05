@@ -74,7 +74,9 @@ def fixture(task="bandgap", dtype="float32"):
                 def add(value):
                     return [add(item) for item in value] if isinstance(value, list) else rounded(value + .25, dtype)
                 predicted[name] = add(targets[name])
-            rows.append(dict(id=str(i), natoms=count, targets=targets, predictions=predicted))
+            row=dict(id=str(i), targets=targets, predictions=predicted)
+            if task == "forcefield":row["natoms"]=count
+            rows.append(row)
         jsonl(source, source_rows)
         manifest = create_manifest([dict(id=str(i), group=str(i)) for i in range(5)], source_sha256=file_sha(source),
             official={str(i): "train" if i < 2 else "validation" if i == 2 else "test" for i in range(5)})
@@ -217,7 +219,7 @@ class PredictionAssessmentTests(unittest.TestCase):
                 elif change == "shape": rows[0]["predictions"]["bandgap"] = [1.]
                 elif change == "nonfinite": rows[0]["predictions"]["bandgap"] = [[float("nan")]]
                 elif change == "bool": rows[0]["predictions"]["bandgap"] = [[True]]
-                elif change == "natoms": rows[0]["natoms"] += 1
+                elif change == "natoms": rows[0]["natoms"] = 2
                 elif change == "output": rows[0]["predictions"]["other"] = [[0.]]
                 elif change == "population": report["heldout"]["metrics"]["bandgap"]["finite_elements"] -= 1
                 elif change == "relative": report["heldout"]["metrics"]["bandgap"]["relative_error_structures"] = 0
@@ -246,6 +248,17 @@ class PredictionAssessmentTests(unittest.TestCase):
                 else: report["heldout"]["selection"]["tracker"]["manifest_sha256"] = "0" * 64
                 write(path, report)
                 with self.assertRaises(ValueError): rescore_saved(path, root / "out")
+
+    def test_forcefield_atom_counts_required_graph_level_counts_come_from_raw_source(self):
+        with fixture("forcefield") as (root,path,report,rows):
+            rows[0].pop("natoms");jsonl(report["heldout"]["predictions"],rows)
+            with self.assertRaisesRegex(ValueError,"atom count"):rescore_saved(path,root/"out")
+        with fixture("bandgap") as (root,path,report,rows):
+            self.assertNotIn("natoms",rows[0])
+            self.assertEqual(rescore_saved(path,root/"source_count")["structures"],2)
+            rows[0]["natoms"]=1;rows[1]["natoms"]=2
+            jsonl(report["heldout"]["predictions"],rows)
+            self.assertEqual(rescore_saved(path,root/"optional_count")["structures"],2)
 
     def test_class_labels_cannot_be_boolean_and_no_input_changes_mid_score(self):
         for change in ["target_bool", "raw_bool", "mutation"]:

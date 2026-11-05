@@ -16,6 +16,9 @@ directories. Outputs preserve source/config/checkpoint/report hashes and metrics
 failed attempts remain. CPU model post-processing and the independent validator
 run as separate Slurm jobs. Both refuse existing output directories and preserve
 all original training, last/best checkpoint and source bytes.
+Saved forcefield test rows require `natoms`; graph-level gap/classification/tensor/
+spectrum rows use the raw source atom counts and do not require that field. Any
+explicitly recorded count is still checked against the original source.
 The post-processing validator has its own source hashes, which must match the
 independent stage. Its version is separate from the earlier training commit;
 model/training/data compatibility still uses the original full preparation gate.

@@ -48,7 +48,8 @@ def rescore_saved(training_report, output, *, allow_legacy_classification=False)
             if set(row["predictions"]) != set(names) or set(row["targets"]) != set(names):
                 raise ValueError("Saved test output names differ from the primary task")
             natoms = atom_counts[identifier]
-            if row.get("natoms") != natoms or type(row.get("natoms")) is not int:
+            if ((task == "forcefield" or "natoms" in row) and
+                    (row.get("natoms") != natoms or type(row.get("natoms")) is not int)):
                 raise ValueError("Saved atom count differs from the raw source")
             for name in names:
                 shape = (natoms, 3) if name == "forces" else SHAPES[name]
