@@ -341,3 +341,10 @@ and measured reserved training budget. `assess_tensor_case.slurm` provides
 CPU-only trained-best postprocessing and separate no-model full-output
 acceptance. All stages require Slurm, fixed seed123/closed16 definitions and
 fresh case/output paths; none submits or retries jobs automatically.
+
+`submit_tensor_pair.py` and its Slurm wrapper provide managed submission only
+after both original independent full tensor gates and exact retained successful
+terminal proof. Each pair has two train/post/verify chains plus six afterany
+recorders. `record_tensor_terminal.py gate|stage` preserves raw terminal
+identities and report hashes. See the tensor module README for dependencies,
+resources, separate claim paths and strict no-duplicate/unknown-claim behavior.

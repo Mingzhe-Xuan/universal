@@ -30,6 +30,8 @@ def stage_kind(phase):
         return "generation-" + phase
     if phase in {"post", "verify"}:
         return "prediction-" + phase
+    if phase in {"terminal_train", "terminal_post", "terminal_verify"}:
+        return "tensor-" + phase.replace("_", "-")
     raise ValueError("Unsupported managed submission phase")
 
 
@@ -82,13 +84,23 @@ def check_existing_cases(plan):
             raise FileExistsError("Refusing to rerun an existing primary result " + case["id"])
 
 
-def submit_stage(plan, item, jobs):
-    directory = claim_directory(item)
-    dependency = None if item["depends_on"] is None else "afterok:" + jobs[item["depends_on"]]["job"]
+def submit_stage(plan, item, jobs, *, directory=None, dependency_kind="afterok"):
+    if dependency_kind not in {"afterok", "afterany"} or (
+            dependency_kind == "afterany" and item["phase"] not in {"terminal_train", "terminal_post", "terminal_verify"}):
+        raise ValueError("Only terminal recorders may use afterany")
+    if "nice" in item["resources"] and (type(item["resources"]["nice"]) is not int or not 0 <= item["resources"]["nice"] <= 10000):
+        raise ValueError("Require a bounded nonnegative Slurm nice value")
+    explicit_directory = directory is not None
+    directory = Path(directory) if explicit_directory else claim_directory(item)
+    dependency = None if item["depends_on"] is None else dependency_kind + ":" + jobs[item["depends_on"]]["job"]
     expected = dict(managed_by=MANAGED, fingerprint=plan["fingerprint"], key=item["key"],
                     case_id=item["case_id"], phase=item["phase"], dependency=dependency,
                     request_sha256=item["request_sha256"], resources=item["resources"],
                     git_commit=plan["provenance"]["git_commit"], source_checkout=str(Path.cwd().resolve()))
+    if explicit_directory:
+        expected["claim_directory"] = str(directory)
+    if dependency_kind != "afterok":
+        expected["dependency_kind"] = dependency_kind
     intent_path, receipt_path = directory / "submission-intent.json", directory / "launch.json"
     if directory.exists() or directory.is_symlink():
         if directory.is_symlink() or not intent_path.is_file() or not receipt_path.is_file():
@@ -122,6 +134,8 @@ def submit_stage(plan, item, jobs):
             "--error=runs/arxiv-v1/" + kind + "-%j.err"]
     if resources["gpus"]:
         argv.append("--gres=gpu:" + str(resources["gpus"]))
+    if "nice" in resources:
+        argv.append("--nice=" + str(resources["nice"]))
     if dependency:
         argv.append("--dependency=" + dependency)
     intent["sbatch_argv"] = argv

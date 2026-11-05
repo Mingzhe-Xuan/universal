@@ -213,3 +213,45 @@ Proof: ignored `results/paper-tensor-execution-20261105/1262/`.
 This accepts the execution implementation; a managed submission/terminal chain
 still needs to be connected before formal supplementary training. No new
 training or official higher-rank CUDA preparedness is claimed by this control.
+
+`submission.py` adds managed requests for the eight frozen initialization pairs.
+It first requires `telemetry.py`'s exact retained successful original independent
+gate terminal/request/source/resource/report binding, then rebuilds both full
+execution gates and independently recomputes the finite reserved training budget.
+Each pair has12 stages: train -> post -> verify for both modes, and one afterany
+terminal recorder per scientific stage. Scientific dependencies are afterok.
+Every stage has an atomic intent, exact script hash, unique Slurm token and
+parsable receipt. Known matching receipts are reused; unknown, foreign, purged
+or conflicting claims stop for reconciliation, never automatically resubmit.
+All existing claims are checked before adding any missing stages.
+
+Train requests remain1GPU/2CPU/64GiB with the measured budget, post2CPU/32GiB/72h,
+verify1CPU/8GiB/4h; these scientific jobs use nice1000 to preserve primary
+priority. Tiny terminal recorders use1CPU/1GiB/2min and nice0 so terminal evidence
+is captured promptly. Finite initial CPU budgets are not runtime guarantees.
+No job is requeued automatically and no scope/data/precision/batch changes occur.
+The original primary transport keeps its default path/request format; optional
+explicit claim directories and afterany are sealed into supplemental receipts.
+Only terminal phases may use afterany. Existing primary requests are unchanged.
+
+Use `scripts/record_tensor_terminal.py gate --pair PAIR` in a CPU Slurm job
+afterany the corresponding original gate1254-1261. It writes that gate claim's
+new `terminal.json`, including success or failure without overwriting evidence.
+An unavailable handle is recorded as unavailable and never treated as success.
+Then run `scripts/submit_tensor_pair.py --pair PAIR --preparation PREP
+--independent-gate GATE_DIR` afterok both the original gate and its terminal
+recorder, in the original provider environment. `--check-only` produces a
+read-only plan; `--plan-output NEW_FILE` belongs only to check-only.
+The [wrapper](../../../../scripts/submit_tensor_pair.slurm) accepts
+`UGNN_PYTHON`, `UGNN_PAIR`, `UGNN_PREPARATION`, `UGNN_INDEPENDENT_GATE`, optional
+`UGNN_DEFINITIONS`/`UGNN_PRIMARY_MATRIX`. Planning/submission also requires Slurm.
+
+Claims live under `runs/arxiv-v1/supplemental-launches/CASE` (train at the root,
+other phases in named subfolders), and pair plans/attempts under
+`runs/arxiv-v1/supplemental-dispatch/PAIR`. They are separate from primary
+launches, preparation outputs and scientific results. Stage recorders invoke
+`record_tensor_terminal.py stage --receipt LAUNCH_JSON --stage-output OUTPUT`
+and write `terminal.json` beside the corresponding original launch receipt.
+They record raw terminal owner/name/token/source/resources and artifact hashes
+without loading models or asserting numerical accuracy. Receipts, plans and
+telemetry do not increase accepted experimental counts.

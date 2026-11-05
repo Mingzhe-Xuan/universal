@@ -82,3 +82,11 @@ formal trainings. Other task gates and formal downstream executions still need
 their own actual full-data evidence. Deferred CPU gates1054-1073 have been armed
 after their respective existing full preparations; they are not40 submitted
 training cases.
+
+The shared `submit_stage` transport also supports the separate
+[supplemental tensor launcher](../supplemental_tensors/README.md) through
+explicit claim directories, signed nice values and terminal-only afterany
+dependencies. Omitting these optional arguments preserves the original primary
+claim paths, expected receipt fields and request arguments. Supplemental
+training, post and verify stages use afterok; only the three explicit
+`terminal_train`/`terminal_post`/`terminal_verify` phases accept afterany.
