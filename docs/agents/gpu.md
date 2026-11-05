@@ -3808,3 +3808,11 @@
 - 2026-11-05T13:41:37+08:00: Ordinary SSH first SHA-verify/pull published86aa7eb and clean fixed Git cache, inspect successful1048 raw-source audit and complete elastic file size/reserve. Submit oneCPU1/4GiB30min39-control+full19500-source conversion, then separateCPU1/4GiB30min full original-label/component and independent cross-task BFS partition replay afterok preparation. Exact bodySHA/claims/receipts retained; do not repeat unknown submissions. No GPU, primary training/queue/source/model/environment change or batch processing on login.
 
 - 2026-11-05T13:42:58+08:00: Ordinary SSH first verify/pull published root then inspect exact supplemental preparation1074 and independent verification1075 handles, reports/JUnit/audits/source/request identities, bounded logs and990 current state. Metadata only; no full data processing, new jobs, source/model/environment mutation or restart.
+
+- 2026-11-05T13:49:22+08:00：SCP上传已推送db6d2fa的8531B小型离线bundle，SHA 208f0e347271fc8a6137d6ca52be6baa62e0d217590cee5561b9debf498f0989，先决86aa7eb；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-05T13:50:21+08:00: Ordinary SSH first verify/pull published root then read exact own1046/1047 ALIGNN independent CPU post-evaluation/full inference validation reports, trained-best physics and bounded logs, current990 pretrained status and current-user queue. No model/numerical work, new jobs, source/env/data edits or restart.
+
+- 2026-11-05T13:51:33+08:00: Ordinary SSH first verify/pull published root then collect exact completed seed-123--forcefield--nequip--pretrained reports/configs/events/all164 saved test predictions/frozen split and short best-file SHA check plus current-user queue. No model execution, new jobs, source/env/data edits or checkpoint transfer.
+
+- 2026-11-05T13:53:38+08:00: Ordinary SSH first verify/pull published root, then verify exact terminal990/1046/1047 Slurm owner/name/state/exit identities, both recorded post requestSHA and their unchanged clean dfea7b0 Git checkout, read existing991 scratch handle/status. Light metadata only, no inference/training/restart/source/environment writes.
