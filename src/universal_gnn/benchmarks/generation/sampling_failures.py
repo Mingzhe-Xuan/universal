@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 
 from ..execution.gates import file_sha, read_json
+from ..experiments.registry import canonical_digest
 
 POLICY_VERSION = "generation_invalid_geometry_attempt_v1"
 
@@ -53,10 +54,10 @@ def checked_untrained_sampling_failure(preparation):
     if len(rows) != 1:
         raise ValueError("Missing exact failed sampling trial")
     trial_path = root / "individual" / mode / "report.json"
-    if (Path(rows[0].get("directory", "")).resolve() != trial_path.parent.resolve() or
-            file_sha(trial_path) != rows[0].get("report_sha256")):
-        raise ValueError("Failed sampling trial bytes/path changed")
     trial = read_json(trial_path)
+    if (Path(rows[0].get("directory", "")).resolve() != trial_path.parent.resolve() or
+            canonical_digest(trial) != rows[0].get("report_sha256")):
+        raise ValueError("Failed sampling trial canonical identity/path changed")
     attempts = trial.get("attempts", [])
     if trial.get("status") != "failed" or trial.get("passed") is not False or not attempts:
         raise ValueError("Missing failed untrained sampler attempts")

@@ -37,7 +37,7 @@ def failed_sample(root, mode="scratch", error_type="ValueError", message="Cell r
     trial = dict(status="failed", passed=False, phase="sample", attempts=[dict(status="failed", worker=worker)])
     write(path, trial)
     report = dict(status="failed", passed=False, phase="sample", failed_stage="individual", failed_initialization=mode,
-                  trials=[dict(stage="individual", initialization=mode, passed=False, directory=str(path.parent), report_sha256=gates.file_sha(path))])
+                  trials=[dict(stage="individual", initialization=mode, passed=False, directory=str(path.parent), report_sha256=canonical_digest(trial))])
     write(root / "sample-capacity/report.json", report)
     return path, report
 
@@ -126,7 +126,9 @@ class GenerationStagingTests(unittest.TestCase):
                 proof = checked_untrained_sampling_failure(root)
                 self.assertFalse(proof["sampling_capacity_passed"])
                 self.assertEqual(proof["initialization"], mode)
-                path.write_text(path.read_text() + " ")
+                changed = json.loads(path.read_text())
+                changed["attempts"][-1]["worker"]["error"] += " changed"
+                write(path, changed)
                 with self.assertRaises(ValueError):
                     checked_untrained_sampling_failure(root)
         for kind, message in [("OutOfMemoryError", "CUDA out of memory"), ("RuntimeError", "unknown"),
