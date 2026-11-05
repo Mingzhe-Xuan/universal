@@ -1152,3 +1152,21 @@ Actual Slurm157 controls (including17 live high-rank and10 original physical con
 eight accepted full FF gate replays, actual CPU tensor schemas and full source audit follow publication.
 Supplemental training remains0; primary independently accepted8/48, submitted8/48.
 Implementation/protocol evidence does not count as completed numerical experiments.
+
+
+Actual execution sourcefade5fd passed CPU1262/1263:157 main tests/946 JUnit records,
+zero failure/error/skip;18 executed Git blobs,8 fresh live rank3/4 reports and8
+completed primary full-source/graph/capacity/physics/training gate replays.
+Full19499 source records/1309419 finite components/16 definitions were rechecked;
+4 real float32 CPU tensor reports meet the CPU schema, while all8 CPU reports
+remain ineligible as CUDA and8 unfinished higher preparations are refused.
+Original terminal1262 COMPLETED/0:0 was retained by1263 with exact request/source.
+Evidence: `results/paper-tensor-execution-20261105/1262/` (ignored).
+
+The full train/post/verify entries are accepted. A managed pair launcher with
+atomic request reuse and train/post/verify/terminal receipt chaining remains
+before arming the16 trainings after original independent gates1254-1261.
+No supplemental training was submitted by this acceptance. Primary remains8/48;
+all90 archived hashes retained. Latest221700 original preparation observation:
+14 producer reports passed (all spectrum/dielectric/gap andCG/AL classification),
+1017 MACE classification RUNNING,1077 allocation control still pending.

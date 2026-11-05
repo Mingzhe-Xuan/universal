@@ -201,3 +201,15 @@ afterok post for verify. CPU stages hide CUDA. These entries submit no jobs;
 an external managed launcher still must retain exact requests/terminal receipts
 and prevent duplicate submissions. Pending preparations and passing protocol
 fixtures remain zero completed supplemental trainings.
+
+
+Execution sourcefade5fd passed actualCPU1262/1263:157 main tests/946 JUnit
+counts without failure/error/skip,18 executed Git blobs,8 fresh live rank3/4
+reports,8 existing complete primary training gate replays, all19499 tensor
+records/1309419 finite labels and16 definitions. Four actual float32 CPU reports
+pass the CPU physics contract;8 CPU reports still fail CUDA qualification and8
+unfinished preparations are rejected. Retained control terminal is0:0.
+Proof: ignored `results/paper-tensor-execution-20261105/1262/`.
+This accepts the execution implementation; a managed submission/terminal chain
+still needs to be connected before formal supplementary training. No new
+training or official higher-rank CUDA preparedness is claimed by this control.
