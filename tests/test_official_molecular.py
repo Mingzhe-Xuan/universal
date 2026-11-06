@@ -357,5 +357,6 @@ def test_omitted_profile_periodic_original_input_and_forward_regression(provider
             torch.tensor(atoms.cell.array,dtype=dtype),torch.ones(3,dtype=torch.bool),symbol,{"bandgap":1.}))
     backbone=make_backbone(provider).to(dtype=dtype).eval()
     reference=cgcnn_reference if provider=="cgcnn" else alignn_reference
-    result=reference(backbone,values,dict(task=dict(property="bandgap"),dtype="float64" if dtype==torch.float64 else "float32"))
+    with default_dtype(dtype):
+        result=reference(backbone,values,dict(task=dict(property="bandgap"),dtype="float64" if dtype==torch.float64 else "float32"))
     assert result["structures"]==2 and "input_profile" not in backbone.native_graph_provenance()
