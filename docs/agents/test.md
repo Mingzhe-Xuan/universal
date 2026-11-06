@@ -2013,3 +2013,9 @@
 - 2026-11-06T21:54:06+08:00：提交前科学/文档检查通过：21/48及全部742科学SHA、原20格索引、9分子初始化/8100帧与183补充SHA、formal-ready/CUDA/质量边界、21已验收/27未完成勾选、scope SHA保持、追加历史、UTF8/小文件/围栏/新增链接、生产与数值代码无改动、git diff --check。新增联合准备代码的实际服务器纯检查状态另行记录，不以此文档检查代替；无本地Torch/NumPy或重跑模型。
 
 - 2026-11-06T21:54:28+08:00: Corrected only four path-test fixtures to use a real temporary working directory with finally restoration; all original path escape/hash/request/resource/negative scope assertions retained. Same73 local pure tests now pass, zero failure/error/skip, AST/noTorch-NumPy and all925 scientific SHA (742 primary+183 parity)/21-48 matrix and append-only histories checked. Actual failed1815/1816 retained; fixed Linux Slurm rerun still required. No production checker/model/worker changed.
+
+- 2026-11-06T21:55:33+08:00：长作业版本隔离计划：根仓库仍每次连接先校验/pull已推送提交；对该已确认本地Git remote仅做git clone --shared到新runs/source-checkouts/COMMIT，不用编辑器/patch改服务器源码。确认data/models/runs均不在Git受管树后只链接共享忽略数据/模型/结果，cache受管源必须HEAD固定且git status clean，已有目录不覆盖。后续Slurm显式cd缓存/PYTHONPATH缓存src并验证实际包路径，保护长训练不受根仓库后续pull影响。现阶段仅Git/路径轻量检查，GPU导入/数值仍须Slurm。
+
+- 2026-11-06T22:01:21+08:00：联合准备模块实际CPU控制已独立验收：fc7cf0c源1817/1818均实际COMPLETED0:0，73项原标准纯检查零失败/错误/跳过，六执行源与Git blob逐一绑定；五个原PENDING CUDA1735/1737/1739/1741/1743均因确切缺失其capacity report被正确拒绝，无resolved配置/正向CUDA/正式就绪声明。70控制归档SHA及原十请求CPU/内存/时长/GPU/Comment/source/request SHA与干净987缓存均通过，未改队列。8e29dc4的1815失败及1816终态保留，四项fixture改为真实临时cwd后同73通过，checker/骨干/数值/worker未改。主21/48/742科学归档与9分子CPU模式8100帧/183补充SHA保持。
+
+- 2026-11-06T22:01:24+08:00：提交前科学/文档检查通过：21/48及全部742科学SHA、原20格索引、9分子初始化/8100帧与183补充SHA、formal-ready/CUDA/质量边界、21已验收/27未完成勾选、scope SHA保持、追加历史、UTF8/小文件/围栏/新增链接、生产与数值代码无改动、git diff --check。新增联合准备代码的实际服务器纯检查状态另行记录，不以此文档检查代替；无本地Torch/NumPy或重跑模型。

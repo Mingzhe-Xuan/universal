@@ -31,3 +31,12 @@ with an input hash map. A passed report says `preparation_gate_passed=true`,
 budgeting, managed launch, full900-frame fitting and99000-frame/author-cohort
 quality acceptance remain separate work. Missing evidence fails; a negative
 check or a synthetic unit-test fixture is never numerical acceptance evidence.
+
+
+CPU control acceptance: source `fc7cf0c`, Slurm1817/1818 both completed0:0;
+73 pure tests passed without skips. All five original pending CUDA groups were
+correctly refused for their missing capacity reports. Six executed source hashes
+and70 control artifacts were verified. The previous1815 fixture failure remains
+archived; only the tests' temporary working-directory setup changed. This is
+negative-evidence validation, not positive CUDA/preparation/formal readiness.
+See the [execution record](../../../../../docs/plan/arxiv_v1_experiments.md).

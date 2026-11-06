@@ -2004,3 +2004,12 @@ best SHA `d3348d96481ad21917ab22c02539712f61327fa50b319dc5d9e1424af640f794`；�
 保留单seed原指标，不声明跨seed稳健性或普遍预训练收益。CPU后评284.947714秒、独立验证7.820844秒，训练成本另列；best SHA `cd78a5bc5e3c450d76a2aed5d8578d9190c0bf9e888e0f086c0ba5b11068ceed`。全源原输出73899529字节，SHA `c80307f5090f71962081f287f3167bdc05d1f3b2dce5eaa50006c9403df177b8`。
 1813/1814在独立验证及其记录器成功后进行无损gzip和父终态归档，耗时9.801838秒。首个SFTP已明确退出255后保留前缀，以4×16KiB窗口续传同一文件，原会话实际退出0；heldout压缩3878692B/原10143508B、all-source压缩28082561B/原73899529B的完整压缩与解压原字节SHA均通过，没有截断、舍入或重跑模型。
 新增60主科学归档，原682份全部SHA保持，总742份，原20格及更早索引均保留。正式21/48、矩阵勾选21已验收/27未完成。分子9模式8100帧/183补充归档与联合准备门禁另列，CUDA容量/物理、正式分子预算/launch/拟合/99000质量仍未声明完成；原1307 MACE谱scratch及其余主矩阵和补充队列继续。
+
+
+### 12.59 联合准备模块：实际CPU控制验收（不计CUDA或正式训练）
+
+新模块源8e29dc4的1815/1816保留原失败/afterany终态：Linux Python3.10的Path访问器未采用mock os.getcwd，四项路径fixture因此未进入目标断言；其余69检查通过，未进入CUDA负向检查。仅把这四项fixture改为真实TemporaryDirectory/cwd并finally恢复，所有原路径逃逸、请求/报告SHA、终态资源和工作负载断言保持。生产checker、原模型、数值/容量worker不改。
+
+修正源fc7cf0c的1817/1818均实际COMPLETED/0:0，原73项全部通过且零跳过，六新执行源SHA与Git blob一致。五类原排队CUDA请求分别因确切缺失其capacity/report.json被正确拒绝，失败报告均不导出resolved配置，保持preparation_gate_passed=false和formal_training_ready=false；这是缺失证据拒绝控制，不是五项CUDA准备成功。
+
+70份控制证据的所有SHA、原十个GPU/afterany请求身份/CPU/内存/时长/GPU/Comment和request SHA、原9873681固定干净源均已独立核验。原五GPU和五记录器仍PENDING，未重复提交或调优先级。最新21:59:01观察原1307 MACE谱scratch仍运行50:05；主表21/48及742主归档、9模式/8100帧原网络CPU对照及183补充归档保持，后续仍需真实CUDA准备、正式预算/launch/完整900拟合及99000/作者cohort质量、剩余27主格与全部补充范围。
