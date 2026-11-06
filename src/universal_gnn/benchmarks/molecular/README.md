@@ -57,3 +57,20 @@ differences/mixed gradients, full best-validation training,99000heldout tests,
 the original1000test cohort or separate independent assessment. Those remain
 required before scientific acceptance. A plugin case has its own single-model
 capacity gate; it does not claim an official pretrained/scratch pair.
+
+
+Definition source1e19447 passed actualCPU1682/1683, both COMPLETED0:0:
+44 standard-library tests,18 Git blobs, complete100000 source records/100000E/
+2700000F, all four author files and exact CSV/partition/cohort checks. Nine configs
+and four official pairs were independently checked, with26 metadata archives and
+all prior310 scientific/20raw/34conversion/17original-input-CPU hashes preserved.
+Wall11.5931seconds, process RSS194822144bytes. This is data/definition acceptance
+only; no GNN was constructed. Native graphs/CUDA/capacity/physics/full training
+and full heldout quality remain unaccepted.
+
+Accepted server definitions: `runs/molecular-definition-control-1682/definitions/`,
+SHA `a4226e6fa9460093e3232af39e8a75e5f5651aacfa7e510386eeff4f64045fd3`.
+The canonical manifest SHA used in its configs is
+`e7ee905372977d76c430a581f4fc9e2f33bfe44a60adb22eae00acb2d78adc69`;
+the original split-file SHA remains the separately audited d1072a6c...b469e58a.
+Proof: ignored `results/paper-molecular-definitions-20261106/1682-124742/`.
