@@ -15,6 +15,11 @@ class NequIPInputSourceTests(unittest.TestCase):
         helpers=[node for node in current.body if isinstance(node,ast.FunctionDef) and node.name=="_respect_nonperiodic_axes"]
         self.assertEqual(len(helpers),1)
         current.body.remove(helpers[0])
+        official=[node for node in current.body if isinstance(node,ast.ClassDef) and node.name=="OfficialNequIP"]
+        self.assertEqual(len(official),1)
+        conversion=[node for node in official[0].body if isinstance(node,ast.FunctionDef) and node.name=="_apply"]
+        self.assertEqual(len(conversion),1)
+        official[0].body.remove(conversion[0])
         class RemoveNormalization(ast.NodeTransformer):
             calls=0
             def visit_Call(self,node):

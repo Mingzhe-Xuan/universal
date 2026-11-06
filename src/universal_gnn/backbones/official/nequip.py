@@ -108,6 +108,19 @@ class OfficialNequIP(OfficialBackbone):
         self.type_names = list(model.type_names)
         self.load_report["selected_model"] = selected
 
+    def _apply(self, fn, recurse=True):
+        result = super()._apply(fn, recurse=recurse)
+        model = getattr(self, "model", None)
+        if model is not None:
+            dtype = next(model.parameters()).dtype
+            # Official eager embeddings store this outside parameters/buffers,
+            # so dtype conversions otherwise leave their outputs at float32.
+            names = {"BesselEdgeLengthEncoding", "SphericalHarmonicEdgeAttrs", "AddRadialCutoffToData"}
+            for module in model.modules():
+                if type(module).__name__ in names and hasattr(module, "_output_dtype"):
+                    module._output_dtype = dtype
+        return result
+
     def native_input(self, batch):
         from ase import Atoms
         from nequip.data import AtomicDataDict, from_ase

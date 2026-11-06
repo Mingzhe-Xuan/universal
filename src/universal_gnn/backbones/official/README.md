@@ -180,3 +180,10 @@ unchanged. This is an input correctness fix; the failed scan and actual backend
 diagnosis are preserved. Neighbor statistics bind the adapter source fingerprint,
 so statistics/checkpoints tied to an older adapter require their pinned source
 or freshly verified statistics, rather than silently relabeling provenance.
+
+NequIP's three eager geometric embedding classes also keep `_output_dtype` as a
+plain Python attribute. The adapter synchronizes it with actual parameter dtype
+after `to`/`float`/`double`; otherwise float64 live inference and checkpoint
+reload fail in the original MLP despite converted weights. This adds no layer,
+parameter or normalization. Float32 operation remains unchanged; independent
+finite differences retain their original precision policy and tolerances.

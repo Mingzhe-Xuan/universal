@@ -79,9 +79,14 @@ def test_actual_original_native_fields_and_periodic_components_preserved(dtype,p
 def test_forcefield_original_finite_differences_geometry_and_mixed_parameter_gradients(dtype,actual_examples):
     settings=config(dtype);torch.manual_seed(123)
     model=build_model(settings).to(device=DEVICE,dtype=dtype).eval()
+    names={"BesselEdgeLengthEncoding","SphericalHarmonicEdgeAttrs","AddRadialCutoffToData"}
+    embeddings=[module for module in model.backbone.model.modules() if type(module).__name__ in names]
+    assert embeddings and all(module._output_dtype==dtype for module in embeddings)
     report=validate_derivatives(model,actual_examples[:2],settings)
     assert report["passed"] and all(row["passed"] for row in report["checks"].values() if row["required"])
     assert all(value>1e-10 for value in report["mixed_parameter_gradient_norms"].values())
+    model.float()
+    assert all(module._output_dtype==torch.float32 for module in embeddings)
 
 
 @pytest.mark.parametrize("dtype",[torch.float32,torch.float64])

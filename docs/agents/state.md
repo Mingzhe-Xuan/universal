@@ -1,71 +1,44 @@
 # 当前状态
 
-Timestamp: 2026-11-06T12:59:24+08:00.
+Timestamp: 2026-11-06T14:43:17+08:00.
 
-全部训练仅seed123。主表48格=四骨干×六任务×官方整骨干微调/scratch；历史144矩阵不改写，
-scope active48/excluded96及96个退出seed456/789请求的取消证据保持；生成RNG456只是固定评测。
-新建矩阵CLI已显式seed123（033c7bc/14检查）；冻结8、高阶16及分子/plugin等补充范围不缩减。
+所有训练只用 seed123。主表48格＝CGCNN/ALIGNN/MACE/NequIP × 六任务 × 官方主干微调/scratch；原144矩阵不改写。
+active48/excluded96 的 scope SHA9b33ab3f987bd9476c24711b7e0adc39cb4abfee666840fe086c6aea31837ea7 与精确96个旧seed456/789请求取消证据保留。
+生成 RNG456 仅为固定评测随机流。冻结8、高阶16、分子/plugin、来源/native和成本补充范围不缩减。
 
-主表48个唯一训练请求全部提交，独立科学验收14/48：八组MLearn力场，NequIP/CGCNN/MACE介电各两初始化。
-354份科学归档SHA全部保留（新增44，原310不变）。CGCNN介电4项必需固定坐标检查通过，协变观察失败/非必需，不宣称O3。
-MACE微调1294全37/best7、499原测试/5必需O3检查/4999推理独立通过1678/1680，原1430及1679/1681及时留存科学父作业0:0。
-1679/1681自身退出码不可得，不推断；第13格证据/成本和原12索引备份保留。
-原1295 MACE介电scratch已全55/best25，1431保留成功终态，bestSHA0fff33e9ac92145839b0b177cfb17ba210b53e762c28276f65aab068277b4bad。
-完整后评预检1684/1685实际COMPLETED0:0，计划SHA551266d7bebdcebb4c86d9b1f9f3d3f18cb6521c5d8914124d0ed0b4e80e14e9已审阅。
-执行器请求只替换原ownedPENDING1319/1320资源，全499原标签/5O3检查/4999推理和无模型独立核验不变，不重跑训练。
-完整后评1688、独立1690及终态1689/1691均实际COMPLETED0:0，499原测试/5必需O3/4999推理全通过，已验收第14格。
-原1319/1320即时取消证据与原13索引备份保留。最新GPU1296 ALIGNN介电微调继续运行，CUDA1672仍排队。
+主表48个唯一训练请求已全部提交，独立科学验收15/48：八组MLearn力场，NequIP/CGCNN/MACE介电各两组，以及ALIGNN介电微调1296。
+科学归档398份，原354份完整，新44份和旧14格索引备份保留。所有主表验收均为原完整训练、原测试标签重算、trained-best物理检查与全源推理独立核验。
+1296全40/best10，3998/502/499，seed123/B4/f32/300cap-pat30；best6de71685f60b45d3875d23e50e8a33110bdebb73a6cc01299163ea86467c19dd。
+1708/1710科学后评和1709/1711记录器均实际COMPLETED0:0，原1426保留训练终态；完整499测试/4999推理通过。
+CGCNN及ALIGNN的介电是fixed_frame_components：五项观察、四项必需通过，协变观察失败且非必需，不宣称O3。
+MACE与NequIP介电保持五项必需O3检查。原1297 ALIGNN介电scratch最近继续运行，其余33格及完整后评仍待验收。
 
-rMD17原100000帧、SI单位转换和全标准loader独立验收1646/1647、1664-1667保持，原20+34归档不变。
-900/100/99000分区及作者原1000测试cohort保留，不增加训练帧，不声称独立轨迹/新分子泛化或占位晶胞应力精度。
-官方CGCNN/ALIGNN显式molecular_radius6Å实现已通过CPU1670：219JUnit(170case+49subtest)、54原模型测试、
-32实际CPU设备断言、各900原生输入/64800有效边及40真实诊断优化步，11源码/17归档保持；CUDA1672/1673待实际执行。
-1670成功由1671留存，1671自身退出码未捕获且不可得；失败1668/1669证据保持，不降低数值容差。
+rMD17原100000帧、SI转换和全loader1646/1647、1664—1667已独立验收，20+34归档保留。
+900/100/99000与作者原1000测试cohort不变；不扩大相关MD训练帧，不宣称独立轨迹/新分子泛化或占位晶胞应力精度。
+原分子定义1682/1683数据/配置验收26归档保留；插件导数声明为纯元数据补充，无层/参数/forward变化。
+新版1692/1693实际CPU验收55纯测试、23Gitblobs、8插件数值用例和完整源/9配置，29归档保留。
+图入口绑定runs/molecular-definition-control-1692/definitions，SHA68255484022ac5aaf3ad69ffb65eee35c5ff3dcdc8dd5001f2380b14b888ca79。
+CPU插件有限差分/几何/混合梯度、force-only诊断更新与标准checkpoint重载已通过，不能替代CUDA/容量/全拟合。
 
-新分子补充模块源1e19447已通过实际CPU1682/1683及独立数据/配置验收：44纯stdlib测试、18源码Git blob，
-完整100000结构/100000E/2700000F、作者4文件、重建分区与原1000测试cohort、9份配置及4个官方初始化对均核验。
-9组=8官方分子微调/scratch+1现有KNN+GCN插件scratch，全部seed123，独立于主48及已接受MLearn，不改旧定义/作业。
-新增26元数据归档，原310科学+20source+34conversion+17CPU完整；墙钟11.5931秒、峰值RSS194822144B。
-配置根runs/molecular-definition-control-1682/definitions，SHAa4226e6fa9460093e3232af39e8a75e5f5651aacfa7e510386eeff4f64045fd3。
-运行时canonical manifest SHAe7ee905372977d76c430a581f4fc9e2f33bfe44a60adb22eae00acb2d78adc69，
-转换原split文件SHA仍d1072a6c...b469e58a，两者均核对。这只是源/定义就绪，未构建GNN或通过全图/CUDA/100批容量/物理/训练/质量门禁。
+完整分子CPU原生图：CGCNN1694、ALIGNN1696、MACE1698、KNN+GCN1702均完成100000源输入与900训练输入；MACE统计只用900训练结构。
+仍需独立逐行/压缩/probe/来源与终态核验。原CGCNN/ALIGNN CPU1670/1671的219JUnit/900训练图/40诊断步证据保留；实际CUDA1672/1673仍排队。
+NequIP1700非周期检查失败保留。实际1712诊断：原matscipy非周期边含非零晶胞位移、边向量误差2Å，同API ASE后端零位移。
+449b80d仅清零非周期晶格方向的位移，周期分量与全周期路径保留。1713回归18/20：全部图/PBC/float32检查和8插件通过，两项float64前向因官方_output_dtype属性未转换失败。
+当前修复：NequIP _apply 同步三个官方eager embedding的_output_dtype与实际参数dtype；不改learned model、统计归一化或容差。
+本地56纯测试/AST通过；需新版本重跑全部20数值回归，核实原MLearn全1566帧PBC审计并全量重扫NequIP。旧固定源码/失败证据不改。
 
-冻结8原preps1508/1512/...1536和独立gate/1614-1629resolver，高阶8原preps1233...1247及gate/resolver，
-CGCNN压电1398/1404两训练、生成8条完整统一1000attempt/5draws/RNG456/100×2/batch1科学链全部保留。
-完整冻结/高阶/生成/分子/plugin和成本/来源/论文交付仍须验收。Torch2.7.1+cu128/CUDA12.8及三provider环境不变。
-只用Slurm运行数值/明显负载，本地源码commit/push后服务器pull、固定缓存不改旧工作树。20GiB存储保留门禁，无新代理或依赖安装。
+冻结8原preps1508/1512/...1536及gate/resolver1614—1629保留；高阶16定义与八原preps/gate/resolver、CG压电1398/1404两训练保留。
+生成八条完整1000attempt/5draws/RNG456/100×2steps/batch1科学链不缩短；未知错误/OOM必须失败，不排除无效样本。
+全量、无原子上限、float32、300cap/pat30、配对共同batch不变；仅实际typedOOM可缩小共同batch并重新验证。
+Torch2.7.1+cu128/CUDA12.8与官方/NequIP/MACE环境已安装验证，不重装。只用Slurm执行数值/明显负载，保留20GiB磁盘门槛，无DFT。
+SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供长作业。未新建代理，不改其他SSH/作业/数据。
 
 # 当前计划
 
-1. 1295全量科学已验收为第14格，保存354科学归档；继续原1296和余下34格训练/完整后评，原训练不重跑。
-2. 继续原1296及余下34格和完整后评/质量链，保存精确身份/终态/SHA，观察失败不重提任务。
-3. 分子9定义就绪后，推进官方全原生图/900训练统计、4对100批容量/混合极端结构及插件自身容量/特征与物理门禁。
-4. CUDA1672/1673实际结果必需，CPU/配置通过不可替代；随后才全量拟合/99000测试及原1000cohort/独立后评。
-5. 冻结/高阶/生成/plugin/成本来源仍保持完整范围；只有实际OOM可降低共同batch，300cap/pat30和seed123不变，不作跨seed稳健性结论。
-
-
-Latest main scientific checkpoint: MACE1295dielectric wholebackboneSCRATCH fullscientificacceptance complete; main14/48/48submitted. Original55/best25,3998/502/499,seed123,batch4,f32,300cap/pat30; nativeparameter/buffercoverage0 and state-layoutverified, originalnativecalibration only3998train. Best0fff33e9ac92145839b0b177cfb17ba210b53e762c28276f65aab068277b4bad. Original1431retainedtrain0:0; actualfull1688/independent1690 andafterany1689/1691 allCOMPLETED0:0 captured. Exactold1319/1320cancelledwithimmediateandlegacyproof after1684preflight/1686actor, no retraining. All499raw4491labels/5requiredO3physics/full4999inference44991finiteoutputs/15sourceGitblobs independentlyverified. MAE71.92361705390833 RMSE699.6432347993582 Frob385.18144490987726 relative17.14720724328601. CPU266.991999951s/independent2.211928633s/RSS1625030656B; GPU9581.448930381s/alloc1992944128/reserved5964300288B. Infer4266921B SHA712bf66ad5bd09b5fac28f94c8052b907204c7b20eae708b6891bc2a6f4d1fd4. New44archives preserveprior310=>354;13caseindexbackedup. Prior13indexscope descriptiveproviderlist hadduplicatedMACE fromtemporaryglobalprovider replacement whileall13actualcases/proofs werecorrect; new14scope explicitly derivedfromactualCGCNN/MACE/NequIP dielectricpairs, oldbackup/proofs kept. No tolerance/model/math/datachanges oruniversalpretrainingbenefit/crossseed claim. Molecularsource1682/1683 acceptance26archives/source1e19447 andall20+34+17priorinputarchives retained; 9supplement definitions only, no model/capacity/training results counted.
-
-
-Current implementation unit: Enter molecular full native-graph andtraining-onlystatistics preparation unit afteraccepted1682definition. Structure: addbenchmarks/molecular/contracts.py(closeda4226e9config/5model groups,pure metadata graphscope validator),graphs.py(CPUorCUDA full100000source/900train originalinputscan,source-boundselection, MACE/Neqonly900trainingnativeStats,compressedignoredgraphrows),scripts/scan_molecular_graphs.py Slurmonly andREADME. Reuseexisting count_graphs/edge_statistics/forbid_model_forward/select_probe andprepare_native_neighbors; do notchangeanyoldcritical orqueuedworker source. Onepretrained graph reference perofficialpair; plugin directnolearnedGraphBuilder.forward only, GNNforward forbidden. CGpaddedslots versusvalidedges recordedseparately; KNNplugin internalselfupdates separatefromphysicaledges. CPUscan ispreparatory topology/statistics only, cannotreplace requiredactualCUDAgraph/capacity/physics. Futurefinalgate requireexplicitCUDA scope, paired100batch/mixedextremes remainsmandatory. Testsplannedbeforeimplementation: exactclosed5groups/4pairs+plugin andsource/provenance tamperrefusal; fullsource/training source-order rows,coverage/geometrycounts/summaries,failedprefixretention, nonint/invalid counts andsource mutationrefusal; CPU-as-CUDA/incompletegraph/probe fake refuses; noTorch/NumPy top-levelimports. Actualnumerical graphcounter/originalNoPBC shifts/noGNNforward/state preservation andnativeStats only900 checked throughSlurm ineachproperproviderenv oncomplete100000. Main14/48/354scientificarchives and26moleculardefinitionarchives untouched, original1296running, CUDA1672stillpending at131719. Priorgoalturnprogress:newmodule/44tests/actualsource1682 andMACE1295 fullscientific acceptance;notwait/block. No newformaltraining or DFT.
-
-
-Current graph/runtime prerequisite: Substantive graph-unit adjustment fromactualcode evidence: existingexampleMolecularGCN BaseGNN constructor omittedgradient_capabilities; components.resolve_feature_spec defaultsomittedpositions/strain/ mixed toFalse andForceFieldModel rejects allthreefalse beforeexecution. Existing1682source/data-only acceptance correctlyneverconstructedGNN, soits9configs arehistoricalmetadata notruntimeproof. Addonly explicitTrue positions/strain/mixed metadata toknownlive-distanceMolecularGCN, preserveall learnedmodules/math/statekeys/constructorRNG; do notweakenframeworkcapabilitychecks orfakeconfigoverride. UpdateexampleREADME/standards explanation andaddactualSlurm f32/f64 constructor/state/RNG/directfeature equivalence versus1e19447 plusForceField FD/geometry/mixedgradient/reload checks. No localTorch. Plugin3fileprovenance changes, soexportfresh9definitionversion aftercleancommit/fullsourcegate, keeporiginal1682/a4226e26archives unchanged andonlybindnewgraphselector toindependentlyacceptednewSHA. Testsbeforecommit: ASToriginalMolecularGCN identicalafterremovingonlygradient_capabilitieskeyword, puremetadata source/graph/scope regressions, actualnumericSlurm remainsrequiredbeforefinalruntimeacceptance. Main14/48/354 untouched; no originalmodel layer/weight changes or numericaltolerance reduction.
-
-
-Latest graph/capability implementation: Actualprecommitgraph/capability implementationchecksPASSED:55purestdlib tests zeroerrors/failures/skips, 11newclosedgroup/fullrow/padded-valid/gzip/failprefix/CPU-as-CUDA/noSlurm/import/constructorAST controls plus original44data/matrix/scope regressions.9AST/CLIhelp/links/fences/append-onlyhistory/gitdiff passed. OriginalMolecularGCN ASTexactlyidentical to1e19447 afterremovingonlygradient_capabilities keyword: no layer/parameter/forward/math change. Corebackbone/featurecontract/engine/data/readout andoriginal graphscanner/capacity/physicalvalidator Pythonunchanged. Newpublicgraphscan supportsCPU/CUDAbutdoesnot certifycapacity; defaultcloseddefinitionstillold1682 anda changedplugin hashfailsclosed untilfreshaccepted versionrebinding.8newSlurmonly plugin tests cover f32/f64/context0-3 constructorRNG/state/directfeatures, unchangedFD/geometry/mixedpolicy andforce-only1step/standardcheckpointreload; notrunlocallyorclaimedpassed. Nextpublishcleannewsource, actualCPU8numericalcases+full100000source/9newconfigs, keepold1682proof. No localTorch/NumPy/GNN or DFT, main14/48/354scientificarchives untouched.
-
-
-Latest molecular runtime/binding: ActualCPU1692/afterany1693 bothCOMPLETED0:0 independentlyaccepted.55purestdlibmethods/23Gitblobs plus8actualCPUplugin f32/f64 cases passed (4constructorRNG/state/directfeature,2unchangedFD/geometry/mixedgradient,2force-only1Adamstep/standardcheckpointreload). Complete100000source/100000E/2700000F/fourauthorfiles/rebuilt900-100-99000/original1000cohort and9freshconfigs/4officialpairs onlyseed123 verified.29newmetadataarchives preserveold1682 26archives and354main+20source+34conversion+17CGALCPUarchives. Wall21.438193967s. Freshdefinitions runs/molecular-definition-control-1692/definitions SHA68255484022ac5aaf3ad69ffb65eee35c5ff3dcdc8dd5001f2380b14b888ca79. Parentstdlib; numericalchildCPUonly, noCUDA/fullgraph/100batchcapacity/formalfit/99000quality accepted. Bindgraphdefaulttofreshacceptedartifact; keepold1682unchanged. Bindingunitplannedtests:55purecontrols/AST/CLIhelp/docs/history/scopeSHA plus exactnewproof/SHA/source matches andolddefinitionreject. Thenactualcomplete100000graphscans properproviderenvs throughSlurm. Main14/48 unchanged;1296completed40epochs awaitingfullpost,1297scratchrunning/CUDA1672pending.
-
-
-Current completegraph Slurm unit: Submit5proper-environmentCPU1/8GiB2h complete100000source/900train originalgraph scans onfixedclean72000aa, eachwithCPU1/1GiB2min afterany. Onlyaccepted1692freshdefinitions; tests requirecompletecounts/noPBC/source/split/audit/stateSHAunchanged/globalGNNforwardforbidden, 900train-onlyMACE/Neqstatistics/paddedCGvalidedges/pluginselfupdatesseparate/losslessgzip/probe/filebindings. CPUpreparatory only, neverCUDAorcapacityacceptance. 20GiBdiskreserve; no training/newdependencies/source/datachanges. Claim/intents/RPC/receipts persisted before/aftereverysubmit; partial/unknown reconciledwithoutretry.
-
-
-Current1296 completeacceptance: Enter original1296 ALIGNNdielectric wholebackboneFT fullscientificacceptance unit: 40epochs/best10,3998/502/499,seed123/B4/f32/cap300/pat30, retainedtrain1426COMPLETED0:0, best6de71685f60b45d3875d23e50e8a33110bdebb73a6cc01299163ea86467c19dd. Onlymodel-forbiddenfullcontext/best/clean27e2339/source/input preflight mayreviewexactold1330/1331 ownedPENDING resources72h/4h; thenapprovedconcreteplanSHArequired forresource-onlyfull2h/1h/twoafterany restage. No retraining orreduced499rawtests/originalphysics/4999inference/independentno-modelverification. Testsbeforeacceptance:AST/bashsyntax/actualSlurmpreflight/reviewedplanSHA/exactownership/cancellationproof/fulloutputs/source15/retainedterminals/prior354archivepreservation. Main14/48untilallpass. Freshgraphjobs1694/1696/1698/1700/1702 andtheirafterany1695/97/99/1701/03submitted, CPUonly; 1692CPU8/source9configacceptance29archives retained.
-
-
-Current actualNequIPnonPBCfix: ActualSlurm1712COMPLETED0:0 diagnoses1700failednonPBCgate: threeactualrMD17trainrecords withnativepbcFalse/unchangedpositions/correct72pairs butofficialNequIPdefaultmatscipy NLreturns nonzeroedge_cell_shift, causing2angstromdirectedgevectorerror; sameofficialNL ASEbackendreturns zeroandcorrect72pairs. Notatolerance/counterfalsealarm. ImplementminimalNequIPadapter normalization edge_cell_shift components onlyalongnonperiodiclatticeaxes tozero usingwhere; periodiccomponents/allperiodicpath/nativegraphbuilder/learnedlayers/statekeys/cutoff/parameters preserved. Do noteditoldfixedsourcecaches oroldresults; preservefailed1700/1701 and1712diagnosis. Testsplannedbeforeimplementation: SlurmonlyproperNeqenv f32/f64 × noPBC/partialPBC/allPBC with actualnativegeometry/shiftbits/ASEreference/pairsets/matchingoriginalofficialrawfields; allperiodic exactunchanged, selectednonperiodicaxeszero, edgevectorsmatchoriginalpositions. Actual2rMD17 f32/f64ForceFieldoriginalFD/geometry/mixedgradientpolicy andforce-onlydiagnosticstep/reload. LocalAST/metadata55only,noTorch. AuditMLearn1566sourcePBCthroughSlurm beforeclaimoldFFunaffected. ThenfreshNQfull100000graph/900Stats/CUDAcapacity gates, onlytypedOOMbatchshrink, noformalfitbeforegates. FourotherCPUfullgraphs1694/96/98/1702completebutindependentrowverification pending. Main1296fullpost1708running/1710verifyqueued;14/48untilaccepted.
+1. 保留15格/398归档，继续原1297及其余33格完整训练和后评，不重提已提交训练。
+2. 发布NequIP dtype兼容修复，实际Slurm全部20回归与1566帧PBC审计通过后，重新扫描全部100000 NequIP图与900训练统计。
+3. 独立核验五类全量分子图；取得实际CUDA输入/配对100批容量/混合极端/物理门禁后，才全量拟合和99000测试及原1000cohort后评。
+4. 完成冻结8、高阶16、生成/plugin/native/来源/成本及论文交付；保留单seed解释边界。
 
 # 变更记录
 
@@ -853,3 +826,7 @@ Current actualNequIPnonPBCfix: ActualSlurm1712COMPLETED0:0 diagnoses1700failedno
 - 2026-11-06T14:22:12+08:00: Enter1296 fullscientific CPU resourcepreflight only; no cancellation beforeexactreviewedplan. FivecompleteCPUgraph/nativeStats scanssubmittedafteraccepted1692newdefs; CUDA1672stillqueued/main1297scratchrunning.
 
 - 2026-11-06T14:31:35+08:00: DiagnoseNequIPnonPBCedgevectorbugactual1712andkeepfailed1700. Enterminimalinputnormalizationwithperiodicbitpreservation/physics/MLearnPBCregressions. FourotherfullCPUgraphscomplete;1296fullpoststillrunning.
+
+- 2026-11-06T14:40:44+08:00: 1713actual18/20pass,2float64dtypeattribute failures; preservefailureandapplyexistinglesson toliveadapter conversion, keepall20requirements. Main1296scientific4stagescomplete, nextindependentindex15.
+
+- 2026-11-06T14:43:17+08:00: Complete1296fullscience/15thmain/398archives andpreserveallprior354; fouractualscientific/recordingstages0:0. RepairknownNequIPfloat64runtimeattributesafter1713actual18/20; nextall20samecriteria/newfixedsource, original1566PBCAudit andfreshNQfullgraphs.
