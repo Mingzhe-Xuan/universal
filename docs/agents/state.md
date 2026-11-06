@@ -1,59 +1,26 @@
 # 当前状态
 
-Timestamp: 2026-11-06T16:27:24+08:00.
+更新时间：2026-11-06T19:14:50+08:00。
 
-所有训练只用 seed123。主表48格＝CGCNN/ALIGNN/MACE/NequIP × 六任务 × 官方主干微调/scratch；原144矩阵不改写。
-active48/excluded96 的 scope SHA9b33ab3f987bd9476c24711b7e0adc39cb4abfee666840fe086c6aea31837ea7 与精确96个旧seed456/789请求取消证据保留。
-生成 RNG456 仅为固定评测随机流。冻结8、高阶16、分子/plugin、来源/native和成本补充范围不缩减。
+所有训练仅 seed123。主矩阵仍为四骨干 × 六任务 × 两初始化，共48个唯一训练请求；原144矩阵、active48/excluded96范围和96个退出seed的取消证据均保留。scope SHA `9b33ab3f987bd9476c24711b7e0adc39cb4abfee666840fe086c6aea31837ea7` 不变。
 
-主表48个唯一训练请求已全部提交，独立科学验收16/48：四骨干MLearn力场两初始化8格与介电两初始化8格全部完成。
-科学归档442份，原398份完整，新44份和旧15格索引备份保留。所有主表验收均为原完整训练、原测试标签重算、trained-best物理检查与全源推理独立核验。
-1296全40/best10，3998/502/499，seed123/B4/f32/300cap-pat30；best6de71685f60b45d3875d23e50e8a33110bdebb73a6cc01299163ea86467c19dd。
-1708/1710科学后评和1709/1711记录器均实际COMPLETED0:0，原1426保留训练终态；完整499测试/4999推理通过。
-CGCNN及ALIGNN的介电是fixed_frame_components：五项观察、四项必需通过，协变观察失败且非必需，不宣称O3。
-MACE与NequIP介电保持五项必需O3检查。原1297 ALIGNN介电scratch全32/best2已完成完整499测试/物理/4999推理独立后评；1727/1729科学作业与1728/1730记录器均实际COMPLETED0:0，验收为第16格。其余32格未独立验收，最新GPU1298 CGCNN声子谱微调已启动。
+正式独立验收 **17/48**：力场8、介电8、CGCNN声子谱微调1；科学归档共502份，原442份逐一SHA通过，原16格索引备份保留。
+1298原训练44轮/best14，11394/1424/1426，200通道，seed123、batch32、float32、300cap/pat30；加载官方CGCNN主干，任务头重置。完整1426测试/285200标签、14244源推理/2848800输出已独立核验。
+后评1749、独立核验1751、记录器1750/1752均有实际COMPLETED/0:0证据。1753全量无损归档及1754保留的成功父终态通过，两个gzip及全部原始字节SHA已本地验证。直接谱通道不适用力/张量导数物理门禁，未伪造物理检查。
+声子谱MAE0.004927860938239713、RMSE0.013648000091009237；relative Frobenius110.52996708735164一并保留。CGCNN/ALIGNN介电仍为fixed_frame_components，不能宣称O3。
 
-rMD17原100000帧、SI转换和全loader1646/1647、1664—1667已独立验收，20+34归档保留。
-900/100/99000与作者原1000测试cohort不变；不扩大相关MD训练帧，不宣称独立轨迹/新分子泛化或占位晶胞应力精度。
-原分子定义1682/1683数据/配置验收26归档保留；插件导数声明为纯元数据补充，无层/参数/forward变化。
-新版1692/1693实际CPU验收55纯测试、23Gitblobs、8插件数值用例和完整源/9配置，29归档保留。
-图入口绑定runs/molecular-definition-control-1692/definitions，SHA68255484022ac5aaf3ad69ffb65eee35c5ff3dcdc8dd5001f2380b14b888ca79。
-CPU插件有限差分/几何/混合梯度、force-only诊断更新与标准checkpoint重载已通过，不能替代CUDA/容量/全拟合。
+用户确认手动登录正常后，自动SSH及离线bundle校验/pull亦已成功；上次中断为结果下载，本轮用SFTP从16.4MB前缀续传，未重传torch、未新增代理、未重提作业。
+19:11:48实际队列：CGCNN声子谱scratch1300运行；分子CUDA1735/1737/1739/1741/1743及其afterany仍PENDING Priority/Dependency。排队不算CUDA验收或正式训练完成。
 
-完整分子CPU原生图：CGCNN1694、ALIGNN1696、MACE1698、KNN+GCN1702及修复后NequIP1717均完成100000源输入与900训练输入。
-1721/1722实际COMPLETED0:0已独立核验全部500000源图/4500训练图、压缩/probe/来源/状态/终态及MACE-NequIP仅900训练统计；14元数据归档。原CGCNN/ALIGNN CPU1670/1671的219JUnit/900训练图/40诊断步证据保留；实际CUDA1672/1673仍排队。
-NequIP1700非周期检查失败保留。实际1712诊断：原matscipy非周期边含非零晶胞位移、边向量误差2Å，同API ASE后端零位移。
-449b80d仅清零非周期晶格方向的位移，周期分量与全周期路径保留。1713回归18/20：全部图/PBC/float32检查和8插件通过，两项float64前向因官方_output_dtype属性未转换失败。
-当前修复：NequIP _apply 同步三个官方eager embedding的_output_dtype与实际参数dtype；不改learned model、统计归一化或容差。
-本地56纯测试/AST通过；f8b29c6实际1715/1716全部20数值回归通过（12 NequIP + 8插件，float32/64），18归档。原MLearn全1566帧均111周期，输入路径不受影响。
-NequIP1717/1718完成全源图/900统计；独立1721/1722验收通过。旧固定源码、1713数值失败及1719检查器错误artifact集合假设均保留，v2绑定额外作者blueprint精确SHA。
-
-冻结8原preps1508/1512/...1536及gate/resolver1614—1629保留；高阶16定义与八原preps/gate/resolver、CG压电1398/1404两训练保留。
-生成八条完整1000attempt/5draws/RNG456/100×2steps/batch1科学链不缩短；未知错误/OOM必须失败，不排除无效样本。
-全量、无原子上限、float32、300cap/pat30、配对共同batch不变；仅实际typedOOM可缩小共同batch并重新验证。
-Torch2.7.1+cu128/CUDA12.8与官方/NequIP/MACE环境已安装验证，不重装。只用Slurm执行数值/明显负载，保留20GiB磁盘门槛，无DFT。
-SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供长作业。未新建代理，不改其他SSH/作业/数据。
+rMD17完整100000记录、900/100/99000和作者1000测试cohort不变。五类完整CPU图和900训练统计已独立核验；NequIP/插件实际CPU回归及混合容量69纯检查/23实际CPU检查通过。分子实际CUDA、容量/物理、独立原包对照和完整拟合/质量尚未完成，formal_training_ready=false。
+冻结8、高阶16、分子/插件、native、来源及成本补充均保留。生成评测固定1000attempt/5draws/RNG456/100×2steps/batch1，RNG456仅为评测。全量、无原子上限、float32、共同batch、300cap/pat30均不缩减；仅实际typed CUDA OOM允许缩小batch并重验。无DFT。
 
 # 当前计划
 
-1. 保留16格/442归档，继续原1298及其余32个分类/带隙/声子谱/生成的完整训练与后评，不重复提交原训练。
-2. 五类分子CPU全图/训练统计及插件、NequIP数值回归已验收；推进实际CUDA输入、每组初始化的100批容量/混合极端与物理门禁。
-3. 已提交1735/1737/1739/1741/1743五类实际CUDA全图/共同batch/混合容量/物理检查，各有afterany；核验实际结果及独立原包对照后，才全量拟合/99000测试及原1000cohort后评。
-4. 完成冻结8、高阶16、生成/plugin/native/来源/成本及论文交付；保留单seed解释边界。
-
-
-
-
-
-
-
-
-当前实现：分子CUDA全图/两初始化共同batch/额外混合极端100批及原物理检查入口已实现，69纯测试通过；1731/1732已通过真实CPU三组102-step诊断及原20回归，共306优化步、700测量结构、21归档；新增CUDA简写解析检查后69纯测试及新版本1733/1734同23例均通过，新增21归档。实际GPU与独立原包对照仍是正式启动前门禁。
-
-
-
-
-分子GPU队列：CGCNN1735/1736，ALIGNN1737/1738，MACE1739/1740，NequIP1741/1742，插件1743/1744。160604实际快照全部PENDING；请求身份与40归档已核验，不能计作CUDA执行或正式训练完成。源码固定9873681，原包对照仍独立门禁。
+1. 保留17格与全部科学SHA；继续原有声子谱及其他任务请求的完整测试/全源推理与独立后评，不重复训练。
+2. 观察五类已提交分子CUDA预检；通过容量/物理与独立原包对照后，才启动完整分子拟合及99000测试/作者cohort质量评测。
+3. 完成冻结8、高阶16、生成、插件/native/来源/成本及论文交付；单seed结果不声明跨seed稳健性。
+4. 本地修改并提交推送，再由服务器git pull同步；模型/数值/明显计算全部通过Slurm。保留20GiB磁盘门槛。
 
 # 变更记录
 
@@ -863,3 +830,9 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 - 2026-11-06T16:03:32+08:00: EnterfiveactualCUDAfullgraph/pairedmixedcapacity/physics queue aftersame-sourceCPU23accepted. No formalreadinessclaim; originalmain1298 andoldCUDA1672 retained, no prioritychange.
 
 - 2026-11-06T16:27:24+08:00: Completeactualsame-source69/23CPUacceptance1733/1734andverifyfiveGPUcapacity+fiveafterany submissions/40archives. AllPENDINGPriority-Dependency at160604, noCUDAacceptanceclaimed. Main16/48 unchanged,1298spectrumrunning; nextactualGPUresultsandindependentoriginalparity.
+
+- 2026-11-06T16:44:52+08:00: Latestreadonlyfinalsync1298spectrumtrainingcomplete44/best14; nextfullscientific17thacceptance withlarge200-channelprediction handling, mainstill16/48. FiveCUDAcapacityjobsandold1672Prioritypending, originalqueue preserved.
+
+- 2026-11-06T16:48:24+08:00: Enterfirstspectrumfullscience1298acceptance withboundedmetadata/largeartifacthandling; previousgoalturnmain16+69/23+5GPUrequests wasprogress. Nextactualoriginalcontext/CPUpreflight, no retraining.
+
+- 2026-11-06T19:14:50+08:00：完成CGCNN声子谱微调第17格独立验收，新增60份归档、总502份，原16格/442哈希和索引备份保留。完整1426测试/14244源200通道无截断；谱通道不适用导数物理门禁。SSH/pull恢复并SFTP续传SHA通过，旧训练及排队不重提；下一步继续原队列及分子实际CUDA门禁。
