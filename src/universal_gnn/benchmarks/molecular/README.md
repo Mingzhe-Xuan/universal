@@ -134,3 +134,17 @@ in `runs/molecular-definition-control-1692/definitions`, SHA256
 The full100000 source and nine definitions were rechecked; original1682 remains
 data-only historical evidence. Actual CUDA, full native graphs and capacity
 remain separate required gates.
+
+
+All five complete CPU input scans have now passed independent row verification
+in Slurm1721/1722:500000 source graph rows and4500 training rows, lossless gzip,
+source/split/state/code bindings, rebuilt probes and900training-only MACE/NequIP
+statistics. The four unchanged scans use source72000aa; corrected NequIP uses
+f8b29c6. Slurm1715/1716 also passed12NequIP plus8plugin CPU numerical cases,
+including float32/64 inputs, original derivative policy and checkpoint reload.
+The original1566MLearn structures are fully periodic; the molecular image-shift
+fix leaves that old input path unchanged. NequIP scratch statistics additionally
+bind the exact author blueprint, whereas a pretrained graph reference binds its
+package; verify that explicit extra fingerprint instead of assuming equal sets.
+CPU preparation remains separate from actual CUDA, paired100batch capacity,
+formal fitting and the99000heldout evaluation.

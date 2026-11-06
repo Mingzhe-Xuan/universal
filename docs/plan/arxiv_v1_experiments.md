@@ -1832,3 +1832,12 @@ Slurm 1692/1693 均为实际 COMPLETED/0:0。55 项纯标准库测试、23 份 G
 1713实际收集20例，18通过：非周期/混合/全周期图与float32导数/更新以及8插件回归通过。两项float64完整前向在官方MLP触发float/double不匹配，失败1713/1714保留，不能算通过。
 查阅已有经验和独立差分参考实现，官方三类eager embedding的 `_output_dtype` 是普通Python属性，`Module.double()`只转换参数/buffer。现将同一明确兼容约束补入NequIP适配层的 `_apply`，随实际参数同步三类属性；不改模型层、权重、归一化或原有验收容差。
 本地56纯测试、AST与文档检查通过；AST移除新增非周期helper/唯一调用及dtype转换方法后与原72000aa一致。后续在新固定版本重跑全部20例，并核实原MLearn全1566帧PBC审计；不跳过float64、不以诊断代替CUDA或容量验收。
+
+
+### 12.46 五类分子 CPU 全图与数值兼容：独立验收完成
+修复后的 NequIP 1715/1716 均实际COMPLETED/0:0：20项真实CPU用例全部通过（12项NequIP + 8项插件），包括float32/64、非周期/混合/全周期输入、原有限差分/几何/混合梯度、force-only单步和checkpoint重载；56纯测试及7份Git blob核验。18份元数据归档，原1713/1714失败不覆盖。
+原MLearn完整1566条的PBC全部为111，source SHA `0ca42ef08e9f627f8f851de6a75bd958bb7632ec73a7fbc09a460baba20fe417`，所以非周期位移修复不改变既有全量力场输入路径。
+五类完整CPU图均完成：CGCNN1694、ALIGNN1696、MACE1698、插件1702、NequIP1717（后者150.101304秒）；各100000源输入与900训练输入，MACE/NequIP统计只用900训练结构，8100节点/64800边。
+独立标准库CPU1721/1722均实际COMPLETED/0:0，逐行核验全部500000源图及4500训练图、源/划分/audit/状态与源码绑定、原父作业终态、gzip无损、probe重建及resolved configs；100个measure与2个warmup只是probe规则，未执行容量验收。壁钟5.309710秒，14份新元数据归档。
+首版独立检查1719误以为NequIP预训练参考与scratch统计的artifact集合完全相同；实际后者额外绑定作者blueprint。v2要求同package/adapter/版本/cutoff及额外精确注册blueprint SHA，未忽略指纹或放宽数值标准；1719/1720原失败保留，未重扫其他四类图。
+这是CPU图与数值兼容准备完成，不代表CUDA、100批容量、全量拟合或99000测试质量。145630实际快照中CUDA1672仍PENDING、主训练1297继续运行。主表15/48及398份科学归档不变，所有训练仍只用seed123，无DFT。

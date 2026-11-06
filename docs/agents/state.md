@@ -1,6 +1,6 @@
 # 当前状态
 
-Timestamp: 2026-11-06T14:43:17+08:00.
+Timestamp: 2026-11-06T15:00:31+08:00.
 
 所有训练只用 seed123。主表48格＝CGCNN/ALIGNN/MACE/NequIP × 六任务 × 官方主干微调/scratch；原144矩阵不改写。
 active48/excluded96 的 scope SHA9b33ab3f987bd9476c24711b7e0adc39cb4abfee666840fe086c6aea31837ea7 与精确96个旧seed456/789请求取消证据保留。
@@ -20,12 +20,13 @@ rMD17原100000帧、SI转换和全loader1646/1647、1664—1667已独立验收�
 图入口绑定runs/molecular-definition-control-1692/definitions，SHA68255484022ac5aaf3ad69ffb65eee35c5ff3dcdc8dd5001f2380b14b888ca79。
 CPU插件有限差分/几何/混合梯度、force-only诊断更新与标准checkpoint重载已通过，不能替代CUDA/容量/全拟合。
 
-完整分子CPU原生图：CGCNN1694、ALIGNN1696、MACE1698、KNN+GCN1702均完成100000源输入与900训练输入；MACE统计只用900训练结构。
-仍需独立逐行/压缩/probe/来源与终态核验。原CGCNN/ALIGNN CPU1670/1671的219JUnit/900训练图/40诊断步证据保留；实际CUDA1672/1673仍排队。
+完整分子CPU原生图：CGCNN1694、ALIGNN1696、MACE1698、KNN+GCN1702及修复后NequIP1717均完成100000源输入与900训练输入。
+1721/1722实际COMPLETED0:0已独立核验全部500000源图/4500训练图、压缩/probe/来源/状态/终态及MACE-NequIP仅900训练统计；14元数据归档。原CGCNN/ALIGNN CPU1670/1671的219JUnit/900训练图/40诊断步证据保留；实际CUDA1672/1673仍排队。
 NequIP1700非周期检查失败保留。实际1712诊断：原matscipy非周期边含非零晶胞位移、边向量误差2Å，同API ASE后端零位移。
 449b80d仅清零非周期晶格方向的位移，周期分量与全周期路径保留。1713回归18/20：全部图/PBC/float32检查和8插件通过，两项float64前向因官方_output_dtype属性未转换失败。
 当前修复：NequIP _apply 同步三个官方eager embedding的_output_dtype与实际参数dtype；不改learned model、统计归一化或容差。
-本地56纯测试/AST通过；需新版本重跑全部20数值回归，核实原MLearn全1566帧PBC审计并全量重扫NequIP。旧固定源码/失败证据不改。
+本地56纯测试/AST通过；f8b29c6实际1715/1716全部20数值回归通过（12 NequIP + 8插件，float32/64），18归档。原MLearn全1566帧均111周期，输入路径不受影响。
+NequIP1717/1718完成全源图/900统计；独立1721/1722验收通过。旧固定源码、1713数值失败及1719检查器错误artifact集合假设均保留，v2绑定额外作者blueprint精确SHA。
 
 冻结8原preps1508/1512/...1536及gate/resolver1614—1629保留；高阶16定义与八原preps/gate/resolver、CG压电1398/1404两训练保留。
 生成八条完整1000attempt/5draws/RNG456/100×2steps/batch1科学链不缩短；未知错误/OOM必须失败，不排除无效样本。
@@ -36,9 +37,12 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 # 当前计划
 
 1. 保留15格/398归档，继续原1297及其余33格完整训练和后评，不重提已提交训练。
-2. 发布NequIP dtype兼容修复，实际Slurm全部20回归与1566帧PBC审计通过后，重新扫描全部100000 NequIP图与900训练统计。
+2. 五类分子CPU全图/训练统计及插件、NequIP数值回归已验收；推进实际CUDA输入、每组初始化的100批容量/混合极端与物理门禁。
 3. 独立核验五类全量分子图；取得实际CUDA输入/配对100批容量/混合极端/物理门禁后，才全量拟合和99000测试及原1000cohort后评。
 4. 完成冻结8、高阶16、生成/plugin/native/来源/成本及论文交付；保留单seed解释边界。
+
+
+Current completegraph Slurm unit: SubmitonlyNequIPfreshversionCPU1/8GiB2h complete100000source/900train originalgraph scans onfixedcleanf8b29c6, eachwithCPU1/1GiB2min afterany. Onlyaccepted1692freshdefinitions; tests requirecompletecounts/noPBC/source/split/audit/stateSHAunchanged/globalGNNforwardforbidden, 900train-onlyMACE/Neqstatistics/paddedCGvalidedges/pluginselfupdatesseparate/losslessgzip/probe/filebindings. Required1715actual20CPUregressions passed; previousfailed1700/1713 retained, fourother72000aagraphs notresubmitted. CPUpreparatory only, neverCUDAorcapacityacceptance. 20GiBdiskreserve; no training/newdependencies/source/datachanges. Claim/intents/RPC/receipts persisted before/aftereverysubmit; partial/unknown reconciledwithoutretry.
 
 # 变更记录
 
@@ -830,3 +834,7 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 - 2026-11-06T14:40:44+08:00: 1713actual18/20pass,2float64dtypeattribute failures; preservefailureandapplyexistinglesson toliveadapter conversion, keepall20requirements. Main1296scientific4stagescomplete, nextindependentindex15.
 
 - 2026-11-06T14:43:17+08:00: Complete1296fullscience/15thmain/398archives andpreserveallprior354; fouractualscientific/recordingstages0:0. RepairknownNequIPfloat64runtimeattributesafter1713actual18/20; nextall20samecriteria/newfixedsource, original1566PBCAudit andfreshNQfullgraphs.
+
+- 2026-11-06T14:47:48+08:00: Enteractualfive completeCPUgraph/nativeStats scans after1692/1693accepted; noCUDA/capacity/formalfit claim. Nextindependentlyverifyfullsource/trainrows/probe/originalcounter/source/runtime/terminal beforecapacitystage.
+
+- 2026-11-06T15:00:31+08:00: CompleteactualNequIP20CPUregressions/1566allperiodicMLearnaudit18archives andfivecompleteCPUgraph/900Statsindependent1721/1722acceptance14archives. Preservefailed1713/1719 andalloldfixedcaches. NoCUDA/capacity/fullfitclaim; nextactualCUDA/pairedcapacity/physics/fullfit, original1297/main33remaining continue.
