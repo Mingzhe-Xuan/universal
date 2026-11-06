@@ -44,3 +44,14 @@ incomplete data cannot publish a passed report. Failed partial files are retaine
 This is an independent assessment of saved predictions, not new inference or
 training. Reprocessing a diagnostic subset does not make it a full-data training
 result. See the [experiment plan](../../../../docs/plan/arxiv_v1_experiments.md).
+
+
+Executed full-data evidence: source `c2155e2` preserves all eight numerical/input
+sources byte-for-byte from the original1003 control. Slurm1863/1865 and their
+recorders1864/1866 all completed0:0 for all eight accepted dielectric models:
+499 test structures each,3992 records total,2611 zero and1880 nonzero target
+components per model. A separate stdlib process independently checked raw
+source/dtype/ordered IDs and every numerical/component/group result at1e-12
+without importing UGNN metrics or a model. All original overall metrics and
+predictions remain unchanged; this supplement adds no training or inference.
+See the [full execution record](../../../../docs/plan/arxiv_v1_experiments.md).
