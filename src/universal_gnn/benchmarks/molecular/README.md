@@ -148,3 +148,41 @@ bind the exact author blueprint, whereas a pretrained graph reference binds its
 package; verify that explicit extra fingerprint instead of assuming equal sets.
 CPU preparation remains separate from actual CUDA, paired100batch capacity,
 formal fitting and the99000heldout evaluation.
+
+## Actual CUDA capacity and mixed extreme batches
+
+`capacity.py` runs a fresh full100000 actual-CUDA input scan, then reuses the
+existing paired capacity runner for each official pretrained/scratch group.
+It retains the original individual and common-batch trials and typed-CUDA-OOM
+retry rule. The plugin has one scratch preflight. Only batch size and the
+registered900training-only native calibration may be resolved; recipes and
+whole-backbone initialization coverage are checked again.
+
+`worker.py` first runs the unchanged original capacity worker, then uses
+`mixed.py` and `schedule.py` for a separate full-size mixed-extreme measurement.
+Each phase has two warmups and at least100 measured batches. Original worst
+structures still appear as homogeneous full batches; the additional phase
+co-occurs distinct worst structures and ordinary examples where batch size
+permits. At batch1 there is only a sequence of individual extreme examples;
+`within_batch_mixing=false` records that physical limitation. Both trainable
+components need finite nonzero gradients and changed state. No model or
+optimizer checkpoint is exported by these disposable probes.
+
+```bash
+PYTHONPATH=src python scripts/prepare_molecular_capacity.py \
+  --model cgcnn --output runs/molecular-cuda-capacity-NEW
+```
+
+Use the provider's registered environment and a GPU Slurm allocation. Successful
+capacity also requires the existing force/stress finite-difference and geometry
+checks on actual CUDA for each initialization. CPU mixed diagnostics identify
+their actual device and are explicitly rejected as production CUDA evidence.
+Unknown errors or timeouts do not permit a smaller retry; only a typed CUDA OOM
+does. The original four-worker common-batch validation remains in place.
+
+This command certifies a capacity/physics subset. Its report keeps
+`original_package_parity_verified=false` and `formal_training_ready=false`:
+independent original package parity and the remaining formal launch/quality gates
+must still pass. In particular, these optimizer probes are not full900-frame
+training or99000-frame heldout results. The planning and acceptance history is
+in the [experiment plan](../../../../docs/plan/arxiv_v1_experiments.md).

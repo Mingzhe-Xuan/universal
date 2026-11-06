@@ -1,17 +1,17 @@
 # 当前状态
 
-Timestamp: 2026-11-06T15:00:31+08:00.
+Timestamp: 2026-11-06T15:35:13+08:00.
 
 所有训练只用 seed123。主表48格＝CGCNN/ALIGNN/MACE/NequIP × 六任务 × 官方主干微调/scratch；原144矩阵不改写。
 active48/excluded96 的 scope SHA9b33ab3f987bd9476c24711b7e0adc39cb4abfee666840fe086c6aea31837ea7 与精确96个旧seed456/789请求取消证据保留。
 生成 RNG456 仅为固定评测随机流。冻结8、高阶16、分子/plugin、来源/native和成本补充范围不缩减。
 
-主表48个唯一训练请求已全部提交，独立科学验收15/48：八组MLearn力场，NequIP/CGCNN/MACE介电各两组，以及ALIGNN介电微调1296。
-科学归档398份，原354份完整，新44份和旧14格索引备份保留。所有主表验收均为原完整训练、原测试标签重算、trained-best物理检查与全源推理独立核验。
+主表48个唯一训练请求已全部提交，独立科学验收16/48：四骨干MLearn力场两初始化8格与介电两初始化8格全部完成。
+科学归档442份，原398份完整，新44份和旧15格索引备份保留。所有主表验收均为原完整训练、原测试标签重算、trained-best物理检查与全源推理独立核验。
 1296全40/best10，3998/502/499，seed123/B4/f32/300cap-pat30；best6de71685f60b45d3875d23e50e8a33110bdebb73a6cc01299163ea86467c19dd。
 1708/1710科学后评和1709/1711记录器均实际COMPLETED0:0，原1426保留训练终态；完整499测试/4999推理通过。
 CGCNN及ALIGNN的介电是fixed_frame_components：五项观察、四项必需通过，协变观察失败且非必需，不宣称O3。
-MACE与NequIP介电保持五项必需O3检查。原1297 ALIGNN介电scratch最近继续运行，其余33格及完整后评仍待验收。
+MACE与NequIP介电保持五项必需O3检查。原1297 ALIGNN介电scratch全32/best2已完成完整499测试/物理/4999推理独立后评；1727/1729科学作业与1728/1730记录器均实际COMPLETED0:0，验收为第16格。其余32格未独立验收，最新GPU1298 CGCNN声子谱微调已启动。
 
 rMD17原100000帧、SI转换和全loader1646/1647、1664—1667已独立验收，20+34归档保留。
 900/100/99000与作者原1000测试cohort不变；不扩大相关MD训练帧，不宣称独立轨迹/新分子泛化或占位晶胞应力精度。
@@ -36,13 +36,19 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 
 # 当前计划
 
-1. 保留15格/398归档，继续原1297及其余33格完整训练和后评，不重提已提交训练。
+1. 保留16格/442归档，继续原1298及其余32个分类/带隙/声子谱/生成的完整训练与后评，不重复提交原训练。
 2. 五类分子CPU全图/训练统计及插件、NequIP数值回归已验收；推进实际CUDA输入、每组初始化的100批容量/混合极端与物理门禁。
 3. 独立核验五类全量分子图；取得实际CUDA输入/配对100批容量/混合极端/物理门禁后，才全量拟合和99000测试及原1000cohort后评。
 4. 完成冻结8、高阶16、生成/plugin/native/来源/成本及论文交付；保留单seed解释边界。
 
 
-Current completegraph Slurm unit: SubmitonlyNequIPfreshversionCPU1/8GiB2h complete100000source/900train originalgraph scans onfixedcleanf8b29c6, eachwithCPU1/1GiB2min afterany. Onlyaccepted1692freshdefinitions; tests requirecompletecounts/noPBC/source/split/audit/stateSHAunchanged/globalGNNforwardforbidden, 900train-onlyMACE/Neqstatistics/paddedCGvalidedges/pluginselfupdatesseparate/losslessgzip/probe/filebindings. Required1715actual20CPUregressions passed; previousfailed1700/1713 retained, fourother72000aagraphs notresubmitted. CPUpreparatory only, neverCUDAorcapacityacceptance. 20GiBdiskreserve; no training/newdependencies/source/datachanges. Claim/intents/RPC/receipts persisted before/aftereverysubmit; partial/unknown reconciledwithoutretry.
+
+
+
+
+
+
+当前实现：分子CUDA全图/两初始化共同batch/额外混合极端100批及原物理检查入口已实现，68纯测试通过；真实CPU三组102-step诊断及原20回归待Slurm执行，实际GPU与独立原包对照仍是正式启动前门禁。
 
 # 变更记录
 
@@ -838,3 +844,11 @@ Current completegraph Slurm unit: SubmitonlyNequIPfreshversionCPU1/8GiB2h comple
 - 2026-11-06T14:47:48+08:00: Enteractualfive completeCPUgraph/nativeStats scans after1692/1693accepted; noCUDA/capacity/formalfit claim. Nextindependentlyverifyfullsource/trainrows/probe/originalcounter/source/runtime/terminal beforecapacitystage.
 
 - 2026-11-06T15:00:31+08:00: CompleteactualNequIP20CPUregressions/1566allperiodicMLearnaudit18archives andfivecompleteCPUgraph/900Statsindependent1721/1722acceptance14archives. Preservefailed1713/1719 andalloldfixedcaches. NoCUDA/capacity/fullfitclaim; nextactualCUDA/pairedcapacity/physics/fullfit, original1297/main33remaining continue.
+
+- 2026-11-06T15:04:51+08:00: LatestfinalSSHactual1297COMPLETED0:0/32-best2 captured; enterfullpostacceptancepreparationnext, mainstill15/48. GPU1672stillPrioritypending. No newtraining/queueactions; goalcontinues.
+
+- 2026-11-06T15:06:16+08:00: Enter1297fullscientificacceptanceactualinspection/preflight; previousgoalturncompleted15thmain/5CPUfullgraphs/20actualregressions. Nextconcretebest/receipts check, noGPUtrainingduplicate.
+
+- 2026-11-06T15:18:33+08:00: EntermolecularactualCUDA/mixed100capacity implementation unit withplannedpure/actualCPU/GPUtests. ReuseoldtypedOOM/pairedcommon verification, nooriginalsource changes; fullformalfitstillrequiresremaininggates. Main1297fullpostcontinues.
+
+- 2026-11-06T15:32:25+08:00: Completeoriginal1297fullscience/16thmain/442archives; allforcefield+dielectric cellsaccepted. MolecularCUDA/mixedcapacity sourceimplemented/68puretestspassed, nextactualSlurmCPU23 andGPUsubset checks; originalparitystillseparate soformalreadinessFalse.
