@@ -50,6 +50,49 @@ def report(model="cgcnn"):
 
 
 class MolecularParityTests(unittest.TestCase):
+    def test_native_energy_accumulation_preserves_float64_but_features_stay_float32(self):
+        for name in ["native_head","native_energy","native_forces"]:
+            for left,right in [("torch.float32","torch.float32"),("torch.float64","torch.float64"),("torch.float32","torch.float64")]:
+                contracts.comparison_dtypes(name,left,right)
+        contracts.comparison_dtypes("node_features","torch.float32","torch.float32")
+        for name,left,right in [("node_features","torch.float64","torch.float32"),
+                                ("node_features","torch.float32","torch.float64"),
+                                ("native_energy","torch.float16","torch.float32"),
+                                ("native_energy","torch.float32",None),("unknown","torch.float32","torch.float32")]:
+            with self.assertRaises(ValueError):contracts.comparison_dtypes(name,left,right)
+        values=rows("nequip");values[0]["comparisons"]["native_energy"].update(actual_dtype="torch.float64",reference_dtype="torch.float64")
+        contracts.checked_rows(values,records(),"nequip")
+        values[0]["comparisons"]["node_features"].update(actual_dtype="torch.float64",reference_dtype="torch.float32")
+        with self.assertRaises(ValueError):contracts.checked_rows(values,records(),"nequip")
+
+    def test_independent_edge_order_reconciliation_never_changes_or_duplicates_pairs(self):
+        original=[[0,1],[1,0],[0,2],[2,0]]
+        native=list(reversed(original))
+        permutation=contracts.edge_permutation(original,native,3)
+        self.assertEqual([original[i] for i in permutation],native)
+        for left,right in [(original,original[:-1]),(original,original[:-1]+[[1,2]]),
+                           (original,original[:-1]+[original[0]]),([[False,1]],[[0,1]]),
+                           ([[0,0]],[[0,0]]),([[0,3]],[[0,3]])]:
+            with self.assertRaises(ValueError):contracts.edge_permutation(left,right,3)
+
+    def test_plugin_cache_relocation_preserves_exact_source_files_factory_and_origin(self):
+        previous="a"*40;current="b"*40
+        old="/task/runs/source-checkouts/"+previous;new="/task/runs/source-checkouts/"+current
+        expected={role:dict(path=old+"/examples/custom_knn_gcn",source_sha256="c"*64,
+            files=["graph.py","model.py","plugin.py"],factory=factory) for role,factory in [("gnn","build_gnn"),("graph","build_graph_builder")]}
+        observed=copy.deepcopy(expected)
+        for role in observed:observed[role]["path"]=new+"/examples/custom_knn_gcn"
+        canonical=contracts.plugin_identity(observed,expected,current_checkout=new,reference_checkout=old,reference_commit=previous)
+        self.assertEqual(canonical["gnn"]["path"],"examples/custom_knn_gcn")
+        for field,value in [("source_sha256","d"*64),("files",["other.py"]),("factory","different"),("path",new+"/other")]:
+            changed=copy.deepcopy(observed);changed["gnn"][field]=value
+            with self.subTest(field=field),self.assertRaises(ValueError):
+                contracts.plugin_identity(changed,expected,current_checkout=new,reference_checkout=old,reference_commit=previous)
+        with self.assertRaises(ValueError):
+            contracts.plugin_identity(observed,expected,current_checkout=new,reference_checkout=old,reference_commit=current)
+        with self.assertRaises(ValueError):
+            contracts.plugin_identity(observed,expected,current_checkout=new,reference_checkout="/other/"+previous,reference_commit=previous)
+
     def test_import_and_cli_help_need_no_torch_numpy_or_slurm(self):
         repository=Path(__file__).resolve().parents[1]
         environment={**os.environ,"PYTHONPATH":str(repository/"src")}

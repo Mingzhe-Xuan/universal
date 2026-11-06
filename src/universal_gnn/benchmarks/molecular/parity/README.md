@@ -27,12 +27,24 @@ MACE uses the original calculator's full descriptors, energy and forces. NequIP
 uses the original calculator, type mapping and `NeighborListTransform(NL="ase")`.
 The ASE backend avoids the previously reproduced nonzero nonperiodic image
 offsets in installed matscipy. All native/reference neighbor pairs must agree,
-all image offsets must be zero and other original input fields remain exact.
+all image offsets must be zero. Only after exact pair-set/uniqueness checks, the
+independent ASE edges are reordered to native order before the original forward.
+This removes float32 summation-order differences without replacing any edge;
+all original input fields must then match exactly.
 The learned network, published weights and production input code are unchanged.
+Calculator result caches are reset per frame so repeated geometries still
+produce a fresh captured original forward, without changing model state.
 The plugin compares its direct GNN/graph-builder calls with StandardBackbone.
+An immutable source-cache relocation may change only the exact registered
+`examples/custom_knn_gcn` path. Source hashes, file lists, factories and every
+other provenance field remain equal; arbitrary source/path changes are refused.
 
 Original comparison tolerances remain rtol3e-5/atol3e-6, or MACE's existing
-rtol2e-5/atol2e-6. Nonfinite values, any comparison failure, changed persistent
+rtol2e-5/atol2e-6. Model parameters, geometry and node features stay float32.
+The original head may accumulate energy in float64, as the actual NequIP package
+does. Original output dtypes/values and tensor hashes are preserved; comparisons
+promote values to double without rounding either side or changing tolerances.
+Nonfinite values, any comparison failure, changed persistent
 state or accumulated parameter gradients fail the run. State/config/source
 hashes and complete900-row per-mode numerical summaries are saved. The summaries
 include shapes, errors and actual/reference tensor hashes; they are not raw

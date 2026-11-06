@@ -13,7 +13,7 @@ from ...experiments.registry import canonical_digest, NEQUIP_ARCHITECTURE
 from ...preflight import write_json
 from ..contracts import PRIMARY_PATH, selected_group, checked_graph_metadata
 from ..source import AUDIT_SHA, SOURCE_SHA, SPLIT_FILE_SHA
-from .contracts import checked_report, checked_rows, training_records
+from .contracts import checked_report, checked_rows, training_records, plugin_identity
 
 
 ENVIRONMENTS = dict(cgcnn="universal-official", alignn="universal-official", mace="universal-mace",
@@ -59,6 +59,7 @@ def verify_molecular_parity(model_name, graph_path, graph_report_sha256, output)
         partition="train", device="cpu", dtype="float32", seed=123, graph_report=str(Path(graph_path)/"report.json"),
         graph_report_sha256=graph_report_sha256, formal_training_runs=0, formal_training_ready=False,
         cuda_capacity_acceptance=False, parameter_updates=0, original_package_parity_verified=False,
+        comparison_precision="float32 model/geometry/features; preserve original native-head float32/float64 values; comparison promotes without rounding",
         direct_plugin_parity_verified=False, initializations={})
     def record(**fields):
         report.update(fields);write_json(output / "report.json", report)
@@ -73,6 +74,7 @@ def verify_molecular_parity(model_name, graph_path, graph_report_sha256, output)
         torch.set_num_threads(1)
         primary = read_json(PRIMARY_PATH)
         for mode, original in configs.items():
+            plugin_source_identity = None
             config = copy.deepcopy(original);config["device"] = "cpu"
             structures = dataset(config)
             indices, manifest, manifest_sha = load_partition(structures.source, config["dataset"])
@@ -103,8 +105,10 @@ def verify_molecular_parity(model_name, graph_path, graph_report_sha256, output)
                     raise ValueError("Reference must preserve whole-backbone initialization coverage/layout")
             else:
                 official = None
-                if backbone.extension_provenance != graph["graph_definition"]["native_graph"]:
-                    raise ValueError("Direct plugin source/config differs from the accepted complete inputs")
+                expected_plugin = graph["graph_definition"]["native_graph"]
+                previous_checkout = Path(expected_plugin["gnn"]["path"]).parent.parent
+                plugin_source_identity = plugin_identity(backbone.extension_provenance, expected_plugin,
+                    current_checkout=Path.cwd().resolve(), reference_checkout=previous_checkout, reference_commit=graph["git_commit"])
             before = state_digest(model)
             reference = OriginalReference(model_name, backbone)
             reference_before = reference.state()
@@ -141,6 +145,7 @@ def verify_molecular_parity(model_name, graph_path, graph_report_sha256, output)
                 native_reference_state_sha256=native_reference_state,
                 rows=str(row_path), rows_sha256=file_sha(row_path), config_sha256=canonical_digest(config),
                 graph_config_sha256=canonical_digest(original), input_sha256=inputs, official=official,
+                plugin_source_identity=plugin_source_identity,
                 wall_seconds=time.perf_counter()-mode_started)
             write_json(output/("config."+mode+".json"), config)
             record()

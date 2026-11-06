@@ -5,23 +5,27 @@ import hashlib
 import json
 from unittest.mock import patch
 
+from .contracts import comparison_dtypes, edge_permutation
 
-def comparison(actual, expected, provider):
+
+def comparison(actual, expected, provider, output):
     import torch
 
     actual = actual.detach().cpu()
     expected = torch.as_tensor(expected).detach().cpu()
-    if actual.dtype != torch.float32 or expected.dtype != torch.float32:
-        raise ValueError("Both original and native comparisons must actually use float32")
+    comparison_dtypes(output, str(actual.dtype), str(expected.dtype))
     if not bool(torch.isfinite(actual).all() and torch.isfinite(expected).all()):
         raise FloatingPointError("Original-model comparison contains nonfinite values")
     rtol, atol = (2e-5, 2e-6) if provider == "mace" else (3e-5, 3e-6)
-    torch.testing.assert_close(actual, expected, rtol=rtol, atol=atol)
+    # An original head can accumulate in float64 while its learned network uses
+    # float32. Promote only comparison operands; keep output values/hashes intact.
+    torch.testing.assert_close(actual.double(), expected.double(), rtol=rtol, atol=atol)
     def digest(value):
         description = json.dumps([str(value.dtype), list(value.shape)], separators=(",", ":")).encode()
         return hashlib.sha256(description + value.contiguous().numpy().tobytes()).hexdigest()
-    return dict(shape=list(actual.shape), max_absolute_error=float((actual-expected).abs().max()),
-                actual_sha256=digest(actual), reference_sha256=digest(expected), rtol=rtol, atol=atol)
+    return dict(shape=list(actual.shape), max_absolute_error=float((actual.double()-expected.double()).abs().max()),
+                actual_sha256=digest(actual), reference_sha256=digest(expected), rtol=rtol, atol=atol,
+                actual_dtype=str(actual.dtype), reference_dtype=str(expected.dtype))
 
 
 def ase_edges(structure, cutoff):
@@ -51,11 +55,27 @@ class OriginalReference:
             from nequip.data.transforms import ChemicalSpeciesToAtomTypeMapper, NeighborListTransform
             self.calculator = NequIPCalculator(model=self.original, device="cpu", transforms=[
                 ChemicalSpeciesToAtomTypeMapper(self.original.type_names),
-                NeighborListTransform(float(self.original.metadata["r_max"]), NL="ase")])
-            self.reference = "original NequIPCalculator/type mapper/NeighborListTransform(NL=ase), energy/forces/features"
+                NeighborListTransform(float(self.original.metadata["r_max"]), NL="ase"), self._verified_neighbor_order])
+            self.reference = "original NequIPCalculator/type mapper/NeighborListTransform(NL=ase); exact independently verified pairs reordered to native order, energy/forces/features"
         elif provider == "custom_knn_gcn":
             self.builder = copy.deepcopy(backbone.graph_builder).eval()
             self.reference = "direct directory-plugin GNN and graph builder versus StandardBackbone"
+        import torch
+        if any(parameter.is_floating_point() and parameter.dtype != torch.float32 for parameter in self.original.parameters()):
+            raise ValueError("Original same-state reference model parameters must remain float32")
+
+    def _verified_neighbor_order(self, data):
+        import torch
+
+        native = self._native_reference_inputs
+        permutation = edge_permutation(data["edge_index"].T.tolist(), native["edge_index"].T.tolist(), len(data["pos"]))
+        order = torch.tensor(permutation, dtype=torch.long, device=data["edge_index"].device)
+        if (data["edge_cell_shift"].shape != native["edge_cell_shift"].shape
+                or bool(data["edge_cell_shift"].any()) or bool(native["edge_cell_shift"].any())):
+            raise ValueError("Independent nonperiodic neighbors must retain zero images")
+        data["edge_index"] = data["edge_index"].index_select(1, order)
+        data["edge_cell_shift"] = data["edge_cell_shift"].index_select(0, order)
+        return data
 
     def state(self):
         from ...native_heads.evaluation import state_digest
@@ -87,8 +107,8 @@ class OriginalReference:
         finally:
             handle.remove()
         predicted, nodes = backbone.native_forward(batch)
-        return {"node_features": comparison(nodes, captured[0], self.provider),
-                "native_head": comparison(predicted, expected, self.provider)}
+        return {"node_features": comparison(nodes, captured[0], self.provider, "node_features"),
+                "native_head": comparison(predicted, expected, self.provider, "native_head")}
 
     def _alignn(self, structure, batch):
         import numpy as np
@@ -123,8 +143,8 @@ class OriginalReference:
         finally:
             handle.remove()
         predicted, nodes = backbone.native_forward(batch)
-        return {"node_features": comparison(nodes, captured[0], self.provider),
-                "native_head": comparison(predicted["out"], expected, self.provider)}
+        return {"node_features": comparison(nodes, captured[0], self.provider, "node_features"),
+                "native_head": comparison(predicted["out"], expected, self.provider, "native_head")}
 
     def _calculator(self, structure, batch):
         import torch
@@ -133,10 +153,13 @@ class OriginalReference:
 
         atoms = Atoms(numbers=structure.numbers.numpy(), positions=structure.positions.numpy(),
                       cell=structure.cell.numpy(), pbc=[False]*3)
+        # Always capture a fresh original forward, including repeated geometries.
+        self.calculator.reset()
         atoms.calc = self.calculator
         captured, reference_inputs = [], []
         handles = []
         if self.provider == "nequip":
+            self._native_reference_inputs = self.backbone.native_input(batch)
             handles.append(self.original.register_forward_pre_hook(lambda module,args:
                 reference_inputs.append({k:v.detach().clone() for k,v in args[0].items()})))
             handles.append(self.original.get_submodule(self.backbone.feature_path).register_forward_pre_hook(
@@ -162,19 +185,16 @@ class OriginalReference:
             if set(native) != set(reference):
                 raise ValueError("Independent NequIP original input keys differ")
             for key, expected in reference.items():
-                if key == "edge_index":
-                    if sorted(map(tuple,native[key].T.tolist())) != sorted(map(tuple,expected.T.tolist())):
-                        raise ValueError("Independent ASE and native NequIP edge pairs differ")
-                elif key == "edge_cell_shift":
+                if key == "edge_cell_shift":
                     if native[key].shape != expected.shape or bool(native[key].any()) or bool(expected.any()):
                         raise ValueError("Original nonperiodic comparison requires zero image shifts")
                 else:
                     torch.testing.assert_close(native[key], expected, rtol=0, atol=0)
             predicted, nodes = self.backbone.native_forward(batch)
             native_energy, native_forces = predicted["total_energy"], predicted["forces"]
-        return {"node_features": comparison(nodes, features, self.provider),
-                "native_energy": comparison(native_energy.reshape(-1), native_energy.new_tensor([energy]), self.provider),
-                "native_forces": comparison(native_forces, forces, self.provider)}
+        return {"node_features": comparison(nodes, features, self.provider, "node_features"),
+                "native_energy": comparison(native_energy.reshape(-1), torch.tensor([energy], dtype=torch.float64), self.provider, "native_energy"),
+                "native_forces": comparison(native_forces, forces, self.provider, "native_forces")}
 
     def compare(self, structure):
         import torch
@@ -197,4 +217,4 @@ class OriginalReference:
             raise ValueError("Direct plugin graph changed the supplied nonperiodic geometry")
         expected = self.original(graph, None).nodes
         actual = self.backbone.encode(batch).nodes
-        return {"node_features": comparison(actual, expected, self.provider)}
+        return {"node_features": comparison(actual, expected, self.provider, "node_features")}

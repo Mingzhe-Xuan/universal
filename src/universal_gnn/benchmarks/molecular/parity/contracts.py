@@ -1,9 +1,56 @@
 """Metadata checks only; execution and file provenance must be verified separately."""
 
 import math
+from pathlib import PurePosixPath
 import re
 
 from ..source import COUNTS, SOURCE_SHA
+
+
+def comparison_dtypes(output, actual, reference):
+    allowed = {"torch.float32", "torch.float64"}
+    if output not in {"node_features", "native_head", "native_energy", "native_forces"}:
+        raise ValueError("Unknown original comparison output")
+    if actual not in allowed or reference not in allowed:
+        raise ValueError("Original comparison requires float32/float64 values")
+    if output == "node_features" and (actual != "torch.float32" or reference != "torch.float32"):
+        raise ValueError("Original and native node features must actually use float32")
+
+
+def edge_permutation(reference, native, nodes):
+    """Reorder independently verified equal nonperiodic pairs; never replace edges."""
+    if type(nodes) is not int or nodes <= 0 or len(reference) != len(native):
+        raise ValueError("Independent neighbor counts differ")
+    for edges in [reference, native]:
+        if any(len(pair) != 2 or any(type(i) is not int or not 0 <= i < nodes for i in pair)
+               or pair[0] == pair[1] for pair in edges):
+            raise ValueError("Independent nonperiodic edges have invalid atom indices")
+    left, right = list(map(tuple, reference)), list(map(tuple, native))
+    if len(set(left)) != len(left) or len(set(right)) != len(right) or set(left) != set(right):
+        raise ValueError("Independent ASE/native pair sets must match exactly without duplicates")
+    lookup = {pair: index for index,pair in enumerate(left)}
+    return [lookup[pair] for pair in right]
+
+
+def plugin_identity(actual, reference, *, current_checkout, reference_checkout, reference_commit):
+    """Relocate only the exact registered plugin directory; keep every other field."""
+    current = PurePosixPath(str(current_checkout).replace("\\", "/"))
+    previous = PurePosixPath(str(reference_checkout).replace("\\", "/"))
+    if (not current.is_absolute() or not previous.is_absolute() or not re.fullmatch(r"[0-9a-f]{40}", reference_commit)
+            or previous.name != reference_commit or previous.parent.name != "source-checkouts"
+            or set(actual) != {"gnn", "graph"} or set(reference) != {"gnn", "graph"}):
+        raise ValueError("Require the exact registered original/current plugin source checkouts")
+    identity = {}
+    for role in ["gnn", "graph"]:
+        observed, expected = dict(actual[role]), dict(reference[role])
+        if (observed.pop("path", None) != str(current / "examples/custom_knn_gcn")
+                or expected.pop("path", None) != str(previous / "examples/custom_knn_gcn") or observed != expected
+                or expected.get("factory") != ("build_gnn" if role == "gnn" else "build_graph_builder")
+                or not re.fullmatch(r"[0-9a-f]{64}", expected.get("source_sha256", ""))
+                or not expected.get("files")):
+            raise ValueError("Plugin source/files/factory or exact relocated directory differs")
+        identity[role] = dict(expected, path="examples/custom_knn_gcn")
+    return identity
 
 
 def expected_comparisons(model):
@@ -46,6 +93,8 @@ def checked_rows(rows, records, model):
                 or set(row.get("comparisons", {})) != expected):
             raise ValueError("Reference row identity/order/complete comparison scope differs")
         for name, item in row["comparisons"].items():
+            if "actual_dtype" in item or "reference_dtype" in item:
+                comparison_dtypes(name, item.get("actual_dtype"), item.get("reference_dtype"))
             error = item.get("max_absolute_error")
             shape = item.get("shape")
             if (not isinstance(error, (int, float)) or isinstance(error, bool) or not math.isfinite(error) or error < 0
