@@ -1874,3 +1874,18 @@ MAE71.42415681、RMSE796.59273603、平均Frobenius395.60594818；CPU后评550.9
 1731/1732均实际COMPLETED/0:0：68项纯检查、23项真实CPU测试（3项batch1/2/4混合优化+20项原数值回归）通过，27份源码Git blob与21元数据归档核验。三组各102步骤，共306优化步、700个测量结构，主干和读出头均有正梯度及状态改变，CPU不能作为CUDA证据。
 GPU入口复查补齐与原worker一致的设备解析：先将`cuda`简写解析成当前GPU索引，再调用`set_device`；CPU及显式索引不变。新增纯协议检查后69项通过，没有改原worker/主干/数据/容差。
 接着在新固定源码重跑同23项真实CPU检查，再提交五类实际CUDA全图/共同batch/混合容量/物理作业。原包独立对照仍单列，容量入口的formal_training_ready仍为false；不新增正式训练计数。
+
+
+### 12.50 分子 CUDA 预检：同版本 CPU 通过，五组实际请求已核验
+固定9873681上的1733/1734均实际COMPLETED/0:0：69纯测试、23真实CPU测试、27源码Git blob通过，306优化步与700测量结构核验，21新元数据归档；1731旧验收保留。
+
+| 分子组 | CUDA预检 | afterany记录器 | 160604实际状态 |
+|---|---:|---:|---|
+| CGCNN | 1735 | 1736 | PENDING Priority / Dependency |
+| ALIGNN | 1737 | 1738 | PENDING Priority / Dependency |
+| MACE | 1739 | 1740 | PENDING Priority / Dependency |
+| NequIP | 1741 | 1742 | PENDING Priority / Dependency |
+| KNN+GCN插件 | 1743 | 1744 | PENDING Priority / Dependency |
+
+每组使用注册provider环境、GPU1/CPU2/host内存16GiB/2小时；记录器CPU1/1GiB/2分钟。全部10个请求的账号、token、固定干净源码、脚本SHA、资源和依赖已只读核验，40元数据归档。没有重复提交、调整原作业优先级或抢占；原CUDA1672及主实验、冻结、高阶、生成队列保持。
+这些仅是提交身份核验，不能视作CUDA容量或科学验收。需实际完成十万帧CUDA输入、900训练统计、两初始化individual/common四worker、各原100+混合100测量与适用原物理门禁；独立原包对照仍单列，formal_training_ready=false。主表保持16/48；同快照CGCNN声子谱微调1298继续运行。

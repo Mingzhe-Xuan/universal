@@ -1,6 +1,6 @@
 # 当前状态
 
-Timestamp: 2026-11-06T15:35:13+08:00.
+Timestamp: 2026-11-06T16:27:24+08:00.
 
 所有训练只用 seed123。主表48格＝CGCNN/ALIGNN/MACE/NequIP × 六任务 × 官方主干微调/scratch；原144矩阵不改写。
 active48/excluded96 的 scope SHA9b33ab3f987bd9476c24711b7e0adc39cb4abfee666840fe086c6aea31837ea7 与精确96个旧seed456/789请求取消证据保留。
@@ -38,7 +38,7 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 
 1. 保留16格/442归档，继续原1298及其余32个分类/带隙/声子谱/生成的完整训练与后评，不重复提交原训练。
 2. 五类分子CPU全图/训练统计及插件、NequIP数值回归已验收；推进实际CUDA输入、每组初始化的100批容量/混合极端与物理门禁。
-3. 独立核验五类全量分子图；取得实际CUDA输入/配对100批容量/混合极端/物理门禁后，才全量拟合和99000测试及原1000cohort后评。
+3. 已提交1735/1737/1739/1741/1743五类实际CUDA全图/共同batch/混合容量/物理检查，各有afterany；核验实际结果及独立原包对照后，才全量拟合/99000测试及原1000cohort后评。
 4. 完成冻结8、高阶16、生成/plugin/native/来源/成本及论文交付；保留单seed解释边界。
 
 
@@ -48,7 +48,12 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 
 
 
-当前实现：分子CUDA全图/两初始化共同batch/额外混合极端100批及原物理检查入口已实现，68纯测试通过；1731/1732已通过真实CPU三组102-step诊断及原20回归，共306优化步、700测量结构、21归档；新增CUDA简写解析检查后69纯测试通过，将在新版本重验23例再排GPU。实际GPU与独立原包对照仍是正式启动前门禁。
+当前实现：分子CUDA全图/两初始化共同batch/额外混合极端100批及原物理检查入口已实现，69纯测试通过；1731/1732已通过真实CPU三组102-step诊断及原20回归，共306优化步、700测量结构、21归档；新增CUDA简写解析检查后69纯测试及新版本1733/1734同23例均通过，新增21归档。实际GPU与独立原包对照仍是正式启动前门禁。
+
+
+
+
+分子GPU队列：CGCNN1735/1736，ALIGNN1737/1738，MACE1739/1740，NequIP1741/1742，插件1743/1744。160604实际快照全部PENDING；请求身份与40归档已核验，不能计作CUDA执行或正式训练完成。源码固定9873681，原包对照仍独立门禁。
 
 # 变更记录
 
@@ -854,3 +859,7 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 - 2026-11-06T15:32:25+08:00: Completeoriginal1297fullscience/16thmain/442archives; allforcefield+dielectric cellsaccepted. MolecularCUDA/mixedcapacity sourceimplemented/68puretestspassed, nextactualSlurmCPU23 andGPUsubset checks; originalparitystillseparate soformalreadinessFalse.
 
 - 2026-11-06T15:51:48+08:00: CompletefirstactualCPU23mixeddiagnostic1731/1732; preserve21archives. NormalizeCUDAshorthand/device-index beforeGPUdispatch;69puretestspass, nextsame23onnewsourceand5actualGPUcapacity requests. Main16 unchanged.
+
+- 2026-11-06T16:03:32+08:00: EnterfiveactualCUDAfullgraph/pairedmixedcapacity/physics queue aftersame-sourceCPU23accepted. No formalreadinessclaim; originalmain1298 andoldCUDA1672 retained, no prioritychange.
+
+- 2026-11-06T16:27:24+08:00: Completeactualsame-source69/23CPUacceptance1733/1734andverifyfiveGPUcapacity+fiveafterany submissions/40archives. AllPENDINGPriority-Dependency at160604, noCUDAacceptanceclaimed. Main16/48 unchanged,1298spectrumrunning; nextactualGPUresultsandindependentoriginalparity.
