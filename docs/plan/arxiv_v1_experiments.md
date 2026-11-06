@@ -1714,3 +1714,25 @@ MACE介电微调1294已完成37轮/best7，须完整后评和独立验收后才�
 证据位于忽略目录`results/paper-completed-20261105/seed-123--dielectric--mace--pretrained/`。
 所有48个唯一训练请求保留，剩余35格及冻结/高阶/生成/分子/plugin和成本来源工作仍需各自完整验收。
 这里仍是单seed结果，不作训练随机性稳健结论或普遍预训练收益判断；1295从头训练结果尚未验收。
+
+
+### 12.38 完整非周期与目录插件补充定义实现（待实际全源CPU验收）
+
+新增[分子补充模块](../../src/universal_gnn/benchmarks/molecular/README.md)及
+`scripts/prepare_molecular_experiment_definitions.py`。9组均为seed123，独立于主表48格及已验收的8组MLearn力场：
+官方CGCNN/ALIGNN/MACE/NequIP×整骨干微调/scratch共8组，加现有目录KNN+GCN插件scratch1组。
+插件没有假定预训练权重，显式KNNk2、width16/两层、live距离权重，记录3个Python文件LF规范SHA。
+官方两版继承原947力场任务头、E/F绑定、优化器、float32、初始batch4、300轮/patience30及骨干训练设置。
+CGCNN/ALIGNN显式使用molecular_radius6Å，MACE/NequIP保留原非周期预处理，CGCNN保留力场eval模式约束。
+
+完整源门禁检查已冻结转换audit/原始split文件SHA、作者4份原档、所有100000源序记录及有限E/F标签、
+几何group/非周期标记/原子次序/原frame索引，并由作者CSV重建900/100/99000及原1000测试cohort。
+配置使用规范化manifest SHA，另保留转换的原始split文件SHA，两者不混淆，不重复换算单位、过滤零力或监督占位晶胞应力。
+原主表数据/定义/已提交作业均不改写。逐模型CUDA、全原生图、仅900训练统计、成对100批与混合极端容量、
+原模型初始化/原始预测对照、有限差分/混合梯度、完整训练/99000后评和独立核验仍是后续必需门禁。
+
+本地44项纯stdlib检查全部通过，含11项新测试方法及原数据/划分/144矩阵/单seed回归；
+测试仅使用3条合成frame或mock源检查来实际导出9份配置，不伪称全量数据或真实Slurm运行。
+5项AST、CLI帮助、文档链接/格式、scope及追加历史检查通过，无Torch/NumPy/本地数值执行。
+实际全100000记录CPU门禁须在提交并同步后的干净Git源上通过，当前仅实现/本地测试完成，未新增正式训练或结果数。
+最新原1295已完成55轮，1296 ALIGNN介电微调运行；原1295完整后评仍需独立验收，主表保持13/48。
