@@ -32,6 +32,9 @@
 
 当前修复单元：旧周期NequIP scratch checkpoint因整个adapter源文件指纹变化被当前loader拒绝；只增加精确源版本/元数据相等的checkpoint恢复兼容与运行时全周期guard，fresh训练/未知差异仍拒绝。原1869失败保留，其余七计时和1313不动，主23/48不变。
 
+
+恢复检查当前状态：1885的单项跨Python AST哈希fixture错误已定位，生产逻辑未证伪但29数值尚未执行；只修测试同解释器AST比较，保留精确两份源SHA和原严格门禁。
+
 # 变更记录
 
 - 2026-11-04 01:40 +08:00：进入剩余CUDA资源续传阶段。830/832实际成功，49common已安装；831失败和833/834依赖阻塞已核查并保留日志，精确取消两个PENDING作业。旧代理终止且1080空闲；监督器静态编译/plan通过后启动，仅管理自己创建的代理和CUDA下载，不自动宣称GPU可用。下一步续传、Slurm离线安装及真实GPU回归，同时推进数据/架构缺口。
@@ -916,3 +919,5 @@
 - 2026-11-07T00:41:54+08:00：新实验单元：补齐计划的单独推理成本，现有CPU后评墙钟混合原标签复算/物理/全源推理，不能拆猜。先对已独立验收八正式介电版分别在CPU Slurm原provider环境/单线程、原B4/f32/4999完整源执行一次标准complete_inference/run_inference。计时范围是端到端推理调用，包括runtime导入/模型加载/构图/前向/序列化写出，不含事前输入SHA与事后验证；不是纯kernel耗时、不宣称cold-cache/独占整机或跨seed统计。记录实际线程/CPU affinity/环境版本/RSS/完整样本数/输出字节及SHA；不将final bytes当磁盘峰值。每模型/初始化CPU1/8G2h加1G2min afterany，共16请求；另CPU1/2G10min独立禁模型验证和1G2min记录器，共18 CPU、零GPU/新训练。新输出必须完整4999有序ID/44991有限分量/完成marker、原checkpoint/config/source/split SHA，并和原已验收全源预测逐条按原1e-12对照。任何差异/未完整/错源/未知提交或已有输出均拒绝，不降低阈值，不改原23/48/862科学归档、8完整分组或现有队列。 下一步构建可审阅18CPU请求，原1313继续运行。
 
 - 2026-11-07T01:04:19+08:00：1869 NequIP介电scratch推理计时实际FAILED、1870记录器成功保留：旧邻居统计adapter_source_sha256=ad4518cabfc7e01e4204c22538fcfe8f85312ad4cec6c55eca5f3294d861363a，当前NequIP文件5eb20819c711846f0df036f4414bcb92472b5573ac835a7567b823653c2b9a17；其余artifact/package/blueprint/provider0.14.0/ASE3.27.0/Torch2.7.1+cu128均未变。native_graph_provenance绑定整个类文件，新增非周期edge shift修复与dtype处理改变该hash；完全周期native_input只有恒等helper包裹，原20项真实NequIP CPU回归已证明all-PBC返回同一tensor与原输入逐项相同。这不影响原源27的已验收科学结果，但当前公开load_checkpoint不能恢复已训练周期scratch，需修复。 实现单元：新增official/checkpoint_graph.py（纯元数据ContextVar恢复上下文、唯一已知old/new源hash对及其他全部native字段精确相等的兼容判定、全周期batch运行时guard）；只有engine.load_checkpoint构造时开启，fresh原统计校验仍严格；base.validate_native_neighbor_graph仅在精确已知恢复迁移时安装guard和显式报告，所有实际native_input必须非空bool形状[graphs,3]且全True，分子/部分PBC立即拒绝，不修改统计/权重/图/归一化。NequIP源文件本身不改，避免改变已验证的新hash；所有未知source/artifact/provider/ASE/Torch差异均拒绝。engine/inference仅把迁移说明写metadata，不改数值或配置；原训练/resume统计路径不放宽。本地纯测试覆盖无恢复上下文拒绝、精确映射/所有metadata变更拒绝、嵌套/异常/thread上下文隔离、guard非周期/部分/空/错形状拒绝、true-PBC输入原对象/单次原方法调用与deepcopy绑定，不导入Torch/NumPy。提交后固定源CPU Slurm执行同纯测试、原NequIP非周期/dtype/几何与checkpoint验证回归、真实1291旧best strict state恢复及PBC/非PBC guard检查；最终重做同一固定修复源码的八版完整4999推理计时和原全源预测1e-12复核，保留1869失败与其他原计时，不重训。只有精确验证owned PENDING1883/1884并审阅替换计划后处理死依赖，原七运行计时和全部主队列不动；不降低任何验收标准。
+
+- 2026-11-07T01:23:53+08:00：实际1885 FAILED、1886记录器COMPLETED0:0：17纯检查中仅新AST证明失败，16通过；尚未进入29数值，不计真实模型恢复。Python3.10 ast.dump产生24045d...，本地3.12含FunctionDef.type_params导致3243b1...，硬编码AST序列化SHA并非跨版本源等价断言。仅修该测试：先按完整ad4518...SHA核验Git27旧源，再在相同解释器分别解析旧源和已按恒等helper归一的新源，直接比较完整AST；仍先核验新源5eb208...，原函数/源边界不放宽。生产恢复逻辑/模型/数值/统计/输入guard不改。同17本地纯检查须全过后提交，固定新源重做17纯+29CPU实际集成；1885失败与全部原计时/主队列保留，不盲目重提。

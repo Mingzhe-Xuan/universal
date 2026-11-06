@@ -103,8 +103,11 @@ class CheckpointGraphRestoreTests(unittest.TestCase):
                 if isinstance(node.func,ast.Name) and node.func.id=='_respect_nonperiodic_axes':return node.args[0]
                 return node
         normalized=PeriodicIdentity().visit(method)
-        self.assertEqual(hashlib.sha256(ast.dump(normalized,include_attributes=False).encode()).hexdigest(),
-            '3243b153d4f33804faf2d6b5e9c0515a5a70dd26908e942151f9dc7df3ebf1f4')
+        legacy=subprocess.check_output(['git','show','27e2339:src/universal_gnn/backbones/official/nequip.py'])
+        self.assertEqual(hashlib.sha256(legacy).hexdigest(),LEGACY_NEQUIP_SOURCE)
+        legacy_tree=ast.parse(legacy.decode())
+        previous=next(n for n in ast.walk(legacy_tree) if isinstance(n,ast.FunctionDef) and n.name=='native_input')
+        self.assertEqual(ast.dump(normalized,include_attributes=False),ast.dump(previous,include_attributes=False))
 
     def test_new_process_import_does_not_load_torch_or_numpy(self):
         code="import sys;sys.path.insert(0,'src');import universal_gnn.backbones.official.checkpoint_graph;assert not {'torch','numpy','ase'}&sys.modules.keys()"
