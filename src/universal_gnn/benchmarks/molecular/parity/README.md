@@ -64,3 +64,15 @@ actual-CUDA, paired-capacity/physics, formal launch and full heldout quality gat
 still apply. The original fixed-source CUDA requests are not changed by this
 module. See the [parent module](../README.md) and
 [experiment plan](../../../../../docs/plan/arxiv_v1_experiments.md).
+
+
+All nine declared modes have now passed actual CPU comparisons and independent
+summary/ID/state/config/source verification: CGCNN1777, ALIGNN1779 and MACE1781
+on9028d59; direct plugin1791 and NequIP1793 on003e15e. Each has a retained
+successful afterany parent terminal. All8100 comparison rows match their reviewed
+source-ordered training graph IDs.183 supplementary archive hashes were checked.
+NequIP, CGCNN, ALIGNN and the plugin have zero maximum feature/head discrepancies;
+MACE's maximum force discrepancy is5.960464477539063e-8, with zero feature/energy
+discrepancies. Original1783/1785 failures and1787 dtype diagnosis remain separate.
+CPU reference acceptance still does not certify actual CUDA capacity/physics,
+formal900-frame fitting,99000-frame test quality or the original author cohort.

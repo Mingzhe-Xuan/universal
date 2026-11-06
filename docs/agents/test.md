@@ -1975,3 +1975,19 @@
 - 2026-11-06T20:35:16+08:00：独立归档验收CGCNN1777、ALIGNN1779、MACE1781两模式共6/9初始化×900=5400训练结构对照，111新补充归档SHA通过；原图扫描900有序ID与源码/终态/配置/状态哈希匹配。主表19/48/622科学归档保持。修正1783插件绝对缓存路径相等假设及1785原头全F32假设：目录迁移只豁免精确已登记path，其余SHA/files/factory不变；NequIP实际1787诊断两侧参数F32/节点F32、能量F64、力F32。只升比较操作数到double保留原输出和值SHA，严格既有容差不变；独立ASE完全相同pair先核验唯一性/集合再对齐native顺序并精确逐字段输入，消除F32求和次序差异。12纯对抗测试/新进程无Torch-NumPy/CLI help/AST/源码边界检查通过；未改原模型、生产构图/训练/读出/容量或原GPU作业。旧失败保留，新源码仅重验NequIP与插件完整900模式，不宣称全分子就绪。
 
 - 2026-11-06T20:38:32+08:00：本次检查器修正提交前通过12纯测试（零失败/跳过）、无Torch/NumPy导入及CLI help、最终AST、源码边界、Markdown/新增链接/追加历史和git diff --check。已独立验收三组六模式5400帧/111补充SHA；旧1783/1785失败及1787诊断保留。逐帧Calculator缓存重置只保证原forward捕获，参数/缓冲区不变仍由900对照检查。NequIP/插件修正后的实际900数值必须提交同步后Slurm验证，当前不宣称成功。
+
+- 2026-11-06T20:42:38+08:00：原1301 NequIP谱scratch已完整162/best132、11394/1424/1426、200通道、seed123/f32/B32/300cap-pat30结束，原1445保留COMPLETED0:0终态，bestd3348d96。旧1339/1341仍owned PENDING；进入源27e2339只读完整上下文预检和审阅2h后评/1h独立验证/两afterany计划后才资源替换。全1426测试/285200标签及14244源/2848800预测不缩减，谱通道无FD物理适用项，大结果Slurm无损归档单独传输，保留19格/622 SHA。
+
+- 2026-11-06T20:43:23+08:00：长作业版本隔离计划：根仓库仍每次连接先校验/pull已推送提交；对该已确认本地Git remote仅做git clone --shared到新runs/source-checkouts/COMMIT，不用编辑器/patch改服务器源码。确认data/models/runs均不在Git受管树后只链接共享忽略数据/模型/结果，cache受管源必须HEAD固定且git status clean，已有目录不覆盖。后续Slurm显式cd缓存/PYTHONPATH缓存src并验证实际包路径，保护长训练不受根仓库后续pull影响。现阶段仅Git/路径轻量检查，GPU导入/数值仍须Slurm。
+
+- 2026-11-06T20:46:04+08:00: Exact archived successful preflight/parent terminal and full original1301 context reviewed; missing live handles are not inferred or rerun. Fullpost2h/verify1h/twoafterany planSHA4980ec3e6add68c6a0a71c141018806f9eddcb400b7c8d46e621510b760928d3 matchesallarchivedrequestbytes, exactownedPENDING1339/1341 andno scope cuts.
+
+- 2026-11-06T20:50:09+08:00: OrdinarySSH firstSHAverify/pullpublished then submitCPU1/4G20min stdlibSlurm lossless fullspectrumartifactarchive afterok:1801:1802 andCPU1/1G2minafterany; no model execution. Requirefullpost/independentpassed1426tests/14244source/2848800finiteoutputs andboundreports beforegzipentirerawheldout+allsource streams, deterministicmtime0 andfullSHAroundtrip; no pruning/rounding/labelorweightchange, no newtraining. Sourcepinned27e2339, uniqueclaim/intent/RPC handlesunknownsubmitwithoutretry. Largegzippedoutputs transferredseparatelybySCP/SFTP onlyafterpassedmanifest andSHAs, neverGit. Main19untilfullindependentacceptance.
+
+- 2026-11-06T20:51:53+08:00：分子原网络/直接插件CPU兼容对照已完整独立验收9/9初始化、8100帧调用及183补充归档SHA。CGCNN1777/1778、ALIGNN1779/1780、MACE1781/1782沿用9028d59六模式成功证据；003e15e的1789/1790纯12通过，插件1791/1792和NequIP1793/1794全部实际COMPLETED0:0，仅重验两个明确失败组。每模式完整900有序原训练ID与已审阅训练图行、来源/配置/原网络状态和10执行源码Git blob绑定。NequIP特征/原能量/力误差全部0，插件特征0；CGCNN/ALIGNN节点及原头0，MACE节点/能量0、力最大5.9604645e-8。183份归档和旧3组索引备份保留，原1783/1785失败及1787诊断不改。仅CPU数值兼容，formal_training_ready=false/CUDA容量和完整拟合/99000质量未通过，主表仍19/48/622；原1301完整谱后评1799/1801及1800/1802四阶段已实际成功，待1803原始输出归档及本地SHA后增加主表。
+
+- 2026-11-06T21:00:53+08:00：原1301 NequIP谱scratch完成第20格独立验收：162/best132，全1426测试/14244源200通道及四科学阶段/15源绑定通过，1803无损归档与全原始下载字节SHA通过。新增60主科学归档、总682，原622及19格索引保持。分子9模式8100帧/183补充归档单列，CPU不代替CUDA容量/拟合质量。下一步原1304与剩余28格、五类CUDA及全补充范围继续。
+
+- 2026-11-06T21:00:56+08:00：提交前全部检查通过：20/48及全部682科学SHA、原19格索引、9分子初始化/8100帧与183补充SHA、formal-ready/CUDA/质量边界、20已验收/28未完成勾选、scope SHA保持、追加历史、UTF8/小文件/围栏/新增链接、生产与数值代码无改动、git diff --check。实际9/12纯检查及对应900数值已由各Slurm成功父终态和源码绑定验收，此后仅更新文档，无本地Torch/NumPy或重跑模型。
+
+- 2026-11-06T21:02:58+08:00：最终仅文档/队列检查：865归档SHA（682主+183分子）、20/48及9/9兼容/8100帧、scope/勾选/追加历史已通过；之后无数值源码修改。21:00:08队列40元数据SHA及十个原请求身份/CPU-内存-时长/987干净源通过，原1304运行35:57、五组CUDA仍排队。无新模型运行、本地Torch/NumPy或正式就绪声明。
