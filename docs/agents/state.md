@@ -37,6 +37,12 @@ Torch2.7.1+cu128/CUDA12.8及三provider环境不变，20GiB磁盘保留门禁；
 4. 继续冻结/高阶/生成/plugin及成本/来源验收，保持seed123和完整300epoch/patience30；仅实际OOM可降低成对共同batch。
 5. 结果按单seed报告，不作跨seed均值/方差或随机性稳健结论。完整出处和历史见实验计划与下方append-only记录。
 
+
+Current implementation unit: Enter campaign matrix CLI single-seed closure. Actualexisting48scope/excluded96 remainscorrect, but scripts/prepare_arxiv_matrix.py called the historical builder defaultseeds123/456/789. Change only thiscampaign CLI to explicitseeds=(123,), preserve reusablebuilder/history144 and alloriginal pinnedworkers. README show explicit current48/APIseeds123 andhistoricaldefault. Testplan: realCLI withmocked full-inputinspection only (no actualbulkdata/no fakeSlurm science), actual48config exports/all4x6x2/only123 andfixedgenerationRNG456; freshoutput refusal, actual inspection target, sourceSHA metadata andnoSlurmentry refusal; historical144/fullcase gates remainunchanged withexistingpurestdlib regressions. AST/bash/docs/history/gitdiffchecks beforecommit. ThreeconsecutiveVlab observationclosures reviewed existinglessons; reports/jobs notdeclaredfailed, no duplicate submissions or blindproxyrestart. FullMACE1678-1681 livecompletionunknownuntilnextsuccessfulread.
+
+
+Latest campaign CLI: explicitseed123 export fix passed14purestdlib andstaticchecks; historicalbuilder and947matrix unchanged. FourVlab observationclosures mean current1678-1681/1672-1673states unknown afterlastconfirmed11:58/11:51. Localunit progresses; no duplicatejobs or scientificfailure claims.
+
 # 变更记录
 
 - 2026-11-04 01:40 +08:00：进入剩余CUDA资源续传阶段。830/832实际成功，49common已安装；831失败和833/834依赖阻塞已核查并保留日志，精确取消两个PENDING作业。旧代理终止且1080空闲；监督器静态编译/plan通过后启动，仅管理自己创建的代理和CUDA下载，不自动宣称GPU可用。下一步续传、Slurm离线安装及真实GPU回归，同时推进数据/架构缺口。
@@ -793,3 +799,7 @@ Torch2.7.1+cu128/CUDA12.8及三provider环境不变，20GiB磁盘保留门禁；
 - 2026-11-06T11:53:12+08:00: Complete originalmolecularCPUcontrol1670 and separate metadataacceptance; progress actual219tests/full900graphs/twoprovider40diagnosticsteps. CUDA1672/1673pendingnormalqueue; MACE1294full37/best7completedwithretained1430train0:0, main12/48 untilfullpost andindependent acceptance. Continue finite fullpostpreflight1674/1675 withunchangedsource27e2339, old1315/1317untoucheduntilreviewedplanpasses.
 
 - 2026-11-06T11:59:52+08:00: Complete molecularCPU acceptance checkpoint and exactMACE1294fullpost resource deployment. Refresh currentstatus/plan snapshot only; preserve priorhistory verbatim. Main12/48 until1678-1681 complete. Next originalfullpost acceptance and ownCUDA, allsingle-seedsupplements retained.
+
+- 2026-11-06T12:08:22+08:00: Enter campaignCLI explicitsingle-seed fix discovered fromactual source. Previousgoalturnprogress:CPU1670independentacceptance, CUDA1672/1673queued andfullMACE1678-1681released. CurrentVlab3observationclosures preserveoriginalhandles/science unknown; usefullocalCLI workcontinues, notblocked.
+
+- 2026-11-06T12:12:09+08:00: Complete campaignCLI explicitsingle-seed implementation and14passingtests. Oldmatrix/historicaldefault preserved; moduleREADME clarifies48campaign call. FourVlab observationclosures leavecurrentremote resultunknown, optionalmanual-connectivity question pending whilelocalwork proceeds. Next publishcheckedfix, recoverreadonlyconnection, acceptfulloriginalMACE/CUDAresults andprogressremainingfullsupplements.

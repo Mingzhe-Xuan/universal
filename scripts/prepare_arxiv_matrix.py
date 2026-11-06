@@ -23,7 +23,7 @@ def main():
 
     repository = Path(__file__).resolve().parents[1]
     inputs = registry.inspect_registry(repository)
-    matrix = recipes.build_matrix(inputs, epochs=args.epochs, learning_rate=args.learning_rate, patience=args.patience,
+    matrix = recipes.build_matrix(inputs, seeds=(123,), epochs=args.epochs, learning_rate=args.learning_rate, patience=args.patience,
                                   run_root=str(args.output.parent / "cases"))
     matrix["preparation_execution"] = dict(
         git_commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repository, text=True).strip(),

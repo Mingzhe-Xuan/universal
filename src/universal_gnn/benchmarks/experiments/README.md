@@ -14,8 +14,11 @@ IDs, validates released/frozen split counts, pins canonical manifest SHA values 
 four original model artifacts plus the NequIP author blueprint. Run this full-data operation on Slurm.
 It does not import Torch, fit labels, construct a GNN or certify runtime readiness.
 
-`recipes.build_matrix(registry)` returns 144 cases: four original backbones, six tasks, two whole-model
-initializations and seeds 123/456/789. Definitions retain the original graph/architecture, all training
+The campaign CLI `scripts/prepare_arxiv_matrix.py` explicitly uses seed123 and writes48 cases:
+four original backbones, six tasks and two whole-model initializations. The equivalent Python call
+is `recipes.build_matrix(registry, seeds=(123,))`. The reusable builder's historical omitted-`seeds`
+default remains123/456/789 for original144-matrix compatibility; use the explicit single-seed call
+for this campaign. Existing947 definitions are never overwritten. Definitions retain the original graph/architecture, all training
 records, float32/CUDA and full body/head training. Defaults are a declared baseline budget of up to
 300 epochs, learning rate 0.0003, patience 30, and task-dependent initial batches. Capacity results
 must replace those initial batches; paired modes use their common accepted batch. These defaults
