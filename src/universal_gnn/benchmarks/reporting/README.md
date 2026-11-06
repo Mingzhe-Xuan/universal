@@ -32,3 +32,11 @@ Slurm. Outputs are a new `summary.json` and `summary.md`; existing output is
 refused. Unsupported or incomplete accepted evidence fails instead of being
 silently dropped. Unaccepted generation and supplementary experiments remain
 uncompleted slots or separate evidence, never inferred results.
+
+
+Executed CPU controls: source `c2155e2`, Slurm1861/1862 both completed0:0;
+30 pure reporting/predictive-assessment tests with zero failures or skips, nine
+source Gitblobs and15 control artifacts verified. The accepted23-case snapshot
+contains48 rows/24 pair slots/11 complete pairs with891 input hashes and exact
+original metrics/costs. Its committed reporter source is bound explicitly; this
+software validation adds no scientific training result.

@@ -2053,3 +2053,9 @@
 - 2026-11-06T23:51:19+08:00：结果汇总单元已实现：reporting/evidence.py与runtime.py、独立README和summarize_arxiv_results.py，只读取独立验收索引/声明归档并核对全量SHA，保留48状态行、24pair槽、原指标/单位绑定、同seed原始差值、真实train+val+test+save墙钟/GPU allocated与reserved/RSS/CPU后评成本；未知纯推理或磁盘峰值为null。历史968的993/1002原标签/物理/全源证据通过显式附件绑定，未改原报告。原模型/数值/训练/分子/科学验证器未改，已接受但尚不支持的生成schema显式拒绝。 本地13新汇总检查与17原prediction_assessment共30项全过，零失败/错误/跳过，耗时12.217秒；另13项单独重验通过。首次直接python -S缺少PYTHONPATH导致模块导入失败，正确设置PYTHONPATH=src;tests后执行原测试且未改断言。实际22格元数据试导出覆盖48行/24pair/11完整pair，所有原802归档及4个历史附件输入绑定；临时导出source仍标uncommitted，不冒充发布结果。固定源码CPU Slurm同30检查与最终committed快照待执行。
 
 - 2026-11-06T23:53:00+08:00：提交前静态检查已通过：新增5 Python文件AST、原受管源码无改动、固定scope SHA、UTF8/小于10MiB/围栏/新增链接、agents日志及state历史追加保留、git diff --check。测试范围与上述30检查一致，不新增本地模型或数值运行。
+
+- 2026-11-06T23:56:35+08:00：长作业版本隔离计划：根仓库仍每次连接先校验/pull已推送提交；对该已确认本地Git remote仅做git clone --shared到新runs/source-checkouts/COMMIT，不用编辑器/patch改服务器源码。确认data/models/runs均不在Git受管树后只链接共享忽略数据/模型/结果，cache受管源必须HEAD固定且git status clean，已有目录不覆盖。后续Slurm显式cd缓存/PYTHONPATH缓存src并验证实际包路径，保护长训练不受根仓库后续pull影响。现阶段仅Git/路径轻量检查，GPU导入/数值仍须Slurm。
+
+- 2026-11-07T00:00:05+08:00：实际progress：1312 ALIGNN谱微调完整53/best23、四科学阶段COMPLETED0:0、1426原测试/14244源200通道/15源和1859归档/完整SFTP原压缩字节SHA通过，新增60归档，原802及22格索引保留，正式23/48、862主SHA。源c2155e2实际1861/1862同30纯检查全过、九源码/八reporter依赖及15控制归档核验；已发布committed的48行/24槽/11完整pair快照，891输入SHA及23格所有原指标/记录成本相等，未知值null。1313仍原队列运行；未重提训练、未缩数据/epoch/门禁/seed，全部补充和论文范围保持。1859父成功保留，1860自身最终exit不可用。
+
+- 2026-11-07T00:01:00+08:00：最终提交前检查通过：862主科学+183分子原网络CPU+70联合准备控制+52正式入口控制+412历史全矩阵巡检+15结果汇总控制，共1594归档SHA；另2个快照输出及891输入SHA和原索引字节副本保持。正式23/48、23勾选/25未完成、48状态/24pair/11完整pair、固定scope、UTF8/链接/围栏/小文件/追加历史及git diff --check通过。源c2155e2已实际1861/1862证明30纯检查全过，此后仅文档，无模型/数值/科学验证源码改动，不重复模型测试。
