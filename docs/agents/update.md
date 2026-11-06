@@ -1058,3 +1058,11 @@
 - 2026-11-06T21:00:53+08:00：原1301 NequIP谱scratch完成第20格独立验收：162/best132，全1426测试/14244源200通道及四科学阶段/15源绑定通过，1803无损归档与全原始下载字节SHA通过。新增60主科学归档、总682，原622及19格索引保持。分子9模式8100帧/183补充归档单列，CPU不代替CUDA容量/拟合质量。下一步原1304与剩余28格、五类CUDA及全补充范围继续。
 
 - 2026-11-06T21:02:58+08:00：最终仅文档/队列检查：865归档SHA（682主+183分子）、20/48及9/9兼容/8100帧、scope/勾选/追加历史已通过；之后无数值源码修改。21:00:08队列40元数据SHA及十个原请求身份/CPU-内存-时长/987干净源通过，原1304运行35:57、五组CUDA仍排队。无新模型运行、本地Torch/NumPy或正式就绪声明。
+
+- 2026-11-06T21:15:05+08:00：前一轮为实际进展：完成原1301第20格完整科学验收、682主归档与分子9/9模式8100帧CPU对照183补充归档，提交1c10c7d已同步。进入分子联合准备门禁单元：在molecular/readiness独立子模块及README中组合已审阅source/definition/config、实际CUDA完整100000图/900统计、原配对100+混合100容量/typed-OOM链、每模式原力/应力FD与几何检查、原CPU900对照、签名请求/保留成功终态/源码哈希及版本，导出完整resolved配置。只检查/导出准备证据，不新增GPU或训练请求，不把缺失CUDA当通过；正式运行时预算、调度与完整训练/99000质量仍需后续门禁。
+
+- 2026-11-06T21:17:49+08:00：原1304 MACE谱微调完整57/best27、11394/1424/1426、200通道、seed123/f32/B32/300cap-pat30结束；成功训练终态与bestcd78a5bc已保存。旧1342/1343仍owned PENDING，优先原完整科学后评：先源27e2339只读上下文预检、审阅2h/1h及两afterany计划，再仅替换未启动CPU资源；完整1426原标签和14244源200通道均不缩减，直接谱无FD门禁，大文件Slurm无损gzip后下载。使用注册universal-mace环境，主表20/48/682保持，分子联合门禁计划不取消，CUDA仍缺失时拒绝正式拟合。
+
+- 2026-11-06T21:25:46+08:00: OrdinarySSH firstSHAverify/pullpublished then submitCPU1/4G20min stdlibSlurm lossless fullspectrumartifactarchive afterok:1811:1812 andCPU1/1G2minafterany; no model execution. Requirefullpost/independentpassed1426tests/14244source/2848800finiteoutputs andboundreports beforegzipentirerawheldout+allsource streams, deterministicmtime0 andfullSHAroundtrip; no pruning/rounding/labelorweightchange, no newtraining. Sourcepinned27e2339, uniqueclaim/intent/RPC handlesunknownsubmitwithoutretry. Largegzippedoutputs transferredseparatelybySCP/SFTP onlyafterpassedmanifest andSHAs, neverGit. Main17untilfullindependentacceptance.
+
+- 2026-11-06T21:46:23+08:00：分子联合准备门禁已实现于molecular/readiness独立模块及README/CLI，验证原CUDA全100000图/900统计、原同质100+混合100与typed-OOM配对链、每初始化原力/应力FD及几何/混合梯度、900帧CPU原网络对照和精确请求/保留成功终态/source/version/config/SHA闭合，导出仅已核验resolved配置。passed仅为preparation_gate_passed；formal_training_ready固定false，正式预算/启动/900拟合/99000与作者cohort质量另计。新9项及相关47项、原预测评测17项合计73纯检查全部通过，零失败/跳过，CLI帮助/导入不加载Torch或NumPy，AST通过。正向联合门禁仍待实际CUDA报告，单元fixtures不算数值验收；下一步提交同步后CPU Slurm73及五原PENDING缺失证据拒绝检查，不加GPU/训练。

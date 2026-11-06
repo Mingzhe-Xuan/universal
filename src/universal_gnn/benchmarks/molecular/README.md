@@ -193,3 +193,8 @@ using independent nonperiodic inputs and original networks/calculators, or direc
 plugin calls. It verifies pre-readout features, original heads where present and
 unchanged state. Its implementation is not evidence of an executed comparison;
 actual accepted results and the CUDA/formal launch gates remain separate.
+
+The [joint preparation checker](readiness/README.md) binds both kinds of evidence
+to their retained successful Slurm parents and exports checked common-batch
+recipes. Its passed preparation result keeps `formal_training_ready=false`;
+formal runtime budgeting, launch, fitting and heldout quality remain separate.

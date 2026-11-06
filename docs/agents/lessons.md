@@ -380,3 +380,5 @@
 - 2026-11-06T20:03:09+08:00：原包数值对照应标明same-state已构造网络还是独立重新加载checkpoint/fresh构造；deepcopy原网络可以隔离输入与特征适配，但不能单独证明权重加载正确。NequIP安装源码确认NeighborListTransform的kwargs传入compute_neighborlist_，原API可用NL=ase选择已验证非周期邻居；保留同几何零image/相同pair集合，不能直接把有bug的默认matscipy结果作为非周期参考或放宽容差。CPU数值、CUDA容量、正式拟合与质量分别验收。
 
 - 2026-11-06T20:35:16+08:00：实际1787 NequIP诊断表明F32参数/几何/节点可配原包F64能量累加，原头dtype属于官方输出约定，不能强迫F32或把原数组下转再比较。数值对照保留原dtype/字节SHA，仅无损升比较运算精度且容差不变。独立邻居后端需先核验完全同一无重复pair集合，再对齐原输入顺序，避免把F32求和顺序误差当作适配误差。目录插件来源path会随不可变源码缓存移动；仅允许精确登记目录的迁移，source SHA/files/factory及其他元数据必须相同，不能整块忽略provenance。
+
+- 2026-11-06T21:46:23+08:00：联合准备门禁应分别保留CPU原网络数值对照、实际CUDA图/容量/物理与正式预算/拟合/质量的状态；相同模型名称或CPU passed不能推出CUDA可训练。闭合请求/receipt/report/source/config/version及数据有序ID、typed-OOM和完整工作负载证据后，仍应明确preparation_gate_passed与formal_training_ready的边界；没有实际正向CUDA证据前只记录纯检查/缺失证据拒绝，不声明正向就绪。新模块不修改原骨干/engine/worker或既有GPU请求。
