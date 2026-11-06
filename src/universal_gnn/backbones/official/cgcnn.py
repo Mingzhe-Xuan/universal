@@ -14,12 +14,16 @@ from universal_gnn.backbones.initialization import initialize_original
 
 class OfficialCGCNN(OfficialBackbone):
     def __init__(self, checkpoint=None, *, atom_init=None, preprocessing=None,
-                 context_dim=0, source=None, _artifact=None, initialization="pretrained"):
+                 context_dim=0, source=None, _artifact=None, initialization="pretrained",
+                 input_profile=None, input_cutoff=None):
         from cgcnn.model import CrystalGraphConvNet
         from cgcnn.data import AtomCustomJSONInitializer, GaussianDistance
 
         artifact = artifact_files("cgcnn", {"checkpoint": checkpoint, "atom_init": atom_init},
                                   artifact=_artifact, source=source)
+        from .molecular.profiles import configure_profile
+
+        profile = configure_profile("cgcnn", artifact, name=input_profile, cutoff=input_cutoff)
         saved = torch.load(io.BytesIO(artifact["files"]["checkpoint"]), map_location="cpu", weights_only=False)
         state = saved["state_dict"]
         arguments = saved.get("args", {})
@@ -43,9 +47,14 @@ class OfficialCGCNN(OfficialBackbone):
         settings = artifact.get("preprocessing", preprocessing or {})
         settings = {"radius": 8., "max_num_nbr": 12, "dmin": 0., "step": .2, **settings}
         artifact["preprocessing"] = settings
-        super().__init__(model, f"{atom_width}x0e", "invariant", settings["radius"], artifact,
+        topology_cutoff = profile["cutoff"] if profile["name"] == "molecular_radius" else settings["radius"]
+        super().__init__(model, f"{atom_width}x0e", "invariant", topology_cutoff, artifact,
                          context_dim=context_dim, version="txie-93/cgcnn", initialization=initialization)
+        self.input_profile = profile
         self.load_report.update(initialization_report)
+        if profile["name"] == "molecular_radius":
+            self.load_report["input_profile"] = dict(profile)
+            self.load_report["input_profile_implementation"] = artifact["input_profile_implementation"]
         self.unused_parameter_prefixes = ("model.conv_to_fc", "model.fcs", "model.fc_out")
         self.forcefield_requires_eval_training = True
         self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
@@ -60,6 +69,10 @@ class OfficialCGCNN(OfficialBackbone):
             self.atom_initializer = AtomCustomJSONInitializer(str(path))
 
     def native_input(self, batch):
+        if self.input_profile["name"] == "molecular_radius":
+            from .molecular.cgcnn import molecular_input
+
+            return molecular_input(self, batch)
         from pymatgen.core import Structure as PymatgenStructure
 
         if not bool(batch.pbc.all()):
@@ -101,15 +114,29 @@ class OfficialCGCNN(OfficialBackbone):
             mappings.append(torch.arange(start, end, device=device))
         return torch.cat(atom_features), torch.cat(edge_features), torch.cat(neighbor_indices), mappings
 
+    def native_graph_provenance(self):
+        from .molecular.profiles import graph_provenance
+
+        return graph_provenance(self, super().native_graph_provenance())
+
+    def _model_forward(self, batch):
+        inputs = self.native_input(batch)
+        if self.input_profile["name"] == "molecular_radius":
+            from .molecular.cgcnn import valid_neighbor_messages
+
+            with valid_neighbor_messages(self.model, inputs):
+                return self.model(*inputs)
+        return self.model(*inputs)
+
     def native_forward(self, batch):
         captured = []
         handle = self.model.convs[-1].register_forward_hook(lambda module, inputs, output: captured.append(output))
         try:
-            prediction = self.model(*self.native_input(batch))
+            prediction = self._model_forward(batch)
         finally:
             handle.remove()
         return prediction, captured[0]
 
     def encode(self, batch, context=None):
-        nodes = capture_features(lambda: self.model(*self.native_input(batch)), self.model.convs[-1], lambda value: value)
+        nodes = capture_features(lambda: self._model_forward(batch), self.model.convs[-1], lambda value: value)
         return self.output(nodes, batch, context)

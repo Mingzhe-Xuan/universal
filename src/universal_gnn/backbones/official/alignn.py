@@ -13,7 +13,8 @@ from universal_gnn.backbones.initialization import initialize_original
 
 
 class OfficialALIGNN(OfficialBackbone):
-    def __init__(self, checkpoint=None, *, context_dim=0, source=None, _artifact=None, initialization="pretrained"):
+    def __init__(self, checkpoint=None, *, context_dim=0, source=None, _artifact=None, initialization="pretrained",
+                 input_profile=None, input_cutoff=None):
         if _artifact is not None:
             artifact = artifact_files("alignn", {}, artifact=_artifact)
         elif checkpoint is not None and Path(checkpoint).is_dir():
@@ -21,6 +22,9 @@ class OfficialALIGNN(OfficialBackbone):
                                       source=source)
         else:
             artifact = artifact_files("alignn", {"archive": checkpoint}, source=source)
+        from .molecular.profiles import configure_profile
+
+        profile = configure_profile("alignn", artifact, name=input_profile, cutoff=input_cutoff)
         if "archive" in artifact["files"]:
             with zipfile.ZipFile(io.BytesIO(artifact["files"]["archive"])) as archive:
                 def read(name):
@@ -52,9 +56,16 @@ class OfficialALIGNN(OfficialBackbone):
         initialization_report = initialize_original(model, state, mode=initialization)
         if configuration.get("neighbor_strategy", "pure_torch") != "pure_torch":
             raise ValueError("This ALIGNN provider preserves the official pure_torch graph strategy")
-        super().__init__(model, f"{settings['hidden_features']}x0e", "invariant", configuration["cutoff"], artifact,
+        if profile["name"] == "molecular_radius" and configuration.get("use_lattice_prop", False):
+            raise ValueError("Molecular input cannot invent original ALIGNN lattice-property features")
+        topology_cutoff = profile["cutoff"] if profile["name"] == "molecular_radius" else configuration["cutoff"]
+        super().__init__(model, f"{settings['hidden_features']}x0e", "invariant", topology_cutoff, artifact,
                          context_dim=context_dim, version=version("alignn"), initialization=initialization)
+        self.input_profile = profile
         self.load_report.update(initialization_report)
+        if profile["name"] == "molecular_radius":
+            self.load_report["input_profile"] = dict(profile)
+            self.load_report["input_profile_implementation"] = artifact["input_profile_implementation"]
         self.configuration = configuration
         self.gradient_capabilities = {"positions": True, "strain": True, "mixed": True}
         self.unused_parameter_prefixes = ("model.fc", "model.fc_atomwise", "model.fc_additional_output")
@@ -62,6 +73,10 @@ class OfficialALIGNN(OfficialBackbone):
                              f"alignn_layers.{len(model.alignn_layers) - 1}" if len(model.alignn_layers) else "atom_embedding")
 
     def native_input(self, batch):
+        if self.input_profile["name"] == "molecular_radius":
+            from .molecular.alignn import molecular_input
+
+            return molecular_input(self, batch)
         from ase.data import chemical_symbols
         from jarvis.core.atoms import Atoms
         from alignn.torch_graph_builder import build_pure_torch_graph, batch_torch_graph_pairs
@@ -84,7 +99,15 @@ class OfficialALIGNN(OfficialBackbone):
         graph, line_graph = batch_torch_graph_pairs(pairs)
         return graph, line_graph, batch.cell
 
+    def native_graph_provenance(self):
+        from .molecular.profiles import graph_provenance
+
+        return graph_provenance(self, super().native_graph_provenance())
+
     def native_forward(self, batch):
+        if (self.input_profile["name"] == "molecular_radius" and self.model.config.calculate_gradient
+                and self.model.config.stresswise_weight != 0):
+            raise ValueError("Molecular input has no bulk volume for the native periodic stress head; use reset")
         captured = []
         target = self.model.get_submodule(self.feature_path)
         handle = target.register_forward_hook(lambda module, inputs, output: captured.append(

@@ -16,6 +16,22 @@ MACE/NequIP需准备完整训练分区的原生邻居统计，
 原始artifact可作为架构蓝图，但scratch不得复制学到的参数或BN/目标拟合统计。
 
 本文件是 GNN、分子/晶体图、config、dataset 和 checkpoint 的统一规范。
+
+### 官方CGCNN/ALIGNN的显式非周期输入profile
+
+`backbone.input_profile: molecular_radius`及可选`backbone.input_cutoff`（默认6.0Å）
+选择全邻居非周期输入；仅接受逐轴PBC均为false，不枚举镜像或隐含截到12邻居。
+不设置该字段仍使用原官方周期预处理，不改变旧checkpoint的默认解释。
+原元素表、Gaussian/角度基底、模型类和参数/缓冲区路径保留；CGCNN的padding必须以真实邻居mask处理，
+ALIGNN仍需要原子图和line graph。profile不是替换backbone架构或重新定义原任务头。
+
+分子checkpoint的`official_backbone`额外保存`input_profile`（version/name/cutoff/all_neighbors/pbc）
+及`input_profile_implementation`（version/source_line_endings/source_sha256）。源码SHA将CRLF归一为LF，
+绑定五份相关adapter源文件；省略profile时不添加这些字段。配置或适配器实现与已存profile不符时显式拒绝，
+需要采用另行声明的新任务参数迁移，不将其解释为严格续训。
+原始权重来源/覆盖率与新图来源分别记录。非周期占位晶胞不能作为物理体积解释或据此报告应力精度。
+接口和数值验收边界见[分子输入模块](../src/universal_gnn/backbones/official/molecular/README.md)；
+实现与元数据测试不替代CPU/CUDA实际求导或完整数据门禁。
 使用命令见 [usage](plan/usage.md)，最小可执行扩展见
 [custom_knn_gcn](../examples/custom_knn_gcn/README.md)。规范与实现对应，未支持的能力不通过字段名暗示。
 

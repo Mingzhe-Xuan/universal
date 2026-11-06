@@ -182,8 +182,11 @@ class RMD17PreparationTests(unittest.TestCase):
                                    capture_output=True, text=True, env=environment)
         self.assertEqual(completed.returncode, 2)
         self.assertIn("requires Slurm", completed.stderr)
-        self.assertNotIn("numpy", sys.modules)
-        self.assertNotIn("torch", sys.modules)
+        environment["PYTHONPATH"] = str(script.parents[1] / "src")
+        code = ("import sys; from universal_gnn.data.preparation.rmd17 import prepare_rmd17; "
+                "from universal_gnn.data.preparation.rmd17.source import read_arrays; "
+                "assert not {'numpy','torch'} & sys.modules.keys()")
+        subprocess.run([sys.executable, "-S", "-c", code], check=True, env=environment, capture_output=True)
 
     def test_full_api_failure_report_and_fresh_output_are_fail_closed(self):
         with tempfile.TemporaryDirectory() as temporary:

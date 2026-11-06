@@ -1592,3 +1592,27 @@ CPU1664/1665完成全部48项测试，零失败、错误、跳过，包含原Num
 此项完成的是完整非周期数据转换及标准加载，不是分子模型结果。下一步继续官方CGCNN/ALIGNN显式非周期输入、
 原状态/梯度/几何/变长与空邻居数值验收，再进入分子与自定义插件实验；MACE/NequIP也需对应完整输入与容量门禁。
 1294 MACE介电微调最后观察运行至12轮。主表12/48，其他36格及原冻结/高阶/成本/来源范围继续。
+
+### 12.32 原CGCNN/ALIGNN非周期输入profile实现与待验收边界
+
+新增[分子输入模块](../../src/universal_gnn/backbones/official/molecular/README.md)，配置和checkpoint规范同步到
+[统一标准](../standards.md)。显式选择 `backbone.input_profile: molecular_radius`，`input_cutoff`默认6Å；
+不设置则继续原周期路径。原模型构造器、所有参数/缓冲区键和特征宽度保留，原周期native_input的旧AST主体不变。
+新拓扑不使用占位晶胞，全邻居、无镜像/隐含12邻居截断；CGCNN保留原元素表和Gaussian基底，
+通过局部valid-mask上下文使padding不参与边BN/消息；空边统计及模式/钩子在异常和正常退出时恢复。
+原节点BN及CGCNN力场的backbone_eval要求保留。ALIGNN采用原TorchGraph/line graph和原角度/三体计算，
+拒绝捏造晶格特征或原头所需体积；原三体阈值保留。此输入适配不新增可训练层。
+
+`official_backbone`可选保存version1 profile及五份输入适配源码SHA，源码按LF归一以支持跨平台代码重建；
+默认旧profile不添加字段，显式变更已保存的profile或实现时拒绝。图provenance同步保存这两项身份。
+分子E/F和局部应变仍可求导，但占位体积下的应力不作物理精度结论。
+
+本地9项新profile/持久化/篡改/无数值包控制及原初始化、seed、数据/划分回归共38项，零失败/错误/跳过。
+9份Python AST、README/标准链接、完整历史和原周期方法AST主体检查通过。
+新增真实原包测试覆盖两初始化、float32/64、ASE与原模块对照、CGCNN packed有效边BN、
+空邻居/变长batch/>12邻居、padding零值/梯度、力有限差分/混合梯度/坐标变换及自包含checkpoint。
+周期参考/原参数RNG检查单独保留，CPU/CUDA及完整数据分别验收；尚不据本地控制宣称已通过原模型数值或已可开始分子正式训练。
+
+后续完整分子门禁还需原训练分区完整原图扫描与两模式共同batch实测。CGCNN稠密batch按最大degree分配，
+需增加混合极端原子数/degree组合容量检查；旧scanner的padded_neighbor_slots是计算槽位，不是有效边消息数，
+新门禁应显式绑定profile并区分两者。原主表48格、已验收12格及运行1294均固定旧源码，不被本次输入扩展改写。

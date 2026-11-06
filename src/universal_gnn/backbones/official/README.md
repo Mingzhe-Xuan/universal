@@ -1,5 +1,12 @@
 # Official pretrained backbones
 
+CGCNN and ALIGNN offer an explicit `backbone.input_profile: molecular_radius`,
+with `input_cutoff: 6.0` by default. Original learned modules and source artifacts
+remain, while the input uses nonperiodic all-neighbor topology. Omitting it
+retains original periodic preprocessing. See the
+[molecular input/checkpoint contract](molecular/README.md); CPU/CUDA and full-data
+acceptance are separate from the original periodic checkpoint checks below.
+
 ## Backbone initialization
 
 The `backbone.initialization: pretrained|scratch` implementation separates
@@ -42,9 +49,10 @@ Load reports distinguish zero original-state coverage from strict pretrained loa
 This module is the default route for the six canonical model names. Providers are not declared
 verified until published-checkpoint and ten-real-structure Slurm evidence has been recorded.
 
-Providers load the original architecture and all its parameters and buffers, and call the original
-forward. No normalization, element encoding, interaction block, cutoff envelope or graph rule is
-replaced to fit UGNN. Node features are exposed before native pooling/readout. Optional conditioning
+With the default input profile, providers load the original architecture and all its parameters
+and buffers, and call the original forward. No normalization, element encoding, interaction block,
+cutoff envelope or graph rule is replaced. The optional molecular profile above explicitly changes
+input topology and masks padding while preserving learned modules. Node features are exposed before native pooling/readout. Optional conditioning
 is appended at the output adapter, outside the original backbone. Feature extraction retains the
 input autograd graph, including when parameter training is disabled.
 
