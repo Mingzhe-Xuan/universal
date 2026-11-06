@@ -21,6 +21,12 @@ CGCNN/ALIGNN介电仍为fixed_frame_components，不宣称O3；MACE/NequIP适用
 3. 继续冻结8、高阶16、生成、插件/native/来源/成本与论文全部交付，不缩减scope或补其他训练seed。
 4. 本地提交push后服务器git pull；原固定缓存不改，模型/数值/明显计算全部Slurm，保持20GiB磁盘门槛。
 
+
+当前阶段：核对原1307与队列，并补分子正式预算/受管理launch入口；前轮为实际progress。21/48、742主归档、9分子CPU模式/183补充SHA及70准备控制保持，真实CUDA与正式拟合未完成，不缩减完整目标。
+
+
+分子正式入口已过本地148纯检查，等待固定源码CPU Slurm及真实联合CUDA准备，未提交分子GPU。原1307谱scratch完整81/best51及1443成功终态已保存，完整后评中；原字节归档未完成前仍21/48。
+
 # 变更记录
 
 - 2026-11-04 01:40 +08:00：进入剩余CUDA资源续传阶段。830/832实际成功，49common已安装；831失败和833/834依赖阻塞已核查并保留日志，精确取消两个PENDING作业。旧代理终止且1080空闲；监督器静态编译/plan通过后启动，仅管理自己创建的代理和CUDA下载，不自动宣称GPU可用。下一步续传、Slurm离线安装及真实GPU回归，同时推进数据/架构缺口。
@@ -875,3 +881,9 @@ CGCNN/ALIGNN介电仍为fixed_frame_components，不宣称O3；MACE/NequIP适用
 - 2026-11-06T21:53:27+08:00：实际Slurm1815/1816保留失败/afterany成功：73纯检查中1失败3错误均为新路径fixture，Linux Python3.10 pathlib缓存访问器未采用mock os.getcwd，导致临时目录不在真实cwd/runs下；其余69项通过，负向CUDA检查未进入，不计任何准备验收。修复计划仅将四项fixture切换为进入真实TemporaryDirectory并finally恢复cwd，保留所有原拒绝断言/路径边界，源码checker/原模型/数值/worker不改。重跑同73本地与新固定source CPU Slurm，原1815/1816失败归档保留，不重跑GPU。
 
 - 2026-11-06T22:01:21+08:00：联合准备模块实际CPU控制已独立验收：fc7cf0c源1817/1818均实际COMPLETED0:0，73项原标准纯检查零失败/错误/跳过，六执行源与Git blob逐一绑定；五个原PENDING CUDA1735/1737/1739/1741/1743均因确切缺失其capacity report被正确拒绝，无resolved配置/正向CUDA/正式就绪声明。70控制归档SHA及原十请求CPU/内存/时长/GPU/Comment/source/request SHA与干净987缓存均通过，未改队列。8e29dc4的1815失败及1816终态保留，四项fixture改为真实临时cwd后同73通过，checker/骨干/数值/worker未改。主21/48/742科学归档与9分子CPU模式8100帧/183补充SHA保持。 下一步仅同步本次文档，继续原GPU队列与全部科学验收。
+
+- 2026-11-06T22:04:41+08:00：前一目标轮分类为progress：新增1304第21格完整科学验收、742主归档，联合准备代码及实际1817/1818的73纯检查/五缺失CUDA正确拒绝/70控制归档已提交同步。新阶段先核对原1307及其余队列，保留21格/9模式CPU对照全部证据；设计并实现分子正式预算与受管理训练入口，覆盖八官方及单插件，不用兼容fixture替代真实CUDA，不新增重复GPU请求。预算必须包括最多300轮900训练与100验证、完整99000测试及作者cohort，不把单独训练吞吐当已测完整评测耗时；正式launch须依赖真实联合准备成功及原配对共同batch，预算不足/未知提交状态/已存在case时拒绝重复。 下一步按测试计划先检查原共享执行边界，再实现与验证；原队列不变。
+
+- 2026-11-06T22:09:12+08:00：分子正式入口具体边界：molecular/formal独立文件夹含README、contracts.py（闭合9case/完整预算工作量/插件初始化）、gates.py（真实联合准备成功父终态及SHA/version/config重放）、runtime.py（原共享训练/CPU后评/禁模型独立验证）、cohorts.py（从完整99000原预测独立按作者1000顺序复算）、submission.py（原managed请求/互斥/未知句柄拒绝），CLI run_molecular_case.py。共享runner仅增加受闭合插件domain约束的初始化验证分支，并接受显式完整执行预算字段，原官方/frozen默认验证不变。所有完整训练/验证/测试/初末和双模型重载比较批次纳入training-equivalent调度估计，按原同质/混合测量最慢每批推算并保留50%+900秒预算；明确不是已测评测吞吐或数学上界，作者cohort直接从同一完整heldout输出复算而无新模型调用。原完整post/independent复用并补独立原标签cohort校验。 测试按上述完整协议执行；先实现纯契约/预算和继承边界，实际launch仍须真实准备。
+
+- 2026-11-06T22:31:19+08:00：分子正式入口已实现，尚无真实正向准备或训练验收：molecular/formal及CLI覆盖原9case的gate/plan/submit/train/post/verify；实际passed联合CUDA/物理/原网络准备与成功父终态是前提。完整900/100/99000、300cap-pat30和初末/双模型重载/统计遍历计入training-equivalent调度估计，保留50%+900秒，明确未测评测吞吐/非数学上界。作者1000从完整99000已存预测按作者顺序独立复算E/Eatom/F原标签，无额外模型调用。插件不伪造official，仅增加闭合单插件初始化分支，继承原每轮覆盖/梯度/选模/重载/全heldout断言。原managed claim/锁/未知或purged句柄拒绝和三科学阶段/三afterany复用。新14项及原共享官方/frozen/tensor/generation/分子/提交/预测共148纯检查本地全过，零跳过，AST与CLI导入无Torch/NumPy。下一步固定源码CPU Slurm同148与18项缺失或CPU控制冒充实际准备的拒绝检查，不提交分子GPU或缩减数据。 原1307完整科学后评并行推进。

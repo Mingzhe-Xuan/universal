@@ -384,3 +384,5 @@
 - 2026-11-06T21:46:23+08:00：联合准备门禁应分别保留CPU原网络数值对照、实际CUDA图/容量/物理与正式预算/拟合/质量的状态；相同模型名称或CPU passed不能推出CUDA可训练。闭合请求/receipt/report/source/config/version及数据有序ID、typed-OOM和完整工作负载证据后，仍应明确preparation_gate_passed与formal_training_ready的边界；没有实际正向CUDA证据前只记录纯检查/缺失证据拒绝，不声明正向就绪。新模块不修改原骨干/engine/worker或既有GPU请求。
 
 - 2026-11-06T21:53:27+08:00：跨平台Path.cwd测试应使用真实临时工作目录并finally恢复，不只patch os.getcwd；旧Python pathlib访问器可保留该函数引用，使mock与实际cwd不符。路径隔离/逃逸测试必须保持相同要求，不能把失配根目录当生产路径错误或放宽边界。PowerShell向python stdin传含中文或☑/☐的脚本时，默认OutputEncoding也可把字面量替换为问号，文件read_text(encoding=utf8)不能保护脚本自身；统一通过apply_patch保存UTF8脚本后执行，ASCII-only管道才能直接使用。
+
+- 2026-11-06T22:31:19+08:00：正式预算需同时计入完整验证、99000测试、初末/双模型重载比较和训练统计遍历；训练计时只能作为标明的调度代理。作者1000属于完整heldout，可按原序从同一预测流独立原标签复算。插件没有official加载报告，须在闭合domain核验原source/files/factory和标准类，再继承原全部训练/选模/heldout断言，不能伪造official或整体跳过验证。

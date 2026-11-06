@@ -5,6 +5,13 @@ and forcefield cases of the unchanged144-case matrix. Generation retains its
 separate full training/quality protocol and is rejected here. This boundary does
 not remove generation or supplementary experiments from the paper requirements.
 
+The [closed molecular wrapper](../molecular/formal/README.md) reuses the complete
+epoch/selection/reload/heldout verifier. Its single registered directory plugin
+has an explicit initialization branch that checks the frozen plugin recipe and
+source provenance while retaining `official=None`; official and frozen defaults
+remain unchanged. A molecular gate supplies `probed_execution_seconds` for the
+complete execution workload; existing gates retain `probed_train_only_seconds`.
+
 `case_spec(matrix, id)` checks the complete corrected144-case definition and the
 selected original frozen recipe. `check_preparation(..., budget_seconds=...)`
 runs through Slurm without a neural import: it verifies full source bytes and

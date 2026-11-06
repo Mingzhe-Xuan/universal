@@ -77,11 +77,11 @@ def finite_shape(values, shape):
         finite_shape(value, shape[1:])
 
 
-def verify_training_report(trained, gate, events, *, frozen_backbone=False):
+def verify_training_report(trained, gate, events, *, frozen_backbone=False, plugin_backbone=False):
     """Verify full epoch/selection/test coverage; do not claim independent source re-score."""
     config, counts = gate["config"], gate["counts"]
     epochs = trained.get("completed_epochs")
-    if type(frozen_backbone) is not bool:
+    if type(frozen_backbone) is not bool or type(plugin_backbone) is not bool or frozen_backbone and plugin_backbone:
         raise ValueError("Declare an explicit backbone training policy")
     if frozen_backbone:
         from ..frozen_backbones.contracts import DEFINITION_SHA
@@ -121,14 +121,19 @@ def verify_training_report(trained, gate, events, *, frozen_backbone=False):
     reload = trained.get("reload_verification", {})
     if not reload.get("state_exact") or not reload.get("deterministic_algorithms"):
         raise ValueError("Exact state and deterministic checkpoint reload are required")
-    official = trained["execution"]["official"]
-    if official.get("initialization") != gate["case"]["initialization"]:
-        raise ValueError("Actual backbone initialization differs")
-    if official["initialization"] == "scratch":
-        if official.get("parameter_coverage") != 0. or official.get("buffer_coverage") != 0. or not official.get("state_layout_verified"):
-            raise ValueError("Actual scratch inherited source state or changed original layout")
-    elif official.get("parameter_coverage") != 1.:
-        raise ValueError("Actual pretrained model did not load all original parameters")
+    if plugin_backbone:
+        from ..molecular.formal.contracts import verify_plugin_initialization
+
+        verify_plugin_initialization(trained, gate)
+    else:
+        official = trained["execution"]["official"]
+        if official.get("initialization") != gate["case"]["initialization"]:
+            raise ValueError("Actual backbone initialization differs")
+        if official["initialization"] == "scratch":
+            if official.get("parameter_coverage") != 0. or official.get("buffer_coverage") != 0. or not official.get("state_layout_verified"):
+                raise ValueError("Actual scratch inherited source state or changed original layout")
+        elif official.get("parameter_coverage") != 1.:
+            raise ValueError("Actual pretrained model did not load all original parameters")
     train = [row for row in events if row["event"] == "epoch"]
     validation = [row for row in events if row["event"] == "validation"]
     if (len(train) != epochs or len(validation) != epochs or
@@ -207,7 +212,8 @@ def _run_prepared_case(identifier, gate, *, budget_seconds, training_executor=No
     root = Path(gate["case"]["run_directory"])
     if root.exists() or root.is_symlink():
         raise FileExistsError("Refusing to rerun or overwrite an existing formal case")
-    effective_budget = allocation_budget(budget_seconds, gate["probed_train_only_seconds"])
+    estimate = gate.get("probed_execution_seconds", gate.get("probed_train_only_seconds"))
+    effective_budget = allocation_budget(budget_seconds, estimate)
     import resource
     import torch
     from universal_gnn.engine.training import run_training

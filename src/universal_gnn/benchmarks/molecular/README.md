@@ -198,3 +198,9 @@ The [joint preparation checker](readiness/README.md) binds both kinds of evidenc
 to their retained successful Slurm parents and exports checked common-batch
 recipes. Its passed preparation result keeps `formal_training_ready=false`;
 formal runtime budgeting, launch, fitting and heldout quality remain separate.
+
+The [formal molecular module](formal/README.md) provides the closed nine-case
+execution and managed submission path after real joint preparation passes. Its
+full workload budget includes validation, the entire99000 test and ancillary
+traversals. Independent author1000 metrics reuse saved full test outputs. This
+interface does not imply that actual CUDA readiness or formal fitting has run.

@@ -2013,3 +2013,14 @@ best SHA `d3348d96481ad21917ab22c02539712f61327fa50b319dc5d9e1424af640f794`；�
 修正源fc7cf0c的1817/1818均实际COMPLETED/0:0，原73项全部通过且零跳过，六新执行源SHA与Git blob一致。五类原排队CUDA请求分别因确切缺失其capacity/report.json被正确拒绝，失败报告均不导出resolved配置，保持preparation_gate_passed=false和formal_training_ready=false；这是缺失证据拒绝控制，不是五项CUDA准备成功。
 
 70份控制证据的所有SHA、原十个GPU/afterany请求身份/CPU/内存/时长/GPU/Comment和request SHA、原9873681固定干净源均已独立核验。原五GPU和五记录器仍PENDING，未重复提交或调优先级。最新21:59:01观察原1307 MACE谱scratch仍运行50:05；主表21/48及742主归档、9模式/8100帧原网络CPU对照及183补充归档保持，后续仍需真实CUDA准备、正式预算/launch/完整900拟合及99000/作者cohort质量、剩余27主格与全部补充范围。
+
+
+### 12.60 分子正式运行入口（实现与本地148纯检查，等待真实准备）
+
+新增[分子正式模块](../../src/universal_gnn/benchmarks/molecular/formal/README.md)及 `scripts/run_molecular_case.py`，闭合八官方和单KNN+GCN插件、seed123、900/100/99000、300cap/pat30。实际联合准备passed、CUDA/物理/原网络证据及保留成功父终态、所有输入SHA/version/config和配对共同batch一致后，才可建立执行门禁或提交新训练；CPU控制不能替代。
+
+预算按原同质100/混合100的最慢平均训练每批耗时，覆盖完整300轮训练/验证、99000测试及五遍训练集等价的初末/重载/统计遍历。batch4包含67500训练批、7500验证批、24750测试批及1125附加批，共100875批，然后50%+900秒并向上分钟取整。这是调度代理，未测评测吞吐、未证明数学上界；CPU后评/独立核验预算另行显式指定。
+
+正式训练复用原engine；共享执行器仅增加完整执行预算字段及闭合单插件初始化分支。插件official仍为None，原每轮完整覆盖/梯度、验证最佳选模、精确checkpoint重载与全部有序heldout形状/有限性断言保持。CPU后评和禁止模型的独立验证继承完整原标签、best物理及全源推理检查，再按作者1000原序从同一99000预测流单独复算E/Eatom/F与标签；无额外模型调用，cohort失败使阶段failed。plan/submit保留原request SHA/receipt/互斥/未知/foreign/purged句柄拒绝，为每格train/post/verify及三个afterany，不重复原训练。
+
+新增14项及原共享官方/frozen/tensor/generation/提交/分子/预测协议共148纯检查本地全过，零失败/跳过，AST与新进程CLI无Torch/NumPy。作者指标的小fixture只验证算法，不冒充实际99000/1000质量。实际CPU Slurm148和18项缺失/CPU控制不能替代正式准备的拒绝检查待执行；真实CUDA、正向launch、900拟合/99000质量未完成。主表仍21/48；原1307谱scratch完整81/best51成功，1823/1825及1824/1826完整后评和无损归档继续。
