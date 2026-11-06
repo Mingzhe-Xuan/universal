@@ -449,6 +449,12 @@ config `backbone.feature_dim` 只用于回退或一致性断言，不传入主�
 
 自定义标准类允许 `BaseGNN(irreps=None, feature_dim=F, kind="invariant", ...)`；
 basis、transformation、gradient_capabilities 可通过基类参数声明。
+
+使用 live 距离的目录示例 `examples/custom_knn_gcn/model.py` 显式声明
+`gradient_capabilities={"positions": True, "strain": True, "mixed": True}`。
+这只提供力场构造所需的能力元数据，不增加网络层或参数；任务仍须通过有限差分、
+几何和力损失对参数的混合梯度验证。离散KNN拓扑按固定邻接区间求导，邻居切换处不承诺光滑。
+源码声明改变时，实验定义中的插件源码哈希应另存新版本，保留原定义与验证证据。
 旧接口提供 irreps 的用法保持。`StandardBackbone` 将声明传给新式组装。
 每次 forward 在读出前验证 `[N,F]`、输入几何引用、batch/ptr、dtype/device、有限性和声明的表示语义。
 可选 graph_features 保留，但内置读出明确不消费；自定义读出通过 ReadoutRequirement 声明是否使用。

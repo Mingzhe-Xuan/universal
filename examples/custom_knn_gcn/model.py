@@ -6,7 +6,8 @@ from universal_gnn.contracts import BaseGNN, GNNOutput
 
 class MolecularGCN(BaseGNN):
     def __init__(self, width=16, layers=2, context_dim=0):
-        super().__init__(f"{width}x0e", "invariant", context_dim)
+        super().__init__(f"{width}x0e", "invariant", context_dim,
+                         gradient_capabilities={"positions": True, "strain": True, "mixed": True})
         if width < 1 or layers < 1:
             raise ValueError("width and layers must be positive")
         self.element_embedding = nn.Embedding(119, width)

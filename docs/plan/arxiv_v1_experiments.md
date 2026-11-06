@@ -1785,3 +1785,22 @@ CPU完整后评266.99199995119125秒、独立核验2.21192863304168秒、后评�
 case/配置/预测/指标/历史proof不改写。
 证据位于忽略目录`results/paper-completed-20261105/seed-123--dielectric--mace--scratch/`。
 主表14/48、唯一训练48/48；分子9配置/全源验收与冻结/高阶/生成/plugin后续科学任务不混入完成数。
+
+
+### 12.41 分子全原生图/训练统计入口与插件导数声明（实现完成，待实际门禁）
+
+[分子模块](../../src/universal_gnn/benchmarks/molecular/README.md)新增closed group contracts及完整图扫描入口。
+同一函数可在CPU或实际CUDA扫描全部100000源输入，另存900训练输入及已有规则选择的完整训练probe，
+MACE/NequIP使用原统计实现且只读900训练结构。CGCNN有效边与padding计算槽分开，插件内部self updates不冒充物理边。
+禁止所有GNN/model forward、核对参数/缓冲区和eval模式不变，结束再核对源/划分/audit；失败保留前缀且不接受probe。
+原图计数器/选择器/统计函数/物理验证器不改写，CPU图只算前置拓扑/统计，不能替代实际CUDA、100批/混合极端容量或物理/训练。
+
+真实源码检查发现：原KNN+GCN示例省略gradient_capabilities，FeatureSpec将缺项置False，新式ForceFieldModel会拒绝。
+仅为其已有live距离运算补positions/strain/mixed=True声明，不改变层、参数或forward；不修改框架默认能力或绕过检查。
+插件源码哈希变化，原1682的26份数据/配置证据保留，须另存并验收新版9定义后重绑图入口，当前默认旧定义会按源码差异拒绝。
+新增8项Slurm数值用例，计划覆盖float32/64、context0/3与原1e19447构造器RNG/state/直接特征一致、
+原有限差分/几何/混合梯度标准及force-only诊断更新和标准checkpoint重载；尚未执行，不能视为能力已数值验收。
+
+本地55项纯stdlib控制全部通过，含11项新测试方法和原44数据/定义/单seed回归，零错误/失败/跳过；
+9项AST、CLI帮助、文档/历史检查通过。移除唯一新增gradient_capabilities关键字后，示例模型AST与1e19447完全一致。
+无本地Torch/NumPy或数值执行，未更改原骨干/训练/构图/容量/导数数学。主表仍14/48和354科学归档，未新增正式训练。

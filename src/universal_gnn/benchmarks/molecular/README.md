@@ -74,3 +74,52 @@ The canonical manifest SHA used in its configs is
 `e7ee905372977d76c430a581f4fc9e2f33bfe44a60adb22eae00acb2d78adc69`;
 the original split-file SHA remains the separately audited d1072a6c...b469e58a.
 Proof: ignored `results/paper-molecular-definitions-20261106/1682-124742/`.
+
+## Full native graph and training-statistics preparation
+
+`contracts.py` selects the complete four original-model pairs or the single
+registered directory-plugin group. It verifies accepted definition bytes and
+reconstructs all nine recipes. Changing plugin source requires a fresh accepted
+definition version; an old source hash is refused before graph construction.
+The original1682 data-only proof remains historical and is never rewritten.
+
+`graphs.py` constructs all100000 source inputs and separately records the900
+source-ordered training inputs. Official input functions remain unchanged.
+Their already-built containers are counted with the existing native graph
+counter. The plugin's unlearned graph builder is called directly; global hooks
+still forbid its GNN and every model submodule forward. Parameter/buffer hashes
+and eval modes must remain exact. Source/split/audit bytes are checked again
+after the complete scan. Failed row prefixes remain evidence and no probe is
+accepted after a failure.
+
+CGCNN padded computation slots and valid directed messages have separate counts.
+The plugin graph excludes self edges; its GNN's internal per-node self updates
+are recorded separately. No periodic shift is permitted. Probe selection reuses
+the existing full-training aggregation with two extrema per metric,32 ordinary
+records,2 warmups and100 measured batches. Selection is not a capacity result.
+For MACE/NequIP, the existing native-statistics implementation scans only900
+training structures and attaches the same source/manifest/training fingerprints;
+pretrained configs and plugin configs do not acquire scratch statistics.
+
+```bash
+PYTHONPATH=src python scripts/scan_molecular_graphs.py \
+  --model cgcnn --device cpu --output runs/molecular-graphs-NEW
+```
+
+Use the model's original environment and a CPU or GPU Slurm allocation. Output
+includes complete source/training JSONL graph counts and lossless deterministic
+gzip copies, `probe.json`, resolved ordinary configs and `report.json`.
+CPU graphs/statistics are preparatory evidence. The required final input graph
+validation must run on actual CUDA; even CUDA graph construction does not prove
+100batch/mixed-extreme training capacity, finite differences, mixed parameter
+gradients, full fitting or heldout quality. `checked_graph_metadata` checks only
+this explicit scope; file/Slurm/counter provenance must also be verified.
+
+The KNN+GCN example now explicitly declares its existing live-geometry position,
+strain and mixed derivatives. This changes capability/source metadata, without
+adding a layer or changing its forward. Original1e19447 constructor RNG/state
+and direct-feature equivalence, actual forcefield finite differences/geometry,
+force-only parameter updates and standard checkpoint reload must be checked in
+Slurm before runtime acceptance. A new nine-config version is required before
+the graph selector can use that changed source; the old1682 version is not
+relabeled as model validation.
