@@ -50,3 +50,11 @@ label/physics/source inference plus author-cohort assessment. `verify --case CAS
 model execution and repeats the author-label calculation. A failed cohort marks
 the stage failed even when its preceding full-source checks passed. Re-score
 outputs keep original E/F and E/atom units and author index order.
+
+
+Executed CPU controls: source `2b2b93b`, Slurm1829/1830 both completed0:0,
+148 pure tests without skips and18 actual provider CLI refusals across all nine
+cases; nine source hashes and52 control artifacts verified. Deferred CPU joint
+checks/plans1831–1850 are waiting for the original CUDA preparations. This does
+not certify positive CUDA readiness, fitting or heldout quality. See the
+[execution record](../../../../../docs/plan/arxiv_v1_experiments.md).
