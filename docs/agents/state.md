@@ -23,6 +23,15 @@
 3. 完成冻结8、高阶16、生成、插件/native/来源/成本/论文全部目标；不增加其他训练seed或缩减范围，真实生成accepted schema到达后显式适配汇总。
 4. 本地提交push后服务器git pull，固定源缓存不改；所有模型/数值/明显计算Slurm，保持20GiB磁盘门槛。
 
+
+当前阶段：继续原1313完整谱scratch；待真实训练完成后按原严格协议完成后评/全源/独立复核和无损归档，主23/48直到完整科学验收。
+
+
+当前并行成本单元：八已验收介电版独立端到端CPU推理计时与原全源预测逐条复核；不混作纯kernel/磁盘峰值，不增加训练或主验收数。
+
+
+当前修复单元：旧周期NequIP scratch checkpoint因整个adapter源文件指纹变化被当前loader拒绝；只增加精确源版本/元数据相等的checkpoint恢复兼容与运行时全周期guard，fresh训练/未知差异仍拒绝。原1869失败保留，其余七计时和1313不动，主23/48不变。
+
 # 变更记录
 
 - 2026-11-04 01:40 +08:00：进入剩余CUDA资源续传阶段。830/832实际成功，49common已安装；831失败和833/834依赖阻塞已核查并保留日志，精确取消两个PENDING作业。旧代理终止且1080空闲；监督器静态编译/plan通过后启动，仅管理自己创建的代理和CUDA下载，不自动宣称GPU可用。下一步续传、Slurm离线安装及真实GPU回归，同时推进数据/架构缺口。
@@ -901,3 +910,9 @@
 - 2026-11-07T00:13:34+08:00：新增完整介电分组后评单元：原1003仅8诊断版×16测试，计划要求完整8正式版×499测试。不改任何受管源码，复用与1003原376b00a逐字节一致的8个assessment/metric/split/CLI/test源，固定c2155e2缓存。CPU Slurm先对8原始passed训练报告和已存预测执行公开evaluate_tensor_groups.py，完整4999源/499测试/4491分量、float32标签/原ID/源与划分SHA/val-best及原overall保留；整张量零组为空null，分量零2611/非零1880，每分量C序指标，不做对称投影/阈值。另CPU任务只用stdlib从原源标签独立复算8套指标及499有序分组，禁止导入生产assessment/metrics和Torch/NumPy，原1e-12误差口径保持。两父各CPU1/4G10min加1G2min afterany，后核验精确请求/源码/实际终态/报告/原数据及预测字节SHA并完整归档，才计该补充后评完成，不增加23主训练验收数。任何缺失/错序/错SHA/原overall不符/缺组/null错误/未知提交或已有输出均拒绝；原862科学归档和所有队列不改。 下一步准备可审阅四CPU请求并提交一次。
 
 - 2026-11-07T00:26:21+08:00：实际progress：八正式介电版完整499测试分组已由1863/1865及1864/1866四阶段实际0:0独立验收；原源码8与1003字节相同，完整3992预测记录/35928分量、每版2611零/1880非零、九C序分量与原标签/ID/报告/预测/原overall全部通过，独立stdlib禁止生产数值代码，1e-12保持。新增63补充归档，原23/48与862主SHA不改，无新训练/模型/推理。另原88冻结/高阶请求快照365 SHA与新48主case/40生成/20CPU/10CUDA全巡检416 SHA通过，23已验收/1313运行59轮/24排队，磁盘107.86GiB。旧句柄/已清除live依赖的限制显式保留，不重提或推断成功；全部原定范围不减。 下一步同步本轮补充验收，继续原1313和全部队列。
+
+- 2026-11-07T00:30:59+08:00：上一轮属实际progress：完整8正式介电版×499测试的零/非零/九分量后评与独立stdlib复算、1863–1866四实际0:0/63补充归档已验收，原源码不变；新88补充请求/365SHA和全48主case/416SHA巡检通过，累计2438归档及891快照输入校验，65556ba已推送并服务器pull。当前优先继续原1313 ALIGNN谱scratch，主23/48与862SHA、完整介电分组及其余冻结8/高阶16/分子9/生成/native/来源/成本/论文范围保持。 下一步只读复查原1313及原1348/1349，不重复提交。
+
+- 2026-11-07T00:41:54+08:00：新实验单元：补齐计划的单独推理成本，现有CPU后评墙钟混合原标签复算/物理/全源推理，不能拆猜。先对已独立验收八正式介电版分别在CPU Slurm原provider环境/单线程、原B4/f32/4999完整源执行一次标准complete_inference/run_inference。计时范围是端到端推理调用，包括runtime导入/模型加载/构图/前向/序列化写出，不含事前输入SHA与事后验证；不是纯kernel耗时、不宣称cold-cache/独占整机或跨seed统计。记录实际线程/CPU affinity/环境版本/RSS/完整样本数/输出字节及SHA；不将final bytes当磁盘峰值。每模型/初始化CPU1/8G2h加1G2min afterany，共16请求；另CPU1/2G10min独立禁模型验证和1G2min记录器，共18 CPU、零GPU/新训练。新输出必须完整4999有序ID/44991有限分量/完成marker、原checkpoint/config/source/split SHA，并和原已验收全源预测逐条按原1e-12对照。任何差异/未完整/错源/未知提交或已有输出均拒绝，不降低阈值，不改原23/48/862科学归档、8完整分组或现有队列。 下一步构建可审阅18CPU请求，原1313继续运行。
+
+- 2026-11-07T01:04:19+08:00：1869 NequIP介电scratch推理计时实际FAILED、1870记录器成功保留：旧邻居统计adapter_source_sha256=ad4518cabfc7e01e4204c22538fcfe8f85312ad4cec6c55eca5f3294d861363a，当前NequIP文件5eb20819c711846f0df036f4414bcb92472b5573ac835a7567b823653c2b9a17；其余artifact/package/blueprint/provider0.14.0/ASE3.27.0/Torch2.7.1+cu128均未变。native_graph_provenance绑定整个类文件，新增非周期edge shift修复与dtype处理改变该hash；完全周期native_input只有恒等helper包裹，原20项真实NequIP CPU回归已证明all-PBC返回同一tensor与原输入逐项相同。这不影响原源27的已验收科学结果，但当前公开load_checkpoint不能恢复已训练周期scratch，需修复。 实现单元：新增official/checkpoint_graph.py（纯元数据ContextVar恢复上下文、唯一已知old/new源hash对及其他全部native字段精确相等的兼容判定、全周期batch运行时guard）；只有engine.load_checkpoint构造时开启，fresh原统计校验仍严格；base.validate_native_neighbor_graph仅在精确已知恢复迁移时安装guard和显式报告，所有实际native_input必须非空bool形状[graphs,3]且全True，分子/部分PBC立即拒绝，不修改统计/权重/图/归一化。NequIP源文件本身不改，避免改变已验证的新hash；所有未知source/artifact/provider/ASE/Torch差异均拒绝。engine/inference仅把迁移说明写metadata，不改数值或配置；原训练/resume统计路径不放宽。本地纯测试覆盖无恢复上下文拒绝、精确映射/所有metadata变更拒绝、嵌套/异常/thread上下文隔离、guard非周期/部分/空/错形状拒绝、true-PBC输入原对象/单次原方法调用与deepcopy绑定，不导入Torch/NumPy。提交后固定源CPU Slurm执行同纯测试、原NequIP非周期/dtype/几何与checkpoint验证回归、真实1291旧best strict state恢复及PBC/非PBC guard检查；最终重做同一固定修复源码的八版完整4999推理计时和原全源预测1e-12复核，保留1869失败与其他原计时，不重训。只有精确验证owned PENDING1883/1884并审阅替换计划后处理死依赖，原七运行计时和全部主队列不动；不降低任何验收标准。

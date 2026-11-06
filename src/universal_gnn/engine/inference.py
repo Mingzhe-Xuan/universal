@@ -61,6 +61,9 @@ def run_inference(checkpoint, dataset_path, output, *, device="cpu", limit=None,
               "checkpoint_format_version": saved.get("format_version", 1),
               "geometry_basis_version": getattr(getattr(model, "adapter", None), "basis_version", None),
               "structures": []}
+    compatibility = getattr(getattr(model, "backbone", None), "_checkpoint_graph_compatibility", None)
+    if compatibility is not None:
+        result["checkpoint_graph_compatibility"] = copy.deepcopy(compatibility)
     if "prediction" in config or "optimization" in config:
         result["components"] = component_audit(model)
         result["checkpoint_capability_updates"] = getattr(model,"_checkpoint_capability_updates",[])

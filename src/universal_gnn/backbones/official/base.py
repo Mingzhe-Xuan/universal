@@ -108,8 +108,18 @@ class OfficialBackbone(nn.Module):
         return value
 
     def validate_native_neighbor_graph(self, statistics):
-        if not isinstance(statistics, dict) or statistics.get("native_graph") != self.native_graph_provenance():
-            raise ValueError("Fresh native neighbor statistics differ from the original graph implementation/artifact")
+        current = self.native_graph_provenance()
+        if isinstance(statistics, dict) and statistics.get("native_graph") == current:
+            return
+        from .checkpoint_graph import restored_graph_compatibility, install_periodic_restore_guard
+
+        previous = statistics.get("native_graph") if isinstance(statistics, dict) else None
+        compatible = restored_graph_compatibility(previous, current, provider=self.official_artifact["provider"])
+        if compatible is not None:
+            install_periodic_restore_guard(self, compatible)
+            self.load_report["checkpoint_graph_compatibility"] = compatible
+            return
+        raise ValueError("Fresh native neighbor statistics differ from the original graph implementation/artifact")
 
     def native_task_contract(self):
         from .native_heads import native_contract

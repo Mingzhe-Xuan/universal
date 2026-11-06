@@ -46,6 +46,17 @@ requires the same backbone initialization; omitted old official settings mean
 `pretrained`. A checkpoint cannot label an actually scratch body as pretrained.
 Load reports distinguish zero original-state coverage from strict pretrained load.
 
+`checkpoint_graph.py` keeps fresh calibration strict while allowing checkpoint
+reconstruction across one explicitly verified NequIP adapter source pair. Only
+the exact legacy/current hashes and otherwise identical artifact/provider/ASE/
+Torch provenance qualify. The graph helper change is an identity on fully
+periodic inputs; the restored model guards every native input and refuses
+nonperiodic, partial-PBC, empty or malformed PBC batches. Original normalization,
+weights and statistics provenance are retained. Unknown source/backend changes
+still fail. This scope is opened only by `load_checkpoint`, never by fresh
+training/calibration, and is reset even when construction fails. Inference JSON
+metadata explicitly reports `checkpoint_graph_compatibility` for this migration.
+
 This module is the default route for the six canonical model names. Providers are not declared
 verified until published-checkpoint and ten-real-structure Slurm evidence has been recorded.
 

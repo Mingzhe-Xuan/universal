@@ -413,13 +413,15 @@ def run_training(config: dict, output: str | Path, *, resume=None, checkpoint_pa
 
 def load_checkpoint(path: str | Path, *, device="cpu"):
     from universal_gnn.engine.runtime import checkpoint_config, verify_extensions
+    from universal_gnn.backbones.official.checkpoint_graph import checkpoint_graph_restore
 
     saved = torch.load(path, map_location=device, weights_only=True)
     config = checkpoint_config(saved)
     from universal_gnn.engine.batching import model_dtype
 
-    model = build_model(config, official_artifact=saved.get("official_backbone")).to(
-        device=device, dtype=model_dtype(config, legacy=True))
+    with checkpoint_graph_restore():
+        model = build_model(config, official_artifact=saved.get("official_backbone")).to(
+            device=device, dtype=model_dtype(config, legacy=True))
     verify_extensions(saved, model)
     model.load_state_dict(saved["state_dict"], strict=True)
     if saved.get("components") is not None:

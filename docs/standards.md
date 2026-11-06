@@ -529,6 +529,15 @@ and source code remain required. These published pickle-based artifacts must be 
 custom plugin protocol's state_dict-only behavior does not make upstream pickle formats safe.
 Source/backend signature mismatches are errors, even when tensor dimensions happen to agree.
 
+One source-only checkpoint restore migration is explicitly supported for the
+known pre-/post-nonperiodic-fix NequIP adapter hashes. All other graph provenance
+must match exactly, and every input to that restored model must have all three
+PBC axes enabled. Nonperiodic/partial-PBC inputs are refused. This does not
+recalibrate normalization, alter saved statistics/parameters, or relax fresh
+training/resume checks. Inference metadata includes
+`checkpoint_graph_compatibility` with the original/runtime graph provenance and
+the `fully_periodic_only` restriction. Unknown source changes remain errors.
+
 ## 官方预测头选择
 
 `prediction.head_mode` 为 `native` 或 `reset`，省略默认 `reset`。
