@@ -170,3 +170,13 @@ does not identify a task. CGCNN and OCP target normalization is restored once;
 MatGL inverse_transform and original potential scale/reference layers execute
 inside the original model. Native component views never reparent or duplicate
 the original modules. See [head selection](../../../../docs/native_heads.md).
+
+NequIP retains its official neighbor transform, cutoff, mapper and learned model.
+Its adapter zeros `edge_cell_shift` only along nonperiodic lattice directions:
+the installed matscipy backend was observed returning spurious image shifts for
+unwrapped molecules with an identity placeholder cell, changing edge vectors by
+up to 2 angstrom. Periodic components and the fully periodic input path remain
+unchanged. This is an input correctness fix; the failed scan and actual backend
+diagnosis are preserved. Neighbor statistics bind the adapter source fingerprint,
+so statistics/checkpoints tied to an older adapter require their pinned source
+or freshly verified statistics, rather than silently relabeling provenance.

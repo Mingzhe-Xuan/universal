@@ -11,6 +11,16 @@ from .base import OfficialBackbone, ReferenceValue, artifact_files, capture_feat
 from universal_gnn.backbones.initialization import initialize_original, validate_initialization
 
 
+def _respect_nonperiodic_axes(data, pbc):
+    # Some matscipy versions return nonzero image offsets on nonperiodic axes;
+    # NequIP consumes those offsets even though its positions remain unwrapped.
+    shifts = data.get("edge_cell_shift")
+    if shifts is not None and not bool(pbc.all()):
+        data["edge_cell_shift"] = torch.where(pbc.to(device=shifts.device).reshape(1, 3),
+                                               shifts, torch.zeros_like(shifts))
+    return data
+
+
 def packaged_constructor_layout(model):
     from universal_gnn.contracts.e3nn_compat import load_o3
 
@@ -115,7 +125,7 @@ class OfficialNequIP(OfficialBackbone):
                 data = from_ase(atoms)
                 data["pos"] = ReferenceValue.apply(data["pos"], batch.positions[start:end].to("cpu"))
                 data["cell"] = ReferenceValue.apply(data["cell"], batch.cell[i].to("cpu").reshape_as(data["cell"]))
-                values.append(neighbors(mapper(data)))
+                values.append(_respect_nonperiodic_axes(neighbors(mapper(data)), batch.pbc[i]))
         data = values[0] if len(values) == 1 else AtomicDataDict.batched_from_list(values)
         return AtomicDataDict.to_(data, device=batch.positions.device)
 
