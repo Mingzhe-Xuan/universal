@@ -1868,3 +1868,9 @@ MAE71.42415681、RMSE796.59273603、平均Frobenius395.60594818；CPU后评550.9
 原worker的2warmup+至少100次同质极端/普通满batch测量保持，另加2warmup+至少100次混合极端测量；batch1明确不声称batch内混合。两组件需有限正梯度与状态改变。适用原力/应力有限差分和几何门禁在CUDA执行；占位分子晶胞的应力仅作数学导数检查，不声称物理监督精度。
 本地68项纯标准库检查通过，含调度、CPU冒充CUDA拒绝、短测量/错误scope/梯度-状态拒绝、typed-OOM链及四官方组/插件mock编排。旧worker/preflight/pairing/probe schedule/physics/backbone/training源均未改写。真实CPU三组102-step插件诊断与原20回归仍待Slurm执行，实际CUDA全图/配对容量/物理仍待验证。
 该入口只声明容量/物理子集，`original_package_parity_verified=false`、`formal_training_ready=false`；不能跳过独立原包对照及正式训练/99000测试质量门禁，也不能把容量优化步骤算作正式训练。
+
+
+### 12.49 混合极端容量的真实 CPU 验收与 CUDA 设备简写
+1731/1732均实际COMPLETED/0:0：68项纯检查、23项真实CPU测试（3项batch1/2/4混合优化+20项原数值回归）通过，27份源码Git blob与21元数据归档核验。三组各102步骤，共306优化步、700个测量结构，主干和读出头均有正梯度及状态改变，CPU不能作为CUDA证据。
+GPU入口复查补齐与原worker一致的设备解析：先将`cuda`简写解析成当前GPU索引，再调用`set_device`；CPU及显式索引不变。新增纯协议检查后69项通过，没有改原worker/主干/数据/容差。
+接着在新固定源码重跑同23项真实CPU检查，再提交五类实际CUDA全图/共同batch/混合容量/物理作业。原包独立对照仍单列，容量入口的formal_training_ready仍为false；不新增正式训练计数。

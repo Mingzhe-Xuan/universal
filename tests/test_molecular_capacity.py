@@ -10,7 +10,7 @@ import sys
 import tempfile
 import unittest
 from types import SimpleNamespace
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from universal_gnn.benchmarks.molecular import capacity, mixed, schedule, worker
 
@@ -38,6 +38,18 @@ def measured_worker(batch=4):
 
 
 class MolecularCapacityTests(unittest.TestCase):
+    def test_cuda_shorthand_resolves_current_device_without_changing_cpu_or_explicit_index(self):
+        def device(value,index=None):
+            kind,_,suffix=value.partition(":")
+            return SimpleNamespace(type=kind,index=index if index is not None else int(suffix) if suffix else None)
+        current=Mock(return_value=3)
+        fake=SimpleNamespace(device=device,cuda=SimpleNamespace(current_device=current))
+        self.assertEqual(mixed._resolved_device(fake,"cpu").type,"cpu")
+        self.assertEqual(mixed._resolved_device(fake,"cuda:1").index,1)
+        current.assert_not_called()
+        self.assertEqual(mixed._resolved_device(fake,"cuda").index,3)
+        current.assert_called_once_with()
+
     def fake_orchestration(self, model, *, cpu_probe=False, bad_physics=False):
         with tempfile.TemporaryDirectory() as temporary, ExitStack() as stack:
             root=Path(temporary);official=model!="custom_knn_gcn"

@@ -9,6 +9,13 @@ from ..probes.schedule import schedule_settings
 from .schedule import mixed_probe_batches, checked_mixed_capacity
 
 
+def _resolved_device(torch, requested):
+    device = torch.device(requested)
+    if device.type == "cuda" and device.index is None:
+        device = torch.device("cuda", torch.cuda.current_device())
+    return device
+
+
 def run_mixed_capacity(config, probe, progress):
     if not os.environ.get("SLURM_JOB_ID"):
         raise RuntimeError("Mixed numerical capacity must run through Slurm")
@@ -24,7 +31,7 @@ def run_mixed_capacity(config, probe, progress):
     from ..native_heads.evaluation import state_digest
 
     torch.set_num_threads(1)
-    device = torch.device(config["device"])
+    device = _resolved_device(torch, config["device"])
     if device.type not in {"cpu", "cuda"}:
         raise ValueError("Explicit CPU diagnostic or CUDA device required")
     cuda = device.type == "cuda"

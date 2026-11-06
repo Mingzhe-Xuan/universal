@@ -48,7 +48,7 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 
 
 
-当前实现：分子CUDA全图/两初始化共同batch/额外混合极端100批及原物理检查入口已实现，68纯测试通过；真实CPU三组102-step诊断及原20回归待Slurm执行，实际GPU与独立原包对照仍是正式启动前门禁。
+当前实现：分子CUDA全图/两初始化共同batch/额外混合极端100批及原物理检查入口已实现，68纯测试通过；1731/1732已通过真实CPU三组102-step诊断及原20回归，共306优化步、700测量结构、21归档；新增CUDA简写解析检查后69纯测试通过，将在新版本重验23例再排GPU。实际GPU与独立原包对照仍是正式启动前门禁。
 
 # 变更记录
 
@@ -852,3 +852,5 @@ SSH已恢复实际可用；离线bundle先SHA核验/pull，固定源码缓存供
 - 2026-11-06T15:18:33+08:00: EntermolecularactualCUDA/mixed100capacity implementation unit withplannedpure/actualCPU/GPUtests. ReuseoldtypedOOM/pairedcommon verification, nooriginalsource changes; fullformalfitstillrequiresremaininggates. Main1297fullpostcontinues.
 
 - 2026-11-06T15:32:25+08:00: Completeoriginal1297fullscience/16thmain/442archives; allforcefield+dielectric cellsaccepted. MolecularCUDA/mixedcapacity sourceimplemented/68puretestspassed, nextactualSlurmCPU23 andGPUsubset checks; originalparitystillseparate soformalreadinessFalse.
+
+- 2026-11-06T15:51:48+08:00: CompletefirstactualCPU23mixeddiagnostic1731/1732; preserve21archives. NormalizeCUDAshorthand/device-index beforeGPUdispatch;69puretestspass, nextsame23onnewsourceand5actualGPUcapacity requests. Main16 unchanged.
