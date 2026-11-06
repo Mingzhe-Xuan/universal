@@ -9,8 +9,8 @@ from .definitions import build_molecular_definitions
 from .source import COUNTS, SOURCE_SHA
 
 
-DEFINITION_PATH = Path("runs/molecular-definition-control-1682/definitions/definitions.json")
-DEFINITION_SHA = "a4226e6fa9460093e3232af39e8a75e5f5651aacfa7e510386eeff4f64045fd3"
+DEFINITION_PATH = Path("runs/molecular-definition-control-1692/definitions/definitions.json")
+DEFINITION_SHA = "68255484022ac5aaf3ad69ffb65eee35c5ff3dcdc8dd5001f2380b14b888ca79"
 PRIMARY_PATH = Path("runs/arxiv-v1/definition-947/matrix.json")
 MODELS = ("cgcnn", "alignn", "mace", "nequip", "custom_knn_gcn")
 

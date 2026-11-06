@@ -123,3 +123,14 @@ force-only parameter updates and standard checkpoint reload must be checked in
 Slurm before runtime acceptance. A new nine-config version is required before
 the graph selector can use that changed source; the old1682 version is not
 relabeled as model validation.
+
+The updated plugin passed eight actual CPU numerical cases in Slurm1692,
+including float32/64 original constructor/state/RNG/features, the unchanged
+finite-difference/geometry/mixed-gradient policy, force-only diagnostic updates
+and standard checkpoint reload. Slurm1693 retained its successful terminal.
+The default graph contract now binds the independently accepted new definitions
+in `runs/molecular-definition-control-1692/definitions`, SHA256
+`68255484022ac5aaf3ad69ffb65eee35c5ff3dcdc8dd5001f2380b14b888ca79`.
+The full100000 source and nine definitions were rechecked; original1682 remains
+data-only historical evidence. Actual CUDA, full native graphs and capacity
+remain separate required gates.
