@@ -1,17 +1,17 @@
 # 当前状态
 
-Timestamp: 2026-11-06T11:59:52+08:00.
+Timestamp: 2026-11-06T12:19:52+08:00.
 
 全部训练只用seed123。主表48格=四骨干×六任务×官方整骨干微调/scratch；冻结8格、高阶张量16格、
 分子及自定义KNN+GCN等补充范围保留，均只用123。原144矩阵只保留出处，执行scope active48/excluded96；
 seed456/789的96组原排队请求已精确取消并保留证据，不恢复。生成评测RNG456是固定评测协议。
 
-主表48个唯一训练请求已全部提交，独立科学验收12/48：八组力场、NequIP介电两组、CGCNN介电两组。
-266份科学归档SHA全部保留。CGCNN介电五项观察中四项必需固定坐标分量检查通过，协变观察失败且非必需，
+主表48个唯一训练请求已全部提交，独立科学验收13/48：八组力场、NequIP介电两组、CGCNN介电两组及MACE介电微调。
+310份科学归档SHA全部保留（新增44份，原266份不变）。CGCNN介电五项观察中四项必需固定坐标分量检查通过，协变观察失败且非必需，
 不可宣称O3。MACE介电微调1294已完成37轮/best7，1430及时留存COMPLETED0:0；bestSHA2b8e096c...1b76e80。
 只读预检1674和执行器1676已成功，精确替换旧PENDING1315/1317的CPU资源请求，原请求和即时取消终态保留。
-新完整后评1678/终态1679及独立核验1680/终态1681已提交；最新1678正在全4999源推理，499测试原标签复算已通过。
-未完成完整独立验收前不增加主表数。MACE介电scratch1295正在原全量训练；不重复提交任何训练。
+完整后评1678与独立核验1680均已通过；各科学父作业COMPLETED0:0由1679/1681及时留存。
+全499测试/5必需O3检查/4999推理和44归档已独立验收为主表第13格；1679/1681自身退出码不可得，不推断成功。MACE介电scratch1295正在原全量训练；不重复提交任何训练。
 
 rMD17原始100000帧、SI单位转换及完整标准loader独立验收已完成1646/1647、1664-1667。
 完整源不丢弃，声明划分900/100/99000，另报原1000测试cohort；相关20+34份归档SHA保留。
@@ -31,17 +31,16 @@ Torch2.7.1+cu128/CUDA12.8及三provider环境不变，20GiB磁盘保留门禁；
 
 # 当前计划
 
-1. 优先保存1678-1681实际终态、完整原499测试/5必需O3物理检查/4999推理及独立核验，满足后接受1294为第13格。
+1. 1294完整科学验收已完成为第13格，保存310归档和原12索引备份；继续原1295及其余35格完整训练/后评。
 2. 观察原1295及其余48组唯一训练和完整科学链；句柄清除时使用已有绑定证据并记录限制，不盲目重跑。
 3. 推进实际CUDA1672，然后分子成对100批及物理门禁，再全量训练/99000测试；保留全部数据和相关性限制。
 4. 继续冻结/高阶/生成/plugin及成本/来源验收，保持seed123和完整300epoch/patience30；仅实际OOM可降低成对共同batch。
 5. 结果按单seed报告，不作跨seed均值/方差或随机性稳健结论。完整出处和历史见实验计划与下方append-only记录。
 
 
-Current implementation unit: Enter campaign matrix CLI single-seed closure. Actualexisting48scope/excluded96 remainscorrect, but scripts/prepare_arxiv_matrix.py called the historical builder defaultseeds123/456/789. Change only thiscampaign CLI to explicitseeds=(123,), preserve reusablebuilder/history144 and alloriginal pinnedworkers. README show explicit current48/APIseeds123 andhistoricaldefault. Testplan: realCLI withmocked full-inputinspection only (no actualbulkdata/no fakeSlurm science), actual48config exports/all4x6x2/only123 andfixedgenerationRNG456; freshoutput refusal, actual inspection target, sourceSHA metadata andnoSlurmentry refusal; historical144/fullcase gates remainunchanged withexistingpurestdlib regressions. AST/bash/docs/history/gitdiffchecks beforecommit. ThreeconsecutiveVlab observationclosures reviewed existinglessons; reports/jobs notdeclaredfailed, no duplicate submissions or blindproxyrestart. FullMACE1678-1681 livecompletionunknownuntilnextsuccessfulread.
 
 
-Latest campaign CLI: explicitseed123 export fix passed14purestdlib andstaticchecks; historicalbuilder and947matrix unchanged. FourVlab observationclosures mean current1678-1681/1672-1673states unknown afterlastconfirmed11:58/11:51. Localunit progresses; no duplicatejobs or scientificfailure claims.
+Latest checkpoint: MACE1294dielectric pretrained FULLscientificacceptance COMPLETE; main13/48 unique48submitted. Originalfull37/best7,3998/502/499,batch4,float32,seed123,300cap/pat30; best2b8e096c9cbd5a9367dac3bc597dd04a5eba43e41c6d3b15c1b793dfc1b76e80. 1430retainedactualtrain0:0;1678fullpost and1680separatemodel-forbiddenverification actualCOMPLETED0:0 retainedby1679/1681 beforelivehandlepurge. Recorder ownexits unavailable, notinferred; no reruns. Full499rawtest4491labels/5unchangedrequiredO3derivative-geometry checks/all4999source44991finiteoutputs /15executedGitblobs independentlyverified. OriginalstrictMACEclass+wholeparam/buffercoverage1 intact. MAE67.45663556272918 RMSE711.6883389418933 Frob365.2284964839321 relative10.612698249878184. CPUpost273.585509s/independent2.203634s/RSS1549643776B. GPU6603.000659s/allocated1992630784/reserved5964300288B. Infer4268354B SHA9f0d9f859fe8fd4a4247f3630d23c609afcc15a6a4342baf64b89fdae4770775. 44newarchives preserve266prior=>310; original12indexbackedup, no training/science truncation. UsermanualSSHsuccessful; subsequentactualsmall/fullSSH recovered, rootpulled033c7bc. Single-seedCLI14tests+staticchecks passed andpushed033c7bc; allsupplements retained. Testplan/results for thisacceptance: actualparent+independent reports,exactsource/request/report/rawinferenceSHA, retainedscientific0:0/ownobserverlimits, complete499/4999/5physics and310archivehashes mustremainverifiable. Doccheckcurrent13/48/checkbox/metrics/sourcepaths andappend-onlyhistory beforecommit; no new numericaltests needed.
 
 # 变更记录
 
@@ -803,3 +802,5 @@ Latest campaign CLI: explicitseed123 export fix passed14purestdlib andstaticchec
 - 2026-11-06T12:08:22+08:00: Enter campaignCLI explicitsingle-seed fix discovered fromactual source. Previousgoalturnprogress:CPU1670independentacceptance, CUDA1672/1673queued andfullMACE1678-1681released. CurrentVlab3observationclosures preserveoriginalhandles/science unknown; usefullocalCLI workcontinues, notblocked.
 
 - 2026-11-06T12:12:09+08:00: Complete campaignCLI explicitsingle-seed implementation and14passingtests. Oldmatrix/historicaldefault preserved; moduleREADME clarifies48campaign call. FourVlab observationclosures leavecurrentremote resultunknown, optionalmanual-connectivity question pending whilelocalwork proceeds. Next publishcheckedfix, recoverreadonlyconnection, acceptfulloriginalMACE/CUDAresults andprogressremainingfullsupplements.
+
+- 2026-11-06T12:19:52+08:00: Complete original1294 full scientific acceptance andindependent archive check; main13/48,44newscientificarchives,total310. FourearlierVlabclosures resolved byactualsuccessfulsmall/fullreads afterusermanualsuccess; nojobsrestarted. CurrentCUDA1672/1673 queuedownsourceea222be; nextfullmolecularcapacity/definitions andremainingmain/frozen/highrank/gen/plugin science.
