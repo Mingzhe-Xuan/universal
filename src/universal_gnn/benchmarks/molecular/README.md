@@ -186,3 +186,10 @@ independent original package parity and the remaining formal launch/quality gate
 must still pass. In particular, these optimizer probes are not full900-frame
 training or99000-frame heldout results. The planning and acceptance history is
 in the [experiment plan](../../../../docs/plan/arxiv_v1_experiments.md).
+
+The [same-state original-network reference module](parity/README.md) adds a
+separate CPU Slurm comparison of all900 training frames for each initialization,
+using independent nonperiodic inputs and original networks/calculators, or direct
+plugin calls. It verifies pre-readout features, original heads where present and
+unchanged state. Its implementation is not evidence of an executed comparison;
+actual accepted results and the CUDA/formal launch gates remain separate.

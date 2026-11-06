@@ -1926,3 +1926,13 @@ CPU后评125.809973秒，独立核验7.457080秒。heldout原文件10,134,522字
 新增120科学归档，原502份全部SHA保留，共622份；17格、18格和更早索引均另存，正式19/48。矩阵任务勾选同步反映全部已验收介电和三格谱；分类、带隙、生成、其余谱、冻结8、高阶16、分子/插件/native/来源/成本及论文交付继续保留。最新已观察GPU为1301 NequIP谱scratch运行，分子CUDA尚无验收，不重提原请求。
 
 19:40:40复核：原1301 NequIP谱scratch运行27:48；分子CUDA1735/1737/1739/1741/1743及afterany仍PENDING Priority/Dependency，40元数据SHA和十请求身份/资源/固定源码检查通过，不代表CUDA或分子拟合验收。
+
+
+### 12.53 分子完整900训练结构的独立原网络/插件对照（实现，待真实执行）
+
+新增[分子parity模块](../../src/universal_gnn/benchmarks/molecular/parity/README.md)及`scripts/verify_molecular_parity.py`。
+输入为既有独立核验的完整图报告精确SHA和原导出配置；四原包分别微调初始化/scratch，插件只有scratch，逐一对照全部900训练有序结构，无优化器或测试标签拟合。MACE/NequIP scratch沿用仅900训练统计，不重新拟合归一化。
+CGCNN通过独立ASE邻居与原Gaussian/网络，ALIGNN通过独立非周期拓扑与上游graph builder/网络，MACE与NequIP通过原Calculator对照节点特征、原能量与力，目录插件比较直接调用与标准包装。NequIP原API显式`NeighborListTransform(NL="ase")`，避免已复现matscipy非周期image错误；原生产模型与输入代码不变。
+这是same-state原网络数值兼容对照；注册checkpoint加载与官方fresh构造的既有独立验收仍单列。CGCNN的本乙醇数据具有规则非空邻居，原密集参考明确拒绝不满足条件的输入，不扩张为任意稀疏分子的原包数值声明。
+保留既有rtol3e-5/atol3e-6及MACE2e-5/2e-6，并实际要求float32、无周期image、全部900顺序ID、原/适配节点特征与原头、参数/缓冲区前后SHA不变。输出各初始化完整900行形状/误差/张量摘要SHA及源/config/状态绑定；不把摘要冒充可独立重算的原始特征数组。
+9项标准库对抗测试、无Torch/NumPy导入/CLI help、AST与README链接/格式通过；真实900数值尚待Slurm。报告保持`formal_training_ready=false`和`cuda_capacity_acceptance=false`，不能替代五组原CUDA容量/物理、正式拟合、99000及作者cohort测试。主表19/48与622科学归档保持。

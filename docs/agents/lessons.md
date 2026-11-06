@@ -376,3 +376,5 @@
 - 2026-11-06T19:16:01+08:00：大结果传输中断后应先检查已退出的SCP和现存.partial大小，不覆盖前缀重下。此次all-source gzip28,014,749B在16,416,768B处中断，使用同一远端路径的SFTP reget成功续传；必须同时核验完整压缩SHA与解压后原字节SHA，之后才原子改名和计入验收。登录成功、TCP连接和传输完成是不同证据；确认用户手动可登录后可重试普通ClearAllForwardings会话，不需重装torch或重提交Slurm作业。
 
 - 2026-11-06T19:42:10+08:00：观察大文件传输时，本地目录的临时文件大小只是间接信息。本次两份约28MB的all-source gzip曾在目录查询中显示0字节，但同一原SFTP会话最终实际退出0、完整字节与SHA全部通过。不能仅凭一段时间大小不增长认定进程失败或重启；轮询同一有效工具handle，明确终态后才续传。只读本任务精确父子进程查询未发现匹配项时，也须回到原handle确认退出，不结束其他SSH会话。
+
+- 2026-11-06T20:03:09+08:00：原包数值对照应标明same-state已构造网络还是独立重新加载checkpoint/fresh构造；deepcopy原网络可以隔离输入与特征适配，但不能单独证明权重加载正确。NequIP安装源码确认NeighborListTransform的kwargs传入compute_neighborlist_，原API可用NL=ase选择已验证非周期邻居；保留同几何零image/相同pair集合，不能直接把有bug的默认matscipy结果作为非周期参考或放宽容差。CPU数值、CUDA容量、正式拟合与质量分别验收。
