@@ -1935,3 +1935,29 @@
 - 2026-11-06T19:15:24+08:00：本次文档提交前检查全部通过：17/48、502科学归档SHA、原16格索引、单seed scope SHA、变更历史追加保留、最新状态/任务表计数、Markdown围栏及新增链接、临时控制AST和git diff --check。未导入Torch/NumPy，未执行本地模型或新增科学计算。
 
 - 2026-11-06T19:16:01+08:00：补记首次文档检查器的失败及修正：旧首格968使用formal_job/formal_case_id计数证明格式，没有status字段；临时检查器误假定17份证明格式一致而KeyError。按原968实际格式精确核验job、case和独立验收计数，其余16份仍要求status=passed，再逐一验证全部502原科学SHA，复检全部通过。未修改任何科学证明、结果或验收标准。
+
+- 2026-11-06T19:19:37+08:00：前一轮为实际进展：17/48验收、502科学归档和完整谱结果续传SHA通过。本单元检查原1299 NequIP谱微调与1300 CGCNN谱scratch；以实际完整训练、原best/成功终态/来源、11394/1424/1426与200通道为准，继续完整1426测试/14244源推理及禁止模型的独立验证。不重训、不改seed或缩减协议；只在原owned PENDING后评身份及全上下文预检/审阅计划通过后做资源替换。大文件Slurm无损gzip后独立传输，保留原17格502哈希。分子/冻结/高阶/生成/论文范围不变。
+
+- 2026-11-06T19:21:14+08:00：已核验1299 NequIP谱微调89轮/best59及1300 CGCNN谱scratch53轮/best23；完整11394/1424/1426、seed123/f32及原成功训练终态分别由1444/1441保留。原后评1335/1337和1338/1340确为PENDING。准备同已验收27e2339、保持完整200通道/14244推理的Slurm只读上下文预检，再审阅2h后评/1h独立验证/两afterany四阶段计划后才资源替换。临时payload AST及精确case/best/epochs/observer/旧ID绑定检查通过；NequIP使用其已注册环境，未修改模型/数据/指标或重训。主表仍17/48。
+
+- 2026-11-06T19:24:08+08:00: Exact archived successful preflight/parent terminal and full original1299 context reviewed; missing live handles are not inferred or rerun. Fullpost2h/verify1h/twoafterany planSHAa04dfbcee5766d57bdeff0cdfda2ef8da2598e1596b006b35d1e0997234ac445 matchesallarchivedrequestbytes, exactownedPENDING1335/1337 andno scope cuts.
+
+- 2026-11-06T19:24:08+08:00: Exact archived successful preflight/parent terminal and full original1300 context reviewed; missing live handles are not inferred or rerun. Fullpost2h/verify1h/twoafterany planSHAf35c5f3a156d596da59c62a03080d0d993d514ae324c167e8bb43ac6047abca3 matchesallarchivedrequestbytes, exactownedPENDING1338/1340 andno scope cuts.
+
+- 2026-11-06T19:26:15+08:00: OrdinarySSH firstSHAverify/pullpublished then submitCPU1/4G20min stdlibSlurm lossless fullspectrumartifactarchive afterok:1769:1770 andCPU1/1G2minafterany; no model execution. Requirefullpost/independentpassed1426tests/14244source/2848800finiteoutputs andboundreports beforegzipentirerawheldout+allsource streams, deterministicmtime0 andfullSHAroundtrip; no pruning/rounding/labelorweightchange, no newtraining. Sourcepinned27e2339, uniqueclaim/intent/RPC handlesunknownsubmitwithoutretry. Largegzippedoutputs transferredseparatelybySCP/SFTP onlyafterpassedmanifest andSHAs, neverGit. Main17untilfullindependentacceptance.
+
+- 2026-11-06T19:26:26+08:00: OrdinarySSH firstSHAverify/pullpublished then submitCPU1/4G20min stdlibSlurm lossless fullspectrumartifactarchive afterok:1765:1766 andCPU1/1G2minafterany; no model execution. Requirefullpost/independentpassed1426tests/14244source/2848800finiteoutputs andboundreports beforegzipentirerawheldout+allsource streams, deterministicmtime0 andfullSHAroundtrip; no pruning/rounding/labelorweightchange, no newtraining. Sourcepinned27e2339, uniqueclaim/intent/RPC handlesunknownsubmitwithoutretry. Largegzippedoutputs transferredseparatelybySCP/SFTP onlyafterpassedmanifest andSHAs, neverGit. Main17untilfullindependentacceptance.
+
+- 2026-11-06T19:31:16+08:00：1299/1300原全量谱训练成功已核验；1755/1757只读预检及1756/1758实际成功，计划SHA a04dfbce/f35c5f3a审阅通过。1759/1761执行器仅替换owned PENDING1335/1337及1338/1340，原训练不变。NequIP1767/1769及1768/1770、CGCNN1763/1765及1764/1766均已捕获实际COMPLETED/0:0；完整1426测试/285200标签与14244源/2848800预测均保持。NequIP1771全量gzip归档已通过，CGCNN1773归档已依赖提交，原始输出下载校验正在进行。主表仍17/48/502归档，只有完整证据归档通过才增加；不伪造物理门禁或跨seed结论。
+
+- 2026-11-06T19:31:16+08:00：补记临时检查器/阶段等待：初稿误用config.precision字段，检查实际config后改为现有dtype=float32，生成前失败无任何远程变更。首次review时1756/1758尚PENDING，父终态文件缺失而拒绝；等同一原记录器实际成功后重新观察并审阅通过。缺少review文件的本地execute包装也在任何SSH前拒绝。实际预检、后评、训练均未重提，检查标准未降低。
+
+- 2026-11-06T19:35:45+08:00：1299 NequIP声子谱微调已正式验收为第18格：原89/best59，1426测试/14244源/200通道，1767/1769及两记录器实际0:0，1771无损gzip及完整压缩-原字节SHA均通过。新增60科学归档、总562，原502 SHA和17格索引保留。CGCNN谱scratch的科学阶段均已通过，仅完整输出传输校验仍在同一原会话进行；未重提下载、训练或后评。
+
+- 2026-11-06T19:39:50+08:00：完成1299 NequIP谱微调和1300 CGCNN谱scratch完整科学验收，主表19/48、新增120归档共622，原502 SHA及17/18索引保留。两格完整1426测试/14244源200通道、八个科学阶段实际成功、全原始文件无损gzip及本地字节SHA通过；原训练不变，无新DFT。下一步继续原1301等队列与分子CUDA/原包对照门禁。
+
+- 2026-11-06T19:39:54+08:00：本次文档提交前检查全部通过：19/48、622科学归档SHA、原18格索引、单seed scope SHA、变更历史追加保留、最新状态/任务表计数、Markdown围栏及新增链接、临时控制AST和git diff --check。未导入Torch/NumPy，未执行本地模型或新增科学计算。
+
+- 2026-11-06T19:42:10+08:00：本次提交前检查已通过：19/48、全部622科学归档SHA、原18格索引及原17格前缀、固定scope SHA、两格完整1426/14244/200/15源/四成功阶段和无适用物理项、19已勾选/29未完成、状态/plan最新计数与追加历史、Markdown/新增链接/AST/diff。另核验194040队列40元数据SHA和十个原请求身份/资源/987干净源码；仍排队，不计CUDA验收。无本地Torch/NumPy或新增数值计算。
+
+- 2026-11-06T19:42:41+08:00：最终仅文档检查通过：六文件均小于10MiB、UTF8/围栏/新增链接、旧历史与追加日志保留、19/48与622最新计数、19/29勾选、git diff --check。完整622科学SHA及两格协议已在本单元前一检查通过，此后无科学文件或执行源码修改。补记队列临时检查器首次按2:00显示形式比较失败，实际Slurm为00:02:00；改用原duration_seconds精确校验120/7200秒后，40元数据及十身份/资源复检通过，未修改资源或标准。

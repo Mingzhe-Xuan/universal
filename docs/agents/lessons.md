@@ -374,3 +374,5 @@
 - 2026-11-06T16:27:24+08:00: Windows diagnostic/control generators must explicitly read_text/write_text encoding=utf8 when source contains Chinese state-history markers. Default locale can produce mixed encodings in generated Python; AST-validation of an in-memory string alone does not prove the written file is UTF8. Inspect/parse final UTF8 bytes before remote submission. This affected only a local temporary dispatcher and was fixed before GPU submission; tracked source/data were unchanged.
 
 - 2026-11-06T19:16:01+08:00：大结果传输中断后应先检查已退出的SCP和现存.partial大小，不覆盖前缀重下。此次all-source gzip28,014,749B在16,416,768B处中断，使用同一远端路径的SFTP reget成功续传；必须同时核验完整压缩SHA与解压后原字节SHA，之后才原子改名和计入验收。登录成功、TCP连接和传输完成是不同证据；确认用户手动可登录后可重试普通ClearAllForwardings会话，不需重装torch或重提交Slurm作业。
+
+- 2026-11-06T19:42:10+08:00：观察大文件传输时，本地目录的临时文件大小只是间接信息。本次两份约28MB的all-source gzip曾在目录查询中显示0字节，但同一原SFTP会话最终实际退出0、完整字节与SHA全部通过。不能仅凭一段时间大小不增长认定进程失败或重启；轮询同一有效工具handle，明确终态后才续传。只读本任务精确父子进程查询未发现匹配项时，也须回到原handle确认退出，不结束其他SSH会话。

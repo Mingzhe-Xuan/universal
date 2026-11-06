@@ -1020,3 +1020,19 @@
 - 2026-11-06T18:59:52+08:00: OrdinarySSH firstSHAverify/pullpublished then submitCPU1/4G20min stdlibSlurm lossless fullspectrumartifactarchive afterok1751:1752 andCPU1/1G2minafterany; no model execution. Requirefullpost/independentpassed1426tests/14244source/2848800finiteoutputs andboundreports beforegzipentirerawheldout+allsource streams, deterministicmtime0 andfullSHAroundtrip; no pruning/rounding/labelorweightchange, no newtraining. Sourcepinned27e2339, uniqueclaim/intent/RPC handlesunknownsubmitwithoutretry. Largegzippedoutputs transferredseparatelybySCP/SFTP onlyafterpassedmanifest andSHAs, neverGit. Main16untilfullindependentacceptance.
 
 - 2026-11-06T19:14:50+08:00：CGCNN谱微调1298正式独立验收17/48；完整1426测试/14244源200通道，1749/1751及两个记录器实际0:0，1753无损gzip及本地全部原始SHA通过。新增60归档、总502，原442份和原16格索引保留；直接谱通道无导数物理适用项。自动SSH/pull恢复，结果从16.4MB前缀SFTP续传成功，未重提训练或改seed。19:11:48分子五组GPU仍排队、1300运行；CUDA/original-parity/formal-ready不作通过声明。
+
+- 2026-11-06T19:19:37+08:00：前一轮为实际进展：17/48验收、502科学归档和完整谱结果续传SHA通过。本单元检查原1299 NequIP谱微调与1300 CGCNN谱scratch；以实际完整训练、原best/成功终态/来源、11394/1424/1426与200通道为准，继续完整1426测试/14244源推理及禁止模型的独立验证。不重训、不改seed或缩减协议；只在原owned PENDING后评身份及全上下文预检/审阅计划通过后做资源替换。大文件Slurm无损gzip后独立传输，保留原17格502哈希。分子/冻结/高阶/生成/论文范围不变。
+
+- 2026-11-06T19:21:14+08:00：已核验1299 NequIP谱微调89轮/best59及1300 CGCNN谱scratch53轮/best23；完整11394/1424/1426、seed123/f32及原成功训练终态分别由1444/1441保留。原后评1335/1337和1338/1340确为PENDING。准备同已验收27e2339、保持完整200通道/14244推理的Slurm只读上下文预检，再审阅2h后评/1h独立验证/两afterany四阶段计划后才资源替换。临时payload AST及精确case/best/epochs/observer/旧ID绑定检查通过；NequIP使用其已注册环境，未修改模型/数据/指标或重训。主表仍17/48。
+
+- 2026-11-06T19:26:15+08:00: OrdinarySSH firstSHAverify/pullpublished then submitCPU1/4G20min stdlibSlurm lossless fullspectrumartifactarchive afterok:1769:1770 andCPU1/1G2minafterany; no model execution. Requirefullpost/independentpassed1426tests/14244source/2848800finiteoutputs andboundreports beforegzipentirerawheldout+allsource streams, deterministicmtime0 andfullSHAroundtrip; no pruning/rounding/labelorweightchange, no newtraining. Sourcepinned27e2339, uniqueclaim/intent/RPC handlesunknownsubmitwithoutretry. Largegzippedoutputs transferredseparatelybySCP/SFTP onlyafterpassedmanifest andSHAs, neverGit. Main17untilfullindependentacceptance.
+
+- 2026-11-06T19:26:26+08:00: OrdinarySSH firstSHAverify/pullpublished then submitCPU1/4G20min stdlibSlurm lossless fullspectrumartifactarchive afterok:1765:1766 andCPU1/1G2minafterany; no model execution. Requirefullpost/independentpassed1426tests/14244source/2848800finiteoutputs andboundreports beforegzipentirerawheldout+allsource streams, deterministicmtime0 andfullSHAroundtrip; no pruning/rounding/labelorweightchange, no newtraining. Sourcepinned27e2339, uniqueclaim/intent/RPC handlesunknownsubmitwithoutretry. Largegzippedoutputs transferredseparatelybySCP/SFTP onlyafterpassedmanifest andSHAs, neverGit. Main17untilfullindependentacceptance.
+
+- 2026-11-06T19:31:16+08:00：1299/1300原全量谱训练成功已核验；1755/1757只读预检及1756/1758实际成功，计划SHA a04dfbce/f35c5f3a审阅通过。1759/1761执行器仅替换owned PENDING1335/1337及1338/1340，原训练不变。NequIP1767/1769及1768/1770、CGCNN1763/1765及1764/1766均已捕获实际COMPLETED/0:0；完整1426测试/285200标签与14244源/2848800预测均保持。NequIP1771全量gzip归档已通过，CGCNN1773归档已依赖提交，原始输出下载校验正在进行。主表仍17/48/502归档，只有完整证据归档通过才增加；不伪造物理门禁或跨seed结论。
+
+- 2026-11-06T19:35:45+08:00：1299 NequIP声子谱微调已正式验收为第18格：原89/best59，1426测试/14244源/200通道，1767/1769及两记录器实际0:0，1771无损gzip及完整压缩-原字节SHA均通过。新增60科学归档、总562，原502 SHA和17格索引保留。CGCNN谱scratch的科学阶段均已通过，仅完整输出传输校验仍在同一原会话进行；未重提下载、训练或后评。
+
+- 2026-11-06T19:39:50+08:00：完成1299 NequIP谱微调和1300 CGCNN谱scratch完整科学验收，主表19/48、新增120归档共622，原502 SHA及17/18索引保留。两格完整1426测试/14244源200通道、八个科学阶段实际成功、全原始文件无损gzip及本地字节SHA通过；原训练不变，无新DFT。下一步继续原1301等队列与分子CUDA/原包对照门禁。
+
+- 2026-11-06T19:42:10+08:00：第18/19格验收、622归档及完整矩阵勾选更新完成；19:40:40原1301仍RUNNING27:48，五组原分子CUDA及记录器仍PENDING，40元数据与身份/资源已核验。两大传输均实际退出0，不留未知下载重试或新训练。准备提交推送并用已批准的小型离线bundle同步文档。
