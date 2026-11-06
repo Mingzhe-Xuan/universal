@@ -383,3 +383,9 @@ frozen case. It requires the original successful CUDA preparation and independen
 gate terminal proofs, replays the complete full-data gate and refuses duplicate,
 foreign or ambiguous claims. `--check-only --plan-output NEW_JSON` saves a
 reviewable plan without submission. Planning and submission require CPU Slurm.
+
+`prepare_rmd17.py` and `.slurm` convert the complete pinned author ethanol NPZ,
+requiring CPU Slurm, four original checksums and a fresh output directory. They
+retain all100000 nonperiodic frames and the declared900/100/99000 split with a
+separate original1000-test cohort. See the
+[source, units and split contract](../src/universal_gnn/data/preparation/rmd17/README.md).

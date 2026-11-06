@@ -1,5 +1,9 @@
 # Full fixed-release preparation
 
+The separate [rMD17 module](rmd17/README.md) converts the complete pinned ethanol
+NPZ into nonperiodic dataset-v1 JSONL and the declared900/100/99000 split, retaining
+the original author1000-test cohort. It does not change any primary crystal dataset.
+
 This module streams every record from the fixed JARVIS 2022 bandgap archive
 (Figshare 38521619) or interpolated DOS archive (29216859). Run through Slurm:
 

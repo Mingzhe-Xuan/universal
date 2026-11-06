@@ -1532,3 +1532,23 @@ CGCNN声明为 `fixed_frame_components`，不保证张量O3旋转协变。原五
 证据位于忽略目录 `results/paper-completed-20261105/seed-123--dielectric--cgcnn--pretrained/` 和对应 `scratch/`；
 资源调整/实际观测分别位于 `results/paper-finite-cgcnn-dielectric-pretrained-20261106/`、`results/paper-finite-cgcnn-dielectric-scratch-20261106/`。
 1294 MACE介电微调继续运行。剩余36格及原定冻结/高阶/分子/插件/成本来源工作均保留，下一独立实现单元为rMD17标准转换及固定划分。
+
+### 12.30 rMD17标准转换实现及独立验收计划
+
+新增[data/preparation/rmd17](../../src/universal_gnn/data/preparation/rmd17/README.md)：
+`source.py`固定四份作者文件大小/SHA/MD5并检查全部七数组；`partitions.py`生成固定开发池划分与官方测试子集；
+`conversion.py`流式写标准JSONL和完整源/划分/单位审计。公开入口为 `prepare_rmd17(raw_directory, output)`，
+CLI为 `scripts/prepare_rmd17.py` 及 `.slurm`，完整处理必须在Slurm，输出目录必须新建。
+
+新版能量/力分别转为每结构总eV、eV/Å，力不改符号，能量不除以原子数；旧标签不参与监督。
+热化学kcal与SI2019常数的换算因子按50位十进制计算后保存为float64，并记录于审计；
+坐标保持原Å值、不平移/包裹，PBC逐轴false，单位矩阵仅为非周期格式占位。
+全部100000帧均保留，官方1000开发池内按固定ID哈希取100验证/900训练，剩余99000完整测试，
+原官方1000测试索引另外保存为 `evaluation_cohorts.official_test_01`。不删除有限零标签或长尾样本。
+发现跨分区完全相同几何时显式失败，不悄悄移动/筛掉记录；MD时间相关性限制继续保留。
+
+本地14项新纯stdlib控制及原JARVIS/MLearn/GMTNet/Perov-5/划分/单seed回归共48项，47通过，
+仅原有GMTNet NumPy二进制fixture明确留待Slurm。AST/Bash、模块README/链接/格式、源历史及原关键代码未变检查通过。
+下一步将已提交源码固定到新缓存，在CPU Slurm执行全部48项零skip、真实100000帧转换，
+再用独立CPU作业从原NPZ逐条复核所有ID、坐标、能量/力单位与数值、完整划分/官方子集及标准loader读取。
+当前只是实现及本地控制，真实完整转换、分子图适配和训练均未据此宣称完成；主表仍12/48，所有其余范围保留。
