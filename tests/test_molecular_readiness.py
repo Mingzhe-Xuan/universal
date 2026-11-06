@@ -1,6 +1,7 @@
 """Pure adversarial preparation checks; fixtures are never numerical evidence."""
 
 import copy
+from contextlib import contextmanager
 import getpass
 import json
 import os
@@ -14,6 +15,16 @@ from unittest.mock import patch
 from universal_gnn.benchmarks.experiments.registry import canonical_digest
 from universal_gnn.benchmarks.molecular.source import COUNTS
 from universal_gnn.benchmarks.molecular.readiness import contracts, evidence, runtime
+
+
+@contextmanager
+def working_directory(path):
+    previous = Path.cwd()
+    os.chdir(path)
+    try:
+        yield
+    finally:
+        os.chdir(previous)
 
 
 def capacity():
@@ -75,7 +86,7 @@ class MolecularReadinessTests(unittest.TestCase):
             with self.assertRaises(ValueError): contracts.checked_probe(broken, source, new_graph)
 
     def test_task_path_escape_and_modified_file_are_rejected(self):
-        with tempfile.TemporaryDirectory() as directory, patch("os.getcwd", return_value=directory):
+        with tempfile.TemporaryDirectory() as directory, working_directory(directory):
             root = Path(directory); (root/"runs").mkdir()
             good = root/"runs/report.json"; good.write_text("{}", encoding="utf8")
             record = evidence.Evidence(); record.read(good)
@@ -109,7 +120,7 @@ class MolecularReadinessTests(unittest.TestCase):
         return terminal_path, report_path, terminal, save
 
     def test_retained_parent_checks_requests_reports_resources_and_owner(self):
-        with tempfile.TemporaryDirectory() as directory, patch("os.getcwd", return_value=directory), \
+        with tempfile.TemporaryDirectory() as directory, working_directory(directory), \
                 patch.object(evidence, "source_pinned") as pin:
             terminal_path, report_path, original, save = self.retained_fixture(Path(directory))
             self.assertEqual(evidence.successful_parent(evidence.Evidence(), terminal_path, report_path)["job"], "100")
@@ -130,7 +141,7 @@ class MolecularReadinessTests(unittest.TestCase):
             with self.assertRaises(ValueError): evidence.successful_parent(evidence.Evidence(), terminal_path, report_path)
 
     def test_missing_cuda_never_exports_a_ready_configuration(self):
-        with tempfile.TemporaryDirectory() as directory, patch("os.getcwd", return_value=directory), \
+        with tempfile.TemporaryDirectory() as directory, working_directory(directory), \
                 patch.dict(os.environ, SLURM_JOB_ID="500"), \
                 patch.object(runtime, "ENVIRONMENTS", {"cgcnn": Path(sys.prefix).name}):
             output = Path(directory)/"runs/check"
@@ -148,7 +159,7 @@ class MolecularReadinessTests(unittest.TestCase):
             self.assertFalse(list(output.glob("config.*")))
 
     def test_empty_graph_stream_cannot_certify100000_records(self):
-        with tempfile.TemporaryDirectory() as directory, patch("os.getcwd", return_value=directory):
+        with tempfile.TemporaryDirectory() as directory, working_directory(directory):
             root = Path(directory)/"runs/graph"; root.mkdir(parents=True)
             source = root/"source-graph-sizes.jsonl"; source.touch()
             training = root/"training-graph-sizes.jsonl"; training.touch()

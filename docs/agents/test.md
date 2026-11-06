@@ -2003,3 +2003,13 @@
 - 2026-11-06T21:46:23+08:00：分子联合准备门禁已实现于molecular/readiness独立模块及README/CLI，验证原CUDA全100000图/900统计、原同质100+混合100与typed-OOM配对链、每初始化原力/应力FD及几何/混合梯度、900帧CPU原网络对照和精确请求/保留成功终态/source/version/config/SHA闭合，导出仅已核验resolved配置。passed仅为preparation_gate_passed；formal_training_ready固定false，正式预算/启动/900拟合/99000与作者cohort质量另计。新9项及相关47项、原预测评测17项合计73纯检查全部通过，零失败/跳过，CLI帮助/导入不加载Torch或NumPy，AST通过。正向联合门禁仍待实际CUDA报告，单元fixtures不算数值验收；下一步提交同步后CPU Slurm73及五原PENDING缺失证据拒绝检查，不加GPU/训练。
 
 - 2026-11-06T21:46:24+08:00：提交前全部检查通过：20/48及全部682科学SHA、原19格索引、9分子初始化/8100帧与183补充SHA、formal-ready/CUDA/质量边界、20已验收/28未完成勾选、scope SHA保持、追加历史、UTF8/小文件/围栏/新增链接、生产与数值代码无改动、git diff --check。实际9/12纯检查及对应900数值已由各Slurm成功父终态和源码绑定验收，此后仅更新文档，无本地Torch/NumPy或重跑模型。
+
+- 2026-11-06T21:49:57+08:00：长作业版本隔离计划：根仓库仍每次连接先校验/pull已推送提交；对该已确认本地Git remote仅做git clone --shared到新runs/source-checkouts/COMMIT，不用编辑器/patch改服务器源码。确认data/models/runs均不在Git受管树后只链接共享忽略数据/模型/结果，cache受管源必须HEAD固定且git status clean，已有目录不覆盖。后续Slurm显式cd缓存/PYTHONPATH缓存src并验证实际包路径，保护长训练不受根仓库后续pull影响。现阶段仅Git/路径轻量检查，GPU导入/数值仍须Slurm。
+
+- 2026-11-06T21:50:09+08:00：原1304 MACE预训练谱完成第21格独立验收：完整57/best27，1426测试/14244源200通道、15源及四科学Slurm阶段成功，1813无损归档/完整下载原字节SHA通过。新增60归档，总742，原682及20格索引保留。所有训练仍seed123，剩余27格及冻结/高阶/分子/生成/原头/来源/成本/论文范围不减；联合门禁8e29dc4已推送，下一步固定缓存CPU73/五组缺失CUDA拒绝检查后继续原1307与真实CUDA队列。
+
+- 2026-11-06T21:53:27+08:00：实际Slurm1815/1816保留失败/afterany成功：73纯检查中1失败3错误均为新路径fixture，Linux Python3.10 pathlib缓存访问器未采用mock os.getcwd，导致临时目录不在真实cwd/runs下；其余69项通过，负向CUDA检查未进入，不计任何准备验收。修复计划仅将四项fixture切换为进入真实TemporaryDirectory并finally恢复cwd，保留所有原拒绝断言/路径边界，源码checker/原模型/数值/worker不改。重跑同73本地与新固定source CPU Slurm，原1815/1816失败归档保留，不重跑GPU。
+
+- 2026-11-06T21:54:06+08:00：提交前科学/文档检查通过：21/48及全部742科学SHA、原20格索引、9分子初始化/8100帧与183补充SHA、formal-ready/CUDA/质量边界、21已验收/27未完成勾选、scope SHA保持、追加历史、UTF8/小文件/围栏/新增链接、生产与数值代码无改动、git diff --check。新增联合准备代码的实际服务器纯检查状态另行记录，不以此文档检查代替；无本地Torch/NumPy或重跑模型。
+
+- 2026-11-06T21:54:28+08:00: Corrected only four path-test fixtures to use a real temporary working directory with finally restoration; all original path escape/hash/request/resource/negative scope assertions retained. Same73 local pure tests now pass, zero failure/error/skip, AST/noTorch-NumPy and all925 scientific SHA (742 primary+183 parity)/21-48 matrix and append-only histories checked. Actual failed1815/1816 retained; fixed Linux Slurm rerun still required. No production checker/model/worker changed.
