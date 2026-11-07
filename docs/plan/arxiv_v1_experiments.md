@@ -2316,3 +2316,19 @@ AUROC修复固定源fdeee4b的实际1953/1954均COMPLETED/0:0，同34纯测试�
 1324失败诊断阶段完成：2007/2008实际双COMPLETED/0:0；CPU weights_only检查原last779张量/52133888浮点值及best201张量/17387046浮点值全部有限，完整13轮历史/骨干梯度、optimizer、CPU/CUDA RNG及best选模状态保留，配置和五项原输入SHA前后不变，205固定源码Gitblob及35诊断归档通过。没有GNN/模型构造/forward/CUDA/训练，不把异步isfinite栈当超时kernel根因，也不把checkpoint完整当正式resume接受。19:23完整队列426归档确认NequIP1314/1321均300轮训练成功待质量，ALIGNN1324第13轮后CUDA launch timeout失败，1327在19:34实际RUNNING/13轮、四后续PENDING，13进度SHA闭合、磁盘116.94GiB。恢复策略保持正式fresh-only口径：下一阶段完整核验1324原失败/终态和四失效后续身份，保留失败case与launch现场，以原source/官方artifact/seed123/batch/完整11356-3787-3785/300cap-pat30配方新建一次完整fresh重试和质量链；不将13轮checkpoint偷偷warm-start或放宽fresh验证，不因非OOM减batch，不循环盲目重试。该重试尚未提交，也未移动/取消任何原目录或作业；必须先完成具体恢复计划和原数据/请求映射检查。主24/48与全部补充范围保持。
 
 实际CPU诊断证明为 `results/paper-generation-1324-diagnosis-20261107/accepted-4f98a72/verified.json`。原last297855016B、best158694127B权重仍保留服务器；本地35归档保存实际全张量有限性/RNG/optimizer/selection检查、原SHA/配置/事件、完整失败栈和精确请求/终态，没有把两份大权重伪称为已下载。完整队列证据为 `results/paper-campaign-audit-20261107/192320/verified.json`，状态24科学接受/20训练排队/2生成训练成功待质量/1失败/1运行；40生成阶段、20分子CPU与10CUDA仍待推进。当前源码规模单元已完成且不受该GPU失败影响。
+
+
+### 12.84 失败生成格的保留归档及原配方完整重试
+
+1324原配方完整fresh重试已实际部署并独立验收：2009/2010只读计划与2011/2012部署/记录器四作业均0:0；18身份/资源拒绝场景、六新held阶段及12优先级/依赖拒绝场景、两次原17be训练/4347质量完整门禁通过。只对1496/1497/1498/1499先逐项确认PENDING/owner/token/源码/请求SHA后hold并精确CANCELLED；原失败1324 case七文件、launch22文件及两日志共31文件完整移入任务runs/recovery/CASE/failed-1324-v1，含原last/best的全字节SHA/大小均前后保持；原权重未下载或删除。新2013训练/2014 afterany、2015质量/2016 afterany、2017独立评测/2018 afterany共六请求，先全部held校验后按子级→训练父级释放，均实际PENDING、Nice0且自然优先级非零。训练脚本与原1324、四质量/后评脚本与原1496–1499逐字节相同；train recorder仅替换原通用记录器的receipt路径，保持官方pretrained backbone、原随机头seed123、batch16、全11356/3787/3785、float32、300/pat30、原资源与1000attempt协议。没有resume/warm-start、OOM降batch、GNN改动或其他case优先级变更，没有新增独立case或科学接受。112部署归档及有效40生成请求视图通过，原40历史证明保留且仅覆盖替换四后续映射。20:15全48复核424归档：主24/48不变、21训练排队/两NequIP300轮完成待质量/1327运行28轮；20分子CPU和10CUDA仍原PENDING，磁盘117.04GiB。恢复部署单元完成，继续实际队列和全部原补充范围。
+
+| 阶段 | 新请求 | 依赖 | 固定源码 |
+|---|---:|---|---|
+| 原配方微调重跑 | 2013 | 正常优先级排队 | 17be214 |
+| 训练终态记录 | 2014 | afterany:2013 | 4347ca3 |
+| 1000attempt质量 | 2015 | afterok:2013 | 4347ca3 |
+| 质量终态记录 | 2016 | afterany:2015 | 4347ca3 |
+| 独立完整几何重算 | 2017 | afterok:2015 | 4347ca3 |
+| 独立阶段终态记录 | 2018 | afterany:2017 | 4347ca3 |
+
+部署证明为 `results/paper-generation-1324-fresh-retry-20261107/accepted-e77fbf4/verified.json`（112归档），包含原失败文件SHA/路径映射、真实hold/cancel及held→released记录、六请求与实际依赖、原准备重验和纯元数据拒绝控制。服务器归档位于 `runs/arxiv-v1/recovery/seed-123--generation--alignn--pretrained/failed-1324-v1/`，`relocation.json`将原路径映射到完整保留文件；旧last/best只用于保存失败现场，不用于新训练初始化。有效生成请求仍40条，原历史40条证明未改写，只将1496–1499的当前映射换为2015–2018；原48唯一case和seed123范围不变。20:15部署后全局核验为 `results/paper-campaign-audit-20261107/201528/verified.json`（424归档）。本节证明部署成功，不代表2013已训练、2015已采样或新增主科学完成。
