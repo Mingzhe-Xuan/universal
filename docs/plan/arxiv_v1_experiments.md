@@ -2232,3 +2232,18 @@ AUROC修复固定源fdeee4b的实际1953/1954均COMPLETED/0:0，同34纯测试�
 这些是同源码、原batch/float32/线程1下共享主机的一次完整CPU工作流观测，包含模型加载/构图/导数或预测/写出；任务样本数与batch不同，主机/cache不受控，不宣称纯kernel、cold-cache、独占机器、磁盘峰值、跨seed或普遍预训练收益。此导出未再次执行模型，也未更改原主科学结果、权重或训练。完整范围仍为48主任务及原全部补充，生成质量仍需原1000attempt链实际完成。
 
 原1321 NequIP生成scratch只读巡检：11:19实际RUNNING、已完成38轮；原四阶段1489/1492/1494/1495仍PENDING，13请求/正式状态/事件元数据归档SHA及干净固定源码/owner/token/request通过；磁盘118.55GiB高于20GiB。没有新训练/推理、权重读取或修改优先级/原依赖，不把训练进度计为生成质量或第25格。
+
+
+### 12.79 分类的验证集阈值后评
+
+计划§5要求阈值仅用validation选择。原训练使用预先固定argmax，故增加独立[classification_assessment模块](../../src/universal_gnn/benchmarks/classification_assessment/README.md)，保留原训练、选best和原argmax指标，不重训或重新推理模型。新后评只消费完整CPU全源预测流及其SHA/字节；validation/test必须来自同一流，不把CPU验证概率和原GPU测试概率混为同一数值口径。
+
+| 文件 | 输入/输出与职责 |
+|---|---|
+| `selection.py` | 仅validation的ID/概率/整数标签→SQLite暂存和固定阈值；精确整数比较balanced accuracy |
+| `runtime.py` | 完整训练报告/全源CPU流/SHA/bytes→验证选择JSON、test指标、同流argmax对照及原heldout指标 |
+| `scripts/evaluate_classification_threshold.py` | CPU Slurm公开入口；固定干净源码、实际Git/Slurm与执行源码SHA留存 |
+
+候选为各不同分数、0.5及显式全负类规则，同分样本一起移动；最大validation balanced accuracy，同目标值按有限阈值距0.5最近、再更高阈值，最后才全负规则。需要validation两类均存在；不对单类伪造阈值。选定分数边界使用>=，与原argmax边界语义分别保留。`selection.json`先于test评分保存并冻结SHA；测试标签不进入选择函数，改变test标签的反事实测试验证选择不变。AUROC由同一概率排序计算，不随决策阈值改变。
+
+源/划分/best/完整header及全部有序ID/形状/有限性/完成marker和SHA前后闭合；报告分开记录validation所选test指标、同流argmax及不变原heldout，不声称CPU/GPU概率逐值相等。现有输出拒绝覆盖，单类/非法值/重复ID/被篡改的预测/权重/阈值与脏源码均拒绝。16新增及原34报告/预测后评共50纯标准库测试实际通过，无Torch/NumPy；实际CPU控制将使用真实Torch softmax的两dtype×原/测试标签反事实及两公开CLI共6小fixture，禁止模型加载/forward。固定提交后执行CPU1/4GiB/10min及afterany1GiB/2min；这些控制不是完整7590/7580分类实验，实际八分类仍等待原完整训练及后评链。

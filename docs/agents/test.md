@@ -2163,3 +2163,9 @@
 - 2026-11-07T11:22:11+08:00：同步核验原1321训练进度13元数据SHA、实际RUNNING/38轮、四原质量阶段等待及118.55GiB空间通过；无模型/科学数值重评，不计新增主科学格。
 
 - 2026-11-07T11:22:37+08:00：本地新归档检查器首次误将主索引的相对proof路径按cwd解析，修复为相对索引目录后又遇原首格旧proof没有status且SHA嵌套。已依据现有旧验收器保留的精确968身份/174轮/best144/164测试及递归SHA规范修复检查器，未修改旧proof、产物、测试阈值或922预期。随后完整检查实际通过；此前两次为本地元数据检查器兼容错误，没有远端任务失败或重试。
+
+- 2026-11-07T11:29:27+08:00：分类后评实现单元测试计划：新增模块单独README/CLI，输入完整训练报告+原全源预测SHA/bytes，复用严格source/split/best/header/ordered ID/shape/finite/completion检查；SQLite磁盘暂存验证集分数，以精确整数比较balanced accuracy、同分按阈值距0.5再更高阈值、全负类独立规则，阈值JSON必须先于测试指标冻结。测试正反/同分/极端0和1/全同分/单类拒绝/非法概率与bool/重复ID/空组/不覆盖已有文件/CLI无模型导入/完整分区/篡改SHA或best/测试标签反事实不改阈值/原指标及文件保持；API fixture只mock CPU softmax，纯标准库不导入Torch/NumPy。固定提交后Slurm实际CPU用真实torch softmax验证fixture算法/包版本和Git blob，零模型加载/forward；完整八分类以后另从实际全源输出独立后评，不以fixture计科学结果。不改变原训练、选best、阈值或现有后评报告。
+
+- 2026-11-07T11:40:04+08:00：分类验证集阈值后评已实现：selection/runtime模块及公开CLI独立于原训练/argmax指标；SQLite验证集分数、精确整数balanced accuracy比较、同分固定近0.5再更高阈值/全负规则、阈值文件先于测试评分冻结。同一完整CPU预测流的validation/test经原dtype CPU softmax，保留原heldout及同流argmax基线，不混用CPU/GPU概率或承诺相等。新增16及原34共50纯标准库测试实际全过，零失败/错误/跳过、无Torch/NumPy；包括测试标签反事实、同分/边界/单类/非法值、ID/SHA/best/冻结文件篡改/既有目录/脏源码拒绝。实际6个CPU fixture及固定提交源Slurm控制尚待执行，不计分类科学格。
+
+- 2026-11-07T11:41:09+08:00：分类后评提交前静态/文档检查通过：七新增文件AST/大小、独立模块README/CLI/计划模块表与链接路径、50纯测试零失败/错误/跳过及无Torch/NumPy、固定scope/主24索引SHA/321成本归档声明及422新全范围巡检SHA保持。已有production/src/scripts/tests均无修改，只新增分类后评；旧状态历史及所有日志/计划均追加保留，UTF8/围栏/diff通过。实际固定源50纯+6真实CPU fixture及其父/记录器终态仍待Slurm，不冒充分类科学结果；原24/48与全部补充范围保持。
