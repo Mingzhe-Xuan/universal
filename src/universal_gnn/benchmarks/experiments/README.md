@@ -64,3 +64,34 @@ Run `scripts/prepare_arxiv_pilot.py --matrix runs/arxiv-v1/definition-872/matrix
 through Slurm with `PYTHONPATH=src`. It writes `data/`, `configs/` and a manifest whose kind is
 `arxiv_v1_diagnostic_pilots`. Status is `prepared_not_launched`; no model or training is executed.
 Pilot definitions/results do not count toward the separate48 formal full-data runs.
+
+## Frozen input and definition archive
+
+`bundle.export_inputs` and `scripts/export_arxiv_inputs.py` package the unchanged947
+matrix and single-seed scope, only its48 active baseline configuration files, all
+five complete split/audit/exclusion files, the original registry and nonlearned
+CGCNN descriptors/NequIP author blueprint. The recorded raw download receipt is
+included if present. Every original file retains its bytes. The original144-case
+matrix is provenance; its96 excluded training-seed configurations are not exported
+as runnable configuration files.
+
+```bash
+PYTHONPATH=src "$UGNN_PYTHON" scripts/export_arxiv_inputs.py \
+  --repository . --matrix runs/arxiv-v1/definition-947/matrix.json \
+  --scope configs/arxiv_v1_scope.json --output runs/NEW-frozen-inputs
+```
+
+Use a clean committed checkout and CPU Slurm. The exporter scans all five JSONL
+sources and original artifact checksums before and after export, without loading
+a model/weight pickle, Torch or NumPy. It creates a fresh `frozen-inputs.zip` plus
+`report.json` with the external archive SHA/size. Its `manifest.json` binds every
+other regular member by bytes/SHA; archive readback checks membership, scope and
+all48 configuration digests, rejecting duplicate/unsafe/symlink/extra members.
+`verify_archive(path)` also supports subsequent readback without source datasets.
+
+This is a frozen-input archive, not a completed-results or final-trained-config
+package. Initial batch sizes are definitions; complete original-model/graph,
+paired CUDA capacity and train-only statistics preparation still determine runtime
+configurations. Structure JSONL files and learned weights remain separately
+required inputs with recorded checksums/sources. No sampling, training, submission,
+capacity-readiness or scientific-completion claim is made by successful export.

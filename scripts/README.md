@@ -396,3 +396,9 @@ blobs, through CPU Slurm without model dependencies. It retains per-file identit
 disjoint groups, mechanical line/statement counts and all excluded tracked paths.
 These are source-size counts, not minimum task implementation effort or performance.
 See the [counting contract](../src/universal_gnn/benchmarks/code_footprint/README.md).
+
+`export_arxiv_inputs.py --output runs/NEW-frozen-inputs` exports the exact fixed
+matrix/scope,48 active baseline configs, complete split/audit/exclusion metadata
+and resource provenance in a verified ZIP through CPU Slurm. It preserves source
+bytes and excludes structure JSONL/learned weights; runtime capacity/statistics
+preparation remains mandatory. See the [input archive contract](../src/universal_gnn/benchmarks/experiments/README.md#frozen-input-and-definition-archive).

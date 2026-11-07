@@ -2332,3 +2332,10 @@ AUROC修复固定源fdeee4b的实际1953/1954均COMPLETED/0:0，同34纯测试�
 | 独立阶段终态记录 | 2018 | afterany:2017 | 4347ca3 |
 
 部署证明为 `results/paper-generation-1324-fresh-retry-20261107/accepted-e77fbf4/verified.json`（112归档），包含原失败文件SHA/路径映射、真实hold/cancel及held→released记录、六请求与实际依赖、原准备重验和纯元数据拒绝控制。服务器归档位于 `runs/arxiv-v1/recovery/seed-123--generation--alignn--pretrained/failed-1324-v1/`，`relocation.json`将原路径映射到完整保留文件；旧last/best只用于保存失败现场，不用于新训练初始化。有效生成请求仍40条，原历史40条证明未改写，只将1496–1499的当前映射换为2015–2018；原48唯一case和seed123范围不变。20:15部署后全局核验为 `results/paper-campaign-audit-20261107/201528/verified.json`（424归档）。本节证明部署成功，不代表2013已训练、2015已采样或新增主科学完成。
+
+
+### 12.85 固定输入与配置定义的归档入口
+
+为§9/§11来源与配置交付补充 [固定输入归档](../../src/universal_gnn/benchmarks/experiments/README.md#frozen-input-and-definition-archive)和 `scripts/export_arxiv_inputs.py`：原947矩阵与单seed scope、48有效base配置、五完整split/audit/exclusion清单、registry及CGCNN描述符/NequIP作者蓝图以原字节导出ZIP，外层报告和逐成员manifest分别保存SHA与大小，重复/缺失/符号链接/路径逃逸/多余模型成员或虚构完成状态拒绝。输出保留144原矩阵作为来源，只导出48有效配置，不调度96退出seed；归档前后完整重验五源JSONL与官方资源哈希，不加载模型或权重pickle。
+
+这些是原base定义，初始batch与train-only统计仍须经原完整预检形成最终配置；归档不替代最终训练配置、容量资格或48结果。结构JSONL与学习权重不打包，来源/校验见registry与原审计；归档仅本地/任务目录准备，未对外发布。12项标准库控制已实际通过，完整115730记录的CPU扫描/导出/独立重读尚待固定源Slurm验收，主24/48及原队列不变。
