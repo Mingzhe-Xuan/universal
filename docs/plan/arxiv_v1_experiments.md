@@ -2296,3 +2296,16 @@ AUROC修复固定源fdeee4b的实际1953/1954均COMPLETED/0:0，同34纯测试�
 计划§5的源码规模补充使用 [code_footprint 模块](../../src/universal_gnn/benchmarks/code_footprint/README.md)与 `scripts/measure_code_footprint.py`：固定Git提交→13个不重叠实现边界、逐文件Git blob/SHA、字节/物理行/非空行/AST语句及JSON/Markdown/TSV。分别列共享契约/读出/任务/引擎/骨干基础、四官方provider与最小KNN+GCN插件及其配置；共享代码只计一次。上游安装包、非选中provider、图/数据服务、实验机器、测试和文档不属于本次边界，所有未选tracked路径均列出。这是明确范围的源码规模，不能推断新增一种性质的最小代码量、开发时间、整个项目/原GNN大小或性能优劣。
 
 15项纯标准库控制已通过；实际固定源完整清单、独立原blob计数、公开CLI和原科学输入不变检查将通过CPU Slurm执行，不需要Torch/NumPy/GNN/GPU、网络或新训练。当前尚未把软件实现当作完整清单接受，主24/48及全部原队列保持。
+
+源码规模补充现已实际接受：固定4f98a72，CPU2005/2006均0:0，15标准库控制、205固定源码Gitblob及完整71文件独立重数通过；117归档位于 `results/paper-source-footprint-20261107/accepted-4f98a72/verified.json`，同级 `report.json`、`summary.md`、`files.tsv` 保留明确边界/全部原blob/排除路径/计数与来源。205是固定源码字节核验范围，不是动态执行覆盖率；无Torch/NumPy/GNN/GPU或新训练。原2003的外围摘要误用失败及2004终态保留，v2同时核验原矩阵字节SHA e3258455与canonical b792524e，原文件不变。
+
+| 实现边界 | 文件数 | 物理行（含注释/docstring） | 非空行 |
+|---|---:|---:|---:|
+| cgcnn_adapter | 2 | 217 | 188 |
+| alignn_adapter | 2 | 160 | 139 |
+| mace_adapter | 1 | 105 | 92 |
+| nequip_adapter | 1 | 159 | 142 |
+| custom_knn_gcn_plugin | 3 | 79 | 67 |
+| custom_knn_gcn_configuration | 1 | 30 | 26 |
+
+另7个共享边界只计一次，全部13边界合计71文件/323880B/6088物理行/5251非空行/4500 AST语句节点；这不是边际新增任务代码量、开发工作量、全项目/上游GNN规模或性能比较。13:39原1321仍RUNNING/124轮、四质量后续PENDING，磁盘118.51GiB；主24/48及全部原实验范围保持。
