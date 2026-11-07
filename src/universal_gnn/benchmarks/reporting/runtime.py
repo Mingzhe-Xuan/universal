@@ -13,7 +13,7 @@ from .evidence import Inputs, accepted_case, sha
 
 SCOPE_SHA = "9b33ab3f987bd9476c24711b7e0adc39cb4abfee666840fe086c6aea31837ea7"
 METRICS = {"mae", "rmse", "mean_structure_frobenius_error", "mean_relative_structure_frobenius_error",
-           "auroc", "average_precision", "f1", "balanced_accuracy", "accuracy", "precision", "recall", "mcc"}
+           "roc_auc", "auroc", "average_precision", "f1", "balanced_accuracy", "accuracy", "precision", "recall", "mcc"}
 
 
 def identity(identifier):

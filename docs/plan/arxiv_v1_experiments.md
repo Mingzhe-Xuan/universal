@@ -2188,3 +2188,12 @@ MAE 0.003951320950783881，RMSE 0.01216744890083881，平均Frobenius 0.12593551
 完整下载器、16版严格成本接受器及同源24版成本合并导出器的AST已检查，尚未提前执行。合并保留八介电旧观测和16版新观测的原计时，不挑选最快重复或重做模型；同一941源码、原batch/float32/线程1，不代表主48或所有补充完成，不改变未知纯kernel/磁盘峰值字段的null口径。
 
 09:43:36成本已有10模型passed及保留父成功，余6运行且无失败，1949仍PENDING；旧live句柄清理不影响已存实际终态，不从子报告反推未知终态。09:47:44原1314生成RUNNING、286轮，1479/1483/1486/1487仍PENDING，13进度元数据SHA通过，磁盘118.68GiB。主24/48及922科学归档保持，完整计划继续。
+
+
+### 12.75 分类汇总的实际AUROC字段
+
+继续原实验时检查发现，实际BinaryClassificationMetrics生产器使用roc_auc，原reporter只登记auroc。原metrics JSON未改，但分类Markdown及同seed初始化差值会遗漏AUROC。仅在reporting/runtime.py的指标集合新增roc_auc并保留auroc兼容；原engine分类指标、模型、训练和所有已存科学结果不改。
+
+四个新纯控制先在旧代码实际重现缺键/非法值被忽略，再验证真实SQLite指标的正常和tied-score AUROC、完整分类元数据fixture的JSON/Markdown及原值/差值、双侧single-class null不编造AUROC，以及nan/inf/bool拒绝。原13报告及17预测后评加新4共34主测试全过，无Torch/NumPy或科学模型执行。新24格预览48row/24pair/12完整pair及952输入映射与原发布快照逐项相同，预览的未提交源码provenance明确false，不冒充新接受结果。固定新提交源的同34纯CPU控制/11源Git blob/实际终态仍待提交后验证；不以本地控制计分类或生成模型验收。
+
+原主24/48及922科学归档、16版成本1917–1952链保持；原1314生成10:06:35实际RUNNING、297轮，四原后续阶段仍PENDING，最新磁盘118.64GiB。生成汇总仍要求未来真实完整质量schema，未用预测schema或本次AUROC修复替代。

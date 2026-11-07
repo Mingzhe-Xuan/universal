@@ -15,6 +15,10 @@ measurements, plus24 pair slots. A complete pair must preserve data, split, head
 optimization and common batch; only initialization/native neighbor statistics
 and runtime component annotations are excluded from the protocol comparison.
 Differences are pretrained minus scratch. Missing measurements remain null.
+Classification tables and paired differences include the metric producer's
+`roc_auc` field; the older `auroc` spelling is also supported. Undefined
+single-class AUROC stays null in the original metrics and has no numeric paired
+difference. Metric values and the classification scorer are preserved.
 Process wall time includes train/validation/test/save; combined CPU post time is
 not isolated inference throughput. Final artifact bytes are not peak disk usage.
 Component effective parameter counts are declared upper bounds, not observed

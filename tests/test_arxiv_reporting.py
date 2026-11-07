@@ -14,6 +14,7 @@ from test_prediction_assessment import physics_fixture
 from universal_gnn.benchmarks.experiments.registry import DATASETS
 from universal_gnn.benchmarks.preflight import write_json as atomic_write_json
 from universal_gnn.benchmarks.reporting import evidence, runtime
+from universal_gnn.engine.evaluation.metrics import BinaryClassificationMetrics
 
 
 def scope_ids():
@@ -219,6 +220,85 @@ class ArxivReportingTests(unittest.TestCase):
         env=dict(os.environ,PYTHONPATH=str(Path("src").resolve()))
         result=subprocess.run([sys.executable,"-S","scripts/summarize_arxiv_results.py","--help"],env=env,capture_output=True,text=True,check=True)
         self.assertIn("--index",result.stdout)
+
+
+@contextmanager
+def classification_fixture(auc=(.8, .6)):
+    """Declared full counts test only the exporter, never actual model quality."""
+    with fixture() as (root, index, scope, cases):
+        source_sha, counts = DATASETS["jarvis-gap"]
+        train, validation, test = counts
+        for position, entry in enumerate(cases):
+            folder = index.parent / entry["case_id"]
+            identifier = entry["case_id"].replace("--spectrum--", "--classification--")
+            entry["case_id"] = identifier
+            trained = json.loads((folder / "report.json").read_text(encoding="utf8"))
+            trained["config"]["task"] = dict(kind="supervised", property="classification")
+            trained["config"]["batch_size"] = 32
+            trained["config"]["dataset"].update(sha256=source_sha,
+                bindings=dict(classification=dict(key="classification", unit="class")))
+            metrics = dict(classification=dict(roc_auc=auc[position], accuracy=.7-position*.1, structures=test))
+            trained.update(selected_structures=train, available_structures=sum(counts))
+            trained["heldout"].update(declared_train_structures=train, validation_structures=validation,
+                test_structures=test, structures=test, source_structures=sum(counts), metrics=metrics)
+            write_json(folder / "report.json", trained)
+            status = json.loads((folder / "formal-status.json").read_text(encoding="utf8"))
+            status["case_id"] = identifier
+            write_json(folder / "formal-status.json", status)
+            proof = json.loads((folder / "verified.json").read_text(encoding="utf8"))
+            proof.update(case_id=identifier, metrics=metrics)
+            for name in ["report.json", "formal-status.json"]:
+                proof["archived_sha256"][name] = evidence.sha(folder / name)
+            write_json(folder / "verified.json", proof)
+        data = json.loads(index.read_text(encoding="utf8"))
+        data["cases"] = cases
+        write_json(index, data)
+        yield root, index, scope, cases
+
+
+class RocAucReportingTests(unittest.TestCase):
+    def test_actual_metric_producer_key_and_tied_scores_are_exported(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for number, (scores, expected) in enumerate([([.1, .2, .3, .4], 1.), ([.5]*4, .5)]):
+                with BinaryClassificationMetrics(Path(directory) / (str(number)+".sqlite")) as accumulator:
+                    for score, target in zip(scores, [0, 0, 1, 1]):
+                        accumulator.update(score, target)
+                    measured = accumulator.result()
+                self.assertEqual(measured["roc_auc"], expected)
+                exported = dict(runtime.scalar_metrics(dict(classification=measured)))
+                self.assertEqual(exported["classification.roc_auc"], expected)
+
+    def test_complete_classification_pair_keeps_original_auc_and_signed_difference(self):
+        with classification_fixture() as (_, index, scope, __):
+            summary = runtime.build_summary(index, scope)
+            pair = next(row for row in summary["pairs"] if row["status"] == "complete")
+            self.assertEqual(pair["task"], "classification")
+            self.assertEqual(pair["differences"]["classification.roc_auc"],
+                dict(pretrained=.8, scratch=.6, pretrained_minus_scratch=.8-.6))
+            self.assertIn("classification.roc_auc", runtime.markdown(summary))
+            rows = [row for row in summary["rows"] if row["status"] == "independently_accepted"]
+            self.assertEqual([row["metrics"]["classification"]["roc_auc"] for row in rows], [.8, .6])
+            self.assertTrue(all(row["counts"] == dict(train=60823, validation=7590, test=7580) for row in rows))
+
+    def test_single_class_null_auc_is_retained_without_an_invented_difference(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with BinaryClassificationMetrics(Path(directory) / "single.sqlite") as accumulator:
+                for target in [1, 1]:
+                    accumulator.update(.75, target)
+                measured = accumulator.result()
+            self.assertIsNone(measured["roc_auc"])
+            self.assertNotIn("classification.roc_auc", dict(runtime.scalar_metrics(dict(classification=measured))))
+        with classification_fixture(auc=(None, None)) as (_, index, scope, __):
+            summary = runtime.build_summary(index, scope)
+            pair = next(row for row in summary["pairs"] if row["status"] == "complete")
+            self.assertNotIn("classification.roc_auc", pair["differences"])
+            rows = [row for row in summary["rows"] if row["status"] == "independently_accepted"]
+            self.assertTrue(all(row["metrics"]["classification"]["roc_auc"] is None for row in rows))
+
+    def test_nonfinite_and_boolean_auc_is_rejected_instead_of_silently_omitted(self):
+        for value in [float("nan"), float("inf"), True]:
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                list(runtime.scalar_metrics(dict(classification=dict(roc_auc=value))))
 
 
 if __name__=="__main__":unittest.main()
