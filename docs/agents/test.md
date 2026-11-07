@@ -2085,3 +2085,19 @@
 - 2026-11-07T01:23:53+08:00：实际1885 FAILED、1886记录器COMPLETED0:0：17纯检查中仅新AST证明失败，16通过；尚未进入29数值，不计真实模型恢复。Python3.10 ast.dump产生24045d...，本地3.12含FunctionDef.type_params导致3243b1...，硬编码AST序列化SHA并非跨版本源等价断言。仅修该测试：先按完整ad4518...SHA核验Git27旧源，再在相同解释器分别解析旧源和已按恒等helper归一的新源，直接比较完整AST；仍先核验新源5eb208...，原函数/源边界不放宽。生产恢复逻辑/模型/数值/统计/输入guard不改。同17本地纯检查须全过后提交，固定新源重做17纯+29CPU实际集成；1885失败与全部原计时/主队列保留，不盲目重提。
 
 - 2026-11-07T01:25:34+08:00: Portable AST fixture precommit verified: same17 pure checks passed; deleting only Python3.12 type_params metadata reproduces actual Linux3.10 hash24045d... exactly, proving the failed hardcoded AST SHA was interpreter metadata. New test binds both complete source SHAs and compares complete old/new AST under one interpreter. Only this test and append-only operational docs changed; production runtime untouched. AST/UTF8/source scope/gitdiff checks passed. Actual fixed-source17+29 rerun remains required.
+
+- 2026-11-07T01:28:32+08:00：长作业版本隔离计划：根仓库仍每次连接先校验/pull已推送提交；对该已确认本地Git remote仅做git clone --shared到新runs/source-checkouts/COMMIT，不用编辑器/patch改服务器源码。确认data/models/runs均不在Git受管树后只链接共享忽略数据/模型/结果，cache受管源必须HEAD固定且git status clean，已有目录不覆盖。后续Slurm显式cd缓存/PYTHONPATH缓存src并验证实际包路径，保护长训练不受根仓库后续pull影响。现阶段仅Git/路径轻量检查，GPU导入/数值仍须Slurm。
+
+- 2026-11-07T01:41:01+08:00：实际修复验收1887/1888均COMPLETED0:0：同17纯检查和29实际CPU数值项全过、零失败/跳过，13源码Git blob、旧1291报告/best SHA与JUnit/18控制归档通过。旧1885失败由跨Python AST元数据导致且保留，生产a2代码与941相同。真实legacy strict state/原归一化、全周期原输入/forward、错误PBC拒绝及fresh原校准拒绝均已证明，尚未计全8成本。原计时8actor全部真实终态，7成功/1869源码指纹拒绝；1883/1884仍确切owned PENDING死依赖，计划只hold/cancel此两项并立即保留终态。为保证所有成本行来自同一修复源码，重新安排完整八版941源/4999/B4/f32测量与全参考1e-12核验，共18CPU、零新GPU/训练；原八次含失败完整保留作为前一版本诊断，不选择最快结果、不跨源码拼主成本矩阵，不改主23/48或862原归档。
+
+- 2026-11-07T03:32:48+08:00: Original1313 ALIGNN spectrum scratch 150/best120, full11394/1424/1426/200channels,seed123/B32/f32/300cap-pat30; retained original training success. Preflight exact ownedPENDING1348/1349; full2h post/1h independent/two recorders, no training/data/protocol change. Main23 until complete scientific acceptance and lossless full downloads.
+
+- 2026-11-07T08:39:37+08:00: Exact archived successful preflight/parent terminal and full original1313 context reviewed; missing live handles are not inferred or rerun. Fullpost2h/verify1h/twoafterany planSHAc516059ab20b9fa9ac29dea8f57ff9a852455bbeb15b158538df467ea541b7f4 matchesallarchivedrequestbytes, exactownedPENDING1348/1349 andno scope cuts.
+
+- 2026-11-07T08:42:53+08:00: OrdinarySSH firstSHAverify/pullpublished then submitCPU1/4G20min stdlibSlurm lossless fullspectrumartifactarchive afterok:1913:1914 andCPU1/1G2minafterany; no model execution. Requirefullpost/independentpassed1426tests/14244source/2848800finiteoutputs andboundreports beforegzipentirerawheldout+allsource streams, deterministicmtime0 andfullSHAroundtrip; no pruning/rounding/labelorweightchange, no newtraining. Sourcepinned27e2339, uniqueclaim/intent/RPC handlesunknownsubmitwithoutretry. Largegzippedoutputs transferredseparatelybySCP/SFTP onlyafterpassedmanifest andSHAs, neverGit. Main17untilfullindependentacceptance.
+
+- 2026-11-07T08:48:03+08:00：本单元测试计划（仅文档归档）：逐文件核验实际1887/1888恢复控制18、统一941成本137、旧成本精确撤销5份SHA，检查实际17/29零失败跳过、8×4999完整输出正文SHA/原参考一致、9父成功证据及计时范围；原23格/862主归档与固定scope不变。检查UTF8、文档围栏/路径/链接、状态历史追加保留及git diff --check。预期文档准确记录实际验收，原失败/未知记录器限制保留，不运行本地模型或数值重评。
+
+- 2026-11-07T08:51:24+08:00：最终文档提交前检查通过：保留原2438归档SHA及23格汇总2输出/891输入，新增恢复18、统一八版成本137、精确撤销5、恢复连接全队列420，共3018归档SHA；17纯/29实际CPU数值及9成本科学父终态证明、八完整输出4999行/正文与原参考字节一致、准确成本表、scope/23勾选25未完成/UTF8/链接/围栏/追加历史/小文件及git diff --check通过。本地仅文件SHA/记录数/元数据检查，无模型或数值重评；生产源码未改，不重复已通过模型测试。
+
+- 2026-11-07T08:51:52+08:00：最终文档提交前检查通过：保留原2438归档SHA及23格汇总2输出/891输入，新增恢复18、统一八版成本137、精确撤销5、恢复连接全队列420，共3018归档SHA；17纯/29实际CPU数值及9成本科学父终态证明、八完整输出4999行/正文与原参考字节一致、准确成本表、scope/23勾选25未完成/UTF8/链接/围栏/追加历史/小文件及git diff --check通过。本地仅文件SHA/记录数/元数据检查，无模型或数值重评；生产源码未改，不重复已通过模型测试。
