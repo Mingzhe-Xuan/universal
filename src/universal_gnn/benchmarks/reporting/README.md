@@ -44,3 +44,10 @@ source Gitblobs and15 control artifacts verified. The accepted23-case snapshot
 contains48 rows/24 pair slots/11 complete pairs with891 input hashes and exact
 original metrics/costs. Its committed reporter source is bound explicitly; this
 software validation adds no scientific training result.
+
+AUROC-field correction: source `fdeee4b`, CPU Slurm1953/1954 both completed0:0;
+34 pure controls,11 source Gitblobs and15 archived control artifacts verified.
+The new committed24-case snapshot preserves the earlier24 rows,24 pair slots,
+12 complete pairs and952 input hashes exactly. These software/metadata controls
+add no scientific model result; generation still requires its actual formal
+quality schema before export.
