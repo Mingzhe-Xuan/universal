@@ -400,3 +400,5 @@
 - 2026-11-07T11:22:37+08:00：复核历史验收索引时，proof路径须相对索引所在目录解析。最早的968首格proof使用根目录verified.json、嵌套SHA且没有status；应复用其原精确case/job/完成轮次/best/test约束并递归核验所有SHA叶子，不能将新proof外形强加给旧记录或重写历史。
 
 - 2026-11-07T11:40:04+08:00：分类validation选阈值与测试评测应使用同一概率生成路径、dtype和checkpoint；完整CPU后评不可静默混接原GPU heldout概率并宣称完全相同。决策阈值只改变混淆矩阵/F1/balanced accuracy，不改变同分数上的AUROC；argmax的平局与概率>=阈值的平局语义也应分别记录。独立补充后评保留原结果，比改写原训练指标更利于审计。
+
+- 2026-11-07T12:22:12+08:00：Linux Slurm worker的元数据门禁在Windows做纯控制时，平台专用resource应延迟到实际run；虚拟远端文件表需明确POSIX路径及不访问本地文件的resolve语义，不把宿主Windows路径当远端契约。对已存JSON证明重放还要区分CRLF/LF格式与值：只验证规范化换行/全部语义相等，保留原文件字节和原SHA，不为格式差异覆盖历史。提交前草稿可版本化，unknown Slurm提交仍严格禁止重试。

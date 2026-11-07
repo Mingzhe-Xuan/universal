@@ -2175,3 +2175,11 @@
 - 2026-11-07T11:49:21+08:00：分类阈值后评固定源4d01907的1967/1968实际均COMPLETED/0:0：50纯检查零失败/错误/跳过、6个float32/float64原/测试标签反事实/公开CLI真实CPU softmax小fixture全部通过，207执行源码与Git blob及78份完整控制/fixture/原输入/SQLite/报告归档SHA已独立复核。Torch2.7.1+cu128，纯父进程无Torch/NumPy、实际子进程禁止torch.load和nn.Module调用，未加载或执行GNN。阈值固定、测试标签不影响选择、同流AUROC保持及原指标/权重/文件不变均通过；不计新科学格，实际八分类仍需原完整训练/独立后评及相应阈值补充。
 
 - 2026-11-07T11:50:28+08:00：实际分类软件验收文档提交前检查通过：固定4d源1967/1968双0:0、50纯/6真实CPU/207源/78控制及小fixture归档SHA再次闭合；Torch版本、父进程无Torch/NumPy、禁止模型加载/forward、源/请求/实际终态/6报告及CPU/float32-float64边界已核验。主24索引SHA、321成本接受绑定与scope保持，无新增科学格或原训练/结果修改；只更新文档/README，旧历史前缀、已存在证明路径、UTF8/围栏/词义和diff通过。完整八分类以后仍需各自7590验证/7580测试的真实后评，不以fixture代替。
+
+- 2026-11-07T11:56:54+08:00：完整分类阈值接线测试计划：新连接前记录用途并首先pull；静态/只读核验8个活跃seed123分类、原24科学父回执和24终态记录器、矩阵SHA/scope与固定207源。每新actor CPU1/4GiB20min afterok原verify与三个原终态记录器；记录器1GiB2min afterany；独立CPU1/4GiB20min afterok新actor/记录器，再afterany记录器，共32无GPU/训练。原父成功、request/receipt/terminal/report/inputSHA、完整counts/原指标/全流绑定必须在API前闭合，缺失/失败/错case/变更绑定拒绝；独立阶段用新输出重新做相同完整validation/test后评，比较阈值/全部指标/输入及原报告SHA，禁止任何模型load/forward。测试AST/Bash-n、精确依赖/资源/唯一claim/unknownRPC停止、未触碰旧队列/数据/主索引；记录器实际终态与源码证明必须留存。源4d已有50纯/6真实CPU验收不重复模型控制；完整八格真实数据/比较未完成前不接受质量或改主计数。
+
+- 2026-11-07T12:22:12+08:00：八分类完整阈值后评已一次提交1969–2000共32个CPU请求；每格assessment/afterany/独立完整重算/afterany，actor与独立各1CPU/4GiB20min，记录器1CPU/1GiB2min，无GPU/训练。固定已实际通过50纯/6真实CPU控制的4d01907及207执行源；actor afterok原verify和原train/post/verify三个终态记录器，独立afterok新actor与记录器，全部32仍PENDING。48原科学/记录器身份、请求/源码/资源/依赖保持，303新归档SHA及原矩阵/scope/source/best/完整输入约束通过；未提前接受八分类质量或增加主24格。
+
+- 2026-11-07T12:22:12+08:00：本地门禁控制先因Windows没有resource模块、Linux虚拟文件表与Windows反斜线失配失败；将仅Linux执行阶段使用的resource移入run，元数据fixture明确使用POSIX路径语义后，4主/14拒绝场景零失败/错误/跳过，无Torch/NumPy。准备器一次旧证明重检失败是CRLF/LF格式字节差异：仅规范化换行比较同一内容并保持原证明字节不写，既有review语义逐项相等才复用，旧未提交草稿保留；最终v3正文/AST/Bash/SHA检查通过且仅提交一次。没有远端科学失败、阈值放宽或重复训练/提交。
+
+- 2026-11-07T12:26:23+08:00：完整分类阈值接线提交前检查通过：原48父/终态记录器的148初始归档和新32请求303归档SHA、207实际源码/Gitblob、16actor/verifier与16afterany的实际owner/token/source/CPU/内存/时限/noGPU/依赖/请求SHA均闭合。4纯元数据控制零失败/错误/跳过，v3实际body与受测worker逐字相同，16 AST/Bash-n及声明完整60823/7590/7580/source75993/原0:0和必需输入绑定通过；32新任务PENDING不算实际评分。主24索引SHA/原成本绑定、scope及全部科学原值保持；仅文档变更，追加历史/UTF8/围栏/证明路径/diff通过，不重复已验收50纯/6真实CPU或任何GNN。原1321快照71轮/剩余118.52GiB仍保留各自观察时间。

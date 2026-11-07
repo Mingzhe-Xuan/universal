@@ -2249,3 +2249,27 @@ AUROC修复固定源fdeee4b的实际1953/1954均COMPLETED/0:0，同34纯测试�
 源/划分/best/完整header及全部有序ID/形状/有限性/完成marker和SHA前后闭合；报告分开记录validation所选test指标、同流argmax及不变原heldout，不声称CPU/GPU概率逐值相等。现有输出拒绝覆盖，单类/非法值/重复ID/被篡改的预测/权重/阈值与脏源码均拒绝。16新增及原34报告/预测后评共50纯标准库测试实际通过，无Torch/NumPy；实际CPU控制将使用真实Torch softmax的两dtype×原/测试标签反事实及两公开CLI共6小fixture，禁止模型加载/forward。固定提交后执行CPU1/4GiB/10min及afterany1GiB/2min；这些控制不是完整7590/7580分类实验，实际八分类仍等待原完整训练及后评链。
 
 分类阈值后评固定源4d01907的1967/1968实际均COMPLETED/0:0：50纯检查零失败/错误/跳过、6个float32/float64原/测试标签反事实/公开CLI真实CPU softmax小fixture全部通过，207执行源码与Git blob及78份完整控制/fixture/原输入/SQLite/报告归档SHA已独立复核。Torch2.7.1+cu128，纯父进程无Torch/NumPy、实际子进程禁止torch.load和nn.Module调用，未加载或执行GNN。阈值固定、测试标签不影响选择、同流AUROC保持及原指标/权重/文件不变均通过；不计新科学格，实际八分类仍需原完整训练/独立后评及相应阈值补充。证明位于 `results/paper-classification-threshold-checks-20261107/accepted-4d01907/verified.json`。实际八分类需分别保留完整7590 validation/7580 test、源75993和原SHA/初始化/阈值协议，不以6结构小fixture代替。
+
+
+### 12.80 八个完整分类阈值后评的自动后续链
+
+八分类完整阈值后评已一次提交1969–2000共32个CPU请求；每格assessment/afterany/独立完整重算/afterany，actor与独立各1CPU/4GiB20min，记录器1CPU/1GiB2min，无GPU/训练。固定已实际通过50纯/6真实CPU控制的4d01907及207执行源；actor afterok原verify和原train/post/verify三个终态记录器，独立afterok新actor与记录器，全部32仍PENDING。48原科学/记录器身份、请求/源码/资源/依赖保持，303新归档SHA及原矩阵/scope/source/best/完整输入约束通过；未提前接受八分类质量或增加主24格。
+
+| 模型 | 初始化 | 阈值后评 | 后评记录器 | 独立重算 | 重算记录器 |
+|---|---|---:|---:|---:|---:|
+| alignn | pretrained | 1977 | 1978 | 1979 | 1980 |
+| alignn | scratch | 1981 | 1982 | 1983 | 1984 |
+| cgcnn | pretrained | 1969 | 1970 | 1971 | 1972 |
+| cgcnn | scratch | 1973 | 1974 | 1975 | 1976 |
+| mace | pretrained | 1985 | 1986 | 1987 | 1988 |
+| mace | scratch | 1989 | 1990 | 1991 | 1992 |
+| nequip | pretrained | 1993 | 1994 | 1995 | 1996 |
+| nequip | scratch | 1997 | 1998 | 1999 | 2000 |
+
+执行前再次检查原三阶段receipt/request/固定源码、三个实际成功终态和其observer身份/资源、原report和formal/config/events/数据/划分/best/last等完整输入SHA；原独立报告必须绑定原CPU post和完整75993有序预测流。原300cap/pat30、float32、60823/7590/7580、原backbone初始化及reset头/优化策略保持，不能用小cohort或空输入绑定代替。缺失/失败/错case/变更的证据均在评分前拒绝。阈值只用validation选，冻结后才处理test，保留原heldout和同流argmax指标；没有重新推理或训练GNN。
+
+第二CPU阶段从同一原流独立重新执行全部7590验证/7580测试计算，逐项比较阈值、完整指标、输入/selection SHA、原argmax和best等结果；只排除各自执行ID/目录等运行元数据。二者均禁止torch.load、TorchScript load及nn.Module调用，只有dtype保持的CPU softmax与SQLite统计。所有原科学输入前后必须不变；不自动把补充后评加入主科学索引。
+
+输出为忽略目录 `runs/arxiv-v1/classification-threshold-full-4d01907-v1/CASE/{assessment,verify}/`，保留每层报告、selection与spool、终态及原数据哈希；确切脚本、意图、RPC和回执位于独立claim，unknown提交不得重试。16科学后评/复核body的AST与Bash-n、32实际请求的身份/资源/依赖/afterany边界和207源SHA均已核验。4个纯元数据主控制含14个拒绝场景通过：模拟未来终态仅用于检查门禁，不声称实际完成原数据或替代已有50纯/6真实CPU控制。
+
+提交巡检证明位于 `results/paper-full-classification-threshold-20261107/121552/verified-submission.json`，303归档SHA；初始48原依赖的148份只读证据另存。当前仍只证明接线，未有任何真实阈值结果。12:15原1321生成scratch RUNNING/71轮，磁盘118.52GiB，主科学24/48与所有冻结/高阶/分子/生成补充范围保持。
