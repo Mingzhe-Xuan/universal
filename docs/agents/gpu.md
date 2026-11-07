@@ -4986,3 +4986,11 @@
 - 2026-11-07T13:08:36+08:00: Final ordinary readonly SSH, first verify SHA and git pull published 5f50a9679dfc84e44ade3cb08ad018f2504a5c04 documentation bundle; confirm exact rootHEAD and current running Slurm queue only. No source edit, new submission/retry/cancellation, proxy or environment change; old fixed science caches remain unchanged.
 
 - 2026-11-07T13:09:32+08:00：连接恢复结果核验通过：用户确认手动SSH可登录后，本地实际SCP及普通SSH均成功退出0；8084B离线bundle核验SHA通过，服务器首先git pull --ff-only同步到5f50a9679dfc84e44ade3cb08ad018f2504a5c04。13:08只读squeue确认原生成scratch作业1321仍在node42 RUNNING，运行2:54:01；没有重复提交、取消或修改任何作业，也没有启动代理或执行登录节点计算。正式独立验收仍24/48，生成训练审计不等同于1000attempt生成质量；下一步沿原Slurm链推进。
+
+- 2026-11-07T13:11:04+08:00：SCP上传已推送79ad18f的2998B小型离线bundle，SHA d86e0011fa4bdd00368dfc20e6af32081cea940b0ac7b6b6b9b1b4885f8c1eab，先决5f50a96；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-07T13:11:27+08:00: Ordinary read-only SSH firstSHAverify/pullpublished then audit all48 active seed123 primary formal statuses/managed receipts/retained terminals/live handles, exact40 staged generation identities, new20 dependent CPU joint/plan/afterany requests and original10 CUDA requests/source/request SHAs, queue/free disk. Bounded metadata only; no model/data preprocessing/new jobs/retries/cancellation/priority/source change. Missing handles remain unknown unless actual retained terminal proves them; accepted23 proof remains authoritative.
+
+- 2026-11-07T13:14:26+08:00: Ordinary read-only SSH first verify/pull published source; inspect original generation1321 and exact four staged quality/assessment/afterany requests1489/1492/1494/1495, clean pinned sources, owner/token/requestSHA, bounded existing formal/events/report/log tails, live queue and free disk. No model/numeric processing or weight reads while training, no jobs/retries/cancellation/priority/source/environment changes.
+
+- 2026-11-07T13:15:30+08:00：本轮完整范围核查完成并进入原1321训练等待：13:11全部48主格与原40生成阶段、20分子CPU、10 CUDA的身份/请求/资源/依赖核验通过，422状态归档SHA闭合。主24/48不变；22训练PENDING，原1314训练300轮实际完成但质量未接受，1321唯一RUNNING。13:14对同一活作业复查确认108轮（本轮106→108），四后续1489/1492/1494/1495仍PENDING，13进度归档SHA和固定源码清洁通过，磁盘118.52GiB。没有新失败或需要重提的阶段，没有新训练/推理/GPU请求、取消、改优先级或科学索引修改。这是已验证的实际作业等待，不是完整实验完成；下一步仍沿原链推进全部48及补充范围。
