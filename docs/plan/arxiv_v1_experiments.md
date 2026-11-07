@@ -2289,3 +2289,10 @@ AUROC修复固定源fdeee4b的实际1953/1954均COMPLETED/0:0，同34纯测试�
 数值保持原配置的去噪尺度，不作为生成结构几何有效率、唯一性、新颖性、匹配率或DFT热力学稳定性。独立CPU审计实际墙钟8.629720949567854秒、进程峰值RSS 511922176字节，仅计原输入校验/全train先验和保存输出重评，不能当作模型推理成本。所有原科学结果/权重/训练配方和主24/48计数保持。
 
 2026-11-07 13:14完整队列复核：主24/48仍不变，原1321生成scratch实际RUNNING/108轮，原四质量后续仍PENDING，磁盘118.52GiB。48主格及40生成/20分子CPU/10 CUDA原请求身份、资源和依赖均保持；422状态及13进度文件已核验归档。未新增、重提或调整原作业。证据为 `results/paper-campaign-audit-20261107/131136/verified.json` 与 `results/paper-generation-1321-progress-20261107/131432/verified.json`；属于实际作业等待，不增加科学完成格，全部原补充任务保留。
+
+
+### 12.82 工具成本中的固定源码规模清单
+
+计划§5的源码规模补充使用 [code_footprint 模块](../../src/universal_gnn/benchmarks/code_footprint/README.md)与 `scripts/measure_code_footprint.py`：固定Git提交→13个不重叠实现边界、逐文件Git blob/SHA、字节/物理行/非空行/AST语句及JSON/Markdown/TSV。分别列共享契约/读出/任务/引擎/骨干基础、四官方provider与最小KNN+GCN插件及其配置；共享代码只计一次。上游安装包、非选中provider、图/数据服务、实验机器、测试和文档不属于本次边界，所有未选tracked路径均列出。这是明确范围的源码规模，不能推断新增一种性质的最小代码量、开发时间、整个项目/原GNN大小或性能优劣。
+
+15项纯标准库控制已通过；实际固定源完整清单、独立原blob计数、公开CLI和原科学输入不变检查将通过CPU Slurm执行，不需要Torch/NumPy/GNN/GPU、网络或新训练。当前尚未把软件实现当作完整清单接受，主24/48及全部原队列保持。

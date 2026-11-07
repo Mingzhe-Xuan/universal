@@ -389,3 +389,10 @@ requiring CPU Slurm, four original checksums and a fresh output directory. They
 retain all100000 nonperiodic frames and the declared900/100/99000 split with a
 separate original1000-test cohort. See the
 [source, units and split contract](../src/universal_gnn/data/preparation/rmd17/README.md).
+
+`measure_code_footprint.py --repository . --commit HEAD --output runs/NEW-inventory`
+exports explicit adapter/shared-layer/plugin source boundaries from committed Git
+blobs, through CPU Slurm without model dependencies. It retains per-file identities,
+disjoint groups, mechanical line/statement counts and all excluded tracked paths.
+These are source-size counts, not minimum task implementation effort or performance.
+See the [counting contract](../src/universal_gnn/benchmarks/code_footprint/README.md).

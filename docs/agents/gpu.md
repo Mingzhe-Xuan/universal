@@ -4994,3 +4994,9 @@
 - 2026-11-07T13:14:26+08:00: Ordinary read-only SSH first verify/pull published source; inspect original generation1321 and exact four staged quality/assessment/afterany requests1489/1492/1494/1495, clean pinned sources, owner/token/requestSHA, bounded existing formal/events/report/log tails, live queue and free disk. No model/numeric processing or weight reads while training, no jobs/retries/cancellation/priority/source/environment changes.
 
 - 2026-11-07T13:15:30+08:00：本轮完整范围核查完成并进入原1321训练等待：13:11全部48主格与原40生成阶段、20分子CPU、10 CUDA的身份/请求/资源/依赖核验通过，422状态归档SHA闭合。主24/48不变；22训练PENDING，原1314训练300轮实际完成但质量未接受，1321唯一RUNNING。13:14对同一活作业复查确认108轮（本轮106→108），四后续1489/1492/1494/1495仍PENDING，13进度归档SHA和固定源码清洁通过，磁盘118.52GiB。没有新失败或需要重提的阶段，没有新训练/推理/GPU请求、取消、改优先级或科学索引修改。这是已验证的实际作业等待，不是完整实验完成；下一步仍沿原链推进全部48及补充范围。
+
+- 2026-11-07T13:17:34+08:00：SCP上传已推送7fcd27a的4494B小型离线bundle，SHA 4083805ac1d7566e1a42f73500df9ea326beb5b223752d6074e1cfa36a442f18，先决79ad18f；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-07T13:17:59+08:00: Ordinary read-only SSH first verify/pull published source; inspect original generation1321 and exact four staged quality/assessment/afterany requests1489/1492/1494/1495, clean pinned sources, owner/token/requestSHA, bounded existing formal/events/report/log tails, live queue and free disk. No model/numeric processing or weight reads while training, no jobs/retries/cancellation/priority/source/environment changes.
+
+- 2026-11-07T13:18:53+08:00：持续已验证等待：原1321在实时scontrol中仍RUNNING，完成111轮；逐轮已保存事件均为完整11356训练/710 mini-batch及3787验证，四个原后续仍PENDING，固定源码清洁、13归档SHA/owner/token/request绑定通过，磁盘118.52GiB。证据results/paper-generation-1321-progress-20261107/131806。未新增或重提任务，主科学24/48不变。旧1094/1096是已替代历史准备，其DependencyNeverSatisfied不属于当前八条生成科学链；不据此取消或重提。
