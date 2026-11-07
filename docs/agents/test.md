@@ -2169,3 +2169,9 @@
 - 2026-11-07T11:40:04+08:00：分类验证集阈值后评已实现：selection/runtime模块及公开CLI独立于原训练/argmax指标；SQLite验证集分数、精确整数balanced accuracy比较、同分固定近0.5再更高阈值/全负规则、阈值文件先于测试评分冻结。同一完整CPU预测流的validation/test经原dtype CPU softmax，保留原heldout及同流argmax基线，不混用CPU/GPU概率或承诺相等。新增16及原34共50纯标准库测试实际全过，零失败/错误/跳过、无Torch/NumPy；包括测试标签反事实、同分/边界/单类/非法值、ID/SHA/best/冻结文件篡改/既有目录/脏源码拒绝。实际6个CPU fixture及固定提交源Slurm控制尚待执行，不计分类科学格。
 
 - 2026-11-07T11:41:09+08:00：分类后评提交前静态/文档检查通过：七新增文件AST/大小、独立模块README/CLI/计划模块表与链接路径、50纯测试零失败/错误/跳过及无Torch/NumPy、固定scope/主24索引SHA/321成本归档声明及422新全范围巡检SHA保持。已有production/src/scripts/tests均无修改，只新增分类后评；旧状态历史及所有日志/计划均追加保留，UTF8/围栏/diff通过。实际固定源50纯+6真实CPU fixture及其父/记录器终态仍待Slurm，不冒充分类科学结果；原24/48与全部补充范围保持。
+
+- 2026-11-07T11:44:14+08:00：长作业版本隔离计划：根仓库仍每次连接先校验/pull已推送提交；对该已确认本地Git remote仅做git clone --shared到新runs/source-checkouts/COMMIT，不用编辑器/patch改服务器源码。确认data/models/runs均不在Git受管树后只链接共享忽略数据/模型/结果，cache受管源必须HEAD固定且git status clean，已有目录不覆盖。后续Slurm显式cd缓存/PYTHONPATH缓存src并验证实际包路径，保护长训练不受根仓库后续pull影响。现阶段仅Git/路径轻量检查，GPU导入/数值仍须Slurm。
+
+- 2026-11-07T11:49:21+08:00：分类阈值后评固定源4d01907的1967/1968实际均COMPLETED/0:0：50纯检查零失败/错误/跳过、6个float32/float64原/测试标签反事实/公开CLI真实CPU softmax小fixture全部通过，207执行源码与Git blob及78份完整控制/fixture/原输入/SQLite/报告归档SHA已独立复核。Torch2.7.1+cu128，纯父进程无Torch/NumPy、实际子进程禁止torch.load和nn.Module调用，未加载或执行GNN。阈值固定、测试标签不影响选择、同流AUROC保持及原指标/权重/文件不变均通过；不计新科学格，实际八分类仍需原完整训练/独立后评及相应阈值补充。
+
+- 2026-11-07T11:50:28+08:00：实际分类软件验收文档提交前检查通过：固定4d源1967/1968双0:0、50纯/6真实CPU/207源/78控制及小fixture归档SHA再次闭合；Torch版本、父进程无Torch/NumPy、禁止模型加载/forward、源/请求/实际终态/6报告及CPU/float32-float64边界已核验。主24索引SHA、321成本接受绑定与scope保持，无新增科学格或原训练/结果修改；只更新文档/README，旧历史前缀、已存在证明路径、UTF8/围栏/词义和diff通过。完整八分类以后仍需各自7590验证/7580测试的真实后评，不以fixture代替。

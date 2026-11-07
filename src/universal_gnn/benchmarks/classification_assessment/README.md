@@ -38,3 +38,10 @@ prediction, checkpoint and selection hashes, population counts and all test
 metrics. These are supplemental decision metrics, separate from the original
 training selection and official/native-head results. They do not claim any
 pretraining benefit or cross-seed significance.
+
+Executed CPU controls: source `4d01907`, Slurm1967/1968 both completed0:0;
+50 pure checks, six actual float32/float64 softmax and public-CLI fixtures,207
+source Gitblobs and78 archived artifacts verified. Torch2.7.1+cu128 was used only
+for small CPU score calculations; model loading and module forward were forbidden.
+These fixtures do not represent the full7590-validation/7580-test classification
+experiments, which remain subject to their original scientific acceptance.

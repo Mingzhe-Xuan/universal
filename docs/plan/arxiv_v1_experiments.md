@@ -2247,3 +2247,5 @@ AUROC修复固定源fdeee4b的实际1953/1954均COMPLETED/0:0，同34纯测试�
 候选为各不同分数、0.5及显式全负类规则，同分样本一起移动；最大validation balanced accuracy，同目标值按有限阈值距0.5最近、再更高阈值，最后才全负规则。需要validation两类均存在；不对单类伪造阈值。选定分数边界使用>=，与原argmax边界语义分别保留。`selection.json`先于test评分保存并冻结SHA；测试标签不进入选择函数，改变test标签的反事实测试验证选择不变。AUROC由同一概率排序计算，不随决策阈值改变。
 
 源/划分/best/完整header及全部有序ID/形状/有限性/完成marker和SHA前后闭合；报告分开记录validation所选test指标、同流argmax及不变原heldout，不声称CPU/GPU概率逐值相等。现有输出拒绝覆盖，单类/非法值/重复ID/被篡改的预测/权重/阈值与脏源码均拒绝。16新增及原34报告/预测后评共50纯标准库测试实际通过，无Torch/NumPy；实际CPU控制将使用真实Torch softmax的两dtype×原/测试标签反事实及两公开CLI共6小fixture，禁止模型加载/forward。固定提交后执行CPU1/4GiB/10min及afterany1GiB/2min；这些控制不是完整7590/7580分类实验，实际八分类仍等待原完整训练及后评链。
+
+分类阈值后评固定源4d01907的1967/1968实际均COMPLETED/0:0：50纯检查零失败/错误/跳过、6个float32/float64原/测试标签反事实/公开CLI真实CPU softmax小fixture全部通过，207执行源码与Git blob及78份完整控制/fixture/原输入/SQLite/报告归档SHA已独立复核。Torch2.7.1+cu128，纯父进程无Torch/NumPy、实际子进程禁止torch.load和nn.Module调用，未加载或执行GNN。阈值固定、测试标签不影响选择、同流AUROC保持及原指标/权重/文件不变均通过；不计新科学格，实际八分类仍需原完整训练/独立后评及相应阈值补充。证明位于 `results/paper-classification-threshold-checks-20261107/accepted-4d01907/verified.json`。实际八分类需分别保留完整7590 validation/7580 test、源75993和原SHA/初始化/阈值协议，不以6结构小fixture代替。
