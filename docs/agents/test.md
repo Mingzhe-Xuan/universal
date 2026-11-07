@@ -2115,3 +2115,15 @@
 - 2026-11-07T09:33:05+08:00：实际已提交原16完整推理成本34CPU请求1917–1950，197固定941源和精确owner/token/request SHA/资源/依赖及171元数据归档检查通过；首观察11模型RUNNING/5模型PENDING，后续独立1949/记录1950等待。完整126480记录/25693488值仍待实际推理和原参考1e-12复核，不计验收。原1314生成运行7:23:22，原24/48及922科学归档不变。 下一步只读观察现有同一请求，不重提；实际通过后闭合完整流和成本证据。
 
 - 2026-11-07T09:35:33+08:00：本阶段提交前检查通过：原3091科学/控制/历史SHA和原23/891及新24/952汇总检查保持，另核验171新34CPU请求/197源/资源依赖及13新278轮生成进度，合计3275归档文件SHA检查。16成本版未整体独立验收，主24/48/922不变；17请求AST/Bash-n、provider/noCUDA/线程1/原B4-B32和完整126480记录目标、请求SHA/唯一claim/RPC、文档UTF8/围栏/路径/固定scope/追加历史及git diff --check通过。生产源码未改，本地无模型/数值重评。
+
+- 2026-11-07T09:39:03+08:00：归档实现单元测试计划：AST/Bash-n检查纯stdlib归档及afterany请求，成功依赖严格afterok1949:1950；Slurm内核验16原成本report与独立复核全部成功及原17父终态，完整126480记录/25693488有限值。所有新流原SHA/字节与独立报告一致；八FF始终完整gzip、谱只在完整正文SHA相同且本地完整原参考存在时允许无损重构，否则完整gzip。压缩mtime0/无舍入，逐块解压roundtrip原SHA/字节核验，归档失败/未知提交不重试。下载单SFTP确认退出0及全部压缩/原SHA后才计最终成本接受，主24/922与全部旧科学数据不改。本地仅文件/AST/元数据，模型/数值/批量gzip均Slurm。
+
+- 2026-11-07T09:41:10+08:00: Ordinary SSH first SHAverify/pull published source; submit exact two CPU requests for complete16 CPU-cost lossless archive afterok1949:1950, then afterany recorder. Source9412542, parentCPU1/4G20min, recorder1/1G2min, no models/GPU/training. Require all16 full original inference and independent reports plus17 retained parent0:0; gzip all8 forcefield full streams and any changed spectrum body, mtime0/full raw-gzip SHA roundtrip. Byte-identical spectrum uses only complete archived original body plus actual new header with full SHA. Uniqueclaim/intent/RPC stop unknown submit; no retries or original data/source/queue changes. Main24 until future complete scientific acceptance.
+
+- 2026-11-07T09:49:11+08:00：成本完整流归档1951/1952已一次提交并核验成功依赖1949:1950/afterany1951，固定941源、资源/owner/token/request SHA及8元数据通过；无模型/新训练/GPU，不改原34。已准备完整下载、严格16版成本接受及24版合并导出器并做AST检查，必须等原独立复核/17父终态/完整字节通过，均未提前运行。09:47原生成1314实际RUNNING/286轮，四原后续PENDING，13元数据通过，磁盘118.68GiB；成本10版完成/6版运行且无失败，主24/922与全范围不改。
+
+- 2026-11-07T09:49:41+08:00：本阶段最终检查通过：原3275归档/24格922及新旧汇总原观察按保留索引核验，再加1951/1952精确请求8和原生成286进度13，共3296归档文件SHA。归档/记录器AST-Bash-n/纯stdlib无模型/成功依赖/资源/唯一claim-RPC、下载/16版接受/24版汇总延期脚本AST、文档UTF8/路径/围栏/固定scope/追加历史及diff通过。原34作业不改，无新增GPU/训练，成本及新归档未冒充已验收，主24/48不变。本地无模型或科学数值重评，生产源码未改。
+
+- 2026-11-07T09:50:47+08:00: Temporary documentation-check harness first refused because an unanchored source split matched its own quoted marker. Anchoring the marker to a real newline retained the complete original checks; all3296 archive/history/doc assertions then passed. No production/scientific assertion, source, job or data changed.
+
+- 2026-11-07T09:51:03+08:00：本阶段最终检查通过：原3275归档/24格922及新旧汇总原观察按保留索引核验，再加1951/1952精确请求8和原生成286进度13，共3296归档文件SHA。归档/记录器AST-Bash-n/纯stdlib无模型/成功依赖/资源/唯一claim-RPC、下载/16版接受/24版汇总延期脚本AST、文档UTF8/路径/围栏/固定scope/追加历史及diff通过。原34作业不改，无新增GPU/训练，成本及新归档未冒充已验收，主24/48不变。本地无模型或科学数值重评，生产源码未改。
