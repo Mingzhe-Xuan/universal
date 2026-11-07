@@ -2183,3 +2183,13 @@
 - 2026-11-07T12:22:12+08:00：本地门禁控制先因Windows没有resource模块、Linux虚拟文件表与Windows反斜线失配失败；将仅Linux执行阶段使用的resource移入run，元数据fixture明确使用POSIX路径语义后，4主/14拒绝场景零失败/错误/跳过，无Torch/NumPy。准备器一次旧证明重检失败是CRLF/LF格式字节差异：仅规范化换行比较同一内容并保持原证明字节不写，既有review语义逐项相等才复用，旧未提交草稿保留；最终v3正文/AST/Bash/SHA检查通过且仅提交一次。没有远端科学失败、阈值放宽或重复训练/提交。
 
 - 2026-11-07T12:26:23+08:00：完整分类阈值接线提交前检查通过：原48父/终态记录器的148初始归档和新32请求303归档SHA、207实际源码/Gitblob、16actor/verifier与16afterany的实际owner/token/source/CPU/内存/时限/noGPU/依赖/请求SHA均闭合。4纯元数据控制零失败/错误/跳过，v3实际body与受测worker逐字相同，16 AST/Bash-n及声明完整60823/7590/7580/source75993/原0:0和必需输入绑定通过；32新任务PENDING不算实际评分。主24索引SHA/原成本绑定、scope及全部科学原值保持；仅文档变更，追加历史/UTF8/围栏/证明路径/diff通过，不重复已验收50纯/6真实CPU或任何GNN。原1321快照71轮/剩余118.52GiB仍保留各自观察时间。
+
+- 2026-11-07T12:40:10+08:00：进入原1314完整生成训练的独立CPU审计阶段：原训练300/best296实际0:0但1000attempt质量尚未运行。复用实际排队质量源4347的revalidate_gate/verify_generation_training，独立从完整11356训练几何重算data_fingerprint/volume prior，并从全部3785保存去噪记录/79485标量复算原指标；不载入/forward模型或占GPU，不生成结构，不把saved-target复算当原GPU噪声重生或最终生成质量。原1321仍RUNNING，其他队列保持。
+
+- 2026-11-07T12:40:10+08:00：生成完整训练审计测试计划：所有实际数值/全源扫描Slurm CPU1/8GiB20min加1GiB2min afterany；固定4347质量源的全部Python/Gitblob及原17源训练函数同解释器AST等价，正确NequIP环境无-S、隐藏CUDA/线程1、禁止torch.load/jit.load/nn.Module调用。先闭合原1314 request/receipt/retained0:0/source与不可变报告/config/gate/events/data/split/best/last/保存预测SHA；重放原完整gate及300轮710 train batch、3787val、真val最小best296、3785有序test与各形状/有限性。重新从全部11356实际train结构计算指纹/体积先验并1e-12比较；从原保存prediction/target逐结构复算fractional_score56775/cell_score22710标量及所有原指标。所有输入前后不变、原质量32GPU/其他队列不触碰；输出完整审计及终态，但无1000attempt质量/稳定性或第25格声明。AST/Bash/资源/唯一claim/unknownRPC停止检查后仅一次提交。
+
+- 2026-11-07T12:59:32+08:00：原1314完整训练/先验/保存去噪审计实际完成：2001/2002均COMPLETED/0:0；实际待运行质量源4347的154执行Python与Gitblob、原17训练验证函数同解释器AST等价、原1314留存终态/报告/门禁/事件/全部输入SHA闭合。300轮全11356 train/3787 validation、710训练mini-batch/轮、真正val最小best296及3785有序测试均通过；从全部11356原train几何独立重算指纹及体积先验匹配，再逐结构复算全部79485保存去噪预测/target的原指标于1e-12，实际各项还逐值相等。完整3785原输出3957658B单SFTP及SHA通过，31审计归档留存。全程无GNN load/forward/采样/新训练/GPU；仅核验保存去噪target，不重生原GPU噪声，不替代1000attempt几何质量或稳定性，更不计第25主格。
+
+- 2026-11-07T13:01:46+08:00：生成独立前置审计提交前检查通过：真实2001/2002双0:0、质量源154文件/Gitblob及原17同解释器验证函数AST、300/best296、全11356 raw train指纹/先验及3785保存去噪/79485预测标量与对应target的原指标、3957658B完整传输和31归档SHA均闭合。原1321 RUNNING/82轮的13进度SHA/空间快照、主24索引SHA和scope保持；无新增GNN/采样/训练/GPU，不把保存target复算当GPU噪声重生或1000attempt生成质量。仅文档更新，旧历史前缀/UTF8/围栏/已有证明路径/计时含义/diff通过；既有32分类后评及40生成质量/其他原请求保持，未重复已过控制或模型。
+
+- 2026-11-07T13:02:34+08:00：措辞澄清：本节初始计划中的“原质量32GPU”是文字误写，指原生成质量GPU作业与32个分类CPU后评请求均保持；没有申请32个GPU。实际审计始终只有CPU1/8GiB20min及CPU1/1GiB2min，CUDA隐藏、无gres请求，已由2001/2002实际Slurm字段核验。
