@@ -2339,3 +2339,5 @@ AUROC修复固定源fdeee4b的实际1953/1954均COMPLETED/0:0，同34纯测试�
 为§9/§11来源与配置交付补充 [固定输入归档](../../src/universal_gnn/benchmarks/experiments/README.md#frozen-input-and-definition-archive)和 `scripts/export_arxiv_inputs.py`：原947矩阵与单seed scope、48有效base配置、五完整split/audit/exclusion清单、registry及CGCNN描述符/NequIP作者蓝图以原字节导出ZIP，外层报告和逐成员manifest分别保存SHA与大小，重复/缺失/符号链接/路径逃逸/多余模型成员或虚构完成状态拒绝。输出保留144原矩阵作为来源，只导出48有效配置，不调度96退出seed；归档前后完整重验五源JSONL与官方资源哈希，不加载模型或权重pickle。
 
 这些是原base定义，初始batch与train-only统计仍须经原完整预检形成最终配置；归档不替代最终训练配置、容量资格或48结果。结构JSONL与学习权重不打包，来源/校验见registry与原审计；归档仅本地/任务目录准备，未对外发布。12项标准库控制已实际通过，完整115730记录的CPU扫描/导出/独立重读尚待固定源Slurm验收，主24/48及原队列不变。
+
+冻结输入归档现已实际接受：固定d56dd8c，2019/2020双0:0，12标准库控制、207固定源码Gitblob和两次完整115730来源/五源/官方资源registry验证通过。实际71成员、1398070B（未压缩15115725B），48原配置和所有metadata成员原字节一致；完整单SFTP和外层/逐成员SHA通过，94本地归档。证明为 `results/paper-frozen-inputs-20261107/accepted-d56dd8c/verified.json`，同级 `frozen-inputs.zip` 为可检查交付包，`inputs/`保存全部71解压成员。整体SHA256为 `f7ddd91433b4a20da229bb6385b6c0d6a5f601e7d996836bdabf178930d0df18`。这补齐固定输入/来源/划分定义的归档材料，仍不等于最终容量解析配置或完整48训练结果，未对外发布；结构JSONL和学习权重按registry校验另备。21:12原1327 RUNNING/50轮，四原后续及六恢复请求PENDING，磁盘117.03GiB；主24/48及全部原补充范围保持。

@@ -412,3 +412,5 @@
 - 2026-11-07T19:42:46+08:00：异步CUDA launch timeout不是typed OOM；不能因在torch.isfinite处同步报错就认定该算子是根因，不能自动缩batch或跳过样本。失败后先用CPU验证原checkpoint、optimizer/RNG/selection和不可变SHA；这只证明保存状态完整，不证明GPU故障根因。引擎支持resume也不等于正式fresh-only评测入口已接受续训。维持原fresh协议时必须保留失败现场并显式安排同配方的新完整尝试与后续，不偷换原checkpoint起点。
 
 - 2026-11-07T20:19:59+08:00：恢复已确认失败的正式fresh实验时，可保留其case/launch/日志和原checkpoint后按同一官方初始化、seed、batch、完整数据及预算重开明确的一次尝试，不必将checkpoint续训混入fresh验证口径。后续链必须绑定新parentID；先精确核验并hold/cancel旧的未开始失效后续，再归档，新链全部held完成身份/资源/依赖与归档核验后先释放子级、最后训练父级。历史请求证明和原文件SHA映射保留，当前有效视图只替换明确失效部分；提交次数不等于唯一case或科学完成数。
+
+- 2026-11-07T21:15:13+08:00：固定输入包应区分原base定义与容量/统计解析后的训练配置；保留原矩阵与scope，不改写144来源或将96退出seed当待执行任务。逐成员原字节SHA与外层ZIP SHA承担不同完整性校验，发布前仍需真实全源核验和独立重读。原metadata ZIP可不包含大JSONL/模型权重，但必须明确外部输入与预检依赖；归档成功不能提升科学完成数。
