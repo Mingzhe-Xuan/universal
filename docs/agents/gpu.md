@@ -4980,3 +4980,9 @@
 - 2026-11-07T12:50:10+08:00: Ordinary read-only SSH firstSHAverify/pull published source; collect exact existing completed generation1314 full-training/prior/3785 saved-denoising audit and afterany identities, requests/receipts/reports/parent terminal/sourceGitblob bytes, actual queue and original completed ALIGNN status metadata only. No numerical/model execution or new job/retry/cancellation/source change.
 
 - 2026-11-07T12:51:26+08:00: OrdinarySSH firstSHAverify/pullpublished then one stable SFTP4x16K to download audit-retained exact full3785 original saved denoising stream from completed2001. Require retained parent0:0 and original copied streamSHA/bytes; reget only known prefix after previous transfer actualexit, checksum before atomic rename. No other SSH during transfer, no local model/numerical scoring, no server source/data/queue edits or new jobs.
+
+- 2026-11-07T13:08:10+08:00：SCP上传已推送5f50a96的8084B小型离线bundle，SHA 06775374bb194c3f7125a934d0edd8da9cae601a8237e5b406b3a5059a8b7630，先决e94c719；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-07T13:08:36+08:00: Final ordinary readonly SSH, first verify SHA and git pull published 5f50a9679dfc84e44ade3cb08ad018f2504a5c04 documentation bundle; confirm exact rootHEAD and current running Slurm queue only. No source edit, new submission/retry/cancellation, proxy or environment change; old fixed science caches remain unchanged.
+
+- 2026-11-07T13:09:32+08:00：连接恢复结果核验通过：用户确认手动SSH可登录后，本地实际SCP及普通SSH均成功退出0；8084B离线bundle核验SHA通过，服务器首先git pull --ff-only同步到5f50a9679dfc84e44ade3cb08ad018f2504a5c04。13:08只读squeue确认原生成scratch作业1321仍在node42 RUNNING，运行2:54:01；没有重复提交、取消或修改任何作业，也没有启动代理或执行登录节点计算。正式独立验收仍24/48，生成训练审计不等同于1000attempt生成质量；下一步沿原Slurm链推进。
