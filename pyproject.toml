@@ -12,6 +12,7 @@ dependencies = ["torch>=2.2", "numpy>=1.24", "e3nn>=0.4.4,<0.6", "ase>=3.22", "P
 [project.optional-dependencies]
 mace = ["mace-torch==0.3.16"]
 nequip = ["nequip==0.14.0"]
+paper = ["matplotlib>=3.8"]
 simulation = ["periodictable>=2", "abtem==1.0.6", "numpy<2", "numba==0.61.2", "zarr<3",
               "dask==2024.12.1", "distributed==2024.12.1"]
 dev = ["pytest>=8", "ruff>=0.8"]

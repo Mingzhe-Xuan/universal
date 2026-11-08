@@ -51,3 +51,39 @@ The new committed24-case snapshot preserves the earlier24 rows,24 pair slots,
 12 complete pairs and952 input hashes exactly. These software/metadata controls
 add no scientific model result; generation still requires its actual formal
 quality schema before export.
+
+## Figure export
+
+`figures.py` presents an existing reporter summary. It checks all48 row and24
+pair identities, acceptance counts, selected metrics, original units and signed
+paired values. It does not repeat the reporter's scientific archive verification.
+The caller must supply the SHA256 of the previously accepted summary bytes.
+Missing results stay null; a missing task panel contains no numerical points.
+All plots use one training seed, linear axes and original units, with no error
+bars, normalization or additional scientific acceptance.
+
+```bash
+PYTHONPATH=src python scripts/plot_arxiv_results.py \
+  --summary results/ACCEPTED-summary/summary.json \
+  --summary-sha256 EXACT_SHA256 \
+  --output results/NEW-figures
+```
+
+Install the optional `paper` extra for Matplotlib. Outputs are `accepted-metrics.svg`,
+`accepted-metrics.png`, `plot-data.json`, `caption.md` and the original `summary.json`.
+Existing output directories are refused. `plot-data.json` retains exact original
+point values, missing slots, signed differences, input/renderer hashes and versions.
+Defaults select energy per atom, forces, dielectric components and phonon spectrum.
+Dielectric component errors retain their recorded coordinate frame; spectrum units
+remain dataset-defined. No electronic grid, symmetry projection or spectral
+renormalization is inferred. The global accepted count describes the full48-row
+summary; the image shows only its selected metrics.
+
+`--panels FILE.json` can select other metrics already present in an accepted
+summary. Each object has `task`, `path`, `unit`, `title`, for example
+`{"task":"bandgap","path":"bandgap.mae","unit":"eV","title":"Band gap"}`.
+Units must agree with the reported target or metric units; the standard
+classification scores are dimensionless. This exporter cannot create missing
+generation results or replace its still-required full formal quality schema.
+Render and verify figures through CPU Slurm when working on Guqq2; no GPU or
+model execution is needed.
