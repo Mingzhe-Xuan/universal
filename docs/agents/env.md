@@ -289,3 +289,5 @@ Slurm868已核验并暂存五个原本就在本机的wheel到 `models/official-i
 以上均读取 `/home/xmz/.venvs/universal-base/lib/python3.10/site-packages` 的同一Torch2.7.1+cu128。Slurm899在RTX5090实测三个环境的Torch/e3nn前反向、四原包导入，official的DGL CUDA消息传递/梯度及torch_cluster、torch_scatter、torch_sparse CUDA算子全部通过；Torchvision可导入。MACE可选cuequivariance加速未安装，不影响已测基础路径。Slurm898通过五项图检查、18项零skip回归、六任务合成完整训练步、生成采样和真实OOM降batch/单样本仍OOM拒绝场景。后两者是基础运行验收，不是四原模型真实训练或全量任务结果。
 
 结构化收据已保存于忽略目录 `results/paper-environment-20261104/cuda-install/`，服务器对应 `runs/official-extras-897.json`、`runs/pilot-gpu-readiness-898/`、`runs/provider-cuda-smoke-899/`；实际代码640da1d，相关图检查源码SHA按Git blob核验。
+
+- 2026-11-08T12:59:15+08:00：论文图CPU2037使用已有/home/xmz/.venvs/universal-official/bin/python，实际Matplotlib3.10.9/Agg、CUDA_VISIBLE_DEVICES空、OMP/MKL/OpenBLAS线程1；未创建或重装环境。父控制用已有universal-base -S执行9个stdlib测试，无Torch/NumPy导入；两个渲染子进程使用NumPy/Matplotlib但无Torch或GNN。可选paper依赖声明matplotlib>=3.8，实际运行版本保留在plot-data.json与控制报告；原模型环境和GPU训练不变。
