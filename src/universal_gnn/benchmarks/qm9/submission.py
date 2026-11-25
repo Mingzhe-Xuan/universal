@@ -15,23 +15,36 @@ from .definitions import MODELS, MODES, PROPERTIES
 ENVIRONMENTS = dict(cgcnn="universal-official", alignn="universal-official", mace="universal-mace", nequip="universal")
 
 
-def campaign_layout(campaign="runs/qm9-v1/launches", train_time="14-00:00:00"):
+def campaign_layout(campaign="runs/qm9-v1/launches", train_time="14-00:00:00", *, profile="full"):
+    if profile not in {"full", "hl12k"}:
+        raise ValueError("Unknown QM9 campaign profile")
+    subset = profile == "hl12k"
+    root = "runs/qm9-hl12k-v1" if subset else "runs/qm9-v1"
+    definitions = root + "/definition"
+    properties = ("homo", "lumo") if subset else PROPERTIES
+    prefix = "qm9-hl12k" if subset else "qm9"
     stages = []
     def add(key, command, *, parent=None, **options):
+        command = command + ["--definitions", definitions]
         stages.append(dict(key=key, command=command, parent=parent, dependency_kind="afterok", options=options))
-        stages.append(dict(key=key + "-terminal", command=["terminal", "--receipt", str(Path(campaign) / key / "launch.json")],
+        stages.append(dict(key=key + "-terminal", command=["terminal", "--receipt", (Path(campaign) / key / "launch.json").as_posix()],
                            parent=key, dependency_kind="afterany", options=dict(cpus=1, memory=1, time_limit="00:05:00")))
-    add("prepare", ["prepare"], time_limit="01:00:00", artifacts=["data/qm9/prepared-v1/report.json", "runs/qm9-v1/definition/definitions.json"])
+    prepare = ["subset", "--data", "data/qm9/hl12k-v1", "--run-root", root] if subset else ["prepare"]
+    data_report = "data/qm9/hl12k-v1/report.json" if subset else "data/qm9/prepared-v1/report.json"
+    add("prepare", prepare, time_limit="01:00:00", artifacts=[data_report, definitions + "/definitions.json"])
+    # Put all capacity gates ahead of long fitting jobs in the Slurm submission order.
     for model in MODELS:
-        smoke_path, capacity_path = "runs/qm9-v1/smoke/" + model, "runs/qm9-v1/preflight/" + model
+        smoke_path, capacity_path = root + "/smoke/" + model, root + "/preflight/" + model
         add("smoke-" + model, ["smoke", "--model", model, "--output", smoke_path], model=model,
             parent="prepare", memory=16, time_limit="02:00:00", artifacts=[smoke_path + "/report.json"])
         add("preflight-" + model, ["preflight", "--model", model, "--output", capacity_path, "--smoke", smoke_path],
             model=model, parent="smoke-" + model, gpus=1, memory=64, time_limit="12:00:00", artifacts=[capacity_path + "/report.json"])
-        for prop in PROPERTIES:
+    for model in MODELS:
+        capacity_path = root + "/preflight/" + model
+        for prop in properties:
             for mode in MODES:
-                case = f"qm9--seed-123--{prop}--{model}--{mode}"
-                folder = "runs/qm9-v1/cases/" + case
+                case = f"{prefix}--seed-123--{prop}--{model}--{mode}"
+                folder = root + "/cases/" + case
                 add(case, ["train", "--case", case, "--preparation", capacity_path], model=model,
                     parent="preflight-" + model, gpus=1, memory=64, time_limit=train_time,
                     artifacts=[folder + "/report.json", folder + "/checkpoint.pt", folder + "/checkpoint.best.pt"])
@@ -69,7 +82,7 @@ def check_job(entry, actual, *, held=False):
             raise ValueError("QM9 held job dependency differs")
 
 
-def submit_campaign(source, *, campaign="runs/qm9-v1/launches", train_time="14-00:00:00"):
+def submit_campaign(source, *, campaign="runs/qm9-v1/launches", train_time="14-00:00:00", profile="full"):
     """Lightweight submission only; all numerical work lives in scheduled children."""
     source = str(Path(source).resolve())
     commit = subprocess.check_output(["git", "-C", source, "rev-parse", "HEAD"], text=True).strip()
@@ -80,7 +93,7 @@ def submit_campaign(source, *, campaign="runs/qm9-v1/launches", train_time="14-0
         raise ValueError("QM9 launch claims must remain inside task runs")
     campaign.mkdir(parents=True, exist_ok=False)
     result = dict(status="submitting", git_commit=commit, source_checkout=source, jobs={}, released=[],
-                  formal_training_runs_completed=0, defined_training_runs=32)
+                  formal_training_runs_completed=0, defined_training_runs=16 if profile == "hl12k" else 32, profile=profile)
     write_json(campaign / "campaign.json", result)
 
     def submit(key, command, *, model=None, dependency=None, gpus=0, memory=8, cpus=2, time_limit="02:00:00", artifacts=()):
@@ -122,12 +135,12 @@ def submit_campaign(source, *, campaign="runs/qm9-v1/launches", train_time="14-0
         check_job(entry, inspect(job), held=True)
         return entry
 
-    for stage in campaign_layout(str(campaign), train_time):
+    for stage in campaign_layout(str(campaign), train_time, profile=profile):
         parent = stage["parent"]
         dependency = stage["dependency_kind"] + ":" + result["jobs"][parent]["job"] if parent else None
         submit(stage["key"], stage["command"], dependency=dependency, **stage["options"])
     prep = result["jobs"]["prepare"]
-    if len(result["jobs"]) != 146:
+    if len(result["jobs"]) != (82 if profile == "hl12k" else 146):
         raise RuntimeError("QM9 campaign stage count differs")
     for entry in result["jobs"].values():
         check_job(entry, inspect(entry["job"]), held=True)

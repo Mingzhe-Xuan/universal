@@ -15,8 +15,9 @@ from .definitions import MODES, PROPERTIES, canonical, load_case
 def model_cases(definitions, model):
     matrix = json.loads((Path(definitions) / "definitions.json").read_bytes())
     cases = [c for c in matrix["cases"] if c["model"] == model]
-    if len(cases) != 8:
-        raise ValueError("Require all four properties and both initializations")
+    properties = matrix.get("properties", list(PROPERTIES))
+    if {(c["property"], c["initialization"]) for c in cases} != {(p,m) for p in properties for m in MODES} or len(cases) != len(properties)*2:
+        raise ValueError("Require all declared properties and both initializations")
     for case in cases:
         load_case(definitions, case["id"])
     return cases
@@ -70,7 +71,7 @@ def preflight(definitions, model, output, smoke_directory):
     smoke_report = json.loads(smoke_path.read_bytes())
     cases = model_cases(definitions, model)
     if smoke_report["status"] != "passed" or set(smoke_report["cases"]) != {c["id"] for c in cases}:
-        raise ValueError("Require all eight actual CPU molecular controls")
+        raise ValueError("Require all declared CPU molecular controls")
     start = time.perf_counter()
     configs = {c["id"]: copy.deepcopy(c["config"]) for c in cases}
     prototype = next(c["config"] for c in cases if c["property"] == "homo" and c["initialization"] == "pretrained")
@@ -84,7 +85,7 @@ def preflight(definitions, model, output, smoke_directory):
     result = dict(status="running", model=model, probe_sha256=canonical(probe),
                   cpu_smoke_sha256=digest(smoke_path), cases={}, slurm_job_id=os.environ["SLURM_JOB_ID"])
     write_json(output / "report.json", result)
-    for name in PROPERTIES:
+    for name in dict.fromkeys(case["property"] for case in cases):
         selected = {c["initialization"]: c for c in cases if c["property"] == name}
         pair = {mode: configs[selected[mode]["id"]] for mode in MODES}
         folder = output / name
@@ -126,7 +127,7 @@ def train(definitions, identifier, preparation):
     preparation = Path(preparation)
     report = json.loads((preparation / "report.json").read_bytes())
     if report["status"] != "passed" or set(report["cases"]) != {c["id"] for c in model_cases(definitions, case["model"])}:
-        raise ValueError("QM9 requires the complete eight-case model CUDA preparation")
+        raise ValueError("QM9 requires CUDA preparation for every declared model case")
     entry = report["cases"][identifier]
     config = json.loads(Path(entry["config"]).read_bytes())
     if canonical(config) != entry["config_sha256"]:

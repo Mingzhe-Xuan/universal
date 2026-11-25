@@ -35,7 +35,8 @@ def assess(definitions, identifier):
     manifest = json.loads(Path(settings["split_manifest"]).read_bytes())
     from universal_gnn.data.splits.manifest import validate_manifest
     from .definitions import canonical
-    validate_manifest(manifest, source_sha256=settings["sha256"], source_count=130831)
+    matrix = json.loads((Path(definitions) / "definitions.json").read_bytes())
+    validate_manifest(manifest, source_sha256=settings["sha256"], source_count=matrix["data_report"]["clean_count"])
     if canonical(manifest) != settings["split_manifest_sha256"]:
         raise ValueError("QM9 split changed")
     if (report["selected_structures"] != manifest["counts"]["train"]

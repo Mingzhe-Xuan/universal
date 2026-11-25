@@ -20,3 +20,14 @@ Every task/model uses the same source and split. No new DFT is performed.
 Author data: <https://doi.org/10.6084/m9.figshare.c.978904.v5>.
 Run `PYTHONPATH=src python scripts/run_qm9.py prepare --raw data/qm9/raw
 --data data/qm9/prepared-v1` in a CPU Slurm allocation.
+
+## Frozen HOMO/LUMO 12k subset
+
+`subset.py:prepare_subset(parent_directory, output)` selects exactly10000train,
+1000validation and1000test from their respective already-separated parent pools.
+It orders whole original-SMILES groups by a fixed namespace hash, never by labels
+or training RNG. Original row bytes, IDs, coordinates, labels and memberships are
+retained; unused parent rows stay in the immutable complete source. A count that
+cannot be reached without splitting groups fails. Output retains parent source,
+manifest and report SHA, selected original indices, new source/split SHA and a
+clear subset interpretation. Run via `run_qm9.py subset` in CPU Slurm.

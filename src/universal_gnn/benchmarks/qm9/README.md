@@ -43,3 +43,16 @@ limit and the scientific300/patience30 limit; this allocation is not an ETA.
 Every raw dataset, result, checkpoint and log remains ignored. Full controls and
 metadata results are separate from scientific completion. A CPU pass does not
 certify GPU capacity, and a queued training job is not a trained result.
+
+## Active HOMO/LUMO subset profile
+
+The user-approved replacement is `profile="hl12k"`, exactly16 fits and82Slurm
+stages. It uses `data/qm9/hl12k-v1`, definitions/results under
+`runs/qm9-hl12k-v1`, and `qm9-hl12k--seed-123--...` case IDs. It never overwrites
+old full definitions, results or receipts. `model_cases` checks the declared
+property×initialization set instead of assuming eight cases per model; scalar
+assessment binds the declared source count. The original full profile remains
+available for reproducibility. The four new capacity gates are submitted before
+any long fits. Use `submit_campaign(source, campaign="runs/qm9-hl12k-v1/launches",
+profile="hl12k", train_time="3-00:00:00")`;3days is a per-job allocation, not ETA.
+All other training, paired OOM, checkpoint and validation protocols remain intact.

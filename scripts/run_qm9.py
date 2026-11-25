@@ -8,7 +8,7 @@ from pathlib import Path
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("stage", choices=["prepare", "smoke", "preflight", "train", "assess", "terminal"])
+    parser.add_argument("stage", choices=["prepare", "subset", "smoke", "preflight", "train", "assess", "terminal"])
     parser.add_argument("--raw", default="data/qm9/raw")
     parser.add_argument("--data", default="data/qm9/prepared-v1")
     parser.add_argument("--matrix", default="runs/arxiv-v1/definition-947/matrix.json")
@@ -19,6 +19,8 @@ def main():
     parser.add_argument("--preparation")
     parser.add_argument("--smoke")
     parser.add_argument("--receipt")
+    parser.add_argument("--parent-data", default="data/qm9/prepared-v1")
+    parser.add_argument("--run-root", default="runs/qm9-v1")
     args = parser.parse_args()
     if not os.environ.get("SLURM_JOB_ID"):
         parser.error("QM9 numerical work, full conversion and terminal checks require Slurm")
@@ -29,6 +31,11 @@ def main():
             from universal_gnn.benchmarks.qm9.definitions import define
             prepare_qm9(args.raw, args.data)
             result = define(args.matrix, args.data, args.definitions)
+        elif args.stage == "subset":
+            from universal_gnn.data.preparation.qm9.subset import prepare_subset
+            from universal_gnn.benchmarks.qm9.definitions import define
+            prepare_subset(args.parent_data, args.data)
+            result = define(args.matrix, args.data, args.definitions, properties=("homo", "lumo"), run_root=args.run_root)
         elif args.stage == "terminal":
             from universal_gnn.benchmarks.qm9.submission import record_terminal
             result = record_terminal(args.receipt)

@@ -6616,3 +6616,7 @@
 - 2026-11-25T18:40:15+08:00: Authorized QM9 four-property campaign campaign-observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
 
 - 2026-11-25T18:41:47+08:00：完成QM9四性质扩展与32项全量实验派发。源码862a55a；146个阶段2179–2324已核验释放；全量数据转换、32个CPU数值控制及其真实父终态/SHA均通过。四GPU预检与32训练排队，独立后评已接线；旧任务吞吐保守外推29.3/82.0/161.1 GPU天对应平均50/150/300轮，不能称QM9实测。下一步按依赖运行并更新实测耗时，不重复提交。
+
+- 2026-11-25T22:09:06+08:00：SCP上传已推送e629824的6606B小型离线bundle，SHA dd55923e01b2faad16dcaabd8a98f025abe598c634b2ec3945f7575f11943b97，先决862a55a；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-25T22:09:56+08:00: Authorized QM9 four-property campaign full-held-for-subset; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.

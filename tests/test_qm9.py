@@ -8,6 +8,7 @@ from universal_gnn.data.preparation.qm9.source import HARTREE_TO_EV, UNITS, excl
 from universal_gnn.benchmarks.qm9.definitions import build_definitions, canonical
 from universal_gnn.benchmarks.qm9.submission import campaign_layout, check_job, seconds
 from universal_gnn.data.splits.manifest import create_manifest, validate_manifest
+from universal_gnn.data.preparation.qm9.subset import select_indices
 from universal_gnn.properties.catalog import property_spec
 
 
@@ -88,6 +89,36 @@ class QM9DefinitionsTests(unittest.TestCase):
         primary['cases'].append(copy.deepcopy(primary['cases'][0]))
         with self.assertRaises(ValueError):build_definitions(primary,data)
 
+    def test_subset_16_cases_use_isolated_paths_and_only_two_orbital_targets(self):
+        primary,data=self.fixtures()
+        subset=dict(data,kind='qm9_partition_subset',clean_count=12000,selected_count=12000,
+                    parent_clean_count=130831,split_counts=dict(train=10000,validation=1000,test=1000))
+        result=build_definitions(primary,subset,properties=('homo','lumo'),run_root='runs/qm9-hl12k-v1')
+        self.assertEqual(result['defined_training_runs'],16)
+        self.assertEqual({c['property'] for c in result['cases']},{'homo','lumo'})
+        self.assertTrue(all(c['id'].startswith('qm9-hl12k--') and c['run_directory'].startswith('runs/qm9-hl12k-v1/cases/') for c in result['cases']))
+        with self.assertRaises(ValueError):build_definitions(primary,subset,properties=('homo','lumo'))
+        with self.assertRaises(ValueError):build_definitions(primary,subset,properties=('homo','lumo','dipole_magnitude'),run_root='runs/qm9-hl12k-v1')
+
+    def test_subset_membership_is_reproducible_inside_parent_partitions(self):
+        records=[dict(id=str(i),group=str(i//2)) for i in range(60)]
+        m=create_manifest(records,source_sha256='a'*64,seed=0)
+        counts=dict(train=10,validation=2,test=2)
+        selected=select_indices(m,counts)
+        self.assertEqual(selected,select_indices(m,counts))
+        groups={}
+        for role,indices in selected.items():
+            self.assertEqual(len(indices),counts[role]);self.assertEqual(indices,sorted(indices))
+            self.assertTrue(set(indices)<=set(m['partitions'][role]))
+            groups[role]={m['records'][i]['group'] for i in indices}
+            for group in groups[role]:
+                all_members={i for i,r in enumerate(m['records']) if r['group']==group}
+                self.assertTrue(all_members<=set(indices))
+        self.assertFalse(groups['train']&groups['test'])
+        self.assertFalse(groups['validation']&groups['test'])
+        with self.assertRaises(ValueError):select_indices(m,dict(train=9,validation=2,test=2))
+        with self.assertRaises(ValueError):select_indices(m,dict(train=1000,validation=2,test=2))
+
     def test_group_split_is_training_seed_independent_complete_and_no_smiles_leakage(self):
         records=[dict(id=str(i),group=str(i//2)) for i in range(40)]
         m=create_manifest(records,source_sha256='a'*64,seed=0)
@@ -99,6 +130,20 @@ class QM9DefinitionsTests(unittest.TestCase):
 
 
 class QM9SlurmTests(unittest.TestCase):
+    def test_subset_dag_has_16_trainings_and_all_preflights_submitted_first(self):
+        layout=campaign_layout('runs/qm9-hl12k-v1/launches','3-00:00:00',profile='hl12k')
+        self.assertEqual(len(layout),82)
+        trains=[s for s in layout if s['command'][0]=='train']
+        self.assertEqual(len(trains),16)
+        self.assertTrue(all(s['key'].startswith('qm9-hl12k--') for s in trains))
+        self.assertTrue(all(s['options']['time_limit']=='3-00:00:00' for s in trains))
+        first_train=min(i for i,s in enumerate(layout) if s['command'][0]=='train')
+        self.assertTrue(all(i<first_train for i,s in enumerate(layout) if s['command'][0]=='preflight'))
+        for s in layout:
+            if s['command'][0]!='terminal':
+                args=s['command'];self.assertEqual(args[args.index('--definitions')+1],'runs/qm9-hl12k-v1/definition')
+            for path in s['options'].get('artifacts',[]):self.assertNotIn('runs/qm9-v1',path)
+
     def test_32_full_trainings_require_cpu_and_gpu_gates_and_independent_assessment(self):
         layout=campaign_layout();seen=set()
         self.assertEqual(len(layout),146)
