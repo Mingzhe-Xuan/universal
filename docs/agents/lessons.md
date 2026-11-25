@@ -428,3 +428,7 @@
 ## 2026-11-25T15:13:34+08:00：失败主实验重跑与终态观察器
 
 重跑应同时处理属于该case的失效后评及afterany终态观察器。先按job/token/用户/源码/资源/依赖核实，再将全部旧后继hold后取消，避免取消旧父作业触发旧观察器读取新launch.json。失败case/launch整目录迁移并保留checkpoint与SHA；新阶段全部hold、写入唯一回执并完整验证后先释放后继、再释放训练。CUDA launch timeout不等于OOM，重跑保持原batch并保留失败根因未知的边界。
+
+## 2026-11-25T17:11:32+08:00：任务资源软链接与冻结checkout
+
+仓库的data/、models/、runs/目录忽略规则不一定覆盖同名软链接。新shared clone先验证HEAD与三个链接目标，再在该checkout的.git/info/exclude追加精确/data、/models、/runs条目；不改tracked源码，也不忽略未知脏文件。公开Figshare下载在服务器403而本地urllib可读时，固定官方原文件MD5与字节数，通过已授权只读回环HTTP Range传输，完整SHA/转换仍由CPU Slurm核验。回环传输正常不证明公共GitHub代理端到端健康；公共访问超时不应中断正在工作的资源传输。

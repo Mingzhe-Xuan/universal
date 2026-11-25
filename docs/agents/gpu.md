@@ -6576,3 +6576,43 @@
 - 2026-11-25T17:01:31+08:00: Authorized QM9 four-property campaign download-progress; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
 
 - 2026-11-25T17:04:37+08:00: Authorized QM9 four-property campaign offline-download; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:05:54+08:00: Authorized QM9 four-property campaign download-progress; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:06:50+08:00: Authorized QM9 four-property campaign source-sync; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:07:39+08:00：SCP上传已推送862a55a的38214B小型离线bundle，SHA 9fc229b9438c6cdb5dc537c12c35aefea80262a8c3600d8a7cb22508113a19d0，先决401ea2f；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-25T17:08:06+08:00: Authorized QM9 four-property campaign source-sync-offline; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:08:40+08:00: Authorized QM9 four-property campaign source-check; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:09:24+08:00: Authorized QM9 four-property campaign download-progress; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:10:24+08:00: Authorized QM9 four-property campaign software-check; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:12:46+08:00: Authorized QM9 four-property campaign download-progress; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:29:27+08:00: Authorized QM9 four-property campaign campaign-submission; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:29:46+08:00: Authorized QM9 four-property campaign download-progress; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:30:35+08:00: Authorized QM9 four-property campaign proxy-recovery-check; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:30:56+08:00：QM9回环下载已传80488036/86144227B后Vlab连接重置，55528专用代理实际exit1，普通诊断确认Guqq2 1080已无监听。按规范启动新的唯一专用代理，保留HTTP只读服务和.partial，不重下已传字节；新端到端验证后仅续传剩5656191B及两个小文件。未结束其他SSH会话。
+
+- 2026-11-25T18:31:20+08:00: Authorized QM9 four-property campaign offline-download; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:32:44+08:00: Authorized QM9 four-property campaign download-progress; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:33:10+08:00: Authorized QM9 four-property campaign campaign-submission; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:34:10+08:00: Authorized QM9 four-property campaign campaign-submission-verified; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:35:09+08:00: Authorized QM9 four-property campaign campaign-observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:37:20+08:00: Authorized QM9 four-property campaign campaign-observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:40:15+08:00: Authorized QM9 four-property campaign campaign-observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T18:41:47+08:00：完成QM9四性质扩展与32项全量实验派发。源码862a55a；146个阶段2179–2324已核验释放；全量数据转换、32个CPU数值控制及其真实父终态/SHA均通过。四GPU预检与32训练排队，独立后评已接线；旧任务吞吐保守外推29.3/82.0/161.1 GPU天对应平均50/150/300轮，不能称QM9实测。下一步按依赖运行并更新实测耗时，不重复提交。
