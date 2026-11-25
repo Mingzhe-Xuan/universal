@@ -432,3 +432,7 @@
 ## 2026-11-25T17:11:32+08:00：任务资源软链接与冻结checkout
 
 仓库的data/、models/、runs/目录忽略规则不一定覆盖同名软链接。新shared clone先验证HEAD与三个链接目标，再在该checkout的.git/info/exclude追加精确/data、/models、/runs条目；不改tracked源码，也不忽略未知脏文件。公开Figshare下载在服务器403而本地urllib可读时，固定官方原文件MD5与字节数，通过已授权只读回环HTTP Range传输，完整SHA/转换仍由CPU Slurm核验。回环传输正常不证明公共GitHub代理端到端健康；公共访问超时不应中断正在工作的资源传输。
+
+## 2026-11-25T22:26:58+08:00：数据子集是独立实验协议
+
+从既定train/validation/test内部选择完整SMILES组并冻结精确计数，保留原行和父source/split SHA；不得先全库重抽再拆分、用目标值挑样或把子集标为全量。执行器需按定义声明的性质集合和source_count校验，不能硬编码8case/130831；同时保留旧profile的兼容测试。跨平台导出标准实验路径用as_posix，避免Windows反斜杠进入可移植配置。长期接口见benchmarks/qm9与data/preparation/qm9 README。

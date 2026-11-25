@@ -6620,3 +6620,19 @@
 - 2026-11-25T22:09:06+08:00：SCP上传已推送e629824的6606B小型离线bundle，SHA dd55923e01b2faad16dcaabd8a98f025abe598c634b2ec3945f7575f11943b97，先决862a55a；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
 
 - 2026-11-25T22:09:56+08:00: Authorized QM9 four-property campaign full-held-for-subset; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T22:15:40+08:00：SCP上传已推送859054a的10253B小型离线bundle，SHA 75e23d10d4c173d66bc9be5b01851239c750495cbf3265b5502c87544118b82c，先决e629824；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-25T22:16:14+08:00: Authorized QM9 four-property campaign subset-source-check; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T22:17:27+08:00: Authorized QM9 four-property campaign subset-software-observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T22:18:45+08:00: Authorized QM9 four-property campaign subset-replacement; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T22:20:01+08:00: Authorized QM9 four-property campaign subset-campaign-observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T22:22:10+08:00: Authorized QM9 four-property campaign subset-campaign-observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T22:24:50+08:00: Authorized QM9 four-property campaign subset-active-ledger; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T22:25:54+08:00：完成用户确认的QM9子集切换：源码859054a，82阶段2327–2408/16训练已提交；13软件测试、12k精确制备、16CPU模型控制及各实际父终态/报告SHA通过。旧136队列精确取消，旧32台账已superseded并保留原快照，原3CGCNN重跑不动。当前新四GPU预检/16训练排队，下一步等待其依赖推进，不重复提交。
