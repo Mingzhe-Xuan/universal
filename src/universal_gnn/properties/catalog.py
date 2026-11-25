@@ -21,6 +21,10 @@ class PropertySpec:
 CATALOG = {
     "formation_energy": PropertySpec("formation_energy", "graph", (1,), "eV/atom"),
     "bandgap": PropertySpec("bandgap", "graph", (1,), "eV"),
+    "homo": PropertySpec("homo", "graph", (1,), "eV"),
+    "lumo": PropertySpec("lumo", "graph", (1,), "eV"),
+    "dipole_magnitude": PropertySpec("dipole_magnitude", "graph", (1,), "Debye"),
+    "isotropic_polarizability": PropertySpec("isotropic_polarizability", "graph", (1,), "Bohr^3"),
     "total_energy": PropertySpec("total_energy", "graph", (1,), "eV", reduction="sum"),
     "oc20_relaxed_energy": PropertySpec("oc20_relaxed_energy", "graph", (1,), "eV", reduction="sum"),
     "classification": PropertySpec("classification", "graph", (2,), "class", kind="classification"),

@@ -2953,3 +2953,29 @@
 - 2026-11-08T13:28:03+08:00：恢复全量观察并完成交叉核验。13:26原1351实际RUNNING/2:10:10，完整7轮60823训练/1901batch/7590验证、有限loss和原B32/f32/seed123/300pat30配置保持。新全量事件原字节以前次13:17小报告为前缀，未消费失败RPC留下的旧current；身份/请求/源/资源及109其他原阶段回执、有效40生成/20分子CPU/10CUDA与428归档SHA通过。主24科学接受/20训练排队/1运行/3生成训练成功待质量，2013–2018与2031–2036仍原排队，无新失败/提交/取消/优先级变化，磁盘117.08GiB。原冻结/高阶/分子/插件/来源/成本/论文完整范围保持，继续等待原1351。证据：results\paper-campaign-audit-20261108\132604\verified.json。
 
 - 2026-11-08T13:29:41+08:00: Monitoring-recovery documentation pre-commit passed: corrected duration semantics checked against exact declared14400s; small11 and fresh full428 archive hashes re-read; new full events/requested config crosschecked with the successful small report; document UTF-8/no-NUL/size/path checks and git diff --check passed. Failed SSH and refused stale/format observations remain historical records, not scientific failures; no core source changed.
+
+- 2026-11-08T13:37:07+08:00：已验证等待：13:35小报告确认原1351 RUNNING，完整8轮60823训练/1901batch/7590验证且loss有限；1368/1369仍PENDING。原请求/身份/资源/源码/全配置与最近全量事件前缀交叉一致，11归档SHA通过。最近全48/40生成/20分子CPU/10CUDA完整核查仍为13:26的428归档；主24/48及全部原补充范围保持。未新提交、取消、重试或改优先级，剩余117.09GiB。证据：results\paper-current1351-small-20261108\133521\verified.json。
+
+- 2026-11-08T13:40:18+08:00：已验证等待原1351：13:39仍RUNNING/完整8轮，1368/1369仍PENDING；与上次小报告事件原字节前缀/全配置一致，11归档SHA通过。阶段未变，无提交或作业调整；最新全48审计仍13:26，主24/48及原全部补充范围保持。证据：results\paper-current1351-small-20261108\133931\verified.json。
+
+- 2026-11-10T16:28:37+08:00：用户询问训练进度，保持目标paused，仅只读查询。11月10日16:24原1353 CGCNN分类scratch实际RUNNING/12:27:57，已完整48轮，1373/1375仍排队。1352分类微调完整44轮按patience30早停、best14，7580测试；1352/1370/1371实际COMPLETED/0:0，原终态SHA绑定的训练/后评/独立核验报告均passed，完整75993源推理核对通过，测试accuracy0.9065963061、F1 0.8416107383、AUROC0.9624938278。尚未下载完整预测流或归档新增主case，本地科学索引仍24/48。原1351带隙scratch在109轮后于11月9日16:00:37报CUDA launch timeout并FAILED/1:0，1368依赖失效，未重试；既有1350/1324的2031/2013恢复仍排队。三生成训练成功待质量，另18主训练待跑。分类阈值1969因Original full recipe differs: prediction失败，1971依赖失效；主分类1371已通过，这属于补充后评失败。已提交Slurm作业仍自行运行，暂停的是agent自动推进。本次未提交/修复/重试/取消任何作业，磁盘约116.82GiB，全部原48及补充范围保留。证据：results\paper-status-20261110\161444\status-summary.json。
+
+- 2026-11-11T12:33:34+08:00：用户状态查询，目标仍paused，仅只读。11月11日12:28全48报告与12:32补充报告确认：原1357 NequIP带隙scratch RUNNING，最新完整52轮。CGCNN分类两版分别44/best14、48/best18，MACE带隙微调50/best20，其训练/主后评/独立核验均实际COMPLETED/0:0，原终态SHA绑定报告均passed，三版完整75993源推理通过；原24加三版共27个服务器主流程通过，尚未归档新增三个case，本地索引仍24/48。MACE带隙scratch110/best80和NequIP带隙微调158/best128仅训练完成，后评1376/1382目前Priority排队。三生成训练成功待质量，14主训练仍排队，原1351带隙scratch109轮CUDA超时失败尚未处理。两CG分类阈值补充1969/1973均因prediction配置比对失败，1971/1975依赖失效；主分类结果已通过。未提交、修复、重试、取消或恢复目标。剩余116.13GiB，全部单seed123和原48/补充范围保持。证据：results\paper-status-20261111\123201\status-summary.json。
+
+- 2026-11-13T12:58:32+08:00：用户状态查询，目标保持paused，仅只读。11月13日12:51完整48报告及12:54补充报告确认：1469 MACE生成微调RUNNING，最新60轮。分类八版与ALIGNN/MACE/NequIP带隙六版，合计14新增case的原训练/主后评/独立核验终态均COMPLETED/0:0；28后评/独立报告逐一匹配保留终态SHA、passed、父报告SHA及完整75993源推理，服务器主流程共38/48通过。新增14版尚未做完整本地归档，原科学索引24/48字节不变。三生成训练完成待正式质量，四主训练排队。原CGCNN带隙scratch109轮失败保持；新增1464 CGCNN生成微调11轮后同样CUDA launch timeout失败，相关质量1466依赖失效，未重试。八分类阈值补充均因prediction配置比对失败，独立补充验证依赖失效，八版主分类均已通过。剩余113.46GiB，单训练seed123和原全部补充范围保持。本次无新作业/修复/重试/取消/恢复目标。证据：results\paper-status-20261113\125435\status-summary.json。
+
+- 2026-11-25T11:15:30+08:00：只读状态/文档检查：519元数据文件与14小报告采集成功；七生成assessment实际父COMPLETED/0:0、报告SHA、passed/1000attempt/200条件、samples/checkpoint及训练报告输入SHA一致。45主流程/3失败统计通过，RUNNING为空；科学索引SHA不变。原主状态independent标志过时，以匹配来源的独立报告为准。未执行模型计算、提交、重试或恢复目标。
+
+- 2026-11-25：本次状态文档的 git diff --check 退出0；仅既有换行规范提示。报告及汇总本地路径存在，状态历史保留检查通过。
+
+- 2026-11-25T15:05:43+08:00：重跑单元测试计划：仅三个已确认CUDA launch timeout失败主格；校验原训练请求SHA、seed123/全量/float32/原batch、冻结源HEAD与干净状态、旧作业身份和失败终态；验证归档目标受限runs目录、原文件SHA保留、无未知活动重复；新链先hold后核验job/comment/dependency/resources/request SHA，再释放；回执不明确立即停止并按token核对，禁止盲重提。元数据与脚本检查在登录节点，归档checkpoint SHA及控制器通过Slurm。
+
+- 2026-11-25T15:11:34+08:00：重跑控制器提交前检查通过：199项（12旧PENDING作业原身份接受及各14种错误身份拒绝、runs目录逃逸拒绝、18份原脚本bash-n、Python语法），3主格/18阶段。原先本地Git Bash安装路径假设不符，改从git.exe实际路径定位后完整通过，未降低检查标准。spec SHA fc2c90f6df6c1bebe5a2eaa8de39ef5d8a0f2fead4d14dbaf1f9d28baf6aebcd；controller SHA 11f6c2b1e252b8f1f9041a124335aa21fa28a7ce28fed3eb5def6f21194b8d6b。仅运行时调度payload，远端tracked源码不改。
+
+- 2026-11-25T15:13:34+08:00：Slurm实际部署验证通过：控制器2159 COMPLETED/0:0；3主格×6阶段=18个新回执，全部请求SHA/冻结源/初始化/数据配方保持，实时job/token/name/resources/dependency与回执吻合，18项已释放。12个精确旧PENDING依赖hold后CANCELLED；原case/launch 33+17+26文件及checkpoint归档迁移SHA一致。2160处full_training_and_validation，2166/2172等待GPU。dispatch证明 results\paper-restart-20261125\151205-observe\verified-dispatch.json；未把提交计为科学验收。
+
+- 2026-11-25T15:13:56+08:00：重跑记录的git diff --check退出0；最终15:13观测确认2160仍RUNNING、2166/2172为PENDING等待GPU，2159控制器0:0，后评依赖全部已释放。无新的提交或重试。
+
+- 2026-11-25T16:44:19+08:00：QM9扩展测试计划：官方XYZ/Fortran指数/原子数/SMILES尾部解析；HOMO/LUMO Hartree→eV、偶极Debye和alpha Bohr^3；官方异常ID排除、唯一ID、原子/位置与四标签有限性、非PBC；固定划分无交叉且覆盖全清洗集；32配置共享数据及split、官方微调/scratch严格区分、mean标量读出和分子profile；GPU预检实际加载/反传/非零梯度/保存恢复及typed OOM共同batch；全量评测只用best-validation并保留逐结构预测；源码/输入/回执/实际Slurm终态校验。
+
+- 2026-11-25T17:05:07+08:00：QM9实现提交前检查：10项标准库测试通过，覆盖原XYZ列/单位/零偶极/Fortran指数/非有限与截断拒绝、官方排除ID、32配方冻结与不修改原矩阵、SMILES组划分完整、146阶段DAG含32训练和32独立后评、身份/资源/依赖错误拒绝。9个新增Python文件AST语法检查及文档相对链接检查通过，git diff --check通过。CPU/GPU真实数值控制按Slurm链执行，当前不声称已通过。

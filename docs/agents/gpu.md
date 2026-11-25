@@ -6508,3 +6508,71 @@
 - 2026-11-08T13:25:54+08:00: Ordinary read-only SSH firstSHAverify/pullpublished then audit all48 active seed123 primary formal statuses/managed receipts/retained terminals/live handles, exact40 staged generation identities, new20 dependent CPU joint/plan/afterany requests and original10 CUDA requests/source/request SHAs, queue/free disk. Bounded metadata only; no model/data preprocessing/new jobs/retries/cancellation/priority/source change. Missing handles remain unknown unless actual retained terminal proves them; accepted24 proof and accepted1350 retry remain authoritative.
 
 - 2026-11-08T13:28:03+08:00：恢复全量观察并完成交叉核验。13:26原1351实际RUNNING/2:10:10，完整7轮60823训练/1901batch/7590验证、有限loss和原B32/f32/seed123/300pat30配置保持。新全量事件原字节以前次13:17小报告为前缀，未消费失败RPC留下的旧current；身份/请求/源/资源及109其他原阶段回执、有效40生成/20分子CPU/10CUDA与428归档SHA通过。主24科学接受/20训练排队/1运行/3生成训练成功待质量，2013–2018与2031–2036仍原排队，无新失败/提交/取消/优先级变化，磁盘117.08GiB。原冻结/高阶/分子/插件/来源/成本/论文完整范围保持，继续等待原1351。证据：results\paper-campaign-audit-20261108\132604\verified.json。
+
+- 2026-11-08T13:31:43+08:00：SCP上传已推送401ea2f的8121B小型离线bundle，SHA b942042a5e3e5489e2d0323981eb41f472c926c32f731c02695d927546330ac0，先决cb00a55；已批准离线同步。SCP成功后原子更新published-sync，现有健康代理不重启；随后普通连接先SHA核验/git pull此bundle，再执行已记录用途的检查或Slurm提交。不直接修改服务器源码或origin。
+
+- 2026-11-08T13:33:02+08:00: Final ordinary readonly SSH, first verify SHA and git pull published 401ea2fc386eb6fde6e36e4383abde423f7a59c8 documentation bundle; confirm exact rootHEAD and current running Slurm queue only. No source edit, new submission/retry/cancellation, proxy or environment change; old fixed science caches remain unchanged.
+
+- 2026-11-08T13:35:14+08:00: Ordinary bounded small SSH observation after Vlab closed previous full report; first SHAverify/pull published bundle, then exact original1351/1368/1369 receipts/request hashes/source caches and Slurm fields, coherent1351 formal/events/requested/resolved/gate bytes under1MiB each, running queue/disk only. No tensors/model execution/new jobs/retries/cancel/priority or source edits. Fresh connection failure does not imply training stopped; consume a new archive only on successful RPC.
+
+- 2026-11-08T13:37:07+08:00：已验证等待：13:35小报告确认原1351 RUNNING，完整8轮60823训练/1901batch/7590验证且loss有限；1368/1369仍PENDING。原请求/身份/资源/源码/全配置与最近全量事件前缀交叉一致，11归档SHA通过。最近全48/40生成/20分子CPU/10CUDA完整核查仍为13:26的428归档；主24/48及全部原补充范围保持。未新提交、取消、重试或改优先级，剩余117.09GiB。证据：results\paper-current1351-small-20261108\133521\verified.json。
+
+- 2026-11-08T13:39:23+08:00: Ordinary bounded small SSH observation after Vlab closed previous full report; first SHAverify/pull published bundle, then exact original1351/1368/1369 receipts/request hashes/source caches and Slurm fields, coherent1351 formal/events/requested/resolved/gate bytes under1MiB each, running queue/disk only. No tensors/model execution/new jobs/retries/cancel/priority or source edits. Fresh connection failure does not imply training stopped; consume a new archive only on successful RPC.
+
+- 2026-11-08T13:40:18+08:00：已验证等待原1351：13:39仍RUNNING/完整8轮，1368/1369仍PENDING；与上次小报告事件原字节前缀/全配置一致，11归档SHA通过。阶段未变，无提交或作业调整；最新全48审计仍13:26，主24/48及原全部补充范围保持。证据：results\paper-current1351-small-20261108\133931\verified.json。
+
+- 2026-11-08T13:42:26+08:00: Ordinary bounded small SSH observation after Vlab closed previous full report; first SHAverify/pull published bundle, then exact original1351/1368/1369 receipts/request hashes/source caches and Slurm fields, coherent1351 formal/events/requested/resolved/gate bytes under1MiB each, running queue/disk only. No tensors/model execution/new jobs/retries/cancel/priority or source edits. Fresh connection failure does not imply training stopped; consume a new archive only on successful RPC.
+
+- 2026-11-10T16:09:05+08:00: Ordinary read-only SSH firstSHAverify/pullpublished then audit all48 active seed123 primary formal statuses/managed receipts/retained terminals/live handles, exact40 staged generation identities, new20 dependent CPU joint/plan/afterany requests and original10 CUDA requests/source/request SHAs, queue/free disk. Bounded metadata only; no model/data preprocessing/new jobs/retries/cancellation/priority/source change. Missing handles remain unknown unless actual retained terminal proves them; accepted24 proof and accepted1350 retry remain authoritative.
+
+- 2026-11-10T16:14:31+08:00: User-requested status query while goal is paused. Ordinary read-only SSH firstSHAverify/pull published bundle; fetch exact CGCNN classification1352/1370/1371 reports bound to retained actual successful terminal hashes, threshold1969-1972 small report/terminal/log tails and latest1353 formal status/running queue. No model/weights/dataset processing, submission, retries, cancellation, source edits or goal resumption.
+
+- 2026-11-10T16:24:15+08:00: Ordinary read-only SSH firstSHAverify/pullpublished then audit all48 active seed123 primary formal statuses/managed receipts/retained terminals/live handles, exact40 staged generation identities, new20 dependent CPU joint/plan/afterany requests and original10 CUDA requests/source/request SHAs, queue/free disk. Bounded metadata only; no model/data preprocessing/new jobs/retries/cancellation/priority/source change. Missing handles remain unknown unless actual retained terminal proves them; accepted24 proof and accepted1350 retry remain authoritative.
+
+- 2026-11-10T16:28:37+08:00：用户询问训练进度，保持目标paused，仅只读查询。11月10日16:24原1353 CGCNN分类scratch实际RUNNING/12:27:57，已完整48轮，1373/1375仍排队。1352分类微调完整44轮按patience30早停、best14，7580测试；1352/1370/1371实际COMPLETED/0:0，原终态SHA绑定的训练/后评/独立核验报告均passed，完整75993源推理核对通过，测试accuracy0.9065963061、F1 0.8416107383、AUROC0.9624938278。尚未下载完整预测流或归档新增主case，本地科学索引仍24/48。原1351带隙scratch在109轮后于11月9日16:00:37报CUDA launch timeout并FAILED/1:0，1368依赖失效，未重试；既有1350/1324的2031/2013恢复仍排队。三生成训练成功待质量，另18主训练待跑。分类阈值1969因Original full recipe differs: prediction失败，1971依赖失效；主分类1371已通过，这属于补充后评失败。已提交Slurm作业仍自行运行，暂停的是agent自动推进。本次未提交/修复/重试/取消任何作业，磁盘约116.82GiB，全部原48及补充范围保留。证据：results\paper-status-20261110\161444\status-summary.json。
+
+- 2026-11-11T12:28:35+08:00: Ordinary read-only SSH firstSHAverify/pullpublished then audit all48 active seed123 primary formal statuses/managed receipts/retained terminals/live handles, exact40 staged generation identities, new20 dependent CPU joint/plan/afterany requests and original10 CUDA requests/source/request SHAs, queue/free disk. Bounded metadata only; no model/data preprocessing/new jobs/retries/cancellation/priority/source change. Missing handles remain unknown unless actual retained terminal proves them; accepted24 proof and accepted1350 retry remain authoritative.
+
+- 2026-11-11T12:31:51+08:00: User-requested status query while goal is paused. Ordinary read-only SSH firstSHAverify/pull published bundle; fetch exact CGCNN classification both modes and MACE pretrained bandgap successful main-stage reports bound to retained actual successful terminal hashes, two classification threshold report metadata and latest1357 formal status/running queue. No model/weights/dataset processing, submission, retries, cancellation, source edits or goal resumption.
+
+- 2026-11-11T12:33:34+08:00：用户状态查询，目标仍paused，仅只读。11月11日12:28全48报告与12:32补充报告确认：原1357 NequIP带隙scratch RUNNING，最新完整52轮。CGCNN分类两版分别44/best14、48/best18，MACE带隙微调50/best20，其训练/主后评/独立核验均实际COMPLETED/0:0，原终态SHA绑定报告均passed，三版完整75993源推理通过；原24加三版共27个服务器主流程通过，尚未归档新增三个case，本地索引仍24/48。MACE带隙scratch110/best80和NequIP带隙微调158/best128仅训练完成，后评1376/1382目前Priority排队。三生成训练成功待质量，14主训练仍排队，原1351带隙scratch109轮CUDA超时失败尚未处理。两CG分类阈值补充1969/1973均因prediction配置比对失败，1971/1975依赖失效；主分类结果已通过。未提交、修复、重试、取消或恢复目标。剩余116.13GiB，全部单seed123和原48/补充范围保持。证据：results\paper-status-20261111\123201\status-summary.json。
+
+- 2026-11-13T12:51:29+08:00: Ordinary read-only SSH firstSHAverify/pullpublished then audit all48 active seed123 primary formal statuses/managed receipts/retained terminals/live handles, exact40 staged generation identities, new20 dependent CPU joint/plan/afterany requests and original10 CUDA requests/source/request SHAs, queue/free disk. Bounded metadata only; no model/data preprocessing/new jobs/retries/cancellation/priority/source change. Missing handles remain unknown unless actual retained terminal proves them; accepted24 proof and accepted1350 retry remain authoritative.
+
+- 2026-11-13T12:54:26+08:00: User-requested status query while goal is paused. Ordinary read-only SSH firstSHAverify/pull published bundle; fetch exact all14 newly completed classification/bandgap main-stage reports bound to retained actual successful terminal hashes, eight classification threshold report metadata and latest1469 formal status/running queue. No model/weights/dataset processing, submission, retries, cancellation, source edits or goal resumption.
+
+- 2026-11-13T12:58:32+08:00：用户状态查询，目标保持paused，仅只读。11月13日12:51完整48报告及12:54补充报告确认：1469 MACE生成微调RUNNING，最新60轮。分类八版与ALIGNN/MACE/NequIP带隙六版，合计14新增case的原训练/主后评/独立核验终态均COMPLETED/0:0；28后评/独立报告逐一匹配保留终态SHA、passed、父报告SHA及完整75993源推理，服务器主流程共38/48通过。新增14版尚未做完整本地归档，原科学索引24/48字节不变。三生成训练完成待正式质量，四主训练排队。原CGCNN带隙scratch109轮失败保持；新增1464 CGCNN生成微调11轮后同样CUDA launch timeout失败，相关质量1466依赖失效，未重试。八分类阈值补充均因prediction配置比对失败，独立补充验证依赖失效，八版主分类均已通过。剩余113.46GiB，单训练seed123和原全部补充范围保持。本次无新作业/修复/重试/取消/恢复目标。证据：results\paper-status-20261113\125435\status-summary.json。
+
+- 2026-11-25T01:51:25+08:00: Ordinary read-only SSH firstSHAverify/pullpublished then audit all48 active seed123 primary formal statuses/managed receipts/retained terminals/live handles, exact40 staged generation identities, new20 dependent CPU joint/plan/afterany requests and original10 CUDA requests/source/request SHAs, queue/free disk. Bounded metadata only; no model/data preprocessing/new jobs/retries/cancellation/priority/source change. Missing handles remain unknown unless actual retained terminal proves them; accepted24 proof and accepted1350 retry remain authoritative.
+
+- 2026-11-25T02:00:59+08:00: User-requested status query while goal is paused. Ordinary read-only SSH firstSHAverify/pull published bundle; fetch seven generation quality metrics and seven independent assessment reports bound to successful retained terminal hashes; inspect current running queue only. No model/weights/dataset processing, submission, retries, cancellation, source edits or goal resumption.
+
+- 2026-11-25T11:15:30+08:00：用户请求只读查询，自动目标保持paused。服务器主流程45/48通过、3个CGCNN CUDA执行超时，无RUNNING；七生成独立报告及1000attempt输入SHA已核实。新增21版待完整本地科学归档，本地索引24不改。下一步仅在用户恢复自动推进后处理失败、补充和归档。
+
+- 2026-11-25T15:05:43+08:00：连接用途：用户授权重跑三失败CGCNN主格。先校验并pull已授权离线Git bundle，再只读获取三个case的launch/terminal/request、精确旧关联队列及环境/节点元数据；不在登录节点执行模型计算或批量校验。后续归档和重跑由Slurm控制器执行，重跑其必要后评链属于本次授权。
+
+- 2026-11-25T15:06:40+08:00: Authorized three-CGCNN-retry preflight; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No unrelated experiments or tracked remote source edits.
+
+- 2026-11-25T15:07:54+08:00: Authorized three-CGCNN-retry extra; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No unrelated experiments or tracked remote source edits.
+
+- 2026-11-25T15:11:51+08:00: Authorized three-CGCNN-retry deploy; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No unrelated experiments or tracked remote source edits.
+
+- 2026-11-25T15:12:05+08:00: Authorized three-CGCNN-retry observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No unrelated experiments or tracked remote source edits.
+
+- 2026-11-25T15:13:34+08:00：完成三个CGCNN失败主格的原配方重跑派发。控制器2159实际0:0、199本地检查、18阶段请求SHA/身份/资源/依赖与释放核验通过；2160运行、2166/2172等待GPU；精确12旧依赖取消并保留76个失败case/launch文件及checkpoint。科学完成数不变，下一步跟进新作业，未重启无关实验。
+
+- 2026-11-25T15:13:38+08:00: Authorized three-CGCNN-retry observe; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No unrelated experiments or tracked remote source edits.
+
+- 2026-11-25T16:46:37+08:00: Authorized QM9 four-property campaign server-inspect; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T16:46:54+08:00：QM9联网准备：普通工作连接已先pull，端到端代理检查明确1080 Connection refused，无旧健康代理可复用；启动唯一专用ssh -N -T持有会话，随后工作连接ClearAllForwardings=yes再次验证GitHub和Figshare，再下载官方QM9资源。代理仅绑定远端回环；任务结束关闭本会话并确认1080释放。
+
+- 2026-11-25T16:47:40+08:00: Authorized QM9 four-property campaign download; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T16:58:03+08:00: Authorized QM9 four-property campaign download-progress; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T16:58:31+08:00: Authorized QM9 four-property campaign download-v2; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:01:31+08:00: Authorized QM9 four-property campaign download-progress; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
+
+- 2026-11-25T17:04:37+08:00: Authorized QM9 four-property campaign offline-download; ordinary SSH disables forwarding, SHA verifies and pulls published offline bundle first. No tracked remote source edits; compute is submitted via Slurm.
